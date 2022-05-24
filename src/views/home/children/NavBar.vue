@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { onConnect, initWeb3Modal, resetApp ,onBlockOut} from "@/common/useWallet";
+import { onConnect, initWeb3Modal, resetApp, onBlockOut } from "@/common/useWallet";
 import { getLocalStorage, setLocalStorage, isLogin, localAccount } from "@/common/utils";
 export default {
   name: "NavBar",
@@ -65,7 +65,8 @@ export default {
         "navBar.section2",
         "navBar.section3",
         "navBar.section4",
-        "navBar.section5"
+        "navBar.section5",
+        "navBar.test"
       ],
       isShowTabBox: true,
       isShowMobile: document.documentElement.clientWidth > 750 ? false : true
@@ -167,7 +168,10 @@ export default {
       if (index == 1) {
         this.$router.push({ name: "farms" });
       }
-      
+
+      if (index == this.tabItems.length - 1) {
+        this.$router.push({ name: "document" });
+      }
     },
     langrageItemClick(index) {
       this.langrageIndex = index;

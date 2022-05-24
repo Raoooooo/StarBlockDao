@@ -18,6 +18,7 @@ Vue.use(VueRouter);
 // 正常路由加载,会将所有路由的js跟css合并到一个文件
 import Home from "../views/home/Home";
 import Farms from "../views/farms/Farms";
+import Document from "@/common/Document";
 
 
 // 路由配置
@@ -31,6 +32,13 @@ const routes = [
     path: "/farms", name: "farms", component: Farms, meta: {
       keepAlive: false
     },
+  },
+
+
+  {
+    path: "/document",
+    name: "document",
+    component: Document,
   },
 
 ];

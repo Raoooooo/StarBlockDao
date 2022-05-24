@@ -9,7 +9,8 @@ export default {
         discard: "获得STB",
         twwiter: "文档",
         English: "English",
-        chinese: "简体中文"
+        chinese: "简体中文",
+        test: "test"
     },
 
     home: {
