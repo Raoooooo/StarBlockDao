@@ -1,0 +1,22 @@
+.el-loading-spinner{
+
+    background-repeat: no-repeat;
+    background-size: 1.25rem 1.25rem;
+    height:100px;
+    width:100%;
+    background-position:center;
+
+    top:50%;
+}
+.el-loading-spinner .circular {
+
+
+   display: none;
+
+}
+
+.el-loading-spinner .el-loading-text{
+
+   margin:85px 0px; 
+}
+
