@@ -21,17 +21,27 @@ export function web3ProviderUrl() {
     if (getProdcutMode() == 0) {
         if (window.location.href.startsWith("http://localhost:8080")) {
             return "http://localhost:8080";
-        }if (window.location.href.startsWith("http://localhost:8081")) {
+        } if (window.location.href.startsWith("http://localhost:8081")) {
             return "http://localhost:8081";
-        }else if(window.location.href.startsWith("http://192.168.1.61:8080")){
+        } else if (window.location.href.startsWith("http://192.168.1.61:8080")) {
             return "http://192.168.1.61:8080"
         }
-        else if(window.location.href.startsWith("http://192.168.1.61:8081")){
+        else if (window.location.href.startsWith("http://192.168.1.61:8081")) {
             return "http://192.168.1.61:8081"
         }
 
     } else {
 
+    }
+}
+
+
+export function nftMasterchefAddress() {
+    if (getProdcutMode() == 0) {
+        return "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18"
+
+    } else {
+        return "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18"
     }
 }
 

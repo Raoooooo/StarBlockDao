@@ -6,16 +6,22 @@
       <div class="topBackBox">
         <img :src="topBackImgUrl" class="topImg" />
         <div class="topBackContant">
-          <p class="topTitle">FARMS</p>
-          <p class="topSubTitle">Stake NFTs to Earn</p>
+          <div class="topImgIconBox">
+            <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
+            <div class="topImgIconBox_contantBox">
+              <p class="topImgIconBox_contantBox_text">Stake NFTs to Earn</p>
+            </div>
+          </div>
+          <p class="topTitle">NFT Farms</p>
+          <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">12653.872 ETH</p>
+              <p class="itemDataBox_topText">--</p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem1") }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">1243</p>
+              <p class="itemDataBox_topText">{{ totalNftQuantity }}</p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
             </div>
             <div class="vSepLine"></div>
@@ -28,18 +34,31 @@
       </div>
 
       <!-- Farms -->
-      <div class="itemsBox">
-        <farmitem :items="items"></farmitem>
+      <!-- <div class="itemsBox">
+        <farmitem :items="items" :currentBlockNumber="currentBlockNumber"></farmitem>
+      </div> -->
+
+      <div class="emptyContantBox">
+        <img class="emptyContantBox_img" src="@/assets/img/farms/empty.png" />
+        <div class="countDownBox">
+          <countdown :isFarms="true"></countdown>
+        </div>
       </div>
+
+      
     </list>
 
-    <div class="bottomDesBox">
+    <bottom></bottom>
+
+    <!-- <div class="bottomDesBox">
       <img src="@/assets/img/farms/farmsDes.png" class="farmsDesImg" />
       <div class="farmsDesTextBox">
         <p class="farmsDesText">
-          <span>{{ "· " + $t("farms.tip1") }}</span>
+          <span>{{ "· " }}</span>
+          <span>{{ $t("farms.tip1") }}</span>
           <br />
-          <span>{{ "· " + $t("farms.tip2") }}</span>
+          <span>{{ "· " }}</span>
+          <span>{{ $t("farms.tip2") }}</span>
           <br />
           <span>{{ "· " + $t("farms.tip3") }}</span>
           <br />
@@ -50,7 +69,7 @@
           <span>{{ "· " + $t("farms.tip6") }}</span>
         </p>
       </div>
-    </div>
+    </div> -->
 
     <el-dialog
       title=""
@@ -134,16 +153,19 @@ import { onConnect, initWeb3Modal, resetApp } from "@/common/useWallet";
 import Farmitem from "../farms/children/FarmsItem.vue";
 import Selectnft from "../farms/children/SelectNFT.vue";
 import { daoportAction } from "@/common/starblockdao";
-
+import poolDatas from "@/common/dataConfig";
+import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
+import Bottom from "../home/children/Bottom.vue";
 export default {
   name: "Farms",
-  created() {
-    daoportAction();
-  },
+
   components: {
+    Countdown,
+    List,
     Farmitem,
-    Selectnft
+    Selectnft,
+    Bottom
   },
 
   data() {
@@ -151,6 +173,8 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      totalNftQuantity: 0,
+      currentBlockNumber: 100000000,
       topImgHeight: topImgHeight,
       topBackImgUrl:
         document.documentElement.clientWidth > 750
@@ -167,8 +191,8 @@ export default {
       ],
       elDialogEditSellDataWidth: document.documentElement.clientWidth > 750 ? "900px" : "350px",
       elDialogEditSellDataHeight: "918px",
-      actionAlertShow: true,
-      items: ["1", "2", "3", "4", "5"],
+      actionAlertShow: false,
+      items: [],
       isScroll: false,
       isClickTab: false,
       active: 0,
@@ -193,9 +217,16 @@ export default {
     });
   },
   created() {
+    setTimeout(() => {
+      this.$bus.$emit("updateTabIndex", 1);
+    });
     // resetApp();
     // this.accountsChange();
 
+    // daoportAction(0);
+
+    this.items = poolDatas;
+    this.getMasterChefInfo();
     this.$nextTick(() => {
       // console.log("this.$route.path*******",this.$route.path);
       // this.setScrollToPostion();
@@ -248,6 +279,27 @@ export default {
   },
 
   methods: {
+    getMasterChefInfo() {
+      for (var i = 0; i < this.items.length; i++) {
+        var item = this.items[i];
+        daoportAction(item, this.handleMasterChefInfo, i);
+      }
+    },
+
+    handleMasterChefInfo(masterChefInfo, item, index) {
+      console.log("document=== masterchefinfo: pid", item.poolInfo.pid, masterChefInfo, index);
+      item.poolInfo.endBlock = masterChefInfo.poolInfo.endBlock;
+      item.poolInfo.amount = masterChefInfo.poolInfo.amount;
+      item.poolInfo.rewardPerNFTForEachBlock = masterChefInfo.poolInfo.rewardPerNFTForEachBlock;
+      item.poolInfo.rewardForEachBlock = masterChefInfo.poolInfo.rewardForEachBlock;
+      if (index == this.items.length - 1) {
+        this.totalNftQuantity = 0;
+        for (var i = 0; i < this.items.length; i++) {
+          const item = this.items[i];
+          this.totalNftQuantity += Number(item.poolInfo.amount);
+        }
+      }
+    },
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
     },
@@ -315,7 +367,7 @@ export default {
 
 .topImg {
   width: 100%;
-  height: 6rem;
+  height: 6.7rem;
 }
 .topBackContant {
   top: 0%;
@@ -328,21 +380,22 @@ export default {
   align-items: center;
 }
 .topTitle {
-  margin-top: 0.4rem;
-  font-size: 1.2rem;
+  margin-top: -0.2rem;
+  font-size: 0.9rem;
   font-family: DINAlternate-Bold, DINAlternate;
   font-weight: bold;
   color: #ffffff;
-  line-height: 1.4rem;
+  line-height: 1.05rem;
   letter-spacing: 1px;
   text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
 }
 .topSubTitle {
-  font-size: 0.6rem;
+  margin-top: 0.05rem;
+  font-size: 0.45rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
-  line-height: 0.825rem;
+  line-height: 0.7rem;
 }
 
 .topItemDataSuperBox {
@@ -607,6 +660,22 @@ export default {
 }
 
 .farmsDesText {
+  max-width: 12rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.25rem;
+  /* margin-top: 0.5rem; */
+  font-size: 0.45rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8c9399;
+  line-height: 0.7rem;
+  background-color: white;
+  border-radius: 0.25rem;
+}
+
+.farmsDesText_span {
   padding-top: 0.25rem;
   padding-right: 0.5rem;
   padding-left: 0.5rem;
@@ -628,6 +697,56 @@ export default {
   display: flex;
   flex-direction: row;
 }
+
+.topImgIconBox {
+  position: relative;
+}
+.topImgIcon {
+  width: 7rem;
+  height: 1.425rem;
+}
+.topImgIconBox_contantBox {
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.topImgIconBox_contantBox_text {
+  margin-top: -0.7rem;
+  font-size: 0.6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 0.825rem;
+}
+
+.emptyContantBox {
+  background-color: white;
+  margin-top: 0.75rem;
+  margin-left: 0%;
+  width: 100%;
+  /* height: 7.5rem; */
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.emptyContantBox_img {
+  margin-top: 0.75rem;
+  width: 13.25rem;
+  height: 6.675rem;
+}
+.countDownBox {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .back {
     display: flex;
@@ -646,9 +765,10 @@ export default {
     display: flex;
     flex-direction: column;
     /* height: 100%; */
-    width: 90%;
-    margin-left: 5%;
+    width: 80%;
+    margin-left: 10%;
     overflow-x: hidden;
+    background-color: #f7faff;
   }
 
   .contantList {
@@ -669,7 +789,7 @@ export default {
 
   .topImg {
     width: 100%;
-    height: 8.2rem;
+    height: 8.5rem;
   }
   .topBackContant {
     top: 0%;
@@ -682,21 +802,23 @@ export default {
     align-items: center;
   }
   .topTitle {
-    margin-top: 0.5rem;
-    font-size: 1.5rem;
+    margin-top: 0rem;
+    /* margin-top: 0.5rem; */
+    font-size: 1.05rem;
     font-family: DINAlternate-Bold, DINAlternate;
     font-weight: bold;
     color: #ffffff;
-    line-height: 1.75rem;
-    letter-spacing: 2px;
+    line-height: 1.2rem;
+    letter-spacing: 1px;
     text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
   }
   .topSubTitle {
-    font-size: 0.45rem;
+    margin-top: 0.325rem;
+    font-size: 0.6rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #ffffff;
-    line-height: 0.625rem;
+    line-height: 0.825rem;
   }
 
   .topItemDataSuperBox {
@@ -959,6 +1081,23 @@ export default {
   }
 
   .farmsDesText {
+    max-width: unset;
+    padding-top: 0.25rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    padding-bottom: 0.25rem;
+    /* margin-top: 0.5rem; */
+    font-size: 0.35rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #8c9399;
+    line-height: 0.7rem;
+    background-color: white;
+    border-radius: 0.25rem;
+  }
+
+  .farmsDesText_span {
+    text-align: left;
     padding-top: 0.25rem;
     padding-right: 0.5rem;
     padding-left: 0.5rem;
@@ -979,6 +1118,55 @@ export default {
     /* margin-left: 0.5rem; */
     display: flex;
     flex-direction: row;
+  }
+
+  .topImgIconBox {
+    position: relative;
+  }
+  .topImgIcon {
+    width: 7rem;
+    height: 1.425rem;
+  }
+  .topImgIconBox_contantBox {
+    top: 0%;
+    left: 0%;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .topImgIconBox_contantBox_text {
+    margin-top: -0.7rem;
+    font-size: 0.6rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 0.825rem;
+  }
+
+  .emptyContantBox {
+    background-color: white;
+    margin-top: 0.75rem;
+    margin-left: 0%;
+    width: 100%;
+    /* height: 7.5rem; */
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .emptyContantBox_img {
+    margin-top: 0.75rem;
+    width: 13.25rem;
+    height: 6.675rem;
+  }
+  .countDownBox {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
 }
 </style>

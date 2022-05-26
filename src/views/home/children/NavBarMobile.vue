@@ -21,7 +21,7 @@
         <div class="moreOptionSubView" v-for="(item, index) in tabItems">
           <div
             :class="active === index ? 'optionItemActive' : 'optionItem'"
-            @click="changeTab(index)"
+            @click="changeTab(index, item)"
           >
             <p
               :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="selectLangrageBox" v-show="isShowLangrageView">
+    <!-- <div class="selectLangrageBox" v-show="isShowLangrageView">
       <div class="langrageItemBox" v-for="(langrageItem, index) in langrageItemArr">
         <p
           :class="langrageIndex === index ? 'langrageItemActive' : 'langrageItem'"
@@ -53,7 +53,7 @@
           {{ langrageItem }}
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -64,9 +64,9 @@ export default {
     var langType = navigator.language;
     var currentLangrage = "navBar.English";
     if (langType == "en") {
-      currentLangrage = "navBar.English";
-    } else if (langType.startsWith("zh")) {
       currentLangrage = "navBar.chinese";
+    } else if (langType.startsWith("zh")) {
+      currentLangrage = "navBar.English";
     } else {
       currentLangrage = "navBar.English";
     }
@@ -81,6 +81,7 @@ export default {
         { title: "navBar.homepage", path: "" },
 
         { title: "navBar.section1", path: "" },
+        { title: "navBar.github", path: "https://github.com/StarBlockDAO" },
         // { title: "navBar.section2", path: "" },
         // { title: "navBar.section3", path: "" },
         // { title: "navBar.section4", path: "" },
@@ -120,7 +121,7 @@ export default {
       this.moreOptionViewShow = true;
     },
     showSelectView() {},
-    changeTab(index) {
+    changeTab(index, item) {
       this.moreOptionViewShow = false;
       this.active = index;
       if (index == 0) {
@@ -129,13 +130,16 @@ export default {
       if (index == 1) {
         this.$router.push({ name: "farms" });
       }
+      if (item.title == "navBar.github") {
+        window.open("https://github.com/StarBlockDAO", "_blank");
+      }
       if (index == this.tabItems.length - 1) {
-        if (this.currentLangrage == "navBar.chinese") {
+        if (this.$i18n.locale == "en") {
           this.$bus.$emit("changeDescripHeight", "navBar.chinese");
           this.$i18n.locale = "zh";
           this.currentLangrage = "navBar.English";
           localStorage.setItem("lang", "en");
-        } else if (this.currentLangrage == "navBar.English") {
+        } else if (this.$i18n.locale == "zh") {
           this.$bus.$emit("changeDescripHeight", "navBar.English");
           this.$i18n.locale = "en";
           this.currentLangrage = "navBar.chinese";
@@ -193,6 +197,7 @@ export default {
   /* position: relative; */
   height: 1.25rem;
   z-index: 100;
+  box-shadow: 0px 5px 12px 0px rgb(207 214 230 / 30%);
 
   /* margin-left: 2.65rem; */
   /* margin-right: 2.625rem; */
@@ -422,9 +427,10 @@ export default {
   height: 3.25rem;
   width: 100%;
   background-color: white;
+  box-shadow: 0px 5px 12px 0px rgb(207 214 230 / 30%);
 }
 .topLogo {
-  margin-left: .75rem;
+  margin-left: 0.75rem;
   height: 1.5rem;
 }
 .moreAction {
