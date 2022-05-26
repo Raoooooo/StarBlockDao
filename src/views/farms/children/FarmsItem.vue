@@ -6,13 +6,17 @@
           <!-- top -->
           <div class="contantDetailTopBox">
             <div class="contantDetailTopBox_leftBox">
-              <p class="contantDetailTopBox_leftBox_title">赚取：</p>
+              <p class="contantDetailTopBox_leftBox_title">{{ $t("farms.earn") + "：" }}</p>
               <img class="contantDetailTopBox_leftBox_img" src="@/assets/img/farms/linkIcon1.png" />
               <p class="contantDetailTopBox_leftBox_imgDes">STB</p>
-              <p class="contantDetailTopBox_leftBox_des">10,000/月</p>
+              <p class="contantDetailTopBox_leftBox_des">
+                {{ rewardAmount(item) + "/" + $t("farms.month") }}
+              </p>
             </div>
             <div class="contantDetailTopBox_rightBox">
-              <p class="contantDetailTopBox_rightBox_text">346,523 区块后结束</p>
+              <p class="contantDetailTopBox_rightBox_text">
+                {{ Number(item.poolInfo.endBlock) - currentBlockNumber + $t("farms.endBlock") }}
+              </p>
             </div>
           </div>
         </div>
@@ -25,7 +29,7 @@
               src="@/assets/img/farms/collectionIcon.png"
             />
             <div class="contantDetailSection1_leftBox_subBox">
-              <p class="contantDetailSection1_leftBox_subBox_topText">BakerLion</p>
+              <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.name }}</p>
               <div class="linkIconBox">
                 <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
                 <img class="linkIcon1" src="@/assets/img/farms/linkIcon2.png" />
@@ -35,30 +39,47 @@
             </div>
           </div>
           <div class="contantDetailSection1_rightBox">
-            <p class="contantDetailSection1_rightBox_topText">10.2 STB</p>
-            <p class="contantDetailSection1_rightBox_bottomText">单NFT奖励/月</p>
+            <p class="contantDetailSection1_rightBox_topText">
+              {{
+                (
+                  Number(item.poolInfo.rewardPerNFTForEachBlock) *
+                  6500 *
+                  30 *
+                  Math.pow(10, -18)
+                ).toFixed(2) +
+                "/" +
+                " STB"
+              }}
+            </p>
+            <p class="contantDetailSection1_rightBox_bottomText">
+              {{ $t("farms.awardNFT") + "/" + $t("farms.month") }}
+            </p>
           </div>
         </div>
 
         <!-- 抵押总量、TVL -->
         <div class="contantDetailSection2">
           <p class="contantDetailSection2_leftText">
-            抵押总量
-            <span class="contantDetailSection2_leftText1">2,235</span>
+            {{ $t("farms.pledgeAmount") }}
+            <span class="contantDetailSection2_leftText1">{{ item.poolInfo.amount }}</span>
           </p>
           <p class="contantDetailSection2_rightText">
             TVL
-            <span class="contantDetailSection2_rightText1">1245 ETH</span>
+            <span class="contantDetailSection2_rightText1">--</span>
           </p>
         </div>
         <!-- 抵押、解抵押 -->
         <div class="pledgeBtnBox">
-          <button class="pledgeBtn" @click="pledgeBtnAction(item)">抵押(9)</button>
-          <button class="unPledgeBtn" @click="pledgeBtnAction(item)">解抵押(10)</button>
+          <button class="pledgeBtn" @click="pledgeBtnAction(item)">
+            {{ $t("farms.pledge") + "(" + item.nftQuantity + ")" }}
+          </button>
+          <button class="unPledgeBtn" @click="pledgeBtnAction(item)">
+            {{ $t("farms.unPledge") + "(" + item.wnftQuantity + ")" }}
+          </button>
         </div>
         <!-- 领取奖励 -->
-        <button class="getAwardBtn">领取奖励</button>
-        <button class="getBonuBtn">领取分红</button>
+        <button class="getAwardBtn">{{ $t("farms.getAward") }}</button>
+        <button class="getBonuBtn">{{ $t("farms.getBonus") }}</button>
       </div>
     </el-col>
   </el-row>
@@ -76,8 +97,9 @@ import {
   getETHPriceItemCell,
   checkChainIdError
 } from "@/common/utils";
+import poolDatas from "@/common/dataConfig";
 
-import { daoportAction } from "@/common/starblockdao";
+import { daoportAction, getBlockNumber ,onBlockNumberChange} from "@/common/starblockdao";
 
 export default {
   name: "Farmitem",
@@ -142,6 +164,12 @@ export default {
       type: Array,
       default() {
         return [];
+      }
+    },
+    currentBlockNumber: {
+      type: Number,
+      default() {
+        return 0;
       }
     },
     isRecommend: {
@@ -212,8 +240,24 @@ export default {
     };
   },
   methods: {
+    rewardAmount(item) {
+      if (Number(item.poolInfo.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
+        return (
+          Number(item.poolInfo.rewardPerNFTForEachBlock) *
+          6500 *
+          30 *
+          Number(item.poolInfo.amount) *
+          Math.pow(10, -18)
+        ).toFixed(2);
+      } else if (Number(item.poolInfo.amount) == 0) {
+        return "--";
+      }
+    },
     pledgeBtnAction(item) {
-      daoportAction();
+      onBlockNumberChange()
+      // watchEtherTransfers()
+      // console.log(poolDatas);
+      // daoportAction();
       // this.$bus.$emit("alertAction", "1");
     },
     imgLoad() {

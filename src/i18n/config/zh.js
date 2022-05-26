@@ -10,7 +10,7 @@ export default {
         twwiter: "文档",
         English: "English",
         chinese: "简体中文",
-        test: "test"
+        github: "Github"
     },
 
     home: {
@@ -25,11 +25,16 @@ export default {
         featureItemTitle3: "STB支付",
         featureItemDes3: "争取越来越多的NFT支持STB支付，包括一级和二级市场，StarBlock发行的NFT将有90%以上支持STB支付。",
         featureItemTitle4: "交易挖矿",
-        featureItemDes4: "支持NFT交易挖矿，鼓励用户将NFT流动起来，奖励STB，以弥补手续费损失，建立更广泛的NFT交易网络。"
+        featureItemDes4: "支持NFT交易挖矿，鼓励用户将NFT流动起来，奖励STB，以弥补手续费损失，建立更广泛的NFT交易网络。",
 
+        countDownTitle: "距离NFT抵押挖矿开启",
+        block: "区块",
+        esTime: "预估时间：",
+        esTimeDes: "UTC +8 6月1日 21:00",
     },
 
     farms: {
+        topDes: "押NFT将获得Wrapped NFT，它是赎回抵押NFT的唯一凭证，切勿丢失！",
         topItem1: "TVL",
         topItem2: "NFT抵押总数量",
         topItem3: "总奖励",
@@ -50,10 +55,10 @@ export default {
         getBonusAmount: "可领取分红奖励",
         detailInfo: "详细信息",
         option: "操作",
-        optionTip1: "抵押或解压后将自动领取当前奖励",
-        optionTip2: "锁定NFT分享W-NFT交易版权费收入的40%，按W-NFT占比计算奖励",
-        optionTip3: "根据您持有WrappedNFT可解抵押对应的NFT",
-        optionTip4: "Wrapped-NFT 是解抵押NFT的唯一凭证，失去Wrapped-NFT后，您将无法解抵押对应的NFT",
+        optionTip1: "解抵押的时候将自动领取所有奖励；",
+        optionTip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红；",
+        optionTip3: "根据您持有WNFT可解抵押对应的NFT；",
+        optionTip4: "WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
 
         tip1: "StarBlock DAO支持抵押NFT",
         tip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红；",

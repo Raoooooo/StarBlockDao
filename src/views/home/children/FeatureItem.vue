@@ -10,7 +10,8 @@
           <div class="itemTitleBack">
             <p class="itemTitle">{{ $t(item.name) }}</p>
           </div>
-          <p class="descrip" v-bind:style="{ height: descripHeight }">{{ $t(item.des) }}</p>
+          <!-- <p class="descrip" v-bind:style="{ height: descripHeight }">{{ $t(item.des) }}</p> -->
+          <p class="descrip">{{ $t(item.des) }}</p>
         </div>
       </div>
       <!-- </a> -->
@@ -23,10 +24,12 @@ import qs from "qs";
 import { isLogin } from "@/common/utils";
 export default {
   name: "Featureitem",
-
+  created() {
+    // alert(document.documentElement.clientWidth);
+  },
   data() {
     var descripHeight = "0px";
-    if (document.documentElement.clientWidth > 1440) {
+    if (document.documentElement.clientWidth > 1200) {
       descripHeight = this.$i18n.locale == "en" ? "160px" : "95px";
     } else if (document.documentElement.clientWidth <= 500) {
       descripHeight = this.$i18n.locale == "en" ? "110px" : "80px";
@@ -36,7 +39,7 @@ export default {
     return {
       descripHeight: descripHeight,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
-      rowNum: document.documentElement.clientWidth > 1200 ? 6 : 12,
+      rowNum: document.documentElement.clientWidth > 1200 ? 6 : 24,
       gutterSpace: document.documentElement.clientWidth > 1200 ? 27 : 10,
       isSave: false
     };
@@ -105,7 +108,7 @@ export default {
       } else if (val == "navBar.English") {
       }
       console.log(val);
-      if (document.documentElement.clientWidth > 1440) {
+      if (document.documentElement.clientWidth > 1200) {
         this.descripHeight = val == "navBar.English" ? "190px" : "130px";
       } else if (document.documentElement.clientWidth <= 500) {
         this.descripHeight = val == "navBar.English" ? "120px" : "80px";
@@ -206,8 +209,8 @@ export default {
   /* margin-left: 0.25rem; */
   margin-top: 0.75rem;
   /* position: absolute; */
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   /* width: 100%; */
   /* height: 100%; */
   /* border-radius: 10px 10px 0px 0px; */
@@ -219,7 +222,7 @@ export default {
 }
 
 .itemTitle {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   font-size: 0.75rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -234,14 +237,14 @@ export default {
 }
 
 .descrip {
-  margin-top: .525rem;
-  font-size: .6rem;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
+  margin-top: 0.25rem;
+  font-size: 0.6rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   color: #666;
-  line-height: .95rem;
-  margin-bottom: 0.25rem;
-  height: 2.625rem;
+  line-height: 0.95rem;
+  margin-bottom: 0.5rem;
+  /* height: 2.625rem; */
   overflow: hidden;
   /* overflow: hidden;
   text-overflow: ellipsis;
@@ -323,7 +326,7 @@ export default {
     margin-bottom: 0.35rem;
     /* height: 3.65rem; */
     font-weight: 400;
-    height: 5.25rem;
+    /* height: 5.25rem; */
     overflow: hidden;
   }
 

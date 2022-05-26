@@ -5,18 +5,18 @@
         <img class="logoImg" v-lazy="logoImgUrl()" @click="logoImgClick()" />
         <div class="tabBox" v-show="isShowTabBox">
           <p
-            @click="changeTab(index)"
+            @click="changeTab(index, tabTitle)"
             v-for="(tabTitle, index) in tabItems"
             :class="active === index ? 'tabActiveTitle' : 'tabTitle'"
           >
             {{ $t(tabTitle) }}
           </p>
 
-          <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">登录</button>
+          <!-- <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">登录</button>
           <div class="accountBox" v-show="isLogin">
             <img class="account_img" src="@/assets/img/farms/linkIcon4.png" />
             <p class="account_text">{{ account }}</p>
-          </div>
+          </div> -->
 
           <div class="dropdownBox">
             <dropdown class="dropdownStyle" trigger="click" @on-click="changeLangeDropdownClick">
@@ -62,11 +62,12 @@ export default {
       tabItems: [
         "navBar.homepage",
         "navBar.section1",
-        "navBar.section2",
-        "navBar.section3",
-        "navBar.section4",
-        "navBar.section5",
-        "navBar.test"
+        "navBar.github"
+        // "navBar.section2",
+        // "navBar.section3",
+        // "navBar.section4",
+        // "navBar.section5",
+        // "navBar.test"
       ],
       isShowTabBox: true,
       isShowMobile: document.documentElement.clientWidth > 750 ? false : true
@@ -76,10 +77,10 @@ export default {
   watch: {},
 
   created() {
-    onBlockOut();
-    var isClickLogin = false;
-    onConnect(this.getAccount, isClickLogin);
-    this.accountsChange();
+    // onBlockOut();
+    // var isClickLogin = false;
+    // onConnect(this.getAccount, isClickLogin);
+    // this.accountsChange();
     // this.$router.push({ path: "/" });
   },
 
@@ -153,7 +154,7 @@ export default {
     logoImgUrl() {
       return require("@/assets/img/home/topLogo.png");
     },
-    changeTab(index) {
+    changeTab(index, item) {
       // if (index == 7) {
       //   this.$message.warning("Coming soon, stay tuned!");
 
@@ -168,13 +169,16 @@ export default {
       if (index == 1) {
         this.$router.push({ name: "farms" });
       }
+      if (item == "navBar.github") {
+        window.open("https://github.com/StarBlockDAO", "_blank");
+      }
 
-      if (index == this.tabItems.length - 1) {
+      if (item == "test") {
         this.$router.push({ name: "document" });
       }
     },
     langrageItemClick(index) {
-      this.langrageIndex = index;
+      // this.langrageIndex = index;
       this.isShowLangrageView = false;
 
       if (index == 0) {
@@ -252,6 +256,7 @@ export default {
   border-color: #3c3e4f;
   border-width: 0.025rem;
   background-color: white;
+  box-shadow: 0px 5px 12px 0px rgb(207 214 230 / 30%);
   /* margin-left: 2.65rem; */
   /* margin-right: 2.625rem; */
   /* background-color: blueviolet; */
@@ -276,7 +281,7 @@ export default {
 }
 
 .tabBox {
-  margin-left: 6.5rem;
+  margin-left: 20.5rem;
   margin-right: 2.65rem;
   display: flex;
   flex-direction: row;
@@ -317,7 +322,8 @@ export default {
   margin-right: 0.5rem;
   margin-top: 0.6rem;
   /* width: 5.708rem; */
-  height: 1.3rem;
+  width: 7.2rem;
+  /* height: 1.3rem; */
   margin-bottom: 0.65rem;
   margin-left: 2.5rem;
   cursor: pointer;
@@ -359,7 +365,7 @@ export default {
   left: 0;
   height: 2.25rem;
   width: 100%;
-  background-color: white;
+  background-color: #f7faff;
 }
 
 .loginBtn {
