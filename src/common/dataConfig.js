@@ -14,8 +14,8 @@ const poolDatas = [
             rewardPerNFTForEachBlock: 0,
             rewardForEachBlock: 0,
         },
-        nftQuantity: 0,
-        wnftQuantity: 0,
+        nftQuantity: "--",
+        wnftQuantity: "--",
         collection: {
             name: "BakerLion",
             contractAddress: "",
@@ -32,8 +32,8 @@ const poolDatas = [
             rewardPerNFTForEachBlock: 0,
             rewardForEachBlock: 0,
         },
-        nftQuantity: 0,
-        wnftQuantity: 0,
+        nftQuantity: "--",
+        wnftQuantity: "--",
         collection: {
             name: "BakerLion1",
             contractAddress: "",

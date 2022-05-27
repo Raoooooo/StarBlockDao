@@ -13,9 +13,32 @@
                 {{ rewardAmount(item) + "/" + $t("farms.month") }}
               </p>
             </div>
-            <div class="contantDetailTopBox_rightBox">
+
+            <!-- 区块后结束 -->
+            <div
+              class="contantDetailTopBox_rightBox"
+              v-if="isShowEndBlock(item, currentBlockNumber)"
+            >
               <p class="contantDetailTopBox_rightBox_text">
                 {{ Number(item.poolInfo.endBlock) - currentBlockNumber + $t("farms.endBlock") }}
+              </p>
+            </div>
+            <!-- 区块后开始 -->
+            <div
+              class="contantDetailTopBox_rightBox_startBlock"
+              v-if="isShowStartBlock(item, currentBlockNumber)"
+            >
+              <p class="contantDetailTopBox_rightBox_text_startBlock">
+                {{ Number(item.poolInfo.startBlock) - currentBlockNumber + $t("farms.startBlock") }}
+              </p>
+            </div>
+            <!-- 已结束 -->
+            <div
+              class="contantDetailTopBox_rightBox_sellEnd"
+              v-if="isShowSellEndBlock(item, currentBlockNumber)"
+            >
+              <p class="contantDetailTopBox_rightBox_text_sellEnd">
+                {{ "已结束" }}
               </p>
             </div>
           </div>
@@ -71,7 +94,7 @@
         <!-- 抵押、解抵押 -->
         <div class="pledgeBtnBox">
           <button class="pledgeBtn" @click="pledgeBtnAction(item)">
-            {{ $t("farms.pledge") + "(" + item.nftQuantity + ")" }}
+            {{ pledgeBtnStr(item) }}
           </button>
           <button class="unPledgeBtn" @click="pledgeBtnAction(item)">
             {{ $t("farms.unPledge") + "(" + item.wnftQuantity + ")" }}
@@ -99,7 +122,7 @@ import {
 } from "@/common/utils";
 import poolDatas from "@/common/dataConfig";
 
-import { daoportAction, getBlockNumber ,onBlockNumberChange} from "@/common/starblockdao";
+import { daoportAction, getBlockNumber, onBlockNumberChange } from "@/common/starblockdao";
 
 export default {
   name: "Farmitem",
@@ -119,6 +142,8 @@ export default {
       rowNum = 6;
     }
     return {
+      isNftPrrove:false,
+      isWNftPrrove:false,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       rowNum: rowNum,
       gutterSpace: document.documentElement.clientWidth > 600 ? 27 : 10,
@@ -240,6 +265,36 @@ export default {
     };
   },
   methods: {
+    pledgeBtnStr(item) {
+      if (isLogin != "1") {
+        return "链接钱包";
+      }
+      return this.$t("farms.pledge") + "(" + item.nftQuantity + ")";
+    },
+    isShowEndBlock(item, currentBlockNumber) {
+      if (
+        Number(item.poolInfo.endBlock) - currentBlockNumber > 0 &&
+        Number(item.poolInfo.startBlock) - currentBlockNumber <= 0
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isShowStartBlock(item, currentBlockNumber) {
+      if (Number(item.poolInfo.startBlock) - currentBlockNumber > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isShowSellEndBlock(item, currentBlockNumber) {
+      if (Number(item.poolInfo.endBlock) - currentBlockNumber <= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     rewardAmount(item) {
       if (Number(item.poolInfo.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
         return (
@@ -254,7 +309,7 @@ export default {
       }
     },
     pledgeBtnAction(item) {
-      onBlockNumberChange()
+      // onBlockNumberChange();
       // watchEtherTransfers()
       // console.log(poolDatas);
       // daoportAction();
@@ -383,6 +438,25 @@ export default {
   background-color: #fff8e6;
   border-radius: 4px;
 }
+
+.contantDetailTopBox_rightBox_startBlock {
+  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #dffff6;
+  border-radius: 4px;
+}
+.contantDetailTopBox_rightBox_sellEnd {
+  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e5e5;
+  border-radius: 4px;
+}
 .contantDetailTopBox_rightBox_text {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -390,6 +464,26 @@ export default {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #f7b500;
+  line-height: 0.7rem;
+}
+
+.contantDetailTopBox_rightBox_text_startBlock {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  font-size: 0.5rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #03cd93;
+  line-height: 0.7rem;
+}
+
+.contantDetailTopBox_rightBox_text_sellEnd {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  font-size: 0.5rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8c9399;
   line-height: 0.7rem;
 }
 .contantDetailSection1 {
@@ -654,6 +748,26 @@ export default {
     background-color: #fff8e6;
     border-radius: 4px;
   }
+
+  .contantDetailTopBox_rightBox_startBlock {
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #dffff6;
+    border-radius: 4px;
+  }
+
+  .contantDetailTopBox_rightBox_sellEnd {
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+  }
   .contantDetailTopBox_rightBox_text {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
@@ -661,6 +775,25 @@ export default {
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #f7b500;
+    line-height: 0.425rem;
+  }
+
+  .contantDetailTopBox_rightBox_text_startBlock {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    font-size: 0.3rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #03cd93;
+    line-height: 0.425rem;
+  }
+  .contantDetailTopBox_rightBox_text_sellEnd {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    font-size: 0.3rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #8c9399;
     line-height: 0.425rem;
   }
   .contantDetailSection1 {

@@ -12,11 +12,11 @@
             {{ $t(tabTitle) }}
           </p>
 
-          <!-- <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">登录</button>
+          <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">登录</button>
           <div class="accountBox" v-show="isLogin">
             <img class="account_img" src="@/assets/img/farms/linkIcon4.png" />
             <p class="account_text">{{ account }}</p>
-          </div> -->
+          </div>
 
           <div class="dropdownBox">
             <dropdown class="dropdownStyle" trigger="click" @on-click="changeLangeDropdownClick">
@@ -77,10 +77,11 @@ export default {
   watch: {},
 
   created() {
+    setLocalStorage("isFirstLoad",true);
     // onBlockOut();
-    // var isClickLogin = false;
-    // onConnect(this.getAccount, isClickLogin);
-    // this.accountsChange();
+    var isClickLogin = false;
+    onConnect(this.getAccount, isClickLogin);
+    this.accountsChange();
     // this.$router.push({ path: "/" });
   },
 
@@ -281,7 +282,7 @@ export default {
 }
 
 .tabBox {
-  margin-left: 20.5rem;
+  margin-left: 15.5rem;
   margin-right: 2.65rem;
   display: flex;
   flex-direction: row;

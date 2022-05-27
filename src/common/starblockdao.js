@@ -106,7 +106,7 @@ export function getBlockNumber(updateBlockData) {
 export function onBlockNumberChange(updateBlockData) {
     var subscription = initWeb3().eth.subscribe('newBlockHeaders', function (error, result) {
         if (!error) {
-            console.log("result", result);
+            // console.log("result", result);
             if (updateBlockData) {
                 updateBlockData(result.number, initWeb3());
             }
@@ -116,13 +116,13 @@ export function onBlockNumberChange(updateBlockData) {
         console.error(error);
     })
         .on("connected", function (subscriptionId) {
-            console.log(subscriptionId);
+            // console.log(subscriptionId);
         })
         .on("data", function (blockHeader) {
             // if (updateBlockData) {
             //     updateBlockData(blockHeader);
             // }
-            console.log("blockHeader", blockHeader);
+            // console.log("blockHeader", blockHeader);
         })
         .on("error", console.error);
 
