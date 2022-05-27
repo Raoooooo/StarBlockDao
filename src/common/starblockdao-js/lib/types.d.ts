@@ -6,13 +6,8 @@ export declare enum Network {
 export interface CallbackHandle {
     (arg1: any, arg2: any): void;
 }
+export declare type Web3Callback<T> = (err: Error | null, result: T | null | T[]) => void;
 export declare type PartialReadonlyContractAbi = AbiItem[];
-export interface MasterchefInfo {
-    nftMasterchef: string;
-    pid: number;
-    owner: string | null;
-    maxTokenId: number;
-}
 export interface MasterChefPoolsInfo {
     poolInfo: {};
     mining: number | null;

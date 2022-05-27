@@ -86,9 +86,77 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
+    DaoPort.prototype.isApprovedForAll = function (_a) {
+        var owner = _a.owner, operator = _a.operator, contractAddress = _a.contractAddress, isApproveNFT = _a.isApproveNFT;
+        return __awaiter(this, void 0, void 0, function () {
+            var REC721Address, isApproved, WNFTContract, nftAddress, REC721Contract;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        REC721Address = contractAddress;
+                        isApproved = false;
+                        if (!isApproveNFT) return [3 /*break*/, 2];
+                        WNFTContract = this._protocol.setIWrappedNFTAddress(contractAddress);
+                        return [4 /*yield*/, WNFTContract.methods.nft().call()];
+                    case 1:
+                        nftAddress = _b.sent();
+                        if (nftAddress) {
+                            REC721Address = nftAddress;
+                        }
+                        _b.label = 2;
+                    case 2:
+                        REC721Contract = this._protocol.setERC721Addess(REC721Address);
+                        return [4 /*yield*/, REC721Contract.methods
+                                .isApprovedForAll(owner, operator)
+                                .call()];
+                    case 3:
+                        isApproved = _b.sent();
+                        return [2 /*return*/, isApproved];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.setApprovalForAll = function (_a) {
+        var owner = _a.owner, operator = _a.operator, contractAddress = _a.contractAddress, isApproveNFT = _a.isApproveNFT;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, REC721Address, WNFTContract, nftAddress, txnData, REC721Contract, error_3;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        REC721Address = contractAddress;
+                        if (!isApproveNFT) return [3 /*break*/, 2];
+                        WNFTContract = this._protocol.setIWrappedNFTAddress(contractAddress);
+                        return [4 /*yield*/, WNFTContract.methods.nft().call()];
+                    case 1:
+                        nftAddress = _b.sent();
+                        if (nftAddress) {
+                            REC721Address = nftAddress;
+                        }
+                        else {
+                            throw new Error("Failed to setApprovalForAll transaction: \"".concat("user denied", "...\""));
+                        }
+                        _b.label = 2;
+                    case 2:
+                        _b.trys.push([2, 4, , 5]);
+                        txnData = { from: owner };
+                        REC721Contract = this._protocol.setERC721Addess(REC721Address);
+                        return [4 /*yield*/, REC721Contract.methods
+                                .setApprovalForAll(operator, true)
+                                .send(txnData)];
+                    case 3:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        error_3 = _b.sent();
+                        throw new Error("Failed to setApprovalForAll transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
+                    case 5: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
     DaoPort.prototype.harvestToken = function (pid, tokenIds, handle) {
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, error_3;
+            var txHash, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -99,29 +167,33 @@ var DaoPort = /** @class */ (function () {
                         handle(txHash, "");
                         return [3 /*break*/, 3];
                     case 2:
-                        error_3 = _a.sent();
-                        handle("", error_3);
+                        error_4 = _a.sent();
+                        handle("", error_4);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    DaoPort.prototype.pendingToken = function (pid, tokenIds, handle) {
+    DaoPort.prototype.pending = function (_a, handle) {
+        var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var isPendingToken, error_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _b, mining, dividend, result, error_5;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this._protocol.pendingToken(pid, tokenIds)];
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
+                                .pending(pid, tokenIds)
+                                .call()];
                     case 1:
-                        isPendingToken = _a.sent();
-                        handle(isPendingToken, "");
+                        _b = _c.sent(), mining = _b.mining, dividend = _b.dividend;
+                        result = [mining, dividend];
+                        handle(null, result);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_4 = _a.sent();
-                        handle("", false);
+                        error_5 = _c.sent();
+                        handle(new Error("Failed to pending transaction: \"".concat(error_5 instanceof Error && error_5.message ? error_5.message : "user denied", "...\"")), null);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -148,22 +220,6 @@ var DaoPort = /** @class */ (function () {
                                 nftQuantity: nftQuantity,
                                 wnftQuantity: wnftQuantity
                             }];
-                }
-            });
-        });
-    };
-    DaoPort.prototype.getNFTMasterChefInfo = function (pid) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, chefInfo;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                            .poolInfos(pid)
-                            .call()];
-                    case 1:
-                        _a = (_b.sent()).chefInfo, chefInfo = _a === void 0 ? [] : _a;
-                        console.log("chefInfo---", chefInfo);
-                        return [2 /*return*/];
                 }
             });
         });

@@ -11,4 +11,6 @@ export declare const constants: {
     };
     NFTMASTERCHEF_ABI: import("./types").PartialReadonlyContractAbi;
     NFTUtils_ABI: import("./types").PartialReadonlyContractAbi;
+    REC721_ABI: import("./types").PartialReadonlyContractAbi;
+    IWrappedNFT_ABI: import("./types").PartialReadonlyContractAbi;
 };
