@@ -12,7 +12,7 @@
               <p class="topImgIconBox_contantBox_text">Stake NFTs to Earn</p>
             </div>
           </div>
-          <p class="topTitle">{{$t("navBar.section1")}}</p>
+          <p class="topTitle">{{ $t("navBar.section1") }}</p>
           <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
@@ -21,8 +21,8 @@
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <!-- <p class="itemDataBox_topText">{{ totalNftQuantity }}</p> -->
-              <p class="itemDataBox_topText">{{ "--" }}</p>
+              <p class="itemDataBox_topText">{{ totalNftQuantity }}</p>
+              <!-- <p class="itemDataBox_topText">{{ "--" }}</p> -->
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
             </div>
             <div class="vSepLine"></div>
@@ -35,23 +35,19 @@
       </div>
 
       <!-- Farms -->
-      <!-- <div class="itemsBox">
+      <div class="itemsBox">
         <farmitem :items="items" :currentBlockNumber="currentBlockNumber"></farmitem>
-      </div> -->
+      </div>
 
-      <div class="emptyContantBox">
+      <!-- <div class="emptyContantBox">
         <img class="emptyContantBox_img" src="@/assets/img/farms/empty.png" />
         <div class="countDownBox">
           <countdown :isFarms="true"></countdown>
         </div>
-      </div>
-
-      
+      </div> -->
     </list>
 
-    <bottom></bottom>
-
-    <!-- <div class="bottomDesBox">
+    <div class="bottomDesBox">
       <img src="@/assets/img/farms/farmsDes.png" class="farmsDesImg" />
       <div class="farmsDesTextBox">
         <p class="farmsDesText">
@@ -70,7 +66,9 @@
           <span>{{ "· " + $t("farms.tip6") }}</span>
         </p>
       </div>
-    </div> -->
+    </div>
+
+    <bottom></bottom>
 
     <el-dialog
       title=""
@@ -153,11 +151,12 @@
 import { onConnect, initWeb3Modal, resetApp } from "@/common/useWallet";
 import Farmitem from "../farms/children/FarmsItem.vue";
 import Selectnft from "../farms/children/SelectNFT.vue";
-import { daoportAction } from "@/common/starblockdao";
 import poolDatas from "@/common/dataConfig";
 import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
 import Bottom from "../home/children/Bottom.vue";
+import { daoportAction, getBlockNumber, onBlockNumberChange } from "@/common/starblockdao";
+
 export default {
   name: "Farms",
 
@@ -218,6 +217,8 @@ export default {
     });
   },
   created() {
+    getBlockNumber(this.updateBlockData);
+    onBlockNumberChange(this.updateBlockData);
     setTimeout(() => {
       this.$bus.$emit("updateTabIndex", 1);
     });
@@ -280,6 +281,11 @@ export default {
   },
 
   methods: {
+    updateBlockData(number, web3) {
+      this.currentBlockNumber = number;
+      console.log("currentBlockNumber", this.currentBlockNumber);
+    },
+
     getMasterChefInfo() {
       for (var i = 0; i < this.items.length; i++) {
         var item = this.items[i];
@@ -290,6 +296,10 @@ export default {
     handleMasterChefInfo(masterChefInfo, item, index) {
       console.log("document=== masterchefinfo: pid", item.poolInfo.pid, masterChefInfo, index);
       item.poolInfo.endBlock = masterChefInfo.poolInfo.endBlock;
+      item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
+      item.nftQuantity = masterChefInfo.nftQuantity;
+      item.wnftQuantity = masterChefInfo.wnftQuantity;
+      // item.poolInfo.startBlock = 10746993;
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
       item.poolInfo.rewardPerNFTForEachBlock = masterChefInfo.poolInfo.rewardPerNFTForEachBlock;
       item.poolInfo.rewardForEachBlock = masterChefInfo.poolInfo.rewardForEachBlock;
