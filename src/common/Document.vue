@@ -24,7 +24,6 @@
     <button id="button" @click="ethSignMarket(true)">二级市场签名</button>
     <button id="button" @click="approveHandle">授权操作</button>
     <button id="button" @click="approveERC20Handle">授权ERC20</button>
-    <button id="button" @click="ethSignBundleSell(true)">捆绑销售</button>
     <button id="button" @click="daoportAction">daoport操作</button>
     <button id="button" @click="daoporApprovedtAction">dao授权操作</button>
   </div>
@@ -899,77 +898,6 @@ export default {
       }
     },
 
-    async ethSignBundleSell(isSign) {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      seaport.feeRecipientAddress = "0x594676b9d1E84e986d161849082afCFB3718e439".toLowerCase();
-      //版权费*10000 （如果版权费是10%，则10%*10000 = 1000）
-      seaport.feeRecipientfee = 1000;
-      seaport.makerProtocolFee = 2000;
-      seaport.isMarket = true;
-      const startAmount = 0.01;
-      const accountAddress = CreaterCollectionAddress;
-      const listingTime = ethSignMarketListingTime;
-      const expirationTime = 0;
-      const orderSaleKind = OrderSaleKind;
-      const salt = makeBigNumber("930658657940496516");
-      const orderNoSignature = !isSign;
-
-      const assets = [
-        {
-          tokenId: "0",
-          tokenAddress: "0x85e3e02C5BD0Dbb5f969760f76FC4845a747A8cb".toLowerCase(),
-          callFunctionName: "transferFrom"
-        },
-        {
-          tokenId: "1",
-          tokenAddress: "0x85e3e02C5BD0Dbb5f969760f76FC4845a747A8cb".toLowerCase(),
-          callFunctionName: "transferFrom"
-        }
-      ];
-      const bundleName = "sameConllectionBundle";
-      const bundleDescription = "";
-      const bundleExternalLink = "";
-
-      var parameters = {
-        bundleName,
-        bundleDescription,
-        bundleExternalLink,
-        assets,
-        accountAddress,
-        startAmount,
-        listingTime,
-        expirationTime,
-        orderNoSignature
-      };
-
-      if (!isEther) {
-        parameters = {
-          ...parameters,
-          paymentTokenAddress
-        };
-      }
-
-      if (isSign) {
-        const order = await seaport.createBundleSellOrder(parameters);
-        console.log("signMarket**********", order);
-        setLocalStorage("signMarket", order);
-      } else {
-        const order = await seaport.createBundleSellOrder(parameters);
-        console.log("noSignMarketOrder**********", order);
-        setLocalStorage("noSignMarketOrder", order);
-      }
-    },
-
     async getFromTokenIdAction() {
       const { web3 } = window;
       var initWeb3 = this.initWeb3();
@@ -1002,7 +930,7 @@ export default {
       const daoport = new DaoPort(this.initWeb3(), network_Name);
       const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
       const pid = 0;
-      const owner = "0x0000000000000000000000000000000000000000";
+      const owner = "0x979488515a1bcF8CFEcdDa28a3d0B818C8E888cB";
       const maxTokenId = 100;
       let parameters = {
         nftMasterchef,
@@ -1010,30 +938,50 @@ export default {
         owner,
         maxTokenId
       };
-      // const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
-      // console.log("daoportAction=== masterchefinfo:", masterChefInfo);
+      const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
+      console.log("daoportAction=== masterchefinfo:", masterChefInfo);
+      setLocalStorage("masterChefInfo", masterChefInfo);
 
       ///获取分红，奖励
+      const wnftContract = masterChefInfo.poolInfo.wnftContract;
       parameters = {
-        pid,
-        tokenIds: [60, 62]
+        wnftContract,
+        owner,
+        maxTokenId
       };
-      await daoport.pending(parameters, function(error, result) {
-        console.log("daoportAction=== error/result:", error, result);
-      });
+      const tokenIds = await daoport.ownedWNFTTokens(parameters);
+      console.log("daoportAction=== tokenIds:", tokenIds);
+
+      if (tokenIds && tokenIds.length) {
+        parameters = {
+          pid,
+          tokenIds
+        };
+        await daoport.pending(parameters, function(error, result) {
+          console.log("daoportAction=== error/result:", error, result);
+        });
+      }
     },
 
     async daoporApprovedtAction() {
+      const masterChefInfo = JSON.parse(getLocalStorage("masterChefInfo"));
       const daoport = new DaoPort(this.initWeb3(), network_Name);
-      const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+
       const owner = "0x31f8838f91617091Ec2d8303AA08f88967613bb1";
-      const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
-      const contractAddress = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+      let operator = masterChefInfo.poolInfo[0];
+      const wnftContract = masterChefInfo.poolInfo[0];
       const isApproveNFT = true;
+
+      if (!isApproveNFT) {
+        //解抵押授权
+        // nftMasterchef 合约
+        operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+      }
+
       let parameters = {
         owner,
         operator,
-        contractAddress,
+        wnftContract,
         isApproveNFT
       };
       const isApprove = await daoport.isApprovedForAll(parameters);
