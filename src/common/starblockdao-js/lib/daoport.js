@@ -87,16 +87,16 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.isApprovedForAll = function (_a) {
-        var owner = _a.owner, operator = _a.operator, contractAddress = _a.contractAddress, isApproveNFT = _a.isApproveNFT;
+        var owner = _a.owner, operator = _a.operator, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
         return __awaiter(this, void 0, void 0, function () {
             var REC721Address, isApproved, WNFTContract, nftAddress, REC721Contract;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        REC721Address = contractAddress;
+                        REC721Address = wnftContract;
                         isApproved = false;
                         if (!isApproveNFT) return [3 /*break*/, 2];
-                        WNFTContract = this._protocol.setIWrappedNFTAddress(contractAddress);
+                        WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
                         return [4 /*yield*/, WNFTContract.methods.nft().call()];
                     case 1:
                         nftAddress = _b.sent();
@@ -117,15 +117,15 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.setApprovalForAll = function (_a) {
-        var owner = _a.owner, operator = _a.operator, contractAddress = _a.contractAddress, isApproveNFT = _a.isApproveNFT;
+        var owner = _a.owner, operator = _a.operator, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
         return __awaiter(this, void 0, void 0, function () {
             var txHash, REC721Address, WNFTContract, nftAddress, txnData, REC721Contract, error_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        REC721Address = contractAddress;
+                        REC721Address = wnftContract;
                         if (!isApproveNFT) return [3 /*break*/, 2];
-                        WNFTContract = this._protocol.setIWrappedNFTAddress(contractAddress);
+                        WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
                         return [4 /*yield*/, WNFTContract.methods.nft().call()];
                     case 1:
                         nftAddress = _b.sent();
@@ -171,6 +171,38 @@ var DaoPort = /** @class */ (function () {
                         handle("", error_4);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.ownedWNFTTokens = function (_a) {
+        var wnftContract = _a.wnftContract, owner = _a.owner, maxTokenId = _a.maxTokenId;
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
+                            .ownedWNFTTokens(wnftContract, owner, maxTokenId)
+                            .call()];
+                    case 1:
+                        tokenIds = _b.sent();
+                        return [2 /*return*/, tokenIds];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.ownedTokens = function (_a) {
+        var nftContract = _a.nftContract, owner = _a.owner, maxTokenId = _a.maxTokenId;
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
+                            .ownedTokens(nftContract, owner, maxTokenId)
+                            .call()];
+                    case 1:
+                        tokenIds = _b.sent();
+                        return [2 /*return*/, tokenIds];
                 }
             });
         });

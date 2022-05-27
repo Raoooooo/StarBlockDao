@@ -6,19 +6,29 @@ export declare class DaoPort {
     constructor(provider: Web3, networkName: Network);
     deposit(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
     withdraw(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
-    isApprovedForAll({ owner, operator, contractAddress, isApproveNFT }: {
+    isApprovedForAll({ owner, operator, wnftContract, isApproveNFT }: {
         owner: string;
         operator: string;
-        contractAddress: string;
+        wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<boolean>;
-    setApprovalForAll({ owner, operator, contractAddress, isApproveNFT }: {
+    setApprovalForAll({ owner, operator, wnftContract, isApproveNFT }: {
         owner: string;
         operator: string;
-        contractAddress: string;
+        wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<string>;
     harvestToken(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
+    ownedWNFTTokens({ wnftContract, owner, maxTokenId }: {
+        wnftContract: string;
+        owner: string;
+        maxTokenId: number;
+    }): Promise<number[]>;
+    ownedTokens({ nftContract, owner, maxTokenId }: {
+        nftContract: string;
+        owner: string;
+        maxTokenId: number;
+    }): Promise<number[]>;
     pending<T>({ pid, tokenIds }: {
         pid: number;
         tokenIds: number[];
