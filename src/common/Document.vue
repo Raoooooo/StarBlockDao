@@ -26,28 +26,17 @@
     <button id="button" @click="approveERC20Handle">授权ERC20</button>
     <button id="button" @click="ethSignBundleSell(true)">捆绑销售</button>
     <button id="button" @click="daoportAction">daoport操作</button>
+    <button id="button" @click="daoporApprovedtAction">dao授权操作</button>
   </div>
 </template>
 
 <script>
-
-
-
-
-
-
-
-
-
 import * as Web3 from "web3";
 
 // var web3  = require('web3')
 
-import { OpenSeaPort, Network } from "opensea-js";
 import { DaoPort } from "./starblockdao-js/lib/daoport";
-
-
-
+import { Network, Web3Callback } from "./starblockdao-js/lib/types";
 
 var network_Name = Network.Rinkeby;
 
@@ -70,7 +59,6 @@ export default {
   },
 
   components: {
-
     // 'my-upload': myUpload
   },
 
@@ -87,9 +75,9 @@ export default {
         // console.log(web3.eth.defaultAccount);
       } else {
         // set the provider you want from Web3.providers
-        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8080"));
-        // const PROVIDER_URL = "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180";
-        // web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+        // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8080"));
+        const PROVIDER_URL = "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180";
+        web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
       }
       return web3;
     },
@@ -194,7 +182,7 @@ export default {
         return;
       }
 
-      var uintsArr = args[1].map(function (elem) {
+      var uintsArr = args[1].map(function(elem) {
         let e;
         if (typeof elem === "string" || elem instanceof String) {
           e = new BigNumber(elem);
@@ -270,7 +258,7 @@ export default {
           args[10]
         )
         .send(txnData)
-        .then(function (receipt) {
+        .then(function(receipt) {
           console.log("transactionHash*********", receipt);
           const recipient = { isRecipient: false };
           setLocalStorage("recipient", recipient);
@@ -340,10 +328,10 @@ export default {
         MyContract.methods
           .registerProxy()
           .send(txnData)
-          .on("error", function (error) {
+          .on("error", function(error) {
             console.log("error*********", error);
           })
-          .then(function (receipt) {
+          .then(function(receipt) {
             console.log("transactionHash*********", receipt);
           });
       } else {
@@ -845,10 +833,10 @@ export default {
           .deploy(options)
           .send(txnData)
           .on("transactionHash", tH => console.log("on--transactionHash:==>", tH))
-          .then(function (res) {
+          .then(function(res) {
             console.log("then--", res.options.address.toLowerCase());
           })
-          .catch(function (err) {
+          .catch(function(err) {
             console.log("catch--", err);
           });
       };
@@ -991,12 +979,12 @@ export default {
       MyContract.methods
         .totalSupply()
         .call()
-        .then(function (res) {
+        .then(function(res) {
           console.log("Contract result", res);
           //FromTokenId值在res基础上加1
           var FromTokenId = res + 1;
         })
-        .catch(function (err) {
+        .catch(function(err) {
           console.log(err);
         });
 
@@ -1010,20 +998,56 @@ export default {
     async daoportAction() {
       // var account = web3.eth.defaultAccount;
       // const provider = new Web3.providers.HttpProvider(this.getInfura());
+      // const web3 = new Web3(provider);
       const daoport = new DaoPort(this.initWeb3(), network_Name);
-      // dao.account = account;
       const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
       const pid = 0;
-      const owner = "0x979488515a1bcF8CFEcdDa28a3d0B818C8E888cB";
+      const owner = "0x0000000000000000000000000000000000000000";
       const maxTokenId = 100;
-      var parameters = {
+      let parameters = {
         nftMasterchef,
         pid,
         owner,
         maxTokenId
       };
-      const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
-      console.log("document=== masterchefinfo:", masterChefInfo);
+      // const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
+      // console.log("daoportAction=== masterchefinfo:", masterChefInfo);
+
+      ///获取分红，奖励
+      parameters = {
+        pid,
+        tokenIds: [60, 62]
+      };
+      await daoport.pending(parameters, function(error, result) {
+        console.log("daoportAction=== error/result:", error, result);
+      });
+    },
+
+    async daoporApprovedtAction() {
+      const daoport = new DaoPort(this.initWeb3(), network_Name);
+      const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+      const owner = "0x31f8838f91617091Ec2d8303AA08f88967613bb1";
+      const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+      const contractAddress = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+      const isApproveNFT = true;
+      let parameters = {
+        owner,
+        operator,
+        contractAddress,
+        isApproveNFT
+      };
+      const isApprove = await daoport.isApprovedForAll(parameters);
+      console.log("daoporApprovedtAction==", isApprove);
+
+      if (isApprove) {
+        console.log("已授权wnft合约");
+        return true;
+      }
+
+      try {
+        const txHash = await daoport.setApprovalForAll(parameters);
+        console.log("daoporApprovedtAction --txHash", txHash);
+      } catch (error) {}
     },
 
     toggleShow() {

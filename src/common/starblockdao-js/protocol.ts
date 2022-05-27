@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
-import { Network, PartialReadonlyContractAbi, MasterchefInfo } from "./types";
+import { Network, PartialReadonlyContractAbi } from "./types";
 import { constants } from "./protocolConstants";
 
 export class Protocol {
@@ -26,6 +26,14 @@ export class Protocol {
     const NFTUtilsAbi: PartialReadonlyContractAbi = constants.NFTUtils_ABI;
 
     this.NFTUtilsContract = new this.web3.eth.Contract(NFTUtilsAbi, NFTUtilsAddress);
+  }
+
+  public setERC721Addess(address: string): Contract {
+    return new this.web3.eth.Contract(constants.REC721_ABI, address);
+  }
+
+  public setIWrappedNFTAddress(address: string): Contract {
+    return new this.web3.eth.Contract(constants.IWrappedNFT_ABI, address);
   }
 
   public async deposit(pid: number, tokenIds: number[]): Promise<string> {
@@ -83,21 +91,10 @@ export class Protocol {
     return txHash;
   }
 
-  public async pendingToken(pid: number, tokenIds: number[]): Promise<boolean> {
-    const isPendingToken = await (this.NFTMasterChefContract as Contract).methods
-      .pendingToken(pid, tokenIds)
+  public async pending(pid: number, tokenIds: number[]): Promise<{}> {
+    const { mining, dividend } = await (this.NFTMasterChefContract as Contract).methods
+      .pending(pid, tokenIds)
       .call();
-    if (!isPendingToken) {
-      throw new Error(`Failed to pendingToken!`);
-    }
-    return isPendingToken;
-  }
-
-  public async ownTokens() {
-    const poolInfos = await (this.NFTMasterChefContract as Contract).methods.ownTokens().call();
-
-    if (Array.isArray(poolInfos) && poolInfos.length) {
-      poolInfos.forEach(element => console.log(element));
-    }
+    return { mining, dividend };
   }
 }

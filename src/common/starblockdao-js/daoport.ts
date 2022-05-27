@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { Protocol } from "./protocol";
-import { CallbackHandle, Network, MasterchefInfo, MasterChefPoolsInfo } from "./types";
+import { CallbackHandle, Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 
 export class DaoPort {
   public account = "";
@@ -29,6 +29,72 @@ export class DaoPort {
     }
   }
 
+  public async isApprovedForAll({
+    owner,
+    operator,
+    contractAddress,
+    isApproveNFT
+  }: {
+    owner: string;
+    operator: string;
+    contractAddress: string;
+    isApproveNFT: Boolean;
+  }): Promise<boolean> {
+    let REC721Address = contractAddress;
+    let isApproved = false;
+    if (isApproveNFT) {
+      const WNFTContract = this._protocol.setIWrappedNFTAddress(contractAddress);
+      const nftAddress = await (WNFTContract as Contract).methods.nft().call();
+      if (nftAddress) {
+        REC721Address = nftAddress;
+      }
+    }
+    const REC721Contract = this._protocol.setERC721Addess(REC721Address);
+    isApproved = await (REC721Contract as Contract).methods
+      .isApprovedForAll(owner, operator)
+      .call();
+    return isApproved;
+  }
+
+  public async setApprovalForAll({
+    owner,
+    operator,
+    contractAddress,
+    isApproveNFT
+  }: {
+    owner: string;
+    operator: string;
+    contractAddress: string;
+    isApproveNFT: Boolean;
+  }): Promise<string> {
+    let txHash;
+    let REC721Address = contractAddress;
+    if (isApproveNFT) {
+      const WNFTContract = this._protocol.setIWrappedNFTAddress(contractAddress);
+      const nftAddress = await (WNFTContract as Contract).methods.nft().call();
+      if (nftAddress) {
+        REC721Address = nftAddress;
+      } else {
+        throw new Error(`Failed to setApprovalForAll transaction: "${"user denied"}..."`);
+      }
+    }
+
+    try {
+      const txnData = { from: owner };
+      const REC721Contract = this._protocol.setERC721Addess(REC721Address);
+      txHash = await (REC721Contract as Contract).methods
+        .setApprovalForAll(operator, true)
+        .send(txnData);
+    } catch (error) {
+      throw new Error(
+        `Failed to setApprovalForAll transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
   public async harvestToken(
     pid: number,
     tokenIds: number[],
@@ -42,16 +108,37 @@ export class DaoPort {
     }
   }
 
-  public async pendingToken(
-    pid: number,
-    tokenIds: number[],
-    handle: CallbackHandle
+  public async pending<T>(
+    {
+      pid,
+      tokenIds
+    }: {
+      pid: number;
+      tokenIds: number[];
+    },
+    handle: Web3Callback<T>
   ): Promise<void> {
+    // try {
+    //   const result = await this._protocol.pending(pid, tokenIds);
+    //   handle(result, "");
+    // } catch (error) {
+    //   handle("", false);
+    // }
     try {
-      const isPendingToken = await this._protocol.pendingToken(pid, tokenIds);
-      handle(isPendingToken, "");
+      const { mining, dividend } = await (this._protocol.NFTMasterChefContract as Contract).methods
+        .pending(pid, tokenIds)
+        .call();
+      const result: T[] = [mining, dividend];
+      handle(null, result);
     } catch (error) {
-      handle("", false);
+      handle(
+        new Error(
+          `Failed to pending transaction: "${
+            error instanceof Error && error.message ? error.message : "user denied"
+          }..."`
+        ),
+        null
+      );
     }
   }
 
@@ -85,12 +172,5 @@ export class DaoPort {
       nftQuantity,
       wnftQuantity
     };
-  }
-
-  public async getNFTMasterChefInfo(pid: number) {
-    const { chefInfo = [] } = await (this._protocol.NFTMasterChefContract as Contract).methods
-      .poolInfos(pid)
-      .call();
-    console.log("chefInfo---", chefInfo);
   }
 }

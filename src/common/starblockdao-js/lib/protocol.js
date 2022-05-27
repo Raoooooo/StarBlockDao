@@ -50,6 +50,12 @@ var Protocol = /** @class */ (function () {
         var NFTUtilsAbi = protocolConstants_1.constants.NFTUtils_ABI;
         this.NFTUtilsContract = new this.web3.eth.Contract(NFTUtilsAbi, NFTUtilsAddress);
     }
+    Protocol.prototype.setERC721Addess = function (address) {
+        return new this.web3.eth.Contract(protocolConstants_1.constants.REC721_ABI, address);
+    };
+    Protocol.prototype.setIWrappedNFTAddress = function (address) {
+        return new this.web3.eth.Contract(protocolConstants_1.constants.IWrappedNFT_ABI, address);
+    };
     Protocol.prototype.deposit = function (pid, tokenIds) {
         return __awaiter(this, void 0, void 0, function () {
             var txHash, txnData, error_1;
@@ -122,36 +128,17 @@ var Protocol = /** @class */ (function () {
             });
         });
     };
-    Protocol.prototype.pendingToken = function (pid, tokenIds) {
+    Protocol.prototype.pending = function (pid, tokenIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var isPendingToken;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, mining, dividend;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, this.NFTMasterChefContract.methods
-                            .pendingToken(pid, tokenIds)
+                            .pending(pid, tokenIds)
                             .call()];
                     case 1:
-                        isPendingToken = _a.sent();
-                        if (!isPendingToken) {
-                            throw new Error("Failed to pendingToken!");
-                        }
-                        return [2 /*return*/, isPendingToken];
-                }
-            });
-        });
-    };
-    Protocol.prototype.ownTokens = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var poolInfos;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.NFTMasterChefContract.methods.ownTokens().call()];
-                    case 1:
-                        poolInfos = _a.sent();
-                        if (Array.isArray(poolInfos) && poolInfos.length) {
-                            poolInfos.forEach(function (element) { return console.log(element); });
-                        }
-                        return [2 /*return*/];
+                        _a = _b.sent(), mining = _a.mining, dividend = _a.dividend;
+                        return [2 /*return*/, { mining: mining, dividend: dividend }];
                 }
             });
         });
