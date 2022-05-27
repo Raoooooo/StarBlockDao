@@ -79,6 +79,75 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
         handleMasterChefInfo(masterChefInfo, item, index);
     }
 }
+export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
+    const daoport = new DaoPort(initWeb3(), network_Name);
+    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const contractAddress = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const isApproveNFT = true;
+    let parameters = {
+        owner,
+        operator,
+        contractAddress,
+        isApproveNFT
+    };
+    const isApprove = await daoport.isApprovedForAll(parameters);
+    console.log("daoporApprovedtAction==", isApprove);
+
+    // if (isApprove) {
+    //     console.log("已授权wnft合约");
+    //     return true;
+    // }
+
+    if (isOnlyGetApprove) {
+        if (getIsApproveNFT) {
+            getIsApproveNFT(isApprove, item, index);
+        }
+        return;
+    }
+
+    try {
+        const txHash = await daoport.setApprovalForAll(parameters);
+        console.log("daoporApprovedtAction --txHash", txHash);
+        if (getIsApproveNFT) {
+            getIsApproveNFT(true, item, index);
+        }
+    } catch (error) { }
+}
+
+
+export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
+    const daoport = new DaoPort(initWeb3(), network_Name);
+    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const contractAddress = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const isApproveNFT = false;
+    let parameters = {
+        owner,
+        operator,
+        contractAddress,
+        isApproveNFT
+    };
+    const isApprove = await daoport.isApprovedForAll(parameters);
+    console.log("daoporApprovedtAction==", isApprove);
+
+    if (isOnlyGetApprove) {
+        if (getIsApproveNFT, item, index) {
+            getIsApproveNFT(isApprove);
+        }
+        return;
+    }
+    // if (isApprove) {
+    //     console.log("已授权wnft合约");
+    //     return true;
+    // }
+
+    try {
+        const txHash = await daoport.setApprovalForAll(parameters);
+        console.log("daoporApprovedtAction --txHash", txHash);
+    } catch (error) { }
+}
+
 
 
 export function getInfura() {
