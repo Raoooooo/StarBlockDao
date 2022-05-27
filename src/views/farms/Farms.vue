@@ -12,7 +12,7 @@
               <p class="topImgIconBox_contantBox_text">Stake NFTs to Earn</p>
             </div>
           </div>
-          <p class="topTitle">NFT Farms</p>
+          <p class="topTitle">{{$t("navBar.section1")}}</p>
           <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
@@ -21,12 +21,13 @@
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">{{ totalNftQuantity }}</p>
+              <!-- <p class="itemDataBox_topText">{{ totalNftQuantity }}</p> -->
+              <p class="itemDataBox_topText">{{ "--" }}</p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">12653 STB</p>
+              <p class="itemDataBox_topText">--</p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
             </div>
           </div>
@@ -178,7 +179,7 @@ export default {
       topImgHeight: topImgHeight,
       topBackImgUrl:
         document.documentElement.clientWidth > 750
-          ? require("@/assets/img/farms/topBack.png")
+          ? require("@/assets/img/farms/topBack.jpg")
           : require("@/assets/img/farms/mobile/topBack.png"),
       isSwitch1: true,
       selectItems: [

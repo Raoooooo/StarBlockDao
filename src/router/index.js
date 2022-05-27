@@ -29,7 +29,7 @@ const routes = [
     }
   },
   {
-    path: "/farms", name: "farms", component: Farms, meta: {
+    path: "/nftfarming", name: "farms", component: Farms, meta: {
       keepAlive: false
     },
   },

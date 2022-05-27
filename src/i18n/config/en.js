@@ -29,8 +29,8 @@ export default {
 
         countDownTitle: "NFT Staking Farming in",
         block: "Blocks",
-        esTime: "Estimated Time:",
-        esTimeDes: "UTC +8 June 1st 21:00"
+        esTime: "Launch Time ≈ ",
+        esTimeDes: "1st June 20:00 (UTC+8)"
 
     },
 

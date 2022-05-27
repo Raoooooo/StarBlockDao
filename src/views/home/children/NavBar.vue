@@ -161,16 +161,16 @@ export default {
       //   // window.open("https://www.baidu.com/", "_blank");
       //   return;
       // }
-
+      if (item == "navBar.github") {
+        window.open("https://github.com/StarBlockDAO", "_blank");
+        return;
+      }
       this.active = index;
       if (index == 0) {
         this.$router.push({ name: "home" });
       }
       if (index == 1) {
         this.$router.push({ name: "farms" });
-      }
-      if (item == "navBar.github") {
-        window.open("https://github.com/StarBlockDAO", "_blank");
       }
 
       if (item == "test") {

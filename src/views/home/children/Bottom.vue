@@ -20,7 +20,7 @@
       <div class="sepLine"></div>
 
       <div class="bottomBox">
-        <p class="botttomTitle">© Copyright 2022 Narwal Labs. All Rights Reserved</p>
+        <p class="botttomTitle">© 2022 StarBlock DAO</p>
         <div class="tabBox">
           <p
             @click="changeTab(index, tabTitle)"
@@ -232,6 +232,7 @@ export default {
 }
 
 .tabTitle {
+  cursor: pointer;
   margin-right: 0rem;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -241,6 +242,7 @@ export default {
 }
 
 .tabTitle1 {
+  cursor: pointer;
   margin-right: 1.25rem;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -251,7 +253,7 @@ export default {
 
 .vSepLine {
   width: 1px;
-  height: .5rem;
+  height: 0.5rem;
   background-color: white;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
@@ -347,6 +349,7 @@ export default {
   }
 
   .tabTitle {
+    cursor: pointer;
     margin-right: 0rem;
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -362,6 +365,7 @@ export default {
   }
 
   .tabTitle1 {
+    cursor: pointer;
     margin-right: 1.25rem;
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
