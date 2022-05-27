@@ -155,7 +155,13 @@ import poolDatas from "@/common/dataConfig";
 import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
 import Bottom from "../home/children/Bottom.vue";
-import { daoportAction, getBlockNumber, onBlockNumberChange } from "@/common/starblockdao";
+import {
+  daoportAction,
+  getBlockNumber,
+  onBlockNumberChange,
+  approveNFTAction,
+  approveWNFTAction
+} from "@/common/starblockdao";
 
 export default {
   name: "Farms",
@@ -290,6 +296,8 @@ export default {
       for (var i = 0; i < this.items.length; i++) {
         var item = this.items[i];
         daoportAction(item, this.handleMasterChefInfo, i);
+        approveNFTAction(item, this.handleNftApprove, i, true);
+        approveWNFTAction(item, this.handleWNftApprove, i, true);
       }
     },
 
@@ -311,6 +319,13 @@ export default {
         }
       }
     },
+
+    handleNftApprove(isApprove, item, index) {
+      item.isNFTApprove = isApprove;
+    },
+    handleWNftApprove(isApprove, item, index) {
+      item.isWNFTApprove = isApprove;
+    },
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
     },
@@ -318,7 +333,6 @@ export default {
       this.actionAlertShow = false;
     },
     resetApp() {
-      // alert(resetApp);
       resetApp();
     },
     async accountsChange() {

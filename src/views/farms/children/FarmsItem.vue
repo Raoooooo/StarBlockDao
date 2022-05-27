@@ -122,7 +122,12 @@ import {
 } from "@/common/utils";
 import poolDatas from "@/common/dataConfig";
 
-import { daoportAction, getBlockNumber, onBlockNumberChange } from "@/common/starblockdao";
+import {
+  daoportAction,
+  getBlockNumber,
+  onBlockNumberChange,
+  approveNFTAction
+} from "@/common/starblockdao";
 
 export default {
   name: "Farmitem",
@@ -142,8 +147,8 @@ export default {
       rowNum = 6;
     }
     return {
-      isNftPrrove:false,
-      isWNftPrrove:false,
+      isNftPrrove: false,
+      isWNftPrrove: false,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       rowNum: rowNum,
       gutterSpace: document.documentElement.clientWidth > 600 ? 27 : 10,
@@ -266,8 +271,13 @@ export default {
   },
   methods: {
     pledgeBtnStr(item) {
-      if (isLogin != "1") {
-        return "链接钱包";
+      // if (isLogin != "1") {
+      //   return "链接钱包";
+      // }
+      if (!item.isNFTApprove) {
+        return "抵押授权";
+      } else {
+        
       }
       return this.$t("farms.pledge") + "(" + item.nftQuantity + ")";
     },
@@ -309,11 +319,17 @@ export default {
       }
     },
     pledgeBtnAction(item) {
+      if (!item.isNftPrrove) {
+        approveNFTAction(item, this.handleNftApprove, 0, false);
+      }
       // onBlockNumberChange();
       // watchEtherTransfers()
       // console.log(poolDatas);
       // daoportAction();
       // this.$bus.$emit("alertAction", "1");
+    },
+    handleNftApprove(isApprove, item, index) {
+      item.isApprove = isApprove;
     },
     imgLoad() {
       // 发射事件总线
