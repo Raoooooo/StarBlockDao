@@ -1,7 +1,7 @@
 export default {
     navBar: {
         homepage: "Home",
-        section1: "NFT Farms",
+        section1: "NFT Farming",
         section2: "流动性挖矿",
         section3: "W-NFT交易挖矿",
         section4: "STB分红",
@@ -22,19 +22,19 @@ export default {
         featureItemDes1: "支持NFT抵押挖矿STB，释放你手中NFT的流动性，将闲置的、缺少流动性的NFT抵押获得治理代币STB。",
         featureItemTitle2: "抵押分红",
         featureItemDes2: "支持NFT抵押分红，支持各发行方将收入分享给NFT社区，践行Web3理念，并获得更多的社区支持。",
-        featureItemTitle3: "STB支付",
+        featureItemTitle3: "STB购买NFT",
         featureItemDes3: "争取越来越多的NFT支持STB支付，包括一级和二级市场，StarBlock发行的NFT将有90%以上支持STB支付。",
         featureItemTitle4: "交易挖矿",
         featureItemDes4: "支持NFT交易挖矿，鼓励用户将NFT流动起来，奖励STB，以弥补手续费损失，建立更广泛的NFT交易网络。",
 
         countDownTitle: "距离NFT抵押挖矿开启",
         block: "区块",
-        esTime: "预估时间：",
-        esTimeDes: "UTC +8 6月1日 21:00",
+        esTime: "开启时间 ≈ ",
+        esTimeDes: "6月1日 20:00 (UTC+8)",
     },
 
     farms: {
-        topDes: "押NFT将获得Wrapped NFT，它是赎回抵押NFT的唯一凭证，切勿丢失！",
+        topDes: "押NFT将获得WNFT，它是赎回抵押NFT的唯一凭证，切勿丢失！",
         topItem1: "TVL",
         topItem2: "NFT抵押总数量",
         topItem3: "总奖励",

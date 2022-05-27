@@ -10,7 +10,7 @@
             <p class="itemCountBox_text">{{ item }}</p>
           </div>
         </div>
-        <a href="https://etherscan.io/block/countdown/14885190" target="_blank">
+        <a href="https://etherscan.io/block/countdown/14884859" target="_blank">
           <div class="countDownJumpBox">
             <p class="countDownJumpBox_text">{{ $t("home.block") }}</p>
             <img class="countDownJumpBox_icon" src="@/assets/img/home/jumpAccess.png" />
@@ -52,9 +52,9 @@ export default {
     }
 
     return {
-      countDownItemArr: [],
+      countDownItemArr: ["--", "--", "--", "--", "--"],
       currentBlockNumber: 0,
-      startBlockNumber: 14885190,
+      startBlockNumber: 14884859,
       descripHeight: descripHeight,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       rowNum: document.documentElement.clientWidth > 1200 ? 6 : 12,
@@ -85,9 +85,18 @@ export default {
       if (this.currentBlockNumber < 14847117) {
         this.currentBlockNumber = this.currentBlockNumber + 4104535;
       }
-      var countDownStr = String(14885190 - this.currentBlockNumber);
-
-      this.countDownItemArr = countDownStr.split("");
+      var countDownStr = String(14884859 - this.currentBlockNumber);
+      // countDownStr = "3246";
+      var strArr = countDownStr.split("");
+      if (strArr.length < 5) {
+        var emptyArr = [];
+        for (var i = 0; i < 5 - strArr.length; i++) {
+          emptyArr.push("0");
+        }
+        this.countDownItemArr = [...emptyArr, ...strArr];
+      } else {
+        this.countDownItemArr = strArr;
+      }
       // if (getProdcutMode() == 0) {
       //   var countDownStrSub = countDownStr.substring(countDownStr.length - 5);
       //   this.countDownItemArr = countDownStrSub.split("");
@@ -231,7 +240,7 @@ export default {
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .countDownTitle {
     margin-top: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #f7b500;
@@ -247,7 +256,7 @@ export default {
     width: 100%;
     text-align: center;
     margin-top: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #f7b500;
@@ -336,14 +345,14 @@ export default {
     /* letter-spacing: 1px; */
   }
   .countDownJumpBox_text {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #f7b500;
     line-height: 0.925rem;
   }
   .countDownJumpBox_icon {
-    margin-left: 0.2rem;
+    margin-left: 0.1rem;
     width: 0.55rem;
     height: 0.55rem;
   }

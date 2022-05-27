@@ -30,7 +30,7 @@
       </div>
 
       <div class="sectionBox2">
-        <p class="sectionBox1_title">StarBlock Tokenomics</p>
+        <p class="sectionBox1_title">StarBlock DAO Tokenomics</p>
         <div class="contantImgBox">
           <img class="tokenomics_leftImg" src="@/assets/img/home/economics_left.png" />
           <img class="tokenomics_rightImg" src="@/assets/img/home/economics_right.png" />
@@ -77,7 +77,7 @@ export default {
           : require("@/assets/img/home/mobile/topLogo_text.png"),
       topImgUrl:
         document.documentElement.clientWidth > 750
-          ? require("@/assets/img/home/topBack.png")
+          ? require("@/assets/img/home/topBack.jpg")
           : require("@/assets/img/home/mobile/topBack.jpg"),
       fouctionDataList: [
         {
@@ -495,7 +495,7 @@ export default {
   .contantBack {
     /* background-color: #ea4ae0; */
     align-items: center;
-    margin-top: 2.2rem;
+    margin-top: 0rem;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -544,6 +544,7 @@ export default {
   }
 
   .contantDetailBox_des {
+    margin-top: -0.75rem;
     font-size: 0.5rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
@@ -574,7 +575,7 @@ export default {
 
   .sectionBox1_des {
     margin-top: 0.5rem;
-    width: 17.85rem;
+    width: 85%;
     text-align: center;
     font-size: 0.45rem;
     font-family: PingFangSC-Regular, PingFang SC;
