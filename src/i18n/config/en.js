@@ -69,4 +69,13 @@ export default {
         tip6: "WNFT is the only certificate for unstaking NFT, don't lose it."
     },
 
+    common: {
+        defaultMessSub1: "确定抵押",
+        defaultMessSub2: "个",
+        defaultMessSub3: "确定解抵押",
+        confirm: "确定",
+        cancle: "取消",
+
+    },
+
 }

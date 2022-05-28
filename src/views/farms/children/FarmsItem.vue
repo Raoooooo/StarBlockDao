@@ -291,16 +291,16 @@ export default {
       }
     },
     awardAmountStr(item) {
-      if (item.award != "--") {
-        return (item.award * Math.pow(10, -18)).toFixed(2) + " STB";
+      if (item.mining != "--") {
+        return (item.mining * Math.pow(10, -18)).toFixed(2) + " STB";
       }
-      return item.award;
+      return item.mining;
     },
     bonusAmountStr(item) {
-      if (item.bonus != "--") {
-        return (item.bonus * Math.pow(10, -18)).toFixed(2) + " WNFT";
+      if (item.dividend != "--") {
+        return (item.dividend * Math.pow(10, -18)).toFixed(2) + " WNFT";
       }
-      return item.bonus;
+      return item.dividend;
     },
 
     bonusAmountAtr(item) {},

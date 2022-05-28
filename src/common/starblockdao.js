@@ -61,15 +61,13 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
     const daoport = new DaoPort(initWeb3(), network_Name);
     // dao.account = account;
     const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
-    // const pid = 0;
-    const pid = item.poolInfo.pid;
-    const owner = "0x979488515a1bcF8CFEcdDa28a3d0B818C8E888cB";
+    const pid = 0;
+    // const pid = item.poolInfo.pid;
+    const owner = "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa";
     const maxTokenId = 100;
     var parameters = {
-        nftMasterchef,
         pid,
         owner,
-        maxTokenId
     };
     const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
     // alert(masterChefInfo);
@@ -173,7 +171,7 @@ export async function getBonusRewardAction(item, handleGetBonusReward, index) {
         maxTokenId
     };
     const daoport = new DaoPort(initWeb3(), network_Name);
-    const tokenIds = await daoport.ownedWNFTTokens(parameters);
+    const tokenIds = await daoport.ownedTokens(parameters);
     console.log("daoportAction=== tokenIds:", tokenIds);
     
     if (tokenIds && tokenIds.length) {
