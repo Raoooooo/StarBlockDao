@@ -175,22 +175,6 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.ownedWNFTTokens = function (_a) {
-        var wnftContract = _a.wnftContract, owner = _a.owner, maxTokenId = _a.maxTokenId;
-        return __awaiter(this, void 0, void 0, function () {
-            var tokenIds;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                            .ownedWNFTTokens(wnftContract, owner, maxTokenId)
-                            .call()];
-                    case 1:
-                        tokenIds = _b.sent();
-                        return [2 /*return*/, tokenIds];
-                }
-            });
-        });
-    };
     DaoPort.prototype.ownedTokens = function (_a) {
         var nftContract = _a.nftContract, owner = _a.owner, maxTokenId = _a.maxTokenId;
         return __awaiter(this, void 0, void 0, function () {
@@ -233,15 +217,17 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
-        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, maxTokenId = _a.maxTokenId;
+        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner;
         return __awaiter(this, void 0, void 0, function () {
             var _b, poolInfo, mining, dividend, nftQuantity, wnftQuantity;
             return __generator(this, function (_c) {
                 switch (_c.label) {
-                    case 0: return [4 /*yield*/, this._protocol
-                            .NFTUtilsContract.methods
-                            .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
-                            .call()];
+                    case 0:
+                        nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+                        return [4 /*yield*/, this._protocol
+                                .NFTUtilsContract.methods
+                                .getNFTMasterChefInfos(nftMasterchef, pid, owner)
+                                .call()];
                     case 1:
                         _b = _c.sent(), poolInfo = _b.poolInfo, mining = _b.mining, dividend = _b.dividend, nftQuantity = _b.nftQuantity, wnftQuantity = _b.wnftQuantity;
                         console.log("chefInfo---", poolInfo["rewardPerNFTForEachBlock"], mining, dividend, nftQuantity, wnftQuantity);

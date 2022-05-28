@@ -19,11 +19,6 @@ export declare class DaoPort {
         isApproveNFT: Boolean;
     }): Promise<string>;
     harvestToken(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
-    ownedWNFTTokens({ wnftContract, owner, maxTokenId }: {
-        wnftContract: string;
-        owner: string;
-        maxTokenId: number;
-    }): Promise<number[]>;
     ownedTokens({ nftContract, owner, maxTokenId }: {
         nftContract: string;
         owner: string;
@@ -33,8 +28,8 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }, handle: Web3Callback<T>): Promise<void>;
-    getNFTMasterChefInfos({ nftMasterchef, pid, owner, maxTokenId }: {
-        nftMasterchef: string;
+    getNFTMasterChefInfos({ nftMasterchef, pid, owner }: {
+        nftMasterchef?: string;
         pid: number;
         owner: string;
         maxTokenId: number;

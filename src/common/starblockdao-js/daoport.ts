@@ -108,21 +108,6 @@ export class DaoPort {
     }
   }
 
-  public async ownedWNFTTokens({
-    wnftContract,
-    owner,
-    maxTokenId
-  }: {
-    wnftContract: string;
-    owner: string;
-    maxTokenId: number;
-  }): Promise<number[]> {
-    const tokenIds = await (this._protocol.NFTUtilsContract as Contract).methods
-      .ownedWNFTTokens(wnftContract, owner, maxTokenId)
-      .call();
-    return tokenIds;
-  }
-
   public async ownedTokens({
     nftContract,
     owner,
@@ -169,17 +154,17 @@ export class DaoPort {
   public async getNFTMasterChefInfos({
     nftMasterchef,
     pid,
-    owner,
-    maxTokenId
+    owner
   }: {
-    nftMasterchef: string;
+    nftMasterchef?: string;
     pid: number;
     owner: string;
     maxTokenId: number;
   }): Promise<MasterChefPoolsInfo> {
+    nftMasterchef = this._protocol.NFTMasterChefContractAddress;
     const { poolInfo, mining, dividend, nftQuantity, wnftQuantity } = await (this._protocol
       .NFTUtilsContract as Contract).methods
-      .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
+      .getNFTMasterChefInfos(nftMasterchef, pid, owner)
       .call();
     console.log(
       "chefInfo---",

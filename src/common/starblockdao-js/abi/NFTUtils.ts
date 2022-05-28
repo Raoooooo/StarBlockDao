@@ -16,11 +16,6 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         internalType: "address",
         name: "_owner",
         type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "_maxTokenId",
-        type: "uint256"
       }
     ],
     name: "getNFTMasterChefInfos",
@@ -29,18 +24,8 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         components: [
           {
             internalType: "contract IWrappedNFT",
-            name: "wnftContract",
+            name: "wnft",
             type: "address"
-          },
-          {
-            internalType: "uint256",
-            name: "rewardForEachBlock",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "rewardPerNFTForEachBlock",
-            type: "uint256"
           },
           {
             internalType: "uint256",
@@ -49,7 +34,12 @@ export const NFTUtils: PartialReadonlyContractAbi = [
           },
           {
             internalType: "uint256",
-            name: "endBlock",
+            name: "currentRewardIndex",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "currentRewardEndBlock",
             type: "uint256"
           },
           {
@@ -68,21 +58,6 @@ export const NFTUtils: PartialReadonlyContractAbi = [
             type: "uint256"
           },
           {
-            internalType: "uint256",
-            name: "depositFee",
-            type: "uint256"
-          },
-          {
-            internalType: "uint256",
-            name: "rewardDevRatio",
-            type: "uint256"
-          },
-          {
-            internalType: "bool",
-            name: "rewardVeToken",
-            type: "bool"
-          },
-          {
             internalType: "contract IERC20",
             name: "dividendToken",
             type: "address"
@@ -90,6 +65,11 @@ export const NFTUtils: PartialReadonlyContractAbi = [
           {
             internalType: "uint256",
             name: "accDividendPerShare",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "depositFee",
             type: "uint256"
           }
         ],
@@ -135,35 +115,6 @@ export const NFTUtils: PartialReadonlyContractAbi = [
       }
     ],
     name: "ownedTokens",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "totalTokens",
-        type: "uint256[]"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IWrappedNFT",
-        name: "_wnftContract",
-        type: "address"
-      },
-      {
-        internalType: "address",
-        name: "_owner",
-        type: "address"
-      },
-      {
-        internalType: "uint256",
-        name: "_maxTokenId",
-        type: "uint256"
-      }
-    ],
-    name: "ownedWNFTTokens",
     outputs: [
       {
         internalType: "uint256[]",
