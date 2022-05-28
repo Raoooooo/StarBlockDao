@@ -158,6 +158,7 @@ export default {
     },
     selectAction(item) {
       item.select = !item.select;
+      this.$bus.$emit("selectNftAction", "1");
       // this.selectIconUrl = item.select
       //   ? require("@/assets/img/farms/nft_select_y.svg")
       //   : require("@/assets/img/farms/nft_select_n.png");

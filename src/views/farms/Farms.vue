@@ -120,7 +120,7 @@
             已抵押
           </button>
         </div>
-        <button class="unPledgeAction">{{ alertActionStr }}</button>
+        <button class="unPledgeAction">{{ alertActionStr + " " + selectCount + "个" }}</button>
       </div>
 
       <div class="itemsSuperBox">
@@ -143,6 +143,39 @@
 
       <p class="alertTip1">· 抵押或解压后将自动领取当前奖励</p>
       <p class="alertTip2">· 根据您出游WrappedNFT可解抵押对应的NFT</p>
+    </el-dialog>
+
+    <el-dialog
+      title=""
+      :visible.sync="warningDefaultVisible"
+      :width="elDialogWidth"
+      :show-close="false"
+      center
+      top="200px"
+      :close-on-click-modal="false"
+      append-to-body
+      :lock-scroll="false"
+      :close-on-press-escape="false"
+    >
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
+        <p class="dialopTitle">
+          {{ defaultMessageStr }}
+        </p>
+        <span class="dialogDes">
+          {{ defaultMessageStr }}
+          <span class="dialogDesColor">{{ $t("common.defaultSaveMesDesSub2") }}</span>
+          <span>{{ $t("common.defaultSaveMesDesSub3") }}</span>
+        </span>
+        <div class="bottomBtnBox1">
+          <button class="goOnCreatBtn" @click="defaultSaveBtnAction">
+            {{ $t("common.confirm") }}
+          </button>
+          <button class="lookDetailBtn" @click="cancleSaveBtnAction">
+            {{ $t("common.cancle") }}
+          </button>
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -174,13 +207,42 @@ export default {
     Selectnft,
     Bottom
   },
+  computed: {
+    defaultMessageStr() {
+      if (this.isSwitch1) {
+        return (
+          this.$t("common.defaultMessSub1") +
+          this.selectCount +
+          this.$t("common.defaultMessSub2") +
+          "NFT"
+        );
+      } else {
+        return (
+          this.$t("common.defaultMessSub3") +
+          this.selectCount +
+          this.$t("common.defaultMessSub2") +
+          "NFT"
+        );
+      }
+    },
 
+    alertActionStr() {
+      if (this.isSwitch1) {
+        return "抵押";
+      } else {
+        return "解抵押";
+      }
+    }
+  },
   data() {
     var topImgHeight = 0;
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
-      alertActionStr: "",
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
+      warningDefaultVisible: false,
+      selectArr: [],
+      selectCount: 0,
       totalNftQuantity: 0,
       currentBlockNumber: 100000000,
       topImgHeight: topImgHeight,
@@ -191,18 +253,18 @@ export default {
       isSwitch1: true,
       items: [],
       NFTItems: [
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 }
+        { select: false, collection: {}, tokenId: 1 },
+        { select: false, collection: {}, tokenId: 2 },
+        { select: false, collection: {}, tokenId: 3 },
+        { select: false, collection: {}, tokenId: 4 }
       ],
       WNFTItems: [
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 },
-        { select: false, collection: {}, tokenId: 0 }
+        { select: false, collection: {}, tokenId: 6 },
+        { select: false, collection: {}, tokenId: 7 },
+        { select: false, collection: {}, tokenId: 8 },
+        { select: false, collection: {}, tokenId: 9 },
+        { select: false, collection: {}, tokenId: 10 },
+        { select: false, collection: {}, tokenId: 11 }
       ],
 
       elDialogEditSellDataWidth: document.documentElement.clientWidth > 750 ? "900px" : "350px",
@@ -279,17 +341,28 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on("alertAction", val => {
-      if (val.isNFTSell) {
-        this.isSwitch1 = true;
-        this.items = this.NFTItems;
-      }
-      if (val.isWNFTSell) {
-        this.isSwitch1 = false;
-        this.items = this.WNFTItems;
-      }
-      this.actionAlertShow = true;
-    });
+    this.$bus.$on("selectNftAction", val => {
+      var selectArr = [];
+      Object.keys(this.items).forEach(key => {
+        var item = this.items[key];
+        if (item.select) {
+          selectArr.push(item.tokenId);
+        }
+      });
+      this.selectArr = selectArr;
+      this.selectCount = this.selectArr.length;
+    }),
+      this.$bus.$on("alertAction", val => {
+        if (val.isNFTSell) {
+          this.isSwitch1 = true;
+          this.items = this.NFTItems;
+        }
+        if (val.isWNFTSell) {
+          this.isSwitch1 = false;
+          this.items = this.WNFTItems;
+        }
+        this.actionAlertShow = true;
+      });
     var that = this;
     // <!--把window.onresize事件挂在到mounted函数上-->
     window.onresize = () => {
@@ -314,18 +387,21 @@ export default {
         daoportAction(item, this.handleMasterChefInfo, i);
         approveNFTAction(item, this.handleNftApprove, i, true);
         approveWNFTAction(item, this.handleWNftApprove, i, true);
-        getBonusRewardAction(item, this.handleGetBonusReward, i);
+        // getBonusRewardAction(item, this.handleGetBonusReward, i);
       }
     },
 
     handleMasterChefInfo(masterChefInfo, item, index) {
       console.log("document=== masterchefinfo: pid", item.poolInfo.pid, masterChefInfo, index);
-      item.poolInfo.endBlock = masterChefInfo.poolInfo.endBlock;
+      item.poolInfo.endBlock = masterChefInfo.poolInfo.lastRewardBlock;
       item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
       item.nftQuantity = masterChefInfo.nftQuantity;
       item.wnftQuantity = masterChefInfo.wnftQuantity;
       // item.poolInfo.startBlock = 10746993;
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
+      item.dividend = Number(masterChefInfo.dividend);
+      item.mining = Number(masterChefInfo.mining);
+
       item.poolInfo.rewardPerNFTForEachBlock = masterChefInfo.poolInfo.rewardPerNFTForEachBlock;
       item.poolInfo.rewardForEachBlock = masterChefInfo.poolInfo.rewardForEachBlock;
       if (index == this.items.length - 1) {
@@ -351,6 +427,8 @@ export default {
     },
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
+      this.items = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
+      this.$bus.$emit("selectNftAction", 1);
     },
     closeAlertAction() {
       this.actionAlertShow = false;
