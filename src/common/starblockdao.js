@@ -63,7 +63,7 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
     const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
     const pid = 0;
     // const pid = item.poolInfo.pid;
-    const owner = "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa";
+    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
     const maxTokenId = 100;
     var parameters = {
         pid,
@@ -82,22 +82,15 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
     const daoport = new DaoPort(initWeb3(), network_Name);
     const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
     const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
-    const wnftContract = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const wnftContract = item.poolInfo.wnft;
     const isApproveNFT = true;
     let parameters = {
         owner,
-        operator,
         wnftContract,
         isApproveNFT
     };
     const isApprove = await daoport.isApprovedForAll(parameters);
     console.log("daoporApprovedtAction==", isApprove);
-
-    // if (isApprove) {
-    //     console.log("已授权wnft合约");
-    //     return true;
-    // }
-
     if (isOnlyGetApprove) {
         if (getIsApproveNFT) {
             getIsApproveNFT(isApprove, item, index);
@@ -118,17 +111,16 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
 export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
     const daoport = new DaoPort(initWeb3(), network_Name);
     const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
-    var operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
-    const wnftContract = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    // var operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+    const wnftContract = item.poolInfo.wnft;
     const isApproveNFT = false;
     // if (!isApproveNFT) {
     //解抵押授权
     // nftMasterchef 合约
-    operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+    // operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
     // }
     let parameters = {
         owner,
-        operator,
         wnftContract,
         isApproveNFT
     };
@@ -143,10 +135,6 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
         }
         return;
     }
-    // if (isApprove) {
-    //     console.log("已授权wnft合约");
-    //     return true;
-    // }
 
     try {
         const txHash = await daoport.setApprovalForAll(parameters);
@@ -173,7 +161,7 @@ export async function getBonusRewardAction(item, handleGetBonusReward, index) {
     const daoport = new DaoPort(initWeb3(), network_Name);
     const tokenIds = await daoport.ownedTokens(parameters);
     console.log("daoportAction=== tokenIds:", tokenIds);
-    
+
     if (tokenIds && tokenIds.length) {
         parameters = {
             pid,
