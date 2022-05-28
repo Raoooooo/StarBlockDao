@@ -79,16 +79,17 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
         handleMasterChefInfo(masterChefInfo, item, index);
     }
 }
+
 export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
     const daoport = new DaoPort(initWeb3(), network_Name);
     const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
     const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
-    const contractAddress = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const wnftContract = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
     const isApproveNFT = true;
     let parameters = {
         owner,
         operator,
-        contractAddress,
+        wnftContract,
         isApproveNFT
     };
     const isApprove = await daoport.isApprovedForAll(parameters);
@@ -119,21 +120,28 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
 export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
     const daoport = new DaoPort(initWeb3(), network_Name);
     const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
-    const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
-    const contractAddress = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    var operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+    const wnftContract = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
     const isApproveNFT = false;
+    // if (!isApproveNFT) {
+    //解抵押授权
+    // nftMasterchef 合约
+    operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
+    // }
     let parameters = {
         owner,
         operator,
-        contractAddress,
+        wnftContract,
         isApproveNFT
     };
+
+
     const isApprove = await daoport.isApprovedForAll(parameters);
     console.log("daoporApprovedtAction==", isApprove);
 
     if (isOnlyGetApprove) {
-        if (getIsApproveNFT, item, index) {
-            getIsApproveNFT(isApprove);
+        if (getIsApproveNFT) {
+            getIsApproveNFT(isApprove, item, index);
         }
         return;
     }
@@ -145,7 +153,42 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
     try {
         const txHash = await daoport.setApprovalForAll(parameters);
         console.log("daoporApprovedtAction --txHash", txHash);
+        if (getIsApproveNFT) {
+            getIsApproveNFT(true, item, index);
+        }
     } catch (error) { }
+}
+
+
+export async function getBonusRewardAction(item, handleGetBonusReward, index) {
+
+    ///获取分红，奖励
+    const owner = "0x979488515a1bcF8CFEcdDa28a3d0B818C8E888cB";
+    const wnftContract = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+    const pid = 0;
+    const maxTokenId = 100;
+    var parameters = {
+        wnftContract,
+        owner,
+        maxTokenId
+    };
+    const daoport = new DaoPort(initWeb3(), network_Name);
+    const tokenIds = await daoport.ownedWNFTTokens(parameters);
+    console.log("daoportAction=== tokenIds:", tokenIds);
+    
+    if (tokenIds && tokenIds.length) {
+        parameters = {
+            pid,
+            tokenIds
+        };
+        await daoport.pending(parameters, function (error, result) {
+
+            console.log("daoportAction=== error/result:", error, result);
+            if (handleGetBonusReward) {
+                handleGetBonusReward(result, item, index);
+            }
+        });
+    }
 }
 
 
@@ -202,4 +245,9 @@ export function onBlockNumberChange(updateBlockData) {
         }
     });
 }
+
+
+
+
+
 

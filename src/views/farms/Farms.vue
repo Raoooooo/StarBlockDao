@@ -120,7 +120,7 @@
             已抵押
           </button>
         </div>
-        <button class="unPledgeAction">解抵押 3个</button>
+        <button class="unPledgeAction">{{ alertActionStr }}</button>
       </div>
 
       <div class="itemsSuperBox">
@@ -137,7 +137,7 @@
         </div>
         <div class="selectItemSepLine"></div>
         <!-- <div v-for="(item, index) in selectItems"> -->
-        <selectnft :items="selectItems"></selectnft>
+        <selectnft :items="items"></selectnft>
         <!-- </div> -->
       </div>
 
@@ -160,7 +160,8 @@ import {
   getBlockNumber,
   onBlockNumberChange,
   approveNFTAction,
-  approveWNFTAction
+  approveWNFTAction,
+  getBonusRewardAction
 } from "@/common/starblockdao";
 
 export default {
@@ -179,6 +180,7 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      alertActionStr: "",
       totalNftQuantity: 0,
       currentBlockNumber: 100000000,
       topImgHeight: topImgHeight,
@@ -187,14 +189,22 @@ export default {
           ? require("@/assets/img/farms/topBack.jpg")
           : require("@/assets/img/farms/mobile/topBack.png"),
       isSwitch1: true,
-      selectItems: [
-        { select: false },
-        { select: false },
-        { select: false },
-        { select: false },
-        { select: false },
-        { select: false }
+      items: [],
+      NFTItems: [
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 }
       ],
+      WNFTItems: [
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 },
+        { select: false, collection: {}, tokenId: 0 }
+      ],
+
       elDialogEditSellDataWidth: document.documentElement.clientWidth > 750 ? "900px" : "350px",
       elDialogEditSellDataHeight: "918px",
       actionAlertShow: false,
@@ -270,9 +280,15 @@ export default {
   },
   mounted() {
     this.$bus.$on("alertAction", val => {
-      if (val == "1") {
-        this.actionAlertShow = true;
+      if (val.isNFTSell) {
+        this.isSwitch1 = true;
+        this.items = this.NFTItems;
       }
+      if (val.isWNFTSell) {
+        this.isSwitch1 = false;
+        this.items = this.WNFTItems;
+      }
+      this.actionAlertShow = true;
     });
     var that = this;
     // <!--把window.onresize事件挂在到mounted函数上-->
@@ -298,6 +314,7 @@ export default {
         daoportAction(item, this.handleMasterChefInfo, i);
         approveNFTAction(item, this.handleNftApprove, i, true);
         approveWNFTAction(item, this.handleWNftApprove, i, true);
+        getBonusRewardAction(item, this.handleGetBonusReward, i);
       }
     },
 
@@ -325,6 +342,12 @@ export default {
     },
     handleWNftApprove(isApprove, item, index) {
       item.isWNFTApprove = isApprove;
+    },
+    handleGetBonusReward(result, item) {
+      var result0 = result[0];
+      var result1 = result[1];
+      item.award = Number(result0);
+      item.bonus = Number(result1);
     },
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
@@ -790,8 +813,8 @@ export default {
     display: flex;
     flex-direction: column;
     /* height: 100%; */
-    width: 80%;
-    margin-left: 10%;
+    width: 90%;
+    margin-left: 5%;
     overflow-x: hidden;
     background-color: #f7faff;
   }
