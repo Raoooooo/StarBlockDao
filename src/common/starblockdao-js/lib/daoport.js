@@ -103,6 +103,7 @@ var DaoPort = /** @class */ (function () {
                     case 0:
                         REC721Address = wnftContract;
                         isApproved = false;
+                        operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
                         if (!isApproveNFT) return [3 /*break*/, 2];
                         WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
                         return [4 /*yield*/, WNFTContract.methods.nft().call()];

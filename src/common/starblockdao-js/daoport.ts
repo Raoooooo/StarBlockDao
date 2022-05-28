@@ -57,12 +57,13 @@ export class DaoPort {
     isApproveNFT
   }: {
     owner: string;
-    operator: string;
+    operator?: string;
     wnftContract: string;
     isApproveNFT: Boolean;
   }): Promise<boolean> {
     let REC721Address = wnftContract;
     let isApproved = false;
+    operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
     if (isApproveNFT) {
       const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
       const nftAddress = await (WNFTContract as Contract).methods.nft().call();
