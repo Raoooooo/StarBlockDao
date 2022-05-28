@@ -8,7 +8,10 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }): Promise<string>;
-    withdraw(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
+    withdraw({ pid, tokenIds }: {
+        pid: number;
+        tokenIds: number[];
+    }): Promise<string>;
     isApprovedForAll({ owner, operator, wnftContract, isApproveNFT }: {
         owner: string;
         operator: string;

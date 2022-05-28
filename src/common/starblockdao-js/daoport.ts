@@ -32,13 +32,22 @@ export class DaoPort {
     return txHash;
   }
 
-  public async withdraw(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void> {
+  public async withdraw({ pid, tokenIds }: { pid: number; tokenIds: number[] }): Promise<string> {
+    let txHash;
     try {
-      const txHash = await this._protocol.withdraw(pid, tokenIds);
-      handle(txHash, "");
+      const txnData = { from: this._protocol.account };
+      txHash = await (this._protocol.NFTMasterChefContract as Contract).methods
+        .withdraw(pid, tokenIds)
+        .send(txnData);
     } catch (error) {
-      handle("", error);
+      console.error(error);
+      throw new Error(
+        `Failed to withdraw transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
     }
+    return txHash;
   }
 
   public async isApprovedForAll({

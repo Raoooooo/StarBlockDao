@@ -70,23 +70,26 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.withdraw = function (pid, tokenIds, handle) {
+    DaoPort.prototype.withdraw = function (_a) {
+        var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var txHash, txnData, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this._protocol.withdraw(pid, tokenIds)];
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
+                                .withdraw(pid, tokenIds)
+                                .send(txnData)];
                     case 1:
-                        txHash = _a.sent();
-                        handle(txHash, "");
+                        txHash = _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        error_2 = _a.sent();
-                        handle("", error_2);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        error_2 = _b.sent();
+                        console.error(error_2);
+                        throw new Error("Failed to withdraw transaction: \"".concat(error_2 instanceof Error && error_2.message ? error_2.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
                 }
             });
         });

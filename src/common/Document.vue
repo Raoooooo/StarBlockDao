@@ -27,6 +27,7 @@
     <button id="button" @click="daoportAction">daoport操作</button>
     <button id="button" @click="daoporApprovedtAction">dao授权操作</button>
     <button id="button" @click="daoporDeposit">dao deposit</button>
+    <button id="button" @click="daoporWithdraw">dao withdraw</button>
   </div>
 </template>
 
@@ -1036,6 +1037,8 @@ export default {
         console.log("daoporDeposit==txhash", txHash);
       } catch (error) {}
     },
+
+    async daoporWithdraw() {},
 
     toggleShow() {
       this.show = !this.show;
