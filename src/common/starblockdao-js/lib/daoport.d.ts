@@ -1,10 +1,13 @@
 import Web3 from "web3";
 import { CallbackHandle, Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 export declare class DaoPort {
-    account: string;
     private _protocol;
     constructor(provider: Web3, networkName: Network);
-    deposit(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
+    setAccount(account: string): void;
+    deposit({ pid, tokenIds }: {
+        pid: number;
+        tokenIds: number[];
+    }): Promise<string>;
     withdraw(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
     isApprovedForAll({ owner, operator, wnftContract, isApproveNFT }: {
         owner: string;
@@ -14,16 +17,16 @@ export declare class DaoPort {
     }): Promise<boolean>;
     setApprovalForAll({ owner, operator, wnftContract, isApproveNFT }: {
         owner: string;
-        operator: string;
+        operator?: string;
         wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<string>;
     harvestToken(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
-    ownedTokens({ nftContract, owner, maxTokenId }: {
-        nftContract: string;
+    ownedTokens({ contractAddress, owner }: {
+        contractAddress: string;
         owner: string;
-        maxTokenId: number;
     }): Promise<number[]>;
+    getNFTContractAddress(wnftContract: string): Promise<string>;
     pending<T>({ pid, tokenIds }: {
         pid: number;
         tokenIds: number[];

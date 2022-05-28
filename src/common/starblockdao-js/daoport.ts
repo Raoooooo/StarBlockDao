@@ -4,20 +4,32 @@ import { Protocol } from "./protocol";
 import { CallbackHandle, Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 
 export class DaoPort {
-  public account = "";
   private _protocol: Protocol;
   constructor(provider: Web3, networkName: Network) {
     this._protocol = new Protocol(provider, networkName);
-    this._protocol.account = this.account;
+    // this._protocol.account = this.account;
   }
 
-  public async deposit(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void> {
+  public setAccount(account: string) {
+    this._protocol.account = account;
+  }
+
+  public async deposit({ pid, tokenIds }: { pid: number; tokenIds: number[] }): Promise<string> {
+    let txHash;
     try {
-      const txHash = await this._protocol.deposit(pid, tokenIds);
-      handle(txHash, "");
+      const txnData = { from: this._protocol.account };
+      txHash = await (this._protocol.NFTMasterChefContract as Contract).methods
+        .deposit(pid, tokenIds)
+        .send(txnData);
     } catch (error) {
-      handle("", error);
+      console.error(error);
+      throw new Error(
+        `Failed to deposit transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
     }
+    return txHash;
   }
 
   public async withdraw(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void> {
@@ -63,7 +75,7 @@ export class DaoPort {
     isApproveNFT
   }: {
     owner: string;
-    operator: string;
+    operator?: string;
     wnftContract: string;
     isApproveNFT: Boolean;
   }): Promise<string> {
@@ -79,6 +91,7 @@ export class DaoPort {
       }
     }
 
+    operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
     try {
       const txnData = { from: owner };
       const REC721Contract = this._protocol.setERC721Addess(REC721Address);
@@ -109,18 +122,22 @@ export class DaoPort {
   }
 
   public async ownedTokens({
-    nftContract,
-    owner,
-    maxTokenId
+    contractAddress,
+    owner
   }: {
-    nftContract: string;
+    contractAddress: string;
     owner: string;
-    maxTokenId: number;
   }): Promise<number[]> {
     const tokenIds = await (this._protocol.NFTUtilsContract as Contract).methods
-      .ownedTokens(nftContract, owner, maxTokenId)
+      .ownedTokens(contractAddress, owner)
       .call();
     return tokenIds;
+  }
+
+  public async getNFTContractAddress(wnftContract: string): Promise<string> {
+    const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
+    const nftAddress = await (WNFTContract as Contract).methods.nft().call();
+    return nftAddress;
   }
 
   public async pending<T>(

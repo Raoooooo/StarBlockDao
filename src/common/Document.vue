@@ -26,6 +26,7 @@
     <button id="button" @click="approveERC20Handle">授权ERC20</button>
     <button id="button" @click="daoportAction">daoport操作</button>
     <button id="button" @click="daoporApprovedtAction">dao授权操作</button>
+    <button id="button" @click="daoporDeposit">dao deposit</button>
   </div>
 </template>
 
@@ -48,6 +49,7 @@ export var wyvernExchange;
 export var providerInstance;
 export var protocolInstance;
 var accounts;
+var daoport;
 
 export default {
   created() {
@@ -82,6 +84,11 @@ export default {
         web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
       }
       return web3;
+    },
+
+    async getDaoPort(account) {
+      daoport = new DaoPort(this.initWeb3(), network_Name);
+      daoport.setAccount(account);
     },
 
     async getAccounts() {
@@ -946,7 +953,11 @@ export default {
       if (!accounts) {
         await this.getAccounts();
       }
-      const daoport = new DaoPort(this.initWeb3(), network_Name);
+
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
       const pid = 0;
       const owner = accounts[0];
       let parameters = {
@@ -957,48 +968,39 @@ export default {
       console.log("daoportAction=== masterchefinfo:", masterChefInfo);
       setLocalStorage("masterChefInfo", masterChefInfo);
 
-      ///获取分红，奖励
-      const wnftContract = masterChefInfo.poolInfo.wnftContract;
+      // 获取解抵押tokens
+      let contractAddress = masterChefInfo.poolInfo[0];
+
+      //获取可抵押tokens
+      contractAddress = await daoport.getNFTContractAddress(masterChefInfo.poolInfo[0]);
+
       parameters = {
-        wnftContract,
-        owner,
-        maxTokenId
+        contractAddress,
+        owner
       };
       const tokenIds = await daoport.ownedTokens(parameters);
       console.log("daoportAction=== tokenIds:", tokenIds);
-
-      if (tokenIds && tokenIds.length) {
-        parameters = {
-          pid,
-          tokenIds
-        };
-        await daoport.pending(parameters, function(error, result) {
-          console.log("daoportAction=== error/result:", error, result);
-        });
-      }
     },
 
     async daoporApprovedtAction() {
-      const masterChefInfo = JSON.parse(getLocalStorage("masterChefInfo"));
-      const daoport = new DaoPort(this.initWeb3(), network_Name);
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
 
-      const owner = "0x31f8838f91617091Ec2d8303AA08f88967613bb1";
-      let operator = masterChefInfo.poolInfo[0];
+      const masterChefInfo = JSON.parse(getLocalStorage("masterChefInfo"));
+      const owner = accounts[0];
       const wnftContract = masterChefInfo.poolInfo[0];
       const isApproveNFT = true;
 
-      if (!isApproveNFT) {
-        //解抵押授权
-        // nftMasterchef 合约
-        operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
-      }
-
       let parameters = {
         owner,
-        operator,
         wnftContract,
         isApproveNFT
       };
+
       const isApprove = await daoport.isApprovedForAll(parameters);
       console.log("daoporApprovedtAction==", isApprove);
 
@@ -1010,6 +1012,28 @@ export default {
       try {
         const txHash = await daoport.setApprovalForAll(parameters);
         console.log("daoporApprovedtAction --txHash", txHash);
+      } catch (error) {}
+    },
+
+    async daoporDeposit() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const owner = accounts[0];
+      const pid = 0;
+      const tokenIds = [4, 5];
+      const parameters = {
+        pid,
+        tokenIds
+      };
+
+      try {
+        const txHash = await daoport.deposit(parameters);
+        console.log("daoporDeposit==txhash", txHash);
       } catch (error) {}
     },
 
