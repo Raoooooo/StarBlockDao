@@ -41,10 +41,13 @@ var network_Name = Network.Rinkeby;
 
 import { getLocalStorage, setLocalStorage, isLogin } from "@/common/utils";
 import AppVue from "../App.vue";
+import Web3Modal from "web3modal";
+import { providerOptions } from "@/common/web3Config";
 
 export var wyvernExchange;
 export var providerInstance;
 export var protocolInstance;
+var accounts;
 
 export default {
   created() {
@@ -79,6 +82,22 @@ export default {
         web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
       }
       return web3;
+    },
+
+    async getAccounts() {
+      const web3Modal = new Web3Modal({
+        theme: "dark",
+        // network: getChainData(walletObj.chainId).network,
+        network: "rinkeby",
+        cacheProvider: true,
+        providerOptions
+      });
+
+      const provider = await web3Modal.connect();
+      // await subscribeProvider(provider);
+
+      web3 = new Web3(provider);
+      accounts = await web3.eth.getAccounts();
     },
 
     async exchangeAction() {
@@ -924,19 +943,15 @@ export default {
     },
 
     async daoportAction() {
-      // var account = web3.eth.defaultAccount;
-      // const provider = new Web3.providers.HttpProvider(this.getInfura());
-      // const web3 = new Web3(provider);
+      if (!accounts) {
+        await this.getAccounts();
+      }
       const daoport = new DaoPort(this.initWeb3(), network_Name);
-      const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
       const pid = 0;
-      const owner = "0x979488515a1bcF8CFEcdDa28a3d0B818C8E888cB";
-      const maxTokenId = 100;
+      const owner = accounts[0];
       let parameters = {
-        nftMasterchef,
         pid,
-        owner,
-        maxTokenId
+        owner
       };
       const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
       console.log("daoportAction=== masterchefinfo:", masterChefInfo);
@@ -949,7 +964,7 @@ export default {
         owner,
         maxTokenId
       };
-      const tokenIds = await daoport.ownedWNFTTokens(parameters);
+      const tokenIds = await daoport.ownedTokens(parameters);
       console.log("daoportAction=== tokenIds:", tokenIds);
 
       if (tokenIds && tokenIds.length) {

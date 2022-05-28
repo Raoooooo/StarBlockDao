@@ -3,6 +3,7 @@ import { Contract } from "web3-eth-contract";
 import { Network } from "./types";
 export declare class Protocol {
     account: string;
+    NFTMasterChefContractAddress: string;
     NFTMasterChefContract: {};
     NFTUtilsContract: {};
     web3: Web3;

@@ -5,6 +5,7 @@ import { constants } from "./protocolConstants";
 
 export class Protocol {
   public account = "";
+  public NFTMasterChefContractAddress: string;
   public NFTMasterChefContract: {};
   public NFTUtilsContract: {};
   public web3: Web3;
@@ -14,12 +15,12 @@ export class Protocol {
     this.web3 = provider;
     this._networkName = networkName;
 
-    const NFTMasterChefContractAddress = constants.DEPLOYED[networkName].NFTMasterChef;
+    this.NFTMasterChefContractAddress = constants.DEPLOYED[networkName].NFTMasterChef;
     const NFTMasterChefAbi: PartialReadonlyContractAbi = constants.NFTMASTERCHEF_ABI;
 
     this.NFTMasterChefContract = new this.web3.eth.Contract(
       NFTMasterChefAbi,
-      NFTMasterChefContractAddress
+      this.NFTMasterChefContractAddress
     );
 
     const NFTUtilsAddress = constants.DEPLOYED[networkName].NFTUtils;
