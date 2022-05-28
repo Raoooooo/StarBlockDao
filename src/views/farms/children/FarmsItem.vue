@@ -20,7 +20,10 @@
               v-if="isShowEndBlock(item, currentBlockNumber)"
             >
               <p class="contantDetailTopBox_rightBox_text">
-                {{ Number(item.poolInfo.endBlock) - currentBlockNumber + $t("farms.endBlock") }}
+                {{
+                  formmatBlockStr(Number(item.poolInfo.endBlock) - currentBlockNumber) +
+                  $t("farms.endBlock")
+                }}
               </p>
             </div>
             <!-- 区块后开始 -->
@@ -29,7 +32,10 @@
               v-if="isShowStartBlock(item, currentBlockNumber)"
             >
               <p class="contantDetailTopBox_rightBox_text_startBlock">
-                {{ Number(item.poolInfo.startBlock) - currentBlockNumber + $t("farms.startBlock") }}
+                {{
+                  formmatBlockStr(Number(item.poolInfo.startBlock) - currentBlockNumber) +
+                  $t("farms.startBlock")
+                }}
               </p>
             </div>
             <!-- 已结束 -->
@@ -96,13 +102,15 @@
           <button class="pledgeBtn" @click="pledgeBtnAction(item)">
             {{ pledgeBtnStr(item) }}
           </button>
-          <button class="unPledgeBtn" @click="pledgeBtnAction(item)">
-            {{ $t("farms.unPledge") + "(" + item.wnftQuantity + ")" }}
+          <button class="unPledgeBtn" @click="unPledgeBtnAction(item)">
+            {{ unPledgeBtnStr(item) }}
           </button>
         </div>
         <!-- 领取奖励 -->
-        <button class="getAwardBtn">{{ $t("farms.getAward") }}</button>
-        <button class="getBonuBtn">{{ $t("farms.getBonus") }}</button>
+        <button class="getAwardBtn">
+          {{ $t("farms.getAward") + " " + awardAmountStr(item) }}
+        </button>
+        <button class="getBonuBtn">{{ $t("farms.getBonus") + " " + bonusAmountStr(item) }}</button>
       </div>
     </el-col>
   </el-row>
@@ -126,7 +134,8 @@ import {
   daoportAction,
   getBlockNumber,
   onBlockNumberChange,
-  approveNFTAction
+  approveNFTAction,
+  approveWNFTAction
 } from "@/common/starblockdao";
 
 export default {
@@ -270,6 +279,31 @@ export default {
     };
   },
   methods: {
+    formmatBlockStr(blockNumber) {
+      if (blockNumber > 1000 && blockNumber < 10000) {
+        return Number(blockNumber / 1000).toFixed(2) + "K";
+      } else if (blockNumber >= 10000 && blockNumber < 10000000) {
+        return Number(blockNumber / 10000).toFixed(2) + "W";
+      } else if (blockNumber >= 10000000) {
+        return Number(blockNumber / 10000000).toFixed(2) + "KW";
+      } else {
+        return blockNumber;
+      }
+    },
+    awardAmountStr(item) {
+      if (item.award != "--") {
+        return (item.award * Math.pow(10, -18)).toFixed(2) + " STB";
+      }
+      return item.award;
+    },
+    bonusAmountStr(item) {
+      if (item.bonus != "--") {
+        return (item.bonus * Math.pow(10, -18)).toFixed(2) + " WNFT";
+      }
+      return item.bonus;
+    },
+
+    bonusAmountAtr(item) {},
     pledgeBtnStr(item) {
       // if (isLogin != "1") {
       //   return "链接钱包";
@@ -277,9 +311,15 @@ export default {
       if (!item.isNFTApprove) {
         return "抵押授权";
       } else {
-        
       }
       return this.$t("farms.pledge") + "(" + item.nftQuantity + ")";
+    },
+    unPledgeBtnStr(item) {
+      if (!item.isWNFTApprove) {
+        return "解抵押授权";
+      } else {
+      }
+      return this.$t("farms.unPledge") + "(" + item.wnftQuantity + ")";
     },
     isShowEndBlock(item, currentBlockNumber) {
       if (
@@ -319,17 +359,28 @@ export default {
       }
     },
     pledgeBtnAction(item) {
-      if (!item.isNftPrrove) {
+      if (!item.isNFTApprove) {
         approveNFTAction(item, this.handleNftApprove, 0, false);
       }
+      this.$bus.$emit("alertAction", { item: item, isNFTSell: true, isWNFTSell: false });
+    },
+    unPledgeBtnAction(item) {
+      if (!item.isWNFTApprove) {
+        approveWNFTAction(item, this.handleWNftApprove, 0, false);
+      }
+      this.$bus.$emit("alertAction", { item: item, isNFTSell: false, isWNFTSell: true });
       // onBlockNumberChange();
       // watchEtherTransfers()
       // console.log(poolDatas);
       // daoportAction();
       // this.$bus.$emit("alertAction", "1");
     },
+
     handleNftApprove(isApprove, item, index) {
       item.isApprove = isApprove;
+    },
+    handleWNftApprove(isApprove, item, index) {
+      item.isWNFTApprove = isApprove;
     },
     imgLoad() {
       // 发射事件总线

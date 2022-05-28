@@ -16,6 +16,8 @@ const poolDatas = [
         },
         nftQuantity: "--",
         wnftQuantity: "--",
+        award: "--",
+        bonus: "--",
         collection: {
             name: "BakerLion",
             contractAddress: "",
@@ -34,6 +36,8 @@ const poolDatas = [
         },
         nftQuantity: "--",
         wnftQuantity: "--",
+        award: "--",
+        bonus: "--",
         collection: {
             name: "BakerLion1",
             contractAddress: "",
