@@ -14,7 +14,7 @@ export declare class DaoPort {
     }): Promise<string>;
     isApprovedForAll({ owner, operator, wnftContract, isApproveNFT }: {
         owner: string;
-        operator: string;
+        operator?: string;
         wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<boolean>;
