@@ -145,7 +145,7 @@
       <p class="alertTip2">· 根据您出游WrappedNFT可解抵押对应的NFT</p>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       title=""
       :visible.sync="warningDefaultVisible"
       :width="elDialogWidth"
@@ -176,7 +176,7 @@
           </button>
         </div>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -381,10 +381,10 @@ export default {
       console.log("currentBlockNumber", this.currentBlockNumber);
     },
 
-    getMasterChefInfo() {
+    async getMasterChefInfo() {
       for (var i = 0; i < this.items.length; i++) {
         var item = this.items[i];
-        daoportAction(item, this.handleMasterChefInfo, i);
+        await daoportAction(item, this.handleMasterChefInfo, i);
         approveNFTAction(item, this.handleNftApprove, i, true);
         approveWNFTAction(item, this.handleWNftApprove, i, true);
         // getBonusRewardAction(item, this.handleGetBonusReward, i);
@@ -401,7 +401,7 @@ export default {
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
       item.dividend = Number(masterChefInfo.dividend);
       item.mining = Number(masterChefInfo.mining);
-
+      item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
       item.poolInfo.rewardPerNFTForEachBlock = masterChefInfo.poolInfo.rewardPerNFTForEachBlock;
       item.poolInfo.rewardForEachBlock = masterChefInfo.poolInfo.rewardForEachBlock;
       if (index == this.items.length - 1) {
