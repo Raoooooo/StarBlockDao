@@ -1,13 +1,12 @@
 import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { Protocol } from "./protocol";
-import { CallbackHandle, Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 
 export class DaoPort {
   private _protocol: Protocol;
   constructor(provider: Web3, networkName: Network) {
     this._protocol = new Protocol(provider, networkName);
-    // this._protocol.account = this.account;
   }
 
   public setAccount(account: string) {
@@ -18,7 +17,7 @@ export class DaoPort {
     let txHash;
     try {
       const txnData = { from: this._protocol.account };
-      txHash = await (this._protocol.NFTMasterChefContract as Contract).methods
+      txHash = await this._protocol.NFTMasterChefContract.methods
         .deposit(pid, tokenIds)
         .send(txnData);
     } catch (error) {
@@ -36,7 +35,7 @@ export class DaoPort {
     let txHash;
     try {
       const txnData = { from: this._protocol.account };
-      txHash = await (this._protocol.NFTMasterChefContract as Contract).methods
+      txHash = await this._protocol.NFTMasterChefContract.methods
         .withdraw(pid, tokenIds)
         .send(txnData);
     } catch (error) {
@@ -66,15 +65,13 @@ export class DaoPort {
     operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
     if (isApproveNFT) {
       const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-      const nftAddress = await (WNFTContract as Contract).methods.nft().call();
+      const nftAddress = await WNFTContract.methods.nft().call();
       if (nftAddress) {
         REC721Address = nftAddress;
       }
     }
     const REC721Contract = this._protocol.setERC721Addess(REC721Address);
-    isApproved = await (REC721Contract as Contract).methods
-      .isApprovedForAll(owner, operator)
-      .call();
+    isApproved = await REC721Contract.methods.isApprovedForAll(owner, operator).call();
     return isApproved;
   }
 
@@ -93,7 +90,7 @@ export class DaoPort {
     let REC721Address = wnftContract;
     if (isApproveNFT) {
       const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-      const nftAddress = await (WNFTContract as Contract).methods.nft().call();
+      const nftAddress = await WNFTContract.methods.nft().call();
       if (nftAddress) {
         REC721Address = nftAddress;
       } else {
@@ -105,9 +102,7 @@ export class DaoPort {
     try {
       const txnData = { from: owner };
       const REC721Contract = this._protocol.setERC721Addess(REC721Address);
-      txHash = await (REC721Contract as Contract).methods
-        .setApprovalForAll(operator, true)
-        .send(txnData);
+      txHash = await REC721Contract.methods.setApprovalForAll(operator, true).send(txnData);
     } catch (error) {
       throw new Error(
         `Failed to setApprovalForAll transaction: "${
@@ -130,7 +125,7 @@ export class DaoPort {
     let txHash;
     try {
       const txnData = { from: this._protocol.account };
-      txHash = await (this._protocol.NFTMasterChefContract as Contract).methods
+      txHash = await this._protocol.NFTMasterChefContract.methods
         .harvest(pid, to, wnftTokenIds)
         .send(txnData);
     } catch (error) {
@@ -151,7 +146,7 @@ export class DaoPort {
     contractAddress: string;
     owner: string;
   }): Promise<number[]> {
-    const tokenIds = await (this._protocol.NFTUtilsContract as Contract).methods
+    const tokenIds = await this._protocol.NFTUtilsContract.methods
       .ownedTokens(contractAddress, owner)
       .call();
     return tokenIds;
@@ -159,7 +154,7 @@ export class DaoPort {
 
   public async getNFTContractAddress(wnftContract: string): Promise<string> {
     const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-    const nftAddress = await (WNFTContract as Contract).methods.nft().call();
+    const nftAddress = await WNFTContract.methods.nft().call();
     return nftAddress;
   }
 
@@ -174,7 +169,7 @@ export class DaoPort {
     handle: Web3Callback<T>
   ): Promise<void> {
     try {
-      const { mining, dividend } = await (this._protocol.NFTMasterChefContract as Contract).methods
+      const { mining, dividend } = await this._protocol.NFTMasterChefContract.methods
         .pending(pid, tokenIds)
         .call();
       const result: T[] = [mining, dividend];
@@ -211,20 +206,9 @@ export class DaoPort {
       dividend,
       nftQuantity,
       wnftQuantity
-    } = await (this._protocol.NFTUtilsContract as Contract).methods
+    } = await this._protocol.NFTUtilsContract.methods
       .getNFTMasterChefInfos(nftMasterchef, pid, owner)
       .call();
-    console.log(
-      "chefInfo---",
-      poolInfo,
-      rewardForEachBlock,
-      rewardPerNFTForEachBlock,
-      endBlock,
-      mining,
-      dividend,
-      nftQuantity,
-      wnftQuantity
-    );
     return {
       poolInfo,
       rewardForEachBlock,

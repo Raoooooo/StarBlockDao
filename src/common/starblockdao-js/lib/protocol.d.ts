@@ -4,8 +4,8 @@ import { Network } from "./types";
 export declare class Protocol {
     account: string;
     NFTMasterChefContractAddress: string;
-    NFTMasterChefContract: {};
-    NFTUtilsContract: {};
+    NFTMasterChefContract: Contract;
+    NFTUtilsContract: Contract;
     web3: Web3;
     private _networkName;
     constructor(provider: Web3, networkName: Network);

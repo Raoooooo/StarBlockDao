@@ -6,8 +6,8 @@ import { constants } from "./protocolConstants";
 export class Protocol {
   public account = "";
   public NFTMasterChefContractAddress: string;
-  public NFTMasterChefContract: {};
-  public NFTUtilsContract: {};
+  public NFTMasterChefContract: Contract;
+  public NFTUtilsContract: Contract;
   public web3: Web3;
   private _networkName: Network;
 
@@ -41,9 +41,7 @@ export class Protocol {
     let txHash;
     try {
       const txnData = { from: this.account };
-      txHash = await (this.NFTMasterChefContract as Contract).methods
-        .deposit(pid, tokenIds)
-        .send(txnData);
+      txHash = await this.NFTMasterChefContract.methods.deposit(pid, tokenIds).send(txnData);
     } catch (error) {
       console.error(error);
       throw new Error(
@@ -59,9 +57,7 @@ export class Protocol {
     let txHash;
     try {
       const txnData = { from: this.account };
-      txHash = await (this.NFTMasterChefContract as Contract).methods
-        .withdraw(pid, tokenIds)
-        .send(txnData);
+      txHash = await this.NFTMasterChefContract.methods.withdraw(pid, tokenIds).send(txnData);
     } catch (error) {
       console.error(error);
       throw new Error(
@@ -78,9 +74,7 @@ export class Protocol {
     let txHash;
     try {
       const txnData = { from: account };
-      txHash = await (this.NFTMasterChefContract as Contract).methods
-        .harvestToken(pid, tokenIds)
-        .send(txnData);
+      txHash = await this.NFTMasterChefContract.methods.harvestToken(pid, tokenIds).send(txnData);
     } catch (error) {
       console.error(error);
       throw new Error(

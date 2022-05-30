@@ -64,9 +64,7 @@ var Protocol = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         txnData = { from: this.account };
-                        return [4 /*yield*/, this.NFTMasterChefContract.methods
-                                .deposit(pid, tokenIds)
-                                .send(txnData)];
+                        return [4 /*yield*/, this.NFTMasterChefContract.methods.deposit(pid, tokenIds).send(txnData)];
                     case 1:
                         txHash = _a.sent();
                         return [3 /*break*/, 3];
@@ -87,9 +85,7 @@ var Protocol = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         txnData = { from: this.account };
-                        return [4 /*yield*/, this.NFTMasterChefContract.methods
-                                .withdraw(pid, tokenIds)
-                                .send(txnData)];
+                        return [4 /*yield*/, this.NFTMasterChefContract.methods.withdraw(pid, tokenIds).send(txnData)];
                     case 1:
                         txHash = _a.sent();
                         return [3 /*break*/, 3];
@@ -113,9 +109,7 @@ var Protocol = /** @class */ (function () {
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         txnData = { from: account };
-                        return [4 /*yield*/, this.NFTMasterChefContract.methods
-                                .harvestToken(pid, tokenIds)
-                                .send(txnData)];
+                        return [4 /*yield*/, this.NFTMasterChefContract.methods.harvestToken(pid, tokenIds).send(txnData)];
                     case 2:
                         txHash = _a.sent();
                         return [3 /*break*/, 4];
