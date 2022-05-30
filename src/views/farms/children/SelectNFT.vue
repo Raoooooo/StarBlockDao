@@ -4,7 +4,7 @@
       <div class="sepLine" v-show="index != 0"></div>
       <div class="itemContantBox">
         <div class="nftNameBox">
-          <p class="nftName">Wrapped=GreenGilrs #1</p>
+          <p class="nftName">{{ item.collection.name + "#" + item.tokenId }}</p>
         </div>
 
         <div class="linkIconBox">

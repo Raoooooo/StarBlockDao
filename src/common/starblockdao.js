@@ -145,6 +145,60 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
     } catch (error) { }
 }
 
+export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
+    const daoport = new DaoPort(initWeb3(), network_Name);
+    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    //获取可抵押tokens
+    var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
+    var parameters = {
+        contractAddress,
+        owner
+    };
+    const tokenIds = await daoport.ownedTokens(parameters);
+    console.log("daoportAction=== tokenIds:", tokenIds);
+    if (handleGetNFTTokenIDs) {
+        handleGetNFTTokenIDs(tokenIds, item, index);
+    }
+}
+
+export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
+    const daoport = new DaoPort(initWeb3(), network_Name);
+    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    //获取可抵押tokens
+    var contractAddress = item.poolInfo.wnft;
+    var parameters = {
+        contractAddress,
+        owner
+    };
+    const tokenIds = await daoport.ownedTokens(parameters);
+    console.log("daoportAction=== tokenIds:", tokenIds);
+    if (handleGetWNFTTokenIDs) {
+        handleGetWNFTTokenIDs(tokenIds, item, index);
+    }
+}
+
+
+export async function daoporDeposit(item, handleDeposit, tokenIds) {
+    const daoport = new DaoPort(initWeb3(), network_Name);
+
+    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    daoport.setAccount(owner);
+    const pid = item.poolInfo.pid;
+    // const tokenIds = [4, 5];
+    const parameters = {
+        pid,
+        tokenIds
+    };
+
+    try {
+        const txHash = await daoport.deposit(parameters);
+        console.log("daoporDeposit==txhash", txHash);
+        if (handleDeposit) {
+            handleDeposit(txHash);
+        }
+    } catch (error) { }
+}
+
 
 export async function getBonusRewardAction(item, handleGetBonusReward, index) {
 
