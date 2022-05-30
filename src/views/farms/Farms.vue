@@ -120,7 +120,9 @@
             已抵押
           </button>
         </div>
-        <button class="unPledgeAction">{{ alertActionStr + " " + selectCount + "个" }}</button>
+        <button class="unPledgeAction" @click="alertBeforeAction">
+          {{ alertActionStr + " " + selectCount + "个" }}
+        </button>
       </div>
 
       <div class="itemsSuperBox">
@@ -145,7 +147,7 @@
       <p class="alertTip2">· 根据您出游WrappedNFT可解抵押对应的NFT</p>
     </el-dialog>
 
-    <!-- <el-dialog
+    <el-dialog
       title=""
       :visible.sync="warningDefaultVisible"
       :width="elDialogWidth"
@@ -164,19 +166,17 @@
         </p>
         <span class="dialogDes">
           {{ defaultMessageStr }}
-          <span class="dialogDesColor">{{ $t("common.defaultSaveMesDesSub2") }}</span>
-          <span>{{ $t("common.defaultSaveMesDesSub3") }}</span>
         </span>
         <div class="bottomBtnBox1">
-          <button class="goOnCreatBtn" @click="defaultSaveBtnAction">
+          <button class="goOnCreatBtn" @click="defaultBtnAction">
             {{ $t("common.confirm") }}
           </button>
-          <button class="lookDetailBtn" @click="cancleSaveBtnAction">
+          <button class="lookDetailBtn" @click="cancleBtnAction">
             {{ $t("common.cancle") }}
           </button>
         </div>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
@@ -188,13 +188,17 @@ import poolDatas from "@/common/dataConfig";
 import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
 import Bottom from "../home/children/Bottom.vue";
+
 import {
   daoportAction,
   getBlockNumber,
   onBlockNumberChange,
   approveNFTAction,
   approveWNFTAction,
-  getBonusRewardAction
+  getBonusRewardAction,
+  getNFTTokenIDs,
+  daoporDeposit,
+  getWNFTTokenIDs
 } from "@/common/starblockdao";
 
 export default {
@@ -239,9 +243,10 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      selectPollItem: null,
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
       warningDefaultVisible: false,
-      selectArr: [],
+      selectTokenIdsArr: [],
       selectCount: 0,
       totalNftQuantity: 0,
       currentBlockNumber: 100000000,
@@ -263,8 +268,8 @@ export default {
         { select: false, collection: {}, tokenId: 7 },
         { select: false, collection: {}, tokenId: 8 },
         { select: false, collection: {}, tokenId: 9 },
-        { select: false, collection: {}, tokenId: 10 },
-        { select: false, collection: {}, tokenId: 11 }
+        { select: false, collection: {}, tokenId: 10 }
+        // { select: false, collection: {}, tokenId: 11 }
       ],
 
       elDialogEditSellDataWidth: document.documentElement.clientWidth > 750 ? "900px" : "350px",
@@ -342,17 +347,18 @@ export default {
   },
   mounted() {
     this.$bus.$on("selectNftAction", val => {
-      var selectArr = [];
+      var selectTokenIdsArr = [];
       Object.keys(this.items).forEach(key => {
         var item = this.items[key];
         if (item.select) {
-          selectArr.push(item.tokenId);
+          selectTokenIdsArr.push(item.tokenId);
         }
       });
-      this.selectArr = selectArr;
-      this.selectCount = this.selectArr.length;
+      this.selectTokenIdsArr = selectTokenIdsArr;
+      this.selectCount = this.selectTokenIdsArr.length;
     }),
-      this.$bus.$on("alertAction", val => {
+      this.$bus.$on("pledgeBtnAction", val => {
+        this.selectPollItem = val.item;
         if (val.isNFTSell) {
           this.isSwitch1 = true;
           this.items = this.NFTItems;
@@ -376,6 +382,21 @@ export default {
   },
 
   methods: {
+    alertBeforeAction() {
+      if (this.selectTokenIdsArr.length == 0) {
+        return;
+      }
+      this.warningDefaultVisible = true;
+    },
+    defaultBtnAction() {
+      this.$bus.$emit("daoporDepositNotiAction", this.selectPollItem);
+      daoporDeposit(this.selectPollItem, this.handleDeposit, this.selectTokenIdsArr);
+    },
+    cancleBtnAction(txHash) {
+      console.log("txHash");
+    },
+
+    handleDeposit() {},
     updateBlockData(number, web3) {
       this.currentBlockNumber = number;
       console.log("currentBlockNumber", this.currentBlockNumber);
@@ -387,6 +408,8 @@ export default {
         await daoportAction(item, this.handleMasterChefInfo, i);
         approveNFTAction(item, this.handleNftApprove, i, true);
         approveWNFTAction(item, this.handleWNftApprove, i, true);
+        getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
+        getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
         // getBonusRewardAction(item, this.handleGetBonusReward, i);
       }
     },
@@ -418,6 +441,30 @@ export default {
     },
     handleWNftApprove(isApprove, item, index) {
       item.isWNFTApprove = isApprove;
+    },
+    handleGetNFTTokenIDs(NFTTokenIDs, item, index) {
+      var emptyArr = [];
+      for (var i = 0; i < NFTTokenIDs.length; i++) {
+        var miniItem = {};
+        miniItem.tokenId = Number(NFTTokenIDs[i]);
+        miniItem.select = false;
+        miniItem.collection = {};
+        miniItem.collection.name = item.collection.name;
+        emptyArr.push(miniItem);
+      }
+      this.NFTItems = emptyArr;
+    },
+    handleGetWNFTTokenIDs(WNFTTokenIDs, item, index) {
+      var emptyArr = [];
+      for (var i = 0; i < WNFTTokenIDs.length; i++) {
+        var miniItem = {};
+        miniItem.tokenId = Number(WNFTTokenIDs[i]);
+        miniItem.select = false;
+        miniItem.collection = {};
+        miniItem.collection.name = item.collection.name;
+        emptyArr.push(miniItem);
+      }
+      this.WNFTItems = emptyArr;
     },
     handleGetBonusReward(result, item) {
       var result0 = result[0];
@@ -873,6 +920,71 @@ export default {
   margin-bottom: 0.75rem;
 }
 
+.dialogBack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #f7b500; */
+}
+
+.dialogTopImg {
+  margin-top: -0.5rem;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.dialopTitle {
+  font-size: 0.3rem;
+  font-weight: 500;
+  color: #111;
+  margin-top: 0.15rem;
+}
+
+.dialogDes {
+  font-size: 0.325rem;
+  margin-top: 0.25rem;
+  align-content: center;
+  text-align: center;
+}
+
+.bottomBtnBox1 {
+  width: 100%;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.lookDetailBtn {
+  margin-top: 0rem;
+  font-size: 0.375rem;
+  font-weight: 400;
+  color: #f7b500;
+  background-color: white;
+  height: 1rem;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #f7b500;
+  width: 45%;
+}
+
+.goOnCreatBtn {
+  margin-top: 0.2rem;
+  font-size: 0.375rem;
+  font-weight: 400;
+  color: white;
+  background-color: #f7b500;
+  height: 1rem;
+  border-radius: 5px;
+  border-style: none;
+  /* border-width: 1px; */
+  /* border-color: #111; */
+  width: 45%;
+  /* width: 100%; */
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .back {
     display: flex;
@@ -1293,6 +1405,54 @@ export default {
   .countDownBox {
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
+  }
+
+  .dialogTopImg {
+    margin-top: -0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .dialopTitle {
+    font-size: 0.4rem;
+    font-weight: 500;
+    color: #111;
+    margin-top: 0.5rem;
+  }
+
+  .dialogDes {
+    font-size: 0.325rem;
+    margin-top: 0.25rem;
+    align-content: center;
+    text-align: center;
+  }
+
+  .lookDetailBtn {
+    margin-top: 0rem;
+    font-size: 0.375rem;
+    font-weight: 400;
+    color: #f7b500;
+    background-color: white;
+    height: 1rem;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #f7b500;
+    width: 45%;
+  }
+
+  .goOnCreatBtn {
+    margin-top: 0rem;
+    font-size: 0.375rem;
+    font-weight: 400;
+    color: white;
+    background-color: #f7b500;
+    height: 1rem;
+    border-radius: 5px;
+    border-style: none;
+    /* border-width: 1px; */
+    /* border-color: #111; */
+    width: 45%;
   }
 }
 </style>

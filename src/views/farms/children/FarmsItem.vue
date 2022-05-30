@@ -100,10 +100,17 @@
         <!-- 抵押、解抵押 -->
         <div class="pledgeBtnBox">
           <button class="pledgeBtn" @click="pledgeBtnAction(item)">
-            {{ pledgeBtnStr(item) }}
+            {{ item.isShowLoading ? "" : pledgeBtnStr(item) }}
+            <img
+              class="loadingImg"
+              src="@/assets/img/farms/linkIcon4.png"
+              v-show="showImgLoading(item)"
+            />
           </button>
+
           <button class="unPledgeBtn" @click="unPledgeBtnAction(item)">
             {{ unPledgeBtnStr(item) }}
+            <img class="loadingImg" src="@/assets/img/common/requestLoading.svg" />
           </button>
         </div>
         <!-- 领取奖励 -->
@@ -156,6 +163,7 @@ export default {
       rowNum = 6;
     }
     return {
+      currentPollItem: null,
       isNftPrrove: false,
       isWNftPrrove: false,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
@@ -267,6 +275,12 @@ export default {
   },
 
   mounted() {
+    this.$bus.$on("daoporDepositNotiAction", val => {
+      this.currentPollItem = val;
+      this.currentPollItem.isShowLoading = true;
+      // this.pledgeBtnStr(val, true);
+    });
+
     var that = this;
     // <!--把window.onresize事件挂在到mounted函数上-->
     window.onresize = () => {
@@ -304,10 +318,20 @@ export default {
     },
 
     bonusAmountAtr(item) {},
+    showImgLoading(item) {
+      if (this.currentPollItem && this.currentPollItem.poolInfo.uid == item.poolInfo.uid) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     pledgeBtnStr(item) {
       // if (isLogin != "1") {
       //   return "链接钱包";
       // }
+      if (item.isShowLoading) {
+        return "";
+      }
       if (!item.isNFTApprove) {
         return "抵押授权";
       } else {
@@ -361,14 +385,18 @@ export default {
     pledgeBtnAction(item) {
       if (!item.isNFTApprove) {
         approveNFTAction(item, this.handleNftApprove, 0, false);
+        return;
       }
-      this.$bus.$emit("alertAction", { item: item, isNFTSell: true, isWNFTSell: false });
+      this.$bus.$emit("daoporDepositNotiAction", item);
+      item.isShowLoading = true;
+      this.$bus.$emit("pledgeBtnAction", { item: item, isNFTSell: true, isWNFTSell: false });
     },
     unPledgeBtnAction(item) {
       if (!item.isWNFTApprove) {
         approveWNFTAction(item, this.handleWNftApprove, 0, false);
+        return;
       }
-      this.$bus.$emit("alertAction", { item: item, isNFTSell: false, isWNFTSell: true });
+      this.$bus.$emit("pledgeBtnAction", { item: item, isNFTSell: false, isWNFTSell: true });
       // onBlockNumberChange();
       // watchEtherTransfers()
       // console.log(poolDatas);
@@ -687,7 +715,7 @@ export default {
   width: 95%;
 }
 
-.pledgeBtn {
+/* .pledgeBtnSubBox {
   border-style: none;
   width: 45%;
   height: 1.75rem;
@@ -696,6 +724,23 @@ export default {
   color: #fff;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.pledgeBtn {
+  border-style: none;
+  width: 100%;
+  height: 100%;
+  background-color: #03cd93;
+  border-radius: 0.875rem;
+  color: #fff;
+  font-size: 0.6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .unPledgeBtn {
   border-style: solid;
@@ -709,6 +754,9 @@ export default {
   color: #f7b500;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .getAwardBtn {
   border-style: none;
@@ -736,6 +784,11 @@ export default {
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   margin-bottom: 0.75rem;
+}
+
+.commonBtnBox {
+  position: relative;
+  background-color: #03cd93;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .el-col {
@@ -1046,6 +1099,14 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
     margin-bottom: 0.5rem;
+  }
+
+  .commonBtnBox {
+    position: relative;
+  }
+  .loadingImg {
+    width: 0.625rem;
+    height: 0.625rem;
   }
 }
 </style>
