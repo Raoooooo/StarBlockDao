@@ -97,7 +97,9 @@ export default {
   props: {},
   watch: {},
 
-  created() {},
+  created() {
+    // onConnect(this.getAccount, isClickLogin);
+  },
 
   mounted() {
     this.$bus.$on("updateTabIndex", val => {

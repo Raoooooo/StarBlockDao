@@ -75,6 +75,8 @@ export default {
         defaultMessSub3: "确定解抵押",
         confirm: "确定",
         cancle: "取消",
+        alertClose: "Close",
+
 
     },
 

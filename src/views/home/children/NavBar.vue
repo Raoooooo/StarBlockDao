@@ -14,7 +14,7 @@
 
           <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">登录</button>
           <div class="accountBox" v-show="isLogin">
-            <img class="account_img" src="@/assets/img/farms/linkIcon4.png" />
+            <img class="account_img" src="@/assets/img/farms/accountIcon.png" />
             <p class="account_text">{{ account }}</p>
           </div>
 
@@ -29,15 +29,79 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+      title=""
+      :visible.sync="chainIdErrorDialog"
+      :width="elDialogWidth"
+      :show-close="false"
+      center
+      :top="elDialogTopMargin"
+      :close-on-click-modal="false"
+      :fullscreen="false"
+      :lock-scroll="false"
+      :append-to-body="true"
+      :close-on-press-escape="false"
+    >
+      <div class="dialogBack">
+        <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
+        <p class="dialopTitle1">
+          {{ chainErrorTitle() }}
+        </p>
+        <p class="dialogDes">
+          {{ chainErrorDes() }}
+        </p>
+        <button
+          class="dialogBottomBtn"
+          @click="chainIdErrorDialogCloseAction"
+          v-show="isShowCloseChainErrorBtn"
+        >
+          {{ $t("common.iKnow") }}
+        </button>
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      title=""
+      :visible.sync="loginErrorDialogStatus"
+      :width="elDialogWidth"
+      :show-close="false"
+      center
+      :top="elDialogTopMargin"
+      :close-on-click-modal="false"
+      :fullscreen="false"
+      :lock-scroll="false"
+      :append-to-body="true"
+      :close-on-press-escape="false"
+    >
+      <div class="dialogBack">
+        <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
+        <p class="dialopTitle1">{{ $t("common.loginError") }}</p>
+        <button
+          class="dialogBottomBtn"
+          @click="loginErrorDialogCloseAction"
+          v-show="isShowCloseLoginErrorBtn"
+        >
+          {{ $t("common.iKnow") }}
+        </button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { onConnect, initWeb3Modal, resetApp, onBlockOut } from "@/common/useWallet";
 import { getLocalStorage, setLocalStorage, isLogin, localAccount } from "@/common/utils";
+import { web3ProviderUrl, getProdcutMode, getSurpportChainId } from "@/common/starBlockConfig";
+
 export default {
   name: "NavBar",
   components: {},
+  computed: {
+    getDailogTopImgFaildUrl: function () {
+      return require("@/assets/img/common/alertWaring.svg");
+    }
+  },
   data() {
     var langType = navigator.language;
     var currentLangrage = "navBar.English";
@@ -49,8 +113,14 @@ export default {
       currentLangrage = "navBar.English";
     }
     return {
-      langrageList: ["navBar.English", "navBar.chinese"],
+      elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
+      loginErrorDialog: false,
+      isShowCloseLoginErrorBtn: true,
+      isShowCloseChainErrorBtn: true,
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "340px",
+      chainIdErrorDialog: false,
 
+      langrageList: ["navBar.English", "navBar.chinese"],
       isLogin: false,
       account: "",
       currentLangrage: currentLangrage,
@@ -77,7 +147,7 @@ export default {
   watch: {},
 
   created() {
-    setLocalStorage("isFirstLoad",true);
+    setLocalStorage("isFirstLoad", true);
     // onBlockOut();
     var isClickLogin = false;
     onConnect(this.getAccount, isClickLogin);
@@ -94,6 +164,16 @@ export default {
     });
   },
   methods: {
+    chainErrorTitle() {
+      return getSurpportChainId() == 4
+        ? this.$t("common.checkChainId4")
+        : this.$t("common.checkChainId1");
+    },
+    chainErrorDes() {
+      return getSurpportChainId() == 4
+        ? this.$t("common.checkChainId4Des")
+        : this.$t("common.checkChainId1Des");
+    },
     changeLangeDropdownClick(value) {
       this.$bus.$emit("changeDescripHeight", value);
       if (value == "navBar.chinese") {
@@ -105,6 +185,13 @@ export default {
         this.currentLangrage = "navBar.English";
         localStorage.setItem("lang", "en");
       }
+    },
+
+    loginErrorDialogCloseAction() {
+      this.loginErrorDialog = false;
+    },
+    chainIdErrorDialogCloseAction() {
+      this.chainIdErrorDialog = false;
     },
     loginBtnAction() {
       var isClickLogin = true;
@@ -393,8 +480,8 @@ export default {
 }
 .account_img {
   margin-left: 0.25rem;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: .625rem;
+  /* height: 1rem; */
 }
 .account_text {
   margin-left: 0.25rem;
@@ -439,5 +526,47 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   /* margin-right: 2.5rem; */
+}
+
+.dialogBack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #f7b500; */
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.dialopTitle1 {
+  font-size: 0.4rem;
+  font-weight: 500;
+  color: #111;
+  margin-top: -0.85rem;
+}
+
+.dialogDes {
+  font-size: 0.325rem;
+  margin-top: 0.25rem;
+  align-content: center;
+  text-align: center;
+}
+
+.dialogTopImg {
+  margin-top: -1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.dialogBottomBtn {
+  margin-top: 0.35rem;
+  margin-bottom: -0.25rem;
+  width: 6.5rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+  border-style: none;
+  background-color: #f7b500;
+  color: white;
+  font-size: 0.4rem;
 }
 </style>

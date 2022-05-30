@@ -3,9 +3,11 @@ import * as Web3 from "web3";
 import { DaoPort } from "./starblockdao-js/lib/daoport";
 import { Network } from "./starblockdao-js/lib/types";
 import { getRequestBaseUrl, getProdcutMode } from "@/common/starBlockConfig";
-
+import Web3Modal from "web3modal";
+import { providerOptions } from "@/common/web3Config";
 var network_Name = Network.Rinkeby;
-
+var accounts;
+var daoport;
 
 
 export function setNetwork_Name(chaiIdNum) {
@@ -54,17 +56,15 @@ export function initWeb3() {
 }
 
 export async function daoportAction(item, handleMasterChefInfo, index) {
-    // var account = web3.eth.defaultAccount;
-    // const provider = new Web3.providers.HttpProvider(getInfura());
-    // alert(initWeb3().version);
-    console.log(initWeb3());
-    const daoport = new DaoPort(initWeb3(), network_Name);
-    // dao.account = account;
-    const nftMasterchef = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
-    const pid = 0;
-    // const pid = item.poolInfo.pid;
-    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
-    const maxTokenId = 100;
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const pid = item.poolInfo.pid;
+    const owner = accounts[0];
     var parameters = {
         pid,
         owner,
@@ -78,10 +78,15 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
     }
 }
 
-export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
-    const daoport = new DaoPort(initWeb3(), network_Name);
-    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
-    const operator = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
+export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove, faildHandle) {
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const owner = accounts[0];
     const wnftContract = item.poolInfo.wnft;
     const isApproveNFT = true;
     let parameters = {
@@ -104,13 +109,23 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
         if (getIsApproveNFT) {
             getIsApproveNFT(true, item, index);
         }
-    } catch (error) { }
+    } catch (error) {
+        if (faildHandle) {
+            faildHandle(item)
+        }
+    }
 }
 
 
-export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove) {
-    const daoport = new DaoPort(initWeb3(), network_Name);
-    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove, faildHandle) {
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const owner = accounts[0];
     // var operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
     const wnftContract = item.poolInfo.wnft;
     const isApproveNFT = false;
@@ -142,14 +157,25 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
         if (getIsApproveNFT) {
             getIsApproveNFT(true, item, index);
         }
-    } catch (error) { }
+    } catch (error) {
+        if (faildHandle) {
+            faildHandle(item)
+        }
+    }
 }
 
 export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
-    const daoport = new DaoPort(initWeb3(), network_Name);
-    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const owner = accounts[0];
     //获取可抵押tokens
     var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
+    item.contractAddress = contractAddress;
     var parameters = {
         contractAddress,
         owner
@@ -162,8 +188,13 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
 }
 
 export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
-    const daoport = new DaoPort(initWeb3(), network_Name);
-    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const owner = accounts[0];
     //获取可抵押tokens
     var contractAddress = item.poolInfo.wnft;
     var parameters = {
@@ -178,11 +209,13 @@ export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
 }
 
 
-export async function daoporDeposit(item, handleDeposit, tokenIds) {
-    const daoport = new DaoPort(initWeb3(), network_Name);
-
-    const owner = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
-    daoport.setAccount(owner);
+export async function daoporDeposit(item, handleDeposit, tokenIds, faildHandle) {
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
     const pid = item.poolInfo.pid;
     // const tokenIds = [4, 5];
     const parameters = {
@@ -194,25 +227,94 @@ export async function daoporDeposit(item, handleDeposit, tokenIds) {
         const txHash = await daoport.deposit(parameters);
         console.log("daoporDeposit==txhash", txHash);
         if (handleDeposit) {
-            handleDeposit(txHash);
+            handleDeposit(txHash, item);
         }
-    } catch (error) { }
+    } catch (error) {
+        if (faildHandle) {
+            faildHandle(item)
+        }
+    }
+}
+
+export async function daoporWithdraw(item, handleWithdraw, tokenIds, faildHandle) {
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const pid = item.poolInfo.pid;
+    // const tokenIds = [4, 5];
+    const parameters = {
+        pid,
+        tokenIds
+    };
+
+    try {
+        const txHash = await daoport.withdraw(parameters);
+        console.log("daoporDeposit==txhash", txHash);
+        if (handleWithdraw) {
+            handleWithdraw(txHash, item);
+        }
+    } catch (error) {
+        if (faildHandle) {
+            faildHandle(item)
+        }
+    }
+}
+export async function daoporHarvest(item, handleHarvest, tokenIds, faildHandle) {
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const owner = accounts[0];
+    const pid = item.poolInfo.pid;
+    const to = owner;
+    const wnftTokenIds = tokenIds;
+    const parameters = {
+        pid,
+        to,
+        wnftTokenIds
+    };
+
+    try {
+        const txHash = await daoport.harvest(parameters);
+        console.log("daoporHarvest==txhash", txHash);
+        if (handleHarvest) {
+            handleHarvest(txHash, item)
+        }
+    } catch (error) {
+        if (faildHandle) {
+            faildHandle(item)
+        }
+    }
 }
 
 
 export async function getBonusRewardAction(item, handleGetBonusReward, index) {
 
     ///获取分红，奖励
-    const owner = "0x979488515a1bcF8CFEcdDa28a3d0B818C8E888cB";
-    const wnftContract = "0x1Eaf354dc6804da13F26E9Bf9300De296EFE59A0";
-    const pid = 0;
+
+    if (!accounts) {
+        await getAccounts();
+    }
+
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+    const owner = accounts[0];
+    const wnftContract = item.poolInfo.wnft;
+    const pid = item.poolInfo.pid;
     const maxTokenId = 100;
     var parameters = {
         wnftContract,
         owner,
         maxTokenId
     };
-    const daoport = new DaoPort(initWeb3(), network_Name);
     const tokenIds = await daoport.ownedTokens(parameters);
     console.log("daoportAction=== tokenIds:", tokenIds);
 
@@ -284,6 +386,27 @@ export function onBlockNumberChange(updateBlockData) {
             console.log('Successfully unsubscribed!');
         }
     });
+}
+
+export async function getAccounts() {
+    const web3Modal = new Web3Modal({
+        theme: "dark",
+        // network: getChainData(walletObj.chainId).network,
+        network: "rinkeby",
+        cacheProvider: true,
+        providerOptions
+    });
+
+    const provider = await web3Modal.connect();
+    // await subscribeProvider(provider);
+
+    web3 = new Web3(provider);
+    accounts = await web3.eth.getAccounts();
+}
+
+export async function getDaoPort(account) {
+    daoport = new DaoPort(initWeb3(), network_Name);
+    daoport.setAccount(account);
 }
 
 

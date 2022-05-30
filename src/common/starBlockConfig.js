@@ -56,3 +56,14 @@ export function getChainWebUrl(chainID, transationHash) {
 }
 
 
+export function getSurpportChainId() {
+    if (getProdcutMode() == 1) {
+        return 1;
+    }
+    if (getProdcutMode() == 0) {
+        return 4;
+    }
+}
+
+
+
