@@ -24,10 +24,11 @@
     <button id="button" @click="ethSignMarket(true)">二级市场签名</button>
     <button id="button" @click="approveHandle">授权操作</button>
     <button id="button" @click="approveERC20Handle">授权ERC20</button>
-    <button id="button" @click="daoportAction">daoport操作</button>
-    <button id="button" @click="daoporApprovedtAction">dao授权操作</button>
+    <button id="button" @click="daoportAction">dao获取 pool数据</button>
+    <button id="button" @click="daoporApprovedtAction">dao授权</button>
     <button id="button" @click="daoporDeposit">dao deposit</button>
     <button id="button" @click="daoporWithdraw">dao withdraw</button>
+    <button id="button" @click="daoporHarvest">dao 领取奖励分红</button>
   </div>
 </template>
 
@@ -1038,7 +1039,48 @@ export default {
       } catch (error) {}
     },
 
-    async daoporWithdraw() {},
+    async daoporWithdraw() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const owner = accounts[0];
+      const pid = 0;
+      const tokenIds = [2, 3];
+      const parameters = {
+        pid,
+        tokenIds
+      };
+
+      try {
+        const txHash = await daoport.withdraw(parameters);
+        console.log("daoporWithdraw==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async daoporHarvest() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const pid = 0;
+      const to = accounts[0];
+      const wnftTokenIds = [2, 3];
+      const parameters = {
+        pid,
+        to,
+        wnftTokenIds
+      };
+
+      try {
+        const txHash = await daoport.harvest(parameters);
+        console.log("daoporHarvest==txhash", txHash);
+      } catch (error) {}
+    },
 
     toggleShow() {
       this.show = !this.show;

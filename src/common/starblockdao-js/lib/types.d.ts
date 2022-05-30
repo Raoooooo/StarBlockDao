@@ -10,6 +10,9 @@ export declare type Web3Callback<T> = (err: Error | null, result: T | null | T[]
 export declare type PartialReadonlyContractAbi = AbiItem[];
 export interface MasterChefPoolsInfo {
     poolInfo: {};
+    rewardForEachBlock: number | null;
+    rewardPerNFTForEachBlock: number | null;
+    endBlock: number | null;
     mining: number | null;
     dividend: number | null;
     nftQuantity: number | null;

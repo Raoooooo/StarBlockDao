@@ -166,23 +166,26 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.harvestToken = function (pid, tokenIds, handle) {
+    DaoPort.prototype.harvest = function (_a) {
+        var pid = _a.pid, to = _a.to, wnftTokenIds = _a.wnftTokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, error_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var txHash, txnData, error_4;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this._protocol.harvestToken(pid, tokenIds)];
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
+                                .harvest(pid, to, wnftTokenIds)
+                                .send(txnData)];
                     case 1:
-                        txHash = _a.sent();
-                        handle(txHash, "");
+                        txHash = _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        error_4 = _a.sent();
-                        handle("", error_4);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        error_4 = _b.sent();
+                        console.error(error_4);
+                        throw new Error("Failed to harvest transaction: \"".concat(error_4 instanceof Error && error_4.message ? error_4.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
                 }
             });
         });
@@ -246,20 +249,22 @@ var DaoPort = /** @class */ (function () {
     DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
         var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, poolInfo, mining, dividend, nftQuantity, wnftQuantity;
+            var _b, poolInfo, rewardForEachBlock, rewardPerNFTForEachBlock, endBlock, mining, dividend, nftQuantity, wnftQuantity;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-                        return [4 /*yield*/, this._protocol
-                                .NFTUtilsContract.methods
+                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
                                 .getNFTMasterChefInfos(nftMasterchef, pid, owner)
                                 .call()];
                     case 1:
-                        _b = _c.sent(), poolInfo = _b.poolInfo, mining = _b.mining, dividend = _b.dividend, nftQuantity = _b.nftQuantity, wnftQuantity = _b.wnftQuantity;
-                        console.log("chefInfo---", poolInfo["rewardPerNFTForEachBlock"], mining, dividend, nftQuantity, wnftQuantity);
+                        _b = _c.sent(), poolInfo = _b.poolInfo, rewardForEachBlock = _b.rewardForEachBlock, rewardPerNFTForEachBlock = _b.rewardPerNFTForEachBlock, endBlock = _b.endBlock, mining = _b.mining, dividend = _b.dividend, nftQuantity = _b.nftQuantity, wnftQuantity = _b.wnftQuantity;
+                        console.log("chefInfo---", poolInfo, rewardForEachBlock, rewardPerNFTForEachBlock, endBlock, mining, dividend, nftQuantity, wnftQuantity);
                         return [2 /*return*/, {
                                 poolInfo: poolInfo,
+                                rewardForEachBlock: rewardForEachBlock,
+                                rewardPerNFTForEachBlock: rewardPerNFTForEachBlock,
+                                endBlock: endBlock,
                                 mining: mining,
                                 dividend: dividend,
                                 nftQuantity: nftQuantity,
