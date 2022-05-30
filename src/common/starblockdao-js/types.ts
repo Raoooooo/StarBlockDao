@@ -15,6 +15,9 @@ export type PartialReadonlyContractAbi = AbiItem[];
 
 export interface MasterChefPoolsInfo {
   poolInfo: {};
+  rewardForEachBlock: number | null;
+  rewardPerNFTForEachBlock: number | null;
+  endBlock: number | null;
   mining: number | null;
   dividend: number | null;
   nftQuantity: number | null;

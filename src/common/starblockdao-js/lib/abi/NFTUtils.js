@@ -81,6 +81,21 @@ exports.NFTUtils = [
             },
             {
                 internalType: "uint256",
+                name: "rewardForEachBlock",
+                type: "uint256"
+            },
+            {
+                internalType: "uint256",
+                name: "rewardPerNFTForEachBlock",
+                type: "uint256"
+            },
+            {
+                internalType: "uint256",
+                name: "endBlock",
+                type: "uint256"
+            },
+            {
+                internalType: "uint256",
                 name: "mining",
                 type: "uint256"
             },

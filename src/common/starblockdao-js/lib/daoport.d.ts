@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { CallbackHandle, Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 export declare class DaoPort {
     private _protocol;
     constructor(provider: Web3, networkName: Network);
@@ -24,7 +24,11 @@ export declare class DaoPort {
         wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<string>;
-    harvestToken(pid: number, tokenIds: number[], handle: CallbackHandle): Promise<void>;
+    harvest({ pid, to, wnftTokenIds }: {
+        pid: number;
+        to: string;
+        wnftTokenIds: number[];
+    }): Promise<string>;
     ownedTokens({ contractAddress, owner }: {
         contractAddress: string;
         owner: string;

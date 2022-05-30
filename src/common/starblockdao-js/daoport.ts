@@ -118,17 +118,30 @@ export class DaoPort {
     return txHash;
   }
 
-  public async harvestToken(
-    pid: number,
-    tokenIds: number[],
-    handle: CallbackHandle
-  ): Promise<void> {
+  public async harvest({
+    pid,
+    to,
+    wnftTokenIds
+  }: {
+    pid: number;
+    to: string;
+    wnftTokenIds: number[];
+  }): Promise<string> {
+    let txHash;
     try {
-      const txHash = await this._protocol.harvestToken(pid, tokenIds);
-      handle(txHash, "");
+      const txnData = { from: this._protocol.account };
+      txHash = await (this._protocol.NFTMasterChefContract as Contract).methods
+        .harvest(pid, to, wnftTokenIds)
+        .send(txnData);
     } catch (error) {
-      handle("", error);
+      console.error(error);
+      throw new Error(
+        `Failed to harvest transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
     }
+    return txHash;
   }
 
   public async ownedTokens({
@@ -189,13 +202,24 @@ export class DaoPort {
     maxTokenId: number;
   }): Promise<MasterChefPoolsInfo> {
     nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-    const { poolInfo, mining, dividend, nftQuantity, wnftQuantity } = await (this._protocol
-      .NFTUtilsContract as Contract).methods
+    const {
+      poolInfo,
+      rewardForEachBlock,
+      rewardPerNFTForEachBlock,
+      endBlock,
+      mining,
+      dividend,
+      nftQuantity,
+      wnftQuantity
+    } = await (this._protocol.NFTUtilsContract as Contract).methods
       .getNFTMasterChefInfos(nftMasterchef, pid, owner)
       .call();
     console.log(
       "chefInfo---",
-      poolInfo["rewardPerNFTForEachBlock"],
+      poolInfo,
+      rewardForEachBlock,
+      rewardPerNFTForEachBlock,
+      endBlock,
       mining,
       dividend,
       nftQuantity,
@@ -203,6 +227,9 @@ export class DaoPort {
     );
     return {
       poolInfo,
+      rewardForEachBlock,
+      rewardPerNFTForEachBlock,
+      endBlock,
       mining,
       dividend,
       nftQuantity,
