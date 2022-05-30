@@ -27,7 +27,9 @@
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">--</p>
+              <p class="itemDataBox_topText">
+                {{ (totalReward * Math.pow(10, -18)).toFixed(2) + " STB" }}
+              </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
             </div>
           </div>
@@ -36,7 +38,7 @@
 
       <!-- Farms -->
       <div class="itemsBox">
-        <farmitem :items="items" :currentBlockNumber="currentBlockNumber"></farmitem>
+        <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
       </div>
 
       <!-- <div class="emptyContantBox">
@@ -96,18 +98,20 @@
 
       <div class="alertSectionBox1">
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">12653.872 ETH</p>
-          <p class="itemDataBox_bottomText_alert">TVL</p>
+          <p class="itemDataBox_topText_alert">{{ this.WNFTItems.length }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ "已抵押" }}</p>
         </div>
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">12653.872 ETH</p>
-          <p class="itemDataBox_bottomText_alert">TVL</p>
+          <p class="itemDataBox_topText_alert">
+            {{ (totalReward * Math.pow(10, -18)).toFixed(2) + " STB" }}
+          </p>
+          <p class="itemDataBox_bottomText_alert">{{ "可领取挖矿奖励" }}</p>
         </div>
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">12653.872 ETH</p>
-          <p class="itemDataBox_bottomText_alert">TVL</p>
+          <p class="itemDataBox_topText_alert">--</p>
+          <p class="itemDataBox_bottomText_alert">{{ "可领取分红奖励" }}</p>
         </div>
       </div>
 
@@ -139,12 +143,37 @@
         </div>
         <div class="selectItemSepLine"></div>
         <!-- <div v-for="(item, index) in selectItems"> -->
-        <selectnft :items="items"></selectnft>
+        <selectnft :items="canSelectNftItems"></selectnft>
         <!-- </div> -->
       </div>
 
       <p class="alertTip1">· 抵押或解压后将自动领取当前奖励</p>
       <p class="alertTip2">· 根据您出游WrappedNFT可解抵押对应的NFT</p>
+    </el-dialog>
+
+    <el-dialog
+      title=""
+      :visible.sync="successVisible"
+      :width="elDialogWidth"
+      :show-close="false"
+      center
+      top="200px"
+      :close-on-click-modal="false"
+      append-to-body
+      :lock-scroll="false"
+      :close-on-press-escape="false"
+    >
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
+        <p class="dialopTitle">
+          {{ requestSuccessStr }}
+        </p>
+        <div class="bottomBtnBox1">
+          <button class="alertCloseBtn" @click="alertCloseBtnAction">
+            {{ $t("common.alertClose") }}
+          </button>
+        </div>
+      </div>
     </el-dialog>
 
     <el-dialog
@@ -165,7 +194,7 @@
           {{ defaultMessageStr }}
         </p>
         <span class="dialogDes">
-          {{ defaultMessageStr }}
+          {{ defaultMessageDesStr }}
         </span>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultBtnAction">
@@ -198,7 +227,9 @@ import {
   getBonusRewardAction,
   getNFTTokenIDs,
   daoporDeposit,
-  getWNFTTokenIDs
+  getWNFTTokenIDs,
+  daoporWithdraw,
+  daoporHarvest
 } from "@/common/starblockdao";
 
 export default {
@@ -213,6 +244,9 @@ export default {
   },
   computed: {
     defaultMessageStr() {
+      if (this.isGetReward) {
+        return "确定领取奖励";
+      }
       if (this.isSwitch1) {
         return (
           this.$t("common.defaultMessSub1") +
@@ -230,6 +264,17 @@ export default {
       }
     },
 
+    requestSuccessStr() {
+      if (this.isGetReward) {
+        return "领取奖励成功";
+      }
+      if (this.isSwitch1) {
+        return "抵押NFT成功";
+      } else {
+        return "解抵押NFT成功";
+      }
+    },
+
     alertActionStr() {
       if (this.isSwitch1) {
         return "抵押";
@@ -243,12 +288,15 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      successVisible: false,
+      defaultMessageDesStr: "",
       selectPollItem: null,
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
       warningDefaultVisible: false,
       selectTokenIdsArr: [],
       selectCount: 0,
       totalNftQuantity: 0,
+      totalReward: 0,
       currentBlockNumber: 100000000,
       topImgHeight: topImgHeight,
       topBackImgUrl:
@@ -256,21 +304,11 @@ export default {
           ? require("@/assets/img/farms/topBack.jpg")
           : require("@/assets/img/farms/mobile/topBack.png"),
       isSwitch1: true,
-      items: [],
-      NFTItems: [
-        { select: false, collection: {}, tokenId: 1 },
-        { select: false, collection: {}, tokenId: 2 },
-        { select: false, collection: {}, tokenId: 3 },
-        { select: false, collection: {}, tokenId: 4 }
-      ],
-      WNFTItems: [
-        { select: false, collection: {}, tokenId: 6 },
-        { select: false, collection: {}, tokenId: 7 },
-        { select: false, collection: {}, tokenId: 8 },
-        { select: false, collection: {}, tokenId: 9 },
-        { select: false, collection: {}, tokenId: 10 }
-        // { select: false, collection: {}, tokenId: 11 }
-      ],
+      isGetReward: false,
+      poolItems: [],
+      canSelectNftItems: [],
+      NFTItems: [],
+      WNFTItems: [],
 
       elDialogEditSellDataWidth: document.documentElement.clientWidth > 750 ? "900px" : "350px",
       elDialogEditSellDataHeight: "918px",
@@ -310,8 +348,11 @@ export default {
 
     // daoportAction(0);
 
-    this.items = poolDatas;
+    this.poolItems = poolDatas;
     this.getMasterChefInfo();
+    // setInterval(() => {
+    //   this.getMasterChefInfo();
+    // }, 10000 * 60 * 5 * 60);
     this.$nextTick(() => {
       // console.log("this.$route.path*******",this.$route.path);
       // this.setScrollToPostion();
@@ -348,8 +389,8 @@ export default {
   mounted() {
     this.$bus.$on("selectNftAction", val => {
       var selectTokenIdsArr = [];
-      Object.keys(this.items).forEach(key => {
-        var item = this.items[key];
+      Object.keys(this.canSelectNftItems).forEach(key => {
+        var item = this.canSelectNftItems[key];
         if (item.select) {
           selectTokenIdsArr.push(item.tokenId);
         }
@@ -357,17 +398,24 @@ export default {
       this.selectTokenIdsArr = selectTokenIdsArr;
       this.selectCount = this.selectTokenIdsArr.length;
     }),
-      this.$bus.$on("pledgeBtnAction", val => {
+      this.$bus.$on("pledgeBtnNotiAction", val => {
         this.selectPollItem = val.item;
-        if (val.isNFTSell) {
-          this.isSwitch1 = true;
-          this.items = this.NFTItems;
+        this.selectPollItem.showImgLoading = true;
+        this.isGetReward = val.isGetReward;
+
+        if (this.isGetReward) {
+          this.warningDefaultVisible = true;
+        } else {
+          if (val.isNFTSell) {
+            this.isSwitch1 = true;
+            this.canSelectNftItems = this.NFTItems;
+          }
+          if (val.isWNFTSell) {
+            this.isSwitch1 = false;
+            this.canSelectNftItems = this.WNFTItems;
+          }
+          this.actionAlertShow = true;
         }
-        if (val.isWNFTSell) {
-          this.isSwitch1 = false;
-          this.items = this.WNFTItems;
-        }
-        this.actionAlertShow = true;
       });
     var that = this;
     // <!--把window.onresize事件挂在到mounted函数上-->
@@ -382,6 +430,9 @@ export default {
   },
 
   methods: {
+    alertCloseBtnAction() {
+      this.successVisible = false;
+    },
     alertBeforeAction() {
       if (this.selectTokenIdsArr.length == 0) {
         return;
@@ -389,34 +440,95 @@ export default {
       this.warningDefaultVisible = true;
     },
     defaultBtnAction() {
-      this.$bus.$emit("daoporDepositNotiAction", this.selectPollItem);
-      daoporDeposit(this.selectPollItem, this.handleDeposit, this.selectTokenIdsArr);
+      this.warningDefaultVisible = false;
+      this.actionAlertShow = false;
+      if (this.isGetReward) {
+        var emptyArr = [];
+        for (var i = 0; i < this.WNFTItems.length; i++) {
+          var miniItem = this.WNFTItems[i];
+          emptyArr.push(miniItem.tokenId);
+        }
+        daoporHarvest(
+          this.selectPollItem,
+          this.handleHarvest,
+          emptyArr,
+          this.faildHandleDaoporHarvest
+        );
+        this.$bus.$emit("defaultBtnNotiAction", { selectItem: this.selectPollItem, clickType: 2 });
+      } else {
+        if (this.isSwitch1) {
+          this.$bus.$emit("defaultBtnNotiAction", {
+            selectItem: this.selectPollItem,
+            clickType: 0
+          });
+          daoporDeposit(
+            this.selectPollItem,
+            this.handleDeposit,
+            this.selectTokenIdsArr,
+            this.faildHandleDaoporDeposit
+          );
+        } else {
+          daoporWithdraw(
+            this.selectPollItem,
+            this.handleWithdraw,
+            this.selectTokenIdsArr,
+            this.faildHandleDaoporWithdraw
+          );
+          this.$bus.$emit("defaultBtnNotiAction", {
+            selectItem: this.selectPollItem,
+            clickType: 1
+          });
+        }
+      }
     },
-    cancleBtnAction(txHash) {
-      console.log("txHash");
+    faildHandleDaoporDeposit(item) {
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
+    },
+    faildHandleDaoporWithdraw(item) {
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
+    },
+    faildHandleDaoporHarvest(item) {
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
     },
 
-    handleDeposit() {},
+    cancleBtnAction() {
+      this.warningDefaultVisible = false;
+    },
+
+    handleDeposit(txHash, item) {
+      this.getMasterChefInfo();
+      this.successVisible = true;
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
+    },
+    handleWithdraw(txHash, item) {
+      this.getMasterChefInfo();
+      this.successVisible = true;
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
+    },
+    handleHarvest(txHash, item) {
+      this.getMasterChefInfo();
+      this.successVisible = true;
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
+    },
     updateBlockData(number, web3) {
       this.currentBlockNumber = number;
       console.log("currentBlockNumber", this.currentBlockNumber);
     },
 
     async getMasterChefInfo() {
-      for (var i = 0; i < this.items.length; i++) {
-        var item = this.items[i];
+      for (var i = 0; i < this.poolItems.length; i++) {
+        var item = this.poolItems[i];
         await daoportAction(item, this.handleMasterChefInfo, i);
-        approveNFTAction(item, this.handleNftApprove, i, true);
-        approveWNFTAction(item, this.handleWNftApprove, i, true);
+        await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
+        approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
         getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
-        getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
-        // getBonusRewardAction(item, this.handleGetBonusReward, i);
+        await getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
       }
     },
 
     handleMasterChefInfo(masterChefInfo, item, index) {
-      console.log("document=== masterchefinfo: pid", item.poolInfo.pid, masterChefInfo, index);
-      item.poolInfo.endBlock = masterChefInfo.poolInfo.lastRewardBlock;
+      console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
+      item.endBlock = masterChefInfo.endBlock;
       item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
       item.nftQuantity = masterChefInfo.nftQuantity;
       item.wnftQuantity = masterChefInfo.wnftQuantity;
@@ -425,13 +537,15 @@ export default {
       item.dividend = Number(masterChefInfo.dividend);
       item.mining = Number(masterChefInfo.mining);
       item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
-      item.poolInfo.rewardPerNFTForEachBlock = masterChefInfo.poolInfo.rewardPerNFTForEachBlock;
-      item.poolInfo.rewardForEachBlock = masterChefInfo.poolInfo.rewardForEachBlock;
-      if (index == this.items.length - 1) {
+      item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
+      item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
+      if (index == this.poolItems.length - 1) {
         this.totalNftQuantity = 0;
-        for (var i = 0; i < this.items.length; i++) {
-          const item = this.items[i];
+        this.totalReward = 0;
+        for (var i = 0; i < this.poolItems.length; i++) {
+          const item = this.poolItems[i];
           this.totalNftQuantity += Number(item.poolInfo.amount);
+          this.totalReward += Number(item.mining);
         }
       }
     },
@@ -439,9 +553,11 @@ export default {
     handleNftApprove(isApprove, item, index) {
       item.isNFTApprove = isApprove;
     },
+    faildHandleApproveNFT(item) {},
     handleWNftApprove(isApprove, item, index) {
       item.isWNFTApprove = isApprove;
     },
+    faildHandleApproveWNFT(item) {},
     handleGetNFTTokenIDs(NFTTokenIDs, item, index) {
       var emptyArr = [];
       for (var i = 0; i < NFTTokenIDs.length; i++) {
@@ -474,7 +590,7 @@ export default {
     },
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
-      this.items = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
+      this.canSelectNftItems = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
       this.$bus.$emit("selectNftAction", 1);
     },
     closeAlertAction() {
@@ -985,6 +1101,20 @@ export default {
   /* width: 100%; */
 }
 
+.alertCloseBtn {
+  margin-top: 0.2rem;
+  font-size: 0.375rem;
+  font-weight: 400;
+  color: white;
+  background-color: #f7b500;
+  height: 1rem;
+  border-radius: 0.5rem;
+  border-style: none;
+  /* border-width: 1px; */
+  /* border-color: #111; */
+  width: 90%;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .back {
     display: flex;
@@ -1453,6 +1583,20 @@ export default {
     /* border-width: 1px; */
     /* border-color: #111; */
     width: 45%;
+  }
+
+  .alertCloseBtn {
+    margin-top: 0rem;
+    font-size: 0.375rem;
+    font-weight: 400;
+    color: white;
+    background-color: #f7b500;
+    height: 1rem;
+    border-radius: 0.5rem;
+    border-style: none;
+    /* border-width: 1px; */
+    /* border-color: #111; */
+    width: 90%;
   }
 }
 </style>

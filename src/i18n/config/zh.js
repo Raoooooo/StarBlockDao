@@ -75,6 +75,13 @@ export default {
         defaultMessSub3: "确定解抵押",
         confirm: "确定",
         cancle: "取消",
+        alertClose: "关闭",
+        checkChainId1: "请切换到以太坊 Ethereum主网络",
+        checkChainId4: "请切换到以太坊 Rinkeby网络",
+        checkChainId1Des: "为了能够正常操作，请切换至MetaMask钱包内的以太坊 Ethereum主网络",
+        checkChainId4Des: "为了能够正常操作，请切换至MetaMask钱包内的以太坊 Rinkeby网络",
+        loginError: "请点击导航栏【登录】按钮，完成登录后操作",
+        iKnow: "我知道了",
 
     },
 

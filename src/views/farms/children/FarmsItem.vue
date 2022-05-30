@@ -21,7 +21,8 @@
             >
               <p class="contantDetailTopBox_rightBox_text">
                 {{
-                  formmatBlockStr(Number(item.poolInfo.endBlock) - currentBlockNumber) +
+                  formmatBlockStr(Number(item.endBlock) - currentBlockNumber) +
+                  " " +
                   $t("farms.endBlock")
                 }}
               </p>
@@ -70,12 +71,7 @@
           <div class="contantDetailSection1_rightBox">
             <p class="contantDetailSection1_rightBox_topText">
               {{
-                (
-                  Number(item.poolInfo.rewardPerNFTForEachBlock) *
-                  6500 *
-                  30 *
-                  Math.pow(10, -18)
-                ).toFixed(2) +
+                (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2) +
                 "/" +
                 " STB"
               }}
@@ -97,8 +93,10 @@
             <span class="contantDetailSection2_rightText1">--</span>
           </p>
         </div>
+
+        <poolcontantitem :item="item"></poolcontantitem>
         <!-- 抵押、解抵押 -->
-        <div class="pledgeBtnBox">
+        <!-- <div class="pledgeBtnBox">
           <button class="pledgeBtn" @click="pledgeBtnAction(item)">
             {{ item.isShowLoading ? "" : pledgeBtnStr(item) }}
             <img
@@ -106,18 +104,18 @@
               src="@/assets/img/farms/linkIcon4.png"
               v-show="showImgLoading(item)"
             />
-          </button>
+          </button> -->
 
-          <button class="unPledgeBtn" @click="unPledgeBtnAction(item)">
+        <!-- <button class="unPledgeBtn" @click="unPledgeBtnAction(item)">
             {{ unPledgeBtnStr(item) }}
             <img class="loadingImg" src="@/assets/img/common/requestLoading.svg" />
           </button>
-        </div>
+        </div> -->
         <!-- 领取奖励 -->
-        <button class="getAwardBtn">
+        <!-- <button class="getAwardBtn">
           {{ $t("farms.getAward") + " " + awardAmountStr(item) }}
         </button>
-        <button class="getBonuBtn">{{ $t("farms.getBonus") + " " + bonusAmountStr(item) }}</button>
+        <button class="getBonuBtn">{{ $t("farms.getBonus") + " " + bonusAmountStr(item) }}</button> -->
       </div>
     </el-col>
   </el-row>
@@ -136,7 +134,7 @@ import {
   checkChainIdError
 } from "@/common/utils";
 import poolDatas from "@/common/dataConfig";
-
+import Poolcontantitem from "../children/PoolContantItem.vue";
 import {
   daoportAction,
   getBlockNumber,
@@ -147,7 +145,9 @@ import {
 
 export default {
   name: "Farmitem",
-  components: {},
+  components: {
+    Poolcontantitem
+  },
   data() {
     var rowNum = 0;
     if (document.documentElement.clientWidth <= 700) {
@@ -275,12 +275,6 @@ export default {
   },
 
   mounted() {
-    this.$bus.$on("daoporDepositNotiAction", val => {
-      this.currentPollItem = val;
-      this.currentPollItem.isShowLoading = true;
-      // this.pledgeBtnStr(val, true);
-    });
-
     var that = this;
     // <!--把window.onresize事件挂在到mounted函数上-->
     window.onresize = () => {
@@ -347,7 +341,7 @@ export default {
     },
     isShowEndBlock(item, currentBlockNumber) {
       if (
-        Number(item.poolInfo.endBlock) - currentBlockNumber > 0 &&
+        Number(item.endBlock) - currentBlockNumber > 0 &&
         Number(item.poolInfo.startBlock) - currentBlockNumber <= 0
       ) {
         return true;
@@ -363,16 +357,19 @@ export default {
       }
     },
     isShowSellEndBlock(item, currentBlockNumber) {
-      if (Number(item.poolInfo.endBlock) - currentBlockNumber <= 0) {
+      if (Number(item.endBlock) - currentBlockNumber <= 0) {
         return true;
       } else {
         return false;
       }
     },
     rewardAmount(item) {
-      if (Number(item.poolInfo.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
+      if (item.rewardForEachBlock) {
+        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2);
+      }
+      if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
         return (
-          Number(item.poolInfo.rewardPerNFTForEachBlock) *
+          Number(item.rewardPerNFTForEachBlock) *
           6500 *
           30 *
           Number(item.poolInfo.amount) *
