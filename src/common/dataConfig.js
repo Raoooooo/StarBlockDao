@@ -54,7 +54,7 @@ const poolDatas = [
         mining: "--",
         showImgLoading: false,
         isNFTApprove: false,
-        isWNFTApprove: false,
+        isNFTApprove: false,
         NFTItems: [],
         WNFTItems: [],
         collection: {

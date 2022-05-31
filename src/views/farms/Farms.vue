@@ -304,9 +304,9 @@ export default {
         return this.$t("common.defaultMessSub4Des");
       }
       if (this.isSwitch1) {
-        return this.$t("common.defaultMessSub1Des");
+        return this.$t("farms.tip4") + this.$t("farms.tip6");
       } else {
-        return this.$t("common.defaultMessSub3Des");
+        return this.$t("farms.tip3");
       }
     },
 
