@@ -30,7 +30,7 @@ const routes = [
   },
   {
     path: "/nftfarming", name: "farms", component: Farms, meta: {
-      keepAlive: false
+      keepAlive: true
     },
   },
 

@@ -73,15 +73,23 @@ export default {
         depositSuccess: "抵押NFT成功",
         withdrawSuccess: "解抵押NFT成功",
 
+
+
     },
 
 
     common: {
+        copySucceess: "复制成功",
+        txHash: "交易哈希",
         defaultMessSub1: "确定抵押",
         defaultMessSub2: "个",
         defaultMessSub3: "确定解抵押",
         defaultMessSub4: "确定领取奖励",
 
+        defaultMessSub4Des: "抵押奖励",
+        defaultMessSub3Des: "解抵押的时候将自动领取所有奖励",
+        defaultMessSub1Des: "抵押以后将会给您抵押凭证：WNFT WNFT是解抵押NFT的唯一凭证，千万不可丢失",
+       
         confirm: "确定",
         cancle: "取消",
         alertClose: "关闭",
@@ -91,6 +99,7 @@ export default {
         checkChainId4Des: "为了能够正常操作，请切换至MetaMask钱包内的以太坊 Rinkeby网络",
         loginError: "请点击导航栏【登录】按钮，完成登录后操作",
         iKnow: "我知道了",
+
 
     },
 

@@ -61,16 +61,16 @@
             <div class="contantDetailSection1_leftBox_subBox">
               <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.name }}</p>
               <div class="linkIconBox">
-                <a :href="linkOfType(item, 1)" target="_blank">
+                <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
                 </a>
-                <a :href="linkOfType(item, 2)" target="_blank">
+                <a :href="linkOfType(item, 2)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon1" src="@/assets/img/farms/linkIcon2.png" />
                 </a>
-                <a :href="linkOfType(item, 3)" target="_blank">
+                <a :href="linkOfType(item, 3)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
                 </a>
-                <a :href="linkOfType(item, 4)" target="_blank">
+                <a :href="linkOfType(item, 4)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
                 </a>
               </div>
@@ -320,7 +320,7 @@ export default {
           "/" +
           " STB"
         );
-      } else if (Number(item.rewardForEachBlock) > 0) {
+      } else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
         return (
           (
             (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
@@ -654,7 +654,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 2.25rem;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 .contantDetailSection1_leftBox_subBox_topText {
   font-size: 0.7rem;
@@ -669,12 +669,17 @@ export default {
   flex-direction: row;
 }
 
+.linkIconUrl {
+  margin-top: -0.35rem;
+}
 .linkIcon {
+  /* margin-top: -1.5rem; */
   width: 1rem;
   height: 1rem;
 }
 
 .linkIcon1 {
+  /* margin-top: -1.5rem; */
   margin-left: 0.25rem;
   width: 1rem;
   height: 1rem;
@@ -990,7 +995,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: 1.25rem;
-    justify-content: space-between;
+    /* justify-content: space-between; */
   }
   .contantDetailSection1_leftBox_subBox_topText {
     font-size: 0.4rem;
@@ -1005,6 +1010,9 @@ export default {
     flex-direction: row;
   }
 
+  .linkIconUrl {
+    margin-top: -0.35rem;
+  }
   .linkIcon {
     width: 0.5rem;
     height: 0.5rem;

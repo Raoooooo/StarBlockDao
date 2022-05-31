@@ -21,7 +21,10 @@
       </button>
     </div>
     <!-- 领取奖励 -->
-    <button class="getAwardBtn" @click="getAwardBtnAction">
+    <button
+      :class="item.mining > 0 ? 'getAwardBtn' : 'getAwardBtn_unActive'"
+      @click="getAwardBtnAction"
+    >
       <p v-show="!showImgLoading2">{{ $t("farms.getAward") + " " + awardAmountStr(item) }}</p>
       <img
         class="loadingImg"
@@ -315,6 +318,9 @@ export default {
       // this.$bus.$emit("alertAction", "1");
     },
     getAwardBtnAction() {
+      if (this.item.mining <= 0) {
+        return;
+      }
       if (this.showImgLoading2) {
         return;
       }
@@ -396,7 +402,7 @@ export default {
 }
 .unPledgeBtn {
   border-style: solid;
-  border-width: .0375rem;
+  border-width: 0.0375rem;
   border-color: #f7b500;
   /* width: 3.55rem; */
   width: 47%;
@@ -428,6 +434,24 @@ export default {
   justify-content: center;
   cursor: pointer;
 }
+
+.getAwardBtn_unActive {
+  border-style: none;
+  margin-top: 0.75rem;
+  height: 1rem;
+  margin-left: 2.5%;
+  width: 95%;
+  height: 1.75rem;
+  background-color: #e5e5e5;
+  border-radius: 0.875rem;
+  color: #8c9399;
+  font-size: 0.6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
 .getBonuBtn {
   border-style: none;
   margin-top: 0.5rem;
@@ -456,7 +480,7 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .pledgeBtnBox {
-    margin-top: .625rem;
+    margin-top: 0.625rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -479,7 +503,7 @@ export default {
   }
   .unPledgeBtn {
     border-style: solid;
-    border-width: .0375rem;
+    border-width: 0.0375rem;
     border-color: #f7b500;
     /* width: 3.55rem; */
     width: 47%;
@@ -500,6 +524,19 @@ export default {
     background-color: #f7b500;
     border-radius: 0.5rem;
     color: #fff;
+    font-size: 0.35rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+  }
+  .getAwardBtn_unActive {
+    border-style: none;
+    margin-top: 0.25rem;
+    height: 1rem;
+    margin-left: 5%;
+    width: 90%;
+    height: 1rem;
+    background-color: #e5e5e5;
+    border-radius: 0.5rem;
+    color: #8c9399;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }

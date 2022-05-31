@@ -9,13 +9,13 @@
 
         <div class="linkIconBox">
           <!-- <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" /> -->
-          <a :href="linkOfType(item, 1)" target="_blank">
+          <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
             <img class="linkIcon" src="@/assets/img/farms/linkIcon2.png" />
           </a>
-          <a :href="linkOfType(item, 2)" target="_blank" v-show="!isWNFT">
+          <a :href="linkOfType(item, 2)" target="_blank" v-show="!isWNFT" class="linkIconUrl">
             <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
           </a>
-          <a :href="linkOfType(item, 3)" target="_blank" v-show="isWNFT">
+          <a :href="linkOfType(item, 3)" target="_blank" v-show="isWNFT" class="linkIconUrl">
             <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
           </a>
         </div>
@@ -229,6 +229,7 @@ export default {
   /* border-radius: .25rem; */
   /* border-style: solid; */
   /* border-color: #ECECEC; */
+  min-height: 6.5rem;
   width: 100%;
   max-height: 10.5rem;
   overflow-x: hidden;
@@ -296,7 +297,9 @@ export default {
   flex-direction: row;
   justify-content: center;
 }
-
+.linkIconUrl{
+  margin-top: .25rem;
+}
 .linkIcon {
   width: 1rem;
   height: 1rem;

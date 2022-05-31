@@ -18,10 +18,13 @@ import elment from 'element-ui/lib/locale/lang/zh-CN'
 import enLocale from 'element-ui/lib/locale/lang/en'
 import i18n from "./i18n"
 import 'view-design/dist/styles/iview.css';
+import VueClipboard from "vue-clipboard2";
+
 import { Dropdown, DropdownMenu, DropdownItem, Tag, Table } from 'view-design';
 
 Vue.config.productionTip = true;
 
+Vue.use(VueClipboard);
 
 Vue.component('Dropdown', Dropdown);
 Vue.component('DropdownMenu', DropdownMenu);

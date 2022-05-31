@@ -115,7 +115,11 @@
         </div>
       </div>
 
-      <div class="alertSectionBox2">
+      <div
+        class="alertSectionBox2"
+        v-loading.lock="actionAlertShowLoading"
+        element-loading-background="rgba(0, 0, 0, 0.0)"
+      >
         <div class="switchBtnBox">
           <button :class="isSwitch1 ? 'switchBtn_on' : 'switchBtn_off'" @click="switchBtn(1)">
             {{ $t("farms.pledge") }}
@@ -175,6 +179,18 @@
         <p class="dialopTitle">
           {{ requestSuccessStr }}
         </p>
+
+        <div class="txHashBox">
+          <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+          <a :href="txHashOringion" target="_blank">
+            <p class="txHash">{{ txHash }}</p>
+          </a>
+          <img
+            class="txHash_copy"
+            src="@/assets/img/common/copy.svg"
+            @click="copyAddressAction(txHashOringion)"
+          />
+        </div>
         <div class="bottomBtnBox1">
           <button class="alertCloseBtn" @click="alertCloseBtnAction">
             {{ $t("common.alertClose") }}
@@ -200,8 +216,12 @@
         <p class="dialopTitle">
           {{ defaultMessageStr }}
         </p>
-        <span class="dialogDes">
-          {{ defaultMessageDesStr }}
+        <span class="dialogDes" v-bind="{ color: dialogDesColor }">
+          {{
+            !isGetReward
+              ? defaultMessageDesStr
+              : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+          }}
         </span>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultBtnAction">
@@ -279,6 +299,28 @@ export default {
       }
     },
 
+    defaultMessageDesStr() {
+      if (this.isGetReward) {
+        return this.$t("common.defaultMessSub4Des");
+      }
+      if (this.isSwitch1) {
+        return this.$t("common.defaultMessSub1Des");
+      } else {
+        return this.$t("common.defaultMessSub3Des");
+      }
+    },
+
+    dialogDesColor() {
+      if (this.isGetReward) {
+        return "#f7b500";
+      }
+      if (this.isSwitch1) {
+        return "#666";
+      } else {
+        return "#666";
+      }
+    },
+
     requestSuccessStr() {
       if (this.isGetReward) {
         return this.$t("farms.getRewardSuccess");
@@ -303,8 +345,11 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      actionAlertShowLoading: false,
+      txHash: "0xddsdddsddsd",
+      txHashOringion: "111111",
       successVisible: false,
-      defaultMessageDesStr: "",
+      // defaultMessageDesStr: "",
       selectPollItem: null,
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
       warningDefaultVisible: false,
@@ -322,7 +367,7 @@ export default {
       isGetReward: false,
       poolItems: [],
       canSelectNftItems: [],
-      isShowEmptyImg: false,
+      isShowEmptyImg: true,
       NFTItems: [],
       WNFTItems: [],
 
@@ -366,9 +411,10 @@ export default {
 
     this.poolItems = poolDatas;
     this.getMasterChefInfo();
-    // setInterval(() => {
-    //   this.getMasterChefInfo();
-    // }, 10000 * 60 * 5 * 60);
+    setInterval(() => {
+      this.getMasterChefInfo();
+    }, 10000 * 60 * 3 * 60);
+
     this.$nextTick(() => {
       // console.log("this.$route.path*******",this.$route.path);
       // this.setScrollToPostion();
@@ -415,6 +461,8 @@ export default {
       this.selectCount = this.selectTokenIdsArr.length;
     }),
       this.$bus.$on("pledgeBtnNotiAction", val => {
+        this.actionAlertShowLoading = true;
+
         this.selectPollItem = val.item;
         this.selectPollItem.showImgLoading = true;
         this.isGetReward = val.isGetReward;
@@ -423,18 +471,22 @@ export default {
           this.warningDefaultVisible = true;
         } else {
           if (val.isNFTSell) {
+            getNFTTokenIDs(val.item, this.handleGetNFTTokenIDs);
             this.isSwitch1 = true;
-            this.canSelectNftItems = this.NFTItems;
+            // this.NFTItems = val.item.NFTItems;
+            // this.canSelectNftItems = this.NFTItems;
           }
           if (val.isWNFTSell) {
+            getWNFTTokenIDs(val.item, this.handleGetWNFTTokenIDs);
             this.isSwitch1 = false;
-            this.canSelectNftItems = this.WNFTItems;
+            // this.WNFTItems = val.item.WNFTItems;
+            // this.canSelectNftItems = this.WNFTItems;
           }
-          if (this.canSelectNftItems.length > 0) {
-            this.isShowEmptyImg = false;
-          } else {
-            this.isShowEmptyImg = true;
-          }
+          // if (this.canSelectNftItems.length > 0) {
+          //   this.isShowEmptyImg = false;
+          // } else {
+          //   this.isShowEmptyImg = true;
+          // }
           this.$bus.$emit("switchBtnAction", this.isSwitch1);
           this.actionAlertShow = true;
         }
@@ -452,6 +504,36 @@ export default {
   },
 
   methods: {
+    awardAmountStr(item) {
+      if (item.mining != "--") {
+        return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
+      }
+      return item.mining;
+    },
+    copyAddressAction(address) {
+      var that = this;
+      var clipBoardContent = address;
+      this.$copyText(clipBoardContent).then(
+        function (e) {
+          that.$message.success(that.$t("common.copySucceess"));
+          console.log(e);
+        },
+        function (e) {
+          that.$message.error("复制失败");
+          console.log(e);
+        }
+      );
+    },
+    getFrommatAccount(account) {
+      if (account) {
+        var str1 = account.substr(0, 5);
+        var str2 = "...";
+        var str3 = account.substr(-4, 4);
+        return str1 + str2 + str3;
+      } else {
+        return "";
+      }
+    },
     alertCloseBtnAction() {
       this.successVisible = false;
     },
@@ -518,16 +600,22 @@ export default {
     },
 
     handleDeposit(txHash, item) {
+      this.txHash = this.getFrommatAccount(txHash);
+      this.txHashOringion = txHash;
       this.getMasterChefInfo();
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
     },
     handleWithdraw(txHash, item) {
+      this.txHash = this.getFrommatAccount(txHash);
+      this.txHashOringion = txHash;
       this.getMasterChefInfo();
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
     },
     handleHarvest(txHash, item) {
+      this.txHash = this.getFrommatAccount(txHash);
+      this.txHashOringion = txHash;
       this.getMasterChefInfo();
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
@@ -543,8 +631,8 @@ export default {
         await daoportAction(item, this.handleMasterChefInfo, i);
         await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
         approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
-        getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
-        getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
+        // getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
+        // getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
       }
     },
 
@@ -592,7 +680,15 @@ export default {
         // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
       }
+      // item.NFTItems = emptyArr;
       this.NFTItems = emptyArr;
+      this.canSelectNftItems = this.NFTItems;
+      this.actionAlertShowLoading = false;
+      if (this.canSelectNftItems.length > 0) {
+        this.isShowEmptyImg = false;
+      } else {
+        this.isShowEmptyImg = true;
+      }
     },
     handleGetWNFTTokenIDs(WNFTTokenIDs, item, index) {
       var emptyArr = [];
@@ -606,7 +702,11 @@ export default {
         // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
       }
+      // item.WNFTItems = emptyArr;
       this.WNFTItems = emptyArr;
+      this.canSelectNftItems = this.WNFTItems;
+      this.actionAlertShowLoading = false;
+      this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
     },
     handleGetBonusReward(result, item) {
       var result0 = result[0];
@@ -617,17 +717,16 @@ export default {
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
       this.canSelectNftItems = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
-      if (this.canSelectNftItems.length > 0) {
-        this.isShowEmptyImg = false;
-      } else if (this.canSelectNftItems.length == 0) {
-        this.isShowEmptyImg = true;
-      }
+      this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
       this.$bus.$emit("selectNftAction", 1);
       this.$bus.$emit("switchBtnAction", this.isSwitch1);
     },
     closeAlertAction() {
       this.selectTokenIdsArr = [];
       this.selectCount = 0;
+      this.canSelectNftItems = [];
+      this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
+
       Object.keys(this.NFTItems).forEach(key => {
         var item = this.NFTItems[key];
         item.select = false;
@@ -1100,6 +1199,15 @@ export default {
 }
 
 .dialogDes {
+  color: #666;
+  font-size: 0.325rem;
+  margin-top: 0.25rem;
+  align-content: center;
+  text-align: center;
+}
+
+.dialogDes_active {
+  color: #f7b500;
   font-size: 0.325rem;
   margin-top: 0.25rem;
   align-content: center;
@@ -1175,6 +1283,26 @@ export default {
 .emptyImgBox_des {
   color: #666;
   font-size: 0.35rem;
+}
+.txHashBox {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.txHash_pre {
+  font-size: 0.375rem;
+  color: #666;
+}
+.txHash {
+  font-size: 0.375rem;
+  color: #2c6ff8;
+}
+.txHash_copy {
+  width: 0.5rem;
+  height: 0.5rem;
+  cursor: pointer;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
@@ -1614,6 +1742,15 @@ export default {
   }
 
   .dialogDes {
+    color: #666;
+    font-size: 0.325rem;
+    margin-top: 0.25rem;
+    align-content: center;
+    text-align: center;
+  }
+
+  .dialogDes_active {
+    color: #f7b500;
     font-size: 0.325rem;
     margin-top: 0.25rem;
     align-content: center;
@@ -1679,6 +1816,26 @@ export default {
     margin-top: 0.5rem;
     color: #666;
     font-size: 0.5rem;
+  }
+
+  .txHashBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .txHash_pre {
+    font-size: 0.375rem;
+    color: #666;
+  }
+  .txHash {
+    font-size: 0.375rem;
+    color: #2c6ff8;
+  }
+  .txHash_copy {
+    width: 0.75rem;
+    height: 0.75rem;
+    cursor: pointer;
   }
 }
 </style>

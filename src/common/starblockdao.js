@@ -181,11 +181,13 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
     //获取可抵押tokens
     var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
     item.collection.contractAddress = contractAddress;
+    const maxTokenId = 10000;
     var parameters = {
         contractAddress,
-        owner
+        owner,
+        maxTokenId
     };
-    const tokenIds = await daoport.ownedTokens(parameters);
+    const tokenIds = await daoport.ownedNFTTokens(parameters);
     console.log("daoportAction=== tokenIds:", tokenIds);
     if (handleGetNFTTokenIDs) {
         handleGetNFTTokenIDs(tokenIds, item, index);
@@ -200,13 +202,15 @@ export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
         getDaoPort(accounts[0]);
     }
     const owner = accounts[0];
+    const maxTokenId = 10000;
     //获取可抵押tokens
     var contractAddress = item.poolInfo.wnft;
     var parameters = {
         contractAddress,
-        owner
+        owner,
+        maxTokenId
     };
-    const tokenIds = await daoport.ownedTokens(parameters);
+    const tokenIds = await daoport.ownedNFTTokens(parameters);
     console.log("daoportAction=== tokenIds:", tokenIds);
     if (handleGetWNFTTokenIDs) {
         handleGetWNFTTokenIDs(tokenIds, item, index);
