@@ -962,9 +962,11 @@ export default {
 
       const pid = 0;
       const owner = accounts[0];
+      const maxTokenId = 10000;
       let parameters = {
         pid,
-        owner
+        owner,
+        maxTokenId
       };
       const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
       console.log("daoportAction=== masterchefinfo:", masterChefInfo);

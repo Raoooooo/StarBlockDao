@@ -189,26 +189,30 @@ export class DaoPort {
   public async getNFTMasterChefInfos({
     nftMasterchef,
     pid,
-    owner
+    owner,
+    maxTokenId
   }: {
     nftMasterchef?: string;
     pid: number;
     owner: string;
-    maxTokenId: number;
+    maxTokenId?: number;
   }): Promise<MasterChefPoolsInfo> {
     nftMasterchef = this._protocol.NFTMasterChefContractAddress;
     const {
       poolInfo,
-      rewardForEachBlock,
-      rewardPerNFTForEachBlock,
+      rewardInfo,
+      currentRewardIndex,
       endBlock,
       mining,
       dividend,
       nftQuantity,
       wnftQuantity
     } = await this._protocol.NFTUtilsContract.methods
-      .getNFTMasterChefInfos(nftMasterchef, pid, owner)
+      .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
       .call();
+
+    const rewardForEachBlock = rewardInfo["rewardForEachBlock"];
+    const rewardPerNFTForEachBlock = rewardInfo["rewardPerNFTForEachBlock"];
     return {
       poolInfo,
       rewardForEachBlock,

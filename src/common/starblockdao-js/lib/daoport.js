@@ -242,18 +242,20 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
-        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner;
+        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, maxTokenId = _a.maxTokenId;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, poolInfo, rewardForEachBlock, rewardPerNFTForEachBlock, endBlock, mining, dividend, nftQuantity, wnftQuantity;
+            var _b, poolInfo, rewardInfo, currentRewardIndex, endBlock, mining, dividend, nftQuantity, wnftQuantity, rewardForEachBlock, rewardPerNFTForEachBlock;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         nftMasterchef = this._protocol.NFTMasterChefContractAddress;
                         return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .getNFTMasterChefInfos(nftMasterchef, pid, owner)
+                                .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
                                 .call()];
                     case 1:
-                        _b = _c.sent(), poolInfo = _b.poolInfo, rewardForEachBlock = _b.rewardForEachBlock, rewardPerNFTForEachBlock = _b.rewardPerNFTForEachBlock, endBlock = _b.endBlock, mining = _b.mining, dividend = _b.dividend, nftQuantity = _b.nftQuantity, wnftQuantity = _b.wnftQuantity;
+                        _b = _c.sent(), poolInfo = _b.poolInfo, rewardInfo = _b.rewardInfo, currentRewardIndex = _b.currentRewardIndex, endBlock = _b.endBlock, mining = _b.mining, dividend = _b.dividend, nftQuantity = _b.nftQuantity, wnftQuantity = _b.wnftQuantity;
+                        rewardForEachBlock = rewardInfo["rewardForEachBlock"];
+                        rewardPerNFTForEachBlock = rewardInfo["rewardPerNFTForEachBlock"];
                         return [2 /*return*/, {
                                 poolInfo: poolInfo,
                                 rewardForEachBlock: rewardForEachBlock,

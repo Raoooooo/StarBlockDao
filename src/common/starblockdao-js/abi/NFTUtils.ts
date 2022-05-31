@@ -16,6 +16,11 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         internalType: "address",
         name: "_owner",
         type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "_maxTokenId",
+        type: "uint256"
       }
     ],
     name: "getNFTMasterChefInfos",
@@ -78,13 +83,30 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         type: "tuple"
       },
       {
-        internalType: "uint256",
-        name: "rewardForEachBlock",
-        type: "uint256"
+        components: [
+          {
+            internalType: "uint256",
+            name: "rewardBlock",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "rewardForEachBlock",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "rewardPerNFTForEachBlock",
+            type: "uint256"
+          }
+        ],
+        internalType: "struct INFTMasterChef.RewardInfo",
+        name: "rewardInfo",
+        type: "tuple"
       },
       {
         internalType: "uint256",
-        name: "rewardPerNFTForEachBlock",
+        name: "currentRewardIndex",
         type: "uint256"
       },
       {
@@ -111,6 +133,35 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         internalType: "uint256",
         name: "wnftQuantity",
         type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IERC721Metadata",
+        name: "_nft",
+        type: "address"
+      },
+      {
+        internalType: "address",
+        name: "_owner",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "_maxTokenId",
+        type: "uint256"
+      }
+    ],
+    name: "ownedNFTTokens",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "totalTokens",
+        type: "uint256[]"
       }
     ],
     stateMutability: "view",
