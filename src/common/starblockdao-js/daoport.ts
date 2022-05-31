@@ -216,18 +216,23 @@ export class DaoPort {
     const {
       poolInfo,
       rewardInfo,
+      userInfo,
       currentRewardIndex,
       endBlock,
-      mining,
-      dividend,
-      nftQuantity,
-      wnftQuantity
+      nft
     } = await this._protocol.NFTUtilsContract.methods
       .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
       .call();
 
     const rewardForEachBlock = rewardInfo["rewardForEachBlock"];
     const rewardPerNFTForEachBlock = rewardInfo["rewardPerNFTForEachBlock"];
+    const mining = userInfo["mining"];
+    const dividend = userInfo["dividend"];
+    const nftQuantity = userInfo["nftQuantity"];
+    const wnftQuantity = userInfo["wnftQuantity"];
+    const isNFTApproved = userInfo["isNFTApproved"];
+    const isWNFTApproved = userInfo["isWNFTApproved"];
+
     return {
       poolInfo,
       rewardForEachBlock,
@@ -236,7 +241,10 @@ export class DaoPort {
       mining,
       dividend,
       nftQuantity,
-      wnftQuantity
+      wnftQuantity,
+      isNFTApproved,
+      isWNFTApproved,
+      nft
     };
   }
 }

@@ -17,4 +17,7 @@ export interface MasterChefPoolsInfo {
     dividend: number | null;
     nftQuantity: number | null;
     wnftQuantity: number | null;
+    isNFTApproved: boolean;
+    isWNFTApproved: boolean;
+    nft: string;
 }

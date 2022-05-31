@@ -105,6 +105,43 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         type: "tuple"
       },
       {
+        components: [
+          {
+            internalType: "uint256",
+            name: "mining",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "dividend",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "nftQuantity",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "wnftQuantity",
+            type: "uint256"
+          },
+          {
+            internalType: "bool",
+            name: "isNFTApproved",
+            type: "bool"
+          },
+          {
+            internalType: "bool",
+            name: "isWNFTApproved",
+            type: "bool"
+          }
+        ],
+        internalType: "struct UserInfo",
+        name: "userInfo",
+        type: "tuple"
+      },
+      {
         internalType: "uint256",
         name: "currentRewardIndex",
         type: "uint256"
@@ -115,24 +152,9 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         type: "uint256"
       },
       {
-        internalType: "uint256",
-        name: "mining",
-        type: "uint256"
-      },
-      {
-        internalType: "uint256",
-        name: "dividend",
-        type: "uint256"
-      },
-      {
-        internalType: "uint256",
-        name: "nftQuantity",
-        type: "uint256"
-      },
-      {
-        internalType: "uint256",
-        name: "wnftQuantity",
-        type: "uint256"
+        internalType: "address",
+        name: "_nft",
+        type: "address"
       }
     ],
     stateMutability: "view",
