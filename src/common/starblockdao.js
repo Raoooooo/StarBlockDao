@@ -67,9 +67,12 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
     }
     const pid = item.poolInfo.pid;
     const owner = accounts[0];
+    const maxTokenId = 10000;
+
     var parameters = {
         pid,
         owner,
+        maxTokenId
     };
     const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
     // alert(masterChefInfo);
@@ -447,6 +450,23 @@ export function getOpenSeaOfCollection(name) {
 }
 
 export function getOpenSeaOfNFT(contractAddress, tokenID) {
+    if (network_Name == Network.Rinkeby) {
+        return "https://testnets.opensea.io/assets/rinkeby/" + contractAddress + "/" + tokenID;
+    } else {
+        return "https://opensea.io/collection/assets/" + contractAddress + "/" + tokenID;
+    }
+}
+
+
+export function getStarBlockOfCollection(contractAddress) {
+    if (network_Name == Network.Rinkeby) {
+        return "http://192.168.1.182/collection/" + contractAddress;
+    } else {
+        return "https://www.starblock.io/collection/" + contractAddress;
+    }
+}
+
+export function getStarBlockOfNFT(contractAddress, tokenID) {
     if (network_Name == Network.Rinkeby) {
         return "https://testnets.opensea.io/assets/rinkeby/" + contractAddress + "/" + tokenID;
     } else {

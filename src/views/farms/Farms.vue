@@ -143,7 +143,12 @@
         </div>
         <div class="selectItemSepLine"></div>
         <!-- <div v-for="(item, index) in selectItems"> -->
-        <selectnft :items="canSelectNftItems"></selectnft>
+        <selectnft :items="canSelectNftItems" v-show="!isShowEmptyImg"></selectnft>
+        <div class="emptyImgBox" v-show="isShowEmptyImg">
+          <img class="emptyImg" src="@/assets/img/common/emptyNFT.png" />
+          <p class="emptyImgBox_des">{{ $t("farms.noWNFTDes") }}</p>
+        </div>
+
         <!-- </div> -->
       </div>
 
@@ -317,6 +322,7 @@ export default {
       isGetReward: false,
       poolItems: [],
       canSelectNftItems: [],
+      isShowEmptyImg: false,
       NFTItems: [],
       WNFTItems: [],
 
@@ -424,6 +430,12 @@ export default {
             this.isSwitch1 = false;
             this.canSelectNftItems = this.WNFTItems;
           }
+          if (this.canSelectNftItems.length > 0) {
+            this.isShowEmptyImg = false;
+          } else {
+            this.isShowEmptyImg = true;
+          }
+          this.$bus.$emit("switchBtnAction", this.isSwitch1);
           this.actionAlertShow = true;
         }
       });
@@ -532,7 +544,7 @@ export default {
         await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
         approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
         getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
-        await getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
+        getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
       }
     },
 
@@ -605,7 +617,13 @@ export default {
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
       this.canSelectNftItems = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
+      if (this.canSelectNftItems.length > 0) {
+        this.isShowEmptyImg = false;
+      } else if (this.canSelectNftItems.length == 0) {
+        this.isShowEmptyImg = true;
+      }
       this.$bus.$emit("selectNftAction", 1);
+      this.$bus.$emit("switchBtnAction", this.isSwitch1);
     },
     closeAlertAction() {
       this.selectTokenIdsArr = [];
@@ -1140,6 +1158,25 @@ export default {
   width: 90%;
 }
 
+.emptyImgBox {
+  margin-top: 1.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.emptyImg {
+  height: 2.875rem;
+}
+
+.emptyImgBox_des {
+  color: #666;
+  font-size: 0.35rem;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .back {
     display: flex;
@@ -1623,6 +1660,25 @@ export default {
     /* border-width: 1px; */
     /* border-color: #111; */
     width: 90%;
+  }
+  .emptyImgBox {
+    margin-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+  }
+
+  .emptyImg {
+    height: 2.875rem;
+  }
+
+  .emptyImgBox_des {
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.5rem;
   }
 }
 </style>

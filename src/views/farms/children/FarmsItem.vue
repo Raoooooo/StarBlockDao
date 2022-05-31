@@ -61,10 +61,18 @@
             <div class="contantDetailSection1_leftBox_subBox">
               <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.name }}</p>
               <div class="linkIconBox">
-                <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
-                <img class="linkIcon1" src="@/assets/img/farms/linkIcon2.png" />
-                <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
-                <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
+                <a :href="linkOfType(item, 1)" target="_blank">
+                  <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
+                </a>
+                <a :href="linkOfType(item, 2)" target="_blank">
+                  <img class="linkIcon1" src="@/assets/img/farms/linkIcon2.png" />
+                </a>
+                <a :href="linkOfType(item, 3)" target="_blank">
+                  <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
+                </a>
+                <a :href="linkOfType(item, 4)" target="_blank">
+                  <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
+                </a>
               </div>
             </div>
           </div>
@@ -136,7 +144,12 @@ import {
   getBlockNumber,
   onBlockNumberChange,
   approveNFTAction,
-  approveWNFTAction
+  approveWNFTAction,
+  getEtherscanOfCollection,
+  getEtherscanOfNFT,
+  getOpenSeaOfCollection,
+  getOpenSeaOfNFT,
+  getStarBlockOfCollection
 } from "@/common/starblockdao";
 
 export default {
@@ -283,7 +296,23 @@ export default {
     };
   },
   methods: {
-    
+    linkOfType(item, type) {
+      if (type == 1) {
+        return getStarBlockOfCollection(item.collection.contractAddress);
+      }
+      // opensea
+      if (type == 2) {
+        return getOpenSeaOfCollection(item.collection.name, item.tokenId);
+      }
+      // nft
+      else if (type == 3) {
+        return getEtherscanOfCollection(item.collection.contractAddress, item.tokenId);
+      }
+      // wnft
+      else if (type == 4) {
+        return getEtherscanOfCollection(item.poolInfo.wnft, item.tokenId);
+      }
+    },
     rewardPerNFTAmount(item) {
       if (Number(item.rewardPerNFTForEachBlock) > 0) {
         return (

@@ -12,10 +12,10 @@
           <a :href="linkOfType(item, 1)" target="_blank">
             <img class="linkIcon" src="@/assets/img/farms/linkIcon2.png" />
           </a>
-          <a :href="linkOfType(item, 2)" target="_blank">
+          <a :href="linkOfType(item, 2)" target="_blank" v-show="!isWNFT">
             <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
           </a>
-          <a :href="linkOfType(item, 3)" target="_blank">
+          <a :href="linkOfType(item, 3)" target="_blank" v-show="isWNFT">
             <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
           </a>
         </div>
@@ -52,6 +52,7 @@ export default {
       rowNum = 6;
     }
     return {
+      isWNFT: false,
       // selectIconUrl: require("@/assets/img/farms/nft_select_y.svg"),
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       rowNum: rowNum,
@@ -151,6 +152,13 @@ export default {
   },
 
   mounted() {
+    this.$bus.$on("switchBtnAction", val => {
+      if (val) {
+        this.isWNFT = false;
+      } else {
+        this.isWNFT = true;
+      }
+    });
     var that = this;
     // <!--把window.onresize事件挂在到mounted函数上-->
     window.onresize = () => {
