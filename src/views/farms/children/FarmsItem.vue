@@ -45,7 +45,7 @@
               v-if="isShowSellEndBlock(item, currentBlockNumber)"
             >
               <p class="contantDetailTopBox_rightBox_text_sellEnd">
-                {{ "已结束" }}
+                {{ $t("common.blockEnd") }}
               </p>
             </div>
           </div>
@@ -330,14 +330,14 @@ export default {
       }
     },
     formmatBlockStr(blockNumber) {
-      if (blockNumber > 1000 && blockNumber < 10000) {
-        return Number(blockNumber / 1000).toFixed(2) + "K";
-      } else if (blockNumber >= 10000 && blockNumber < 10000000) {
-        return Number(blockNumber / 10000).toFixed(2) + "W";
-      } else if (blockNumber >= 10000000) {
-        return Number(blockNumber / 10000000).toFixed(2) + "KW";
+      if (blockNumber / 6500 > 1000 && blockNumber / 6500 < 10000) {
+        return Number(blockNumber / 1000 / 6500).toFixed(2) + "K";
+      } else if (blockNumber / 6500 >= 10000 && blockNumber / 6500 < 10000000) {
+        return Number(blockNumber / 10000 / 6500).toFixed(2) + "W";
+      } else if (blockNumber / 6500 >= 10000000) {
+        return Number(blockNumber / 10000000 / 6500).toFixed(2) + "KW";
       } else {
-        return blockNumber;
+        return Number((blockNumber / 6500).toFixed(2));
       }
     },
     awardAmountStr(item) {
@@ -404,7 +404,7 @@ export default {
       }
     },
     isShowSellEndBlock(item, currentBlockNumber) {
-      if (Number(item.endBlock) - currentBlockNumber <= 0) {
+      if (Number(item.endBlock) - currentBlockNumber <= 0 && Number(item.endBlock) > 0) {
         return true;
       } else {
         return false;

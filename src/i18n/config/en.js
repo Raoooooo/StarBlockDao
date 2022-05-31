@@ -41,8 +41,8 @@ export default {
         topItem3: "Total Rewards",
         earn: "Earn",
         month: "M",
-        endBlock: "End Block",
-        startBlock: "Start Block",
+        endBlock: "End Day",
+        startBlock: "Start Day",
         awardNFT: "Reward per NFT",
         pledgeAmount: "Total Staking Amount",
         pledge: "Stake",
@@ -50,7 +50,7 @@ export default {
         getAward: "Get Reward",
         getBonus: "Get Dividend",
         havePledge: "Staked",
-
+        blockEnd: 'End',
         NFTOfCollection: "NFT in Collection",
         getAwardAmount: "Reward to collect",
         getBonusAmount: "Dividend to collect",
@@ -95,8 +95,8 @@ export default {
         checkChainId4Des: "In order to trade items, please switch to Rinkeby network within your MetaMask wallet.",
         loginError: "Please click the [login] button on the navigation bar to complete the operation after login.",
         iKnow: " OK ",
-        stakeApprove:"Stake Approve",
-        unstakeApprove:"Unstake Approve"
+        stakeApprove: "Stake Approve",
+        unstakeApprove: "Unstake Approve"
 
 
 
