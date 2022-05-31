@@ -87,9 +87,6 @@ export default {
         defaultMessSub4: "确定领取奖励",
 
         defaultMessSub4Des: "抵押奖励",
-        defaultMessSub3Des: "解抵押的时候将自动领取所有奖励",
-        defaultMessSub1Des: "抵押以后将会给您抵押凭证：WNFT WNFT是解抵押NFT的唯一凭证，千万不可丢失",
-       
         confirm: "确定",
         cancle: "取消",
         alertClose: "关闭",
