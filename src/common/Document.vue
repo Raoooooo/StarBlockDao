@@ -97,6 +97,7 @@ export default {
       const web3Modal = new Web3Modal({
         theme: "dark",
         // network: getChainData(walletObj.chainId).network,
+        // network: "main",
         network: "rinkeby",
         cacheProvider: true,
         providerOptions
