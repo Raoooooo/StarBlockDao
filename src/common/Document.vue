@@ -97,8 +97,7 @@ export default {
       const web3Modal = new Web3Modal({
         theme: "dark",
         // network: getChainData(walletObj.chainId).network,
-        // network: "main",
-        network: "rinkeby",
+        network: network_Name,
         cacheProvider: true,
         providerOptions
       });
@@ -962,30 +961,36 @@ export default {
       }
 
       const pid = 0;
-      const owner = accounts[0];
-      const maxTokenId = 10000;
+      let owner = accounts[0];
+      const maxTokenId = 9999;
       let parameters = {
         pid,
         owner,
         maxTokenId
       };
+
       const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
       console.log("daoportAction=== masterchefinfo:", masterChefInfo);
       setLocalStorage("masterChefInfo", masterChefInfo);
 
+      // // 获取解抵押tokens
+      // let contractAddress = masterChefInfo.poolInfo[0];
+
+      // //获取可抵押tokens
+      // contractAddress = await daoport.getNFTContractAddress(masterChefInfo.poolInfo[0]);
       // 获取解抵押tokens
-      let contractAddress = masterChefInfo.poolInfo[0];
 
-      //获取可抵押tokens
-      contractAddress = await daoport.getNFTContractAddress(masterChefInfo.poolInfo[0]);
+      //获取可抵押tokens--测试
+      // const contractAddress = "0xED5AF388653567Af2F388E6224dC7C4b3241C544";
+      // owner = accounts[0];
 
-      parameters = {
-        contractAddress,
-        owner,
-        maxTokenId
-      };
-      const tokenIds = await daoport.ownedNFTTokens(parameters);
-      console.log("daoportAction=== tokenIds:", tokenIds);
+      // parameters = {
+      //   contractAddress,
+      //   owner,
+      //   maxTokenId
+      // };
+      // const tokenIds = await daoport.ownedNFTTokenIds(parameters);
+      // console.log("daoportAction=== tokenIds:", tokenIds);
     },
 
     async daoporApprovedtAction() {
