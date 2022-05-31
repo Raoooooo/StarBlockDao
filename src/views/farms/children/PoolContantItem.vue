@@ -90,8 +90,8 @@ export default {
       if (this.showImgLoading) {
         this.pledgeBtnStr = "";
       }
-      if (this.item && !this.item.isNFTApprove) {
-        this.pledgeBtnStr = "抵押授权";
+      if (this.item && !this.item.isNFTApproved) {
+        this.pledgeBtnStr = this.$t("common.stakeApprove");
         // return "抵押授权";
       } else {
         this.pledgeBtnStr = this.$t("farms.pledge") + "(" + this.item.nftQuantity + ")";
@@ -103,8 +103,8 @@ export default {
       if (this.showImgLoading1) {
         this.pledgeBtnStr = "";
       }
-      if (this.item && !this.item.isWNFTApprove) {
-        this.unPledgeBtnStr = "解抵押授权";
+      if (this.item && !this.item.isWNFTApproved) {
+        this.unPledgeBtnStr = this.$t("common.unstakeApprove");
       } else {
         this.unPledgeBtnStr = this.$t("farms.unPledge") + "(" + this.item.wnftQuantity + ")";
       }
@@ -179,24 +179,24 @@ export default {
   methods: {
     formmatBlockStr(blockNumber) {
       if (blockNumber > 1000 && blockNumber < 10000) {
-        return Number(blockNumber / 1000).toFixed(4) + "K";
+        return Number(blockNumber / 1000).toFixed(2) + "K";
       } else if (blockNumber >= 10000 && blockNumber < 10000000) {
-        return Number(blockNumber / 10000).toFixed(4) + "W";
+        return Number(blockNumber / 10000).toFixed(2) + "W";
       } else if (blockNumber >= 10000000) {
-        return Number(blockNumber / 10000000).toFixed(4) + "KW";
+        return Number(blockNumber / 10000000).toFixed(2) + "KW";
       } else {
         return blockNumber;
       }
     },
     awardAmountStr(item) {
       if (item.mining != "--") {
-        return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
+        return (item.mining * Math.pow(10, -18)).toFixed(2) + " STB";
       }
       return item.mining;
     },
     bonusAmountStr(item) {
       if (item.dividend != "--") {
-        return (item.dividend * Math.pow(10, -18)).toFixed(4) + " WETH";
+        return (item.dividend * Math.pow(10, -18)).toFixed(2) + " WETH";
       }
       return item.dividend;
     },
@@ -270,7 +270,7 @@ export default {
       if (this.showImgLoading) {
         return;
       }
-      if (!this.item.isNFTApprove) {
+      if (!this.item.isNFTApproved) {
         if (this.showImgLoading) {
           return;
         }
@@ -296,7 +296,7 @@ export default {
       if (this.showImgLoading1) {
         return;
       }
-      if (!this.item.isWNFTApprove) {
+      if (!this.item.isWNFTApproved) {
         if (this.showImgLoading1) {
           return;
         }
@@ -337,11 +337,11 @@ export default {
     },
 
     handleNftApprove(isApprove, item, index) {
-      this.item.isNFTApprove = isApprove;
+      this.item.isNFTApproved = isApprove;
       this.showImgLoading = false;
     },
     handleWNftApprove(isApprove, item, index) {
-      this.item.isWNFTApprove = isApprove;
+      this.item.isWNFTApproved = isApprove;
       this.showImgLoading1 = false;
     },
     faildHandleApproveWNFT() {

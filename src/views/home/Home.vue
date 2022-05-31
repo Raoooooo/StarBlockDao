@@ -193,7 +193,7 @@ export default {
       this.currentBlockNumber = number;
       var countDownStr = String(14885190 - this.currentBlockNumber);
       this.itemCountTextArr = countDownStr.split("");
-      console.log("this.itemCountTextArr", this.itemCountTextArr);
+      // console.log("this.itemCountTextArr", this.itemCountTextArr);
     },
     resetApp() {
       // alert(resetApp);
