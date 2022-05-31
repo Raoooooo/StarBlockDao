@@ -29,6 +29,11 @@ export declare class DaoPort {
         to: string;
         wnftTokenIds: number[];
     }): Promise<string>;
+    ownedNFTTokens({ contractAddress, owner, maxTokenId }: {
+        contractAddress: string;
+        owner: string;
+        maxTokenId: number;
+    }): Promise<number[]>;
     ownedTokens({ contractAddress, owner }: {
         contractAddress: string;
         owner: string;
