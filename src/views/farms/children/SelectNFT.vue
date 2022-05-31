@@ -8,10 +8,16 @@
         </div>
 
         <div class="linkIconBox">
-          <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
-          <img class="linkIcon1" src="@/assets/img/farms/linkIcon2.png" />
-          <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
-          <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
+          <!-- <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" /> -->
+          <a :href="linkOfType(item, 1)" target="_blank">
+            <img class="linkIcon" src="@/assets/img/farms/linkIcon2.png" />
+          </a>
+          <a :href="linkOfType(item, 2)" target="_blank">
+            <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
+          </a>
+          <a :href="linkOfType(item, 3)" target="_blank">
+            <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
+          </a>
         </div>
         <div class="selectIconBox">
           <img :src="selectIconUrl(item)" class="selectIcon" @click="selectAction(item)" />
@@ -22,6 +28,12 @@
 </template>
 
 <script>
+import {
+  getEtherscanOfCollection,
+  getEtherscanOfNFT,
+  getOpenSeaOfCollection,
+  getOpenSeaOfNFT
+} from "@/common/starblockdao";
 export default {
   name: "Selectnft",
   components: {},
@@ -151,6 +163,20 @@ export default {
     };
   },
   methods: {
+    linkOfType(item, type) {
+      // ethersacan
+      if (type == 1) {
+        return getOpenSeaOfNFT(item.collection.contractAddress, item.tokenId);
+      }
+      // nft
+      else if (type == 2) {
+        return getEtherscanOfNFT(item.collection.contractAddress, item.tokenId);
+      }
+      // wnft
+      else if (type == 3) {
+        return getEtherscanOfNFT(item.collection.contractAddress, item.tokenId);
+      }
+    },
     selectIconUrl(item) {
       return item.select
         ? require("@/assets/img/farms/nft_select_y.png")
@@ -212,7 +238,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 1.5rem;
+  height: 1.75rem;
 }
 .itemContantBox {
   display: flex;
@@ -238,11 +264,11 @@ export default {
 }
 .nftName {
   margin-left: 0.525rem;
-  font-size: 0.4rem;
+  font-size: 0.55rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #111111;
-  line-height: 0.4rem;
+  line-height: 0.55rem;
 }
 .selectIconBox {
   display: flex;
@@ -250,9 +276,10 @@ export default {
   width: 33%;
 }
 .selectIcon {
+  cursor: pointer;
   margin-right: 0.675rem;
-  width: 0.6rem;
-  height: 0.6rem;
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
 .linkIconBox {
@@ -263,16 +290,98 @@ export default {
 }
 
 .linkIcon {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .linkIcon1 {
   margin-left: 0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+  .contant {
+    /* border-radius: .25rem; */
+    /* border-style: solid; */
+    /* border-color: #ECECEC; */
+    width: 100%;
+    max-height: 10.5rem;
+    overflow-x: hidden;
+    /* overflow-y: scroll; */
+    /* border-width: .025rem; */
+  }
+
+  .contantSroll {
+    width: 100%;
+    max-height: 10.5rem;
+    overflow-x: hidden;
+  }
+
+  .itemBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 1.5rem;
+  }
+  .itemContantBox {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    /* background-color: aqua; */
+  }
+  .sepLine {
+    margin-left: 0.525rem;
+    margin-right: 0.525rem;
+    background-color: #f1f1f1;
+    height: 0.025rem;
+  }
+  .itemContantBox {
+    width: 100%;
+    /* background-color: aqua; */
+  }
+  .nftNameBox {
+    width: 33%;
+  }
+  .nftName {
+    margin-left: 0.525rem;
+    font-size: 0.4rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #111111;
+    line-height: 0.4rem;
+  }
+  .selectIconBox {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 33%;
+  }
+  .selectIcon {
+    cursor: pointer;
+    margin-right: 0.675rem;
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+
+  .linkIconBox {
+    width: 33%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .linkIcon {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .linkIcon1 {
+    margin-left: 0.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
 }
 </style>

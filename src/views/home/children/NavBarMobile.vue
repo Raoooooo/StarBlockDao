@@ -23,9 +23,12 @@
             :class="active === index ? 'optionItemActive' : 'optionItem'"
             @click="changeTab(index, item)"
           >
+            <p class="optionItemTitle-active" v-if="index == 0">
+              {{ account }}
+            </p>
             <p
               :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
-              v-if="index < tabItems.length - 1"
+              v-if="index < tabItems.length - 1 && index != 0"
             >
               {{ $t(item.title) }}
             </p>
@@ -35,6 +38,7 @@
             >
               {{ $t(currentLangrage) }}
             </p>
+
             <!-- <a :href="item.path" target="_blank" v-if="index >= 6">
               <p :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'">
                 {{ $t(item.title) }}
@@ -44,6 +48,63 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+      title=""
+      :visible.sync="chainIdErrorDialog"
+      :width="elDialogWidth"
+      :show-close="false"
+      center
+      :top="elDialogTopMargin"
+      :close-on-click-modal="false"
+      :fullscreen="false"
+      :lock-scroll="false"
+      :append-to-body="true"
+      :close-on-press-escape="false"
+    >
+      <div class="dialogBack">
+        <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
+        <p class="dialopTitle1">
+          {{ chainErrorTitle() }}
+        </p>
+        <p class="dialogDes">
+          {{ chainErrorDes() }}
+        </p>
+        <button
+          class="dialogBottomBtn"
+          @click="chainIdErrorDialogCloseAction"
+          v-show="isShowCloseChainErrorBtn"
+        >
+          {{ $t("common.iKnow") }}
+        </button>
+      </div>
+    </el-dialog>
+
+    <!-- <el-dialog
+      title=""
+      :visible.sync="loginErrorDialogStatus"
+      :width="elDialogWidth"
+      :show-close="false"
+      center
+      :top="elDialogTopMargin"
+      :close-on-click-modal="false"
+      :fullscreen="false"
+      :lock-scroll="false"
+      :append-to-body="true"
+      :close-on-press-escape="false"
+    >
+      <div class="dialogBack">
+        <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
+        <p class="dialopTitle1">{{ $t("common.loginError") }}</p>
+        <button
+          class="dialogBottomBtn"
+          @click="loginErrorDialogCloseAction"
+          v-show="isShowCloseLoginErrorBtn"
+        >
+          {{ $t("common.iKnow") }}
+        </button>
+      </div>
+    </el-dialog> -->
     <!-- <div class="selectLangrageBox" v-show="isShowLangrageView">
       <div class="langrageItemBox" v-for="(langrageItem, index) in langrageItemArr">
         <p
@@ -58,8 +119,26 @@
 </template>
 
 <script>
+import { onConnect, initWeb3Modal, resetApp, onBlockOut } from "@/common/useWallet";
+import { getLocalStorage, setLocalStorage, isLogin, localAccount } from "@/common/utils";
+import { web3ProviderUrl, getProdcutMode, getSurpportChainId } from "@/common/starBlockConfig";
+import { setNetwork_Name, getCurrentChainId } from "@/common/starblockdao";
+var utils = require("web3-utils");
+
 export default {
   name: "NavBarMobile",
+  computed: {
+    loginErrorDialogStatus() {
+      if (!this.chainIdErrorDialog) {
+        return this.loginErrorDialog;
+      } else {
+        return false;
+      }
+    },
+    getDailogTopImgFaildUrl: function () {
+      return require("@/assets/img/common/alertWaring.svg");
+    }
+  },
   data() {
     var langType = navigator.language;
     var currentLangrage = "navBar.English";
@@ -71,6 +150,17 @@ export default {
       currentLangrage = "navBar.English";
     }
     return {
+      elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
+      loginErrorDialog: false,
+      isShowCloseLoginErrorBtn: true,
+      isShowCloseChainErrorBtn: true,
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "340px",
+      chainIdErrorDialog: false,
+      currentChainId: 0,
+
+      langrageList: ["navBar.English", "navBar.chinese"],
+      isLogin: false,
+      account: "",
       moreOptionViewShow: false,
       currentLangrage: currentLangrage,
       isShowLangrageView: false,
@@ -78,6 +168,7 @@ export default {
       isShowNavBackImg: true,
       active: 0,
       tabItems: [
+        {},
         { title: "navBar.homepage", path: "" },
 
         { title: "navBar.section1", path: "" },
@@ -98,6 +189,15 @@ export default {
   watch: {},
 
   created() {
+    var isClickLogin = false;
+    // if (!getLocalStorage("isFirstLoad")) {
+    onConnect(this.getAccount, isClickLogin);
+    // }
+    setLocalStorage("isFirstLoad", true);
+    this.accountsChange();
+    this.chainidChange();
+    getCurrentChainId(this.handleCurentChainid);
+
     // onConnect(this.getAccount, isClickLogin);
   },
 
@@ -108,8 +208,218 @@ export default {
       // }
       this.active = val;
     });
+
+    this.$bus.$on("chainIdUpdate", val => {
+      if (val) {
+        this.setChaindUpdateCheck(val);
+      }
+    });
+    this.$bus.$on("checkChainIdError", val => {
+      if (val) {
+        this.setChaindUpdateCheckShowClose(val);
+      }
+    });
+    this.$bus.$on("loginErrorAlertNotClose", val => {
+      if (val) {
+        this.isShowCloseLoginErrorBtn = false;
+        if (this.isShowAlertCloseBtn()) {
+          this.loginErrorDialog = false;
+        } else {
+          this.loginErrorDialog = isLogin() == "1" ? false : true;
+          // this.loginErrorDialog = true;
+        }
+      }
+    });
+
+    this.$bus.$on("loginErrorAlert", val => {
+      if (val) {
+        if (this.isShowAlertCloseBtn()) {
+          this.isShowCloseLoginErrorBtn = true;
+        } else {
+          this.isShowCloseLoginErrorBtn = false;
+        }
+        this.loginErrorDialog = isLogin() == "1" ? false : true;
+      }
+    });
   },
   methods: {
+    handleCurentChainid(chainId) {
+      this.currentChainId = chainId;
+      setLocalStorage("chaiIdNum", chainId);
+      this.$bus.$emit("chainIdUpdate", chainId);
+      setNetwork_Name(chainId);
+      this.setChaindUpdateCheck(chainId);
+    },
+    setChaindUpdateCheckShowClose(chainId) {
+      chainId = this.currentChainId;
+      if (getProdcutMode() == 1) {
+        if (getProdcutMode() == 1 && chainId != 1) {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+        }
+      }
+      if (getProdcutMode() == 0) {
+        if (getProdcutMode() == 0 && chainId != 4) {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+        }
+      }
+    },
+
+    setChaindUpdateCheck(chainId) {
+      chainId = this.currentChainId;
+      if (getProdcutMode() == 1) {
+        if (getProdcutMode() == 1 && chainId != 1) {
+          // if (this.isShowAlertCloseBtn()) {
+          //   this.chainIdErrorDialog = false;
+          // } else {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+          // }
+        } else {
+          this.chainIdErrorDialog = false;
+        }
+      }
+
+      if (getProdcutMode() == 0) {
+        if (getProdcutMode() == 0 && chainId != 4) {
+          // if (this.isShowAlertCloseBtn()) {
+          //   this.chainIdErrorDialog = false;
+          // } else {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+          // }
+        } else {
+          this.chainIdErrorDialog = false;
+        }
+      }
+    },
+    isShowAlertCloseBtn() {
+      // if (
+      //   this.$route.name == "home" ||
+      //   this.$route.name == "asset" ||
+      //   this.$route.name == "account" ||
+      //   this.$route.name == "tradingMarket" ||
+      //   this.$route.name == "collection" ||
+      //   this.$route.name == "starBlockDao"
+      // ) {
+      //   return true;
+      // } else {
+      return false;
+      // }
+    },
+    chainErrorTitle() {
+      return getSurpportChainId() == 4
+        ? this.$t("common.checkChainId4")
+        : this.$t("common.checkChainId1");
+    },
+    chainErrorDes() {
+      return getSurpportChainId() == 4
+        ? this.$t("common.checkChainId4Des")
+        : this.$t("common.checkChainId1Des");
+    },
+    changeLangeDropdownClick(value) {
+      this.$bus.$emit("changeDescripHeight", value);
+      if (value == "navBar.chinese") {
+        this.$i18n.locale = "zh";
+        this.currentLangrage = "navBar.chinese";
+        localStorage.setItem("lang", "zh");
+      } else if (value == "navBar.English") {
+        this.$i18n.locale = "en";
+        this.currentLangrage = "navBar.English";
+        localStorage.setItem("lang", "en");
+      }
+    },
+
+    loginErrorDialogCloseAction() {
+      this.loginErrorDialog = false;
+    },
+    chainIdErrorDialogCloseAction() {
+      this.chainIdErrorDialog = false;
+    },
+    loginBtnAction() {
+      var isClickLogin = true;
+      onConnect(this.getAccount, isClickLogin);
+    },
+
+    async accountsChange() {
+      const provider = await initWeb3Modal().connect();
+      var that = this;
+
+      provider.on("accountsChanged", function (accounts) {
+        that.setLoginData(accounts[0]);
+        alert(accounts[0]);
+        window.location.reload();
+      });
+    },
+    async chainidChange() {
+      const provider = await initWeb3Modal().connect();
+      var that = this;
+      provider.on("chainChanged", function (chainId) {
+        const chaiIdNum = utils.hexToNumber(chainId);
+        var chainNameStr = "";
+        if (chaiIdNum === 1) {
+          chainNameStr = "Mainnet";
+        }
+        if (chaiIdNum === 3) {
+          chainNameStr = "Ropsten";
+        }
+        if (chaiIdNum === 4) {
+          chainNameStr = "Rinkeby";
+        }
+        if (chaiIdNum === 42) {
+          chainNameStr = "Kovan";
+        }
+        if (chaiIdNum === 5) {
+          chainNameStr = "Goerli";
+        }
+        if (chaiIdNum === 123) {
+          chainNameStr = "Calaveras";
+        }
+        if (chaiIdNum === 56) {
+          chainNameStr = "BNB";
+        }
+        if (chaiIdNum === 97) {
+          chainNameStr = "BNB";
+        }
+        setNetwork_Name(chaiIdNum);
+        that.setChaindUpdateCheck(chaiIdNum);
+        window.location.reload();
+      });
+    },
+
+    getAccount(account, isClickLogin) {
+      console.log(account);
+      this.account = this.getFrommatAccount(account);
+      if (isClickLogin) {
+        this.setLoginData(account);
+      } else {
+        if (localAccount() && localAccount() != account) {
+          setLocalStorage("isLogin", "0");
+          this.isLogin = false;
+        } else {
+          this.setLoginData(account);
+        }
+      }
+    },
+
+    setLoginData(account) {
+      setLocalStorage("account", account);
+      this.account = this.getFrommatAccount(account);
+      this.isLogin = true;
+      setLocalStorage("isLogin", "1");
+    },
+
+    getFrommatAccount(account) {
+      if (account) {
+        var str1 = account.substr(0, 5);
+        var str2 = "...";
+        var str3 = account.substr(-4, 4);
+        return str1 + str2 + str3;
+      } else {
+        return "";
+      }
+    },
     logoImgClick() {
       this.$bus.$emit("changeTab", 0);
     },
@@ -127,9 +437,12 @@ export default {
       this.moreOptionViewShow = false;
       this.active = index;
       if (index == 0) {
-        this.$router.push({ name: "home" });
+        // this.$router.push({ name: "home" });
       }
       if (index == 1) {
+        this.$router.push({ name: "home" });
+      }
+      if (index == 2) {
         this.$router.push({ name: "farms" });
       }
       if (item.title == "navBar.github") {
@@ -347,6 +660,10 @@ export default {
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 0.25rem;
+  /* background-color: #111; */
+  
+  background-color: rgba(120, 120, 120, 0.95);
+
 }
 
 .moreOptionSubView {
@@ -438,5 +755,47 @@ export default {
 .moreAction {
   margin-right: 0.75rem;
   height: 0.85rem;
+}
+
+.dialogBack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #f7b500; */
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.dialopTitle1 {
+  font-size: 0.4rem;
+  font-weight: 500;
+  color: #111;
+  margin-top: -0.85rem;
+}
+
+.dialogDes {
+  font-size: 0.325rem;
+  margin-top: 0.25rem;
+  align-content: center;
+  text-align: center;
+}
+
+.dialogTopImg {
+  margin-top: -1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.dialogBottomBtn {
+  margin-top: 0.35rem;
+  margin-bottom: -0.25rem;
+  width: 90%;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  border-style: none;
+  background-color: #f7b500;
+  color: white;
+  font-size: 0.4rem;
 }
 </style>

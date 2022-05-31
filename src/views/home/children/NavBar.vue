@@ -61,7 +61,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       title=""
       :visible.sync="loginErrorDialogStatus"
       :width="elDialogWidth"
@@ -85,7 +85,7 @@
           {{ $t("common.iKnow") }}
         </button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -93,11 +93,20 @@
 import { onConnect, initWeb3Modal, resetApp, onBlockOut } from "@/common/useWallet";
 import { getLocalStorage, setLocalStorage, isLogin, localAccount } from "@/common/utils";
 import { web3ProviderUrl, getProdcutMode, getSurpportChainId } from "@/common/starBlockConfig";
+import { setNetwork_Name, getCurrentChainId } from "@/common/starblockdao";
+var utils = require("web3-utils");
 
 export default {
   name: "NavBar",
   components: {},
   computed: {
+    loginErrorDialogStatus() {
+      if (!this.chainIdErrorDialog) {
+        return this.loginErrorDialog;
+      } else {
+        return false;
+      }
+    },
     getDailogTopImgFaildUrl: function () {
       return require("@/assets/img/common/alertWaring.svg");
     }
@@ -119,6 +128,7 @@ export default {
       isShowCloseChainErrorBtn: true,
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "340px",
       chainIdErrorDialog: false,
+      currentChainId: 0,
 
       langrageList: ["navBar.English", "navBar.chinese"],
       isLogin: false,
@@ -147,11 +157,15 @@ export default {
   watch: {},
 
   created() {
-    setLocalStorage("isFirstLoad", true);
     // onBlockOut();
     var isClickLogin = false;
-    onConnect(this.getAccount, isClickLogin);
+    // if (!getLocalStorage("isFirstLoad")) {
+      onConnect(this.getAccount, isClickLogin);
+    // }
+    setLocalStorage("isFirstLoad", true);
     this.accountsChange();
+    this.chainidChange();
+    getCurrentChainId(this.handleCurentChainid);
     // this.$router.push({ path: "/" });
   },
 
@@ -162,8 +176,106 @@ export default {
       // }
       this.active = val;
     });
+
+    this.$bus.$on("chainIdUpdate", val => {
+      if (val) {
+        this.setChaindUpdateCheck(val);
+      }
+    });
+    this.$bus.$on("checkChainIdError", val => {
+      if (val) {
+        this.setChaindUpdateCheckShowClose(val);
+      }
+    });
+    this.$bus.$on("loginErrorAlertNotClose", val => {
+      if (val) {
+        this.isShowCloseLoginErrorBtn = false;
+        if (this.isShowAlertCloseBtn()) {
+          this.loginErrorDialog = false;
+        } else {
+          this.loginErrorDialog = isLogin() == "1" ? false : true;
+          // this.loginErrorDialog = true;
+        }
+      }
+    });
+
+    this.$bus.$on("loginErrorAlert", val => {
+      if (val) {
+        if (this.isShowAlertCloseBtn()) {
+          this.isShowCloseLoginErrorBtn = true;
+        } else {
+          this.isShowCloseLoginErrorBtn = false;
+        }
+        this.loginErrorDialog = isLogin() == "1" ? false : true;
+      }
+    });
   },
   methods: {
+    handleCurentChainid(chainId) {
+      this.currentChainId = chainId;
+      setLocalStorage("chaiIdNum", chainId);
+      this.$bus.$emit("chainIdUpdate", chainId);
+      setNetwork_Name(chainId);
+      this.setChaindUpdateCheck(chainId);
+    },
+    setChaindUpdateCheckShowClose(chainId) {
+      chainId = this.currentChainId;
+      if (getProdcutMode() == 1) {
+        if (getProdcutMode() == 1 && chainId != 1) {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+        }
+      }
+      if (getProdcutMode() == 0) {
+        if (getProdcutMode() == 0 && chainId != 4) {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+        }
+      }
+    },
+
+    setChaindUpdateCheck(chainId) {
+      chainId = this.currentChainId;
+      if (getProdcutMode() == 1) {
+        if (getProdcutMode() == 1 && chainId != 1) {
+          // if (this.isShowAlertCloseBtn()) {
+          //   this.chainIdErrorDialog = false;
+          // } else {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+          // }
+        } else {
+          this.chainIdErrorDialog = false;
+        }
+      }
+
+      if (getProdcutMode() == 0) {
+        if (getProdcutMode() == 0 && chainId != 4) {
+          // if (this.isShowAlertCloseBtn()) {
+          //   this.chainIdErrorDialog = false;
+          // } else {
+          this.isShowCloseChainErrorBtn = true;
+          this.chainIdErrorDialog = true;
+          // }
+        } else {
+          this.chainIdErrorDialog = false;
+        }
+      }
+    },
+    isShowAlertCloseBtn() {
+      // if (
+      //   this.$route.name == "home" ||
+      //   this.$route.name == "asset" ||
+      //   this.$route.name == "account" ||
+      //   this.$route.name == "tradingMarket" ||
+      //   this.$route.name == "collection" ||
+      //   this.$route.name == "starBlockDao"
+      // ) {
+      //   return true;
+      // } else {
+      return false;
+      // }
+    },
     chainErrorTitle() {
       return getSurpportChainId() == 4
         ? this.$t("common.checkChainId4")
@@ -203,6 +315,42 @@ export default {
       var that = this;
       provider.on("accountsChanged", function (accounts) {
         that.setLoginData(accounts[0]);
+        window.location.reload();
+      });
+    },
+    async chainidChange() {
+      const provider = await initWeb3Modal().connect();
+      var that = this;
+      provider.on("chainChanged", function (chainId) {
+        const chaiIdNum = utils.hexToNumber(chainId);
+        var chainNameStr = "";
+        if (chaiIdNum === 1) {
+          chainNameStr = "Mainnet";
+        }
+        if (chaiIdNum === 3) {
+          chainNameStr = "Ropsten";
+        }
+        if (chaiIdNum === 4) {
+          chainNameStr = "Rinkeby";
+        }
+        if (chaiIdNum === 42) {
+          chainNameStr = "Kovan";
+        }
+        if (chaiIdNum === 5) {
+          chainNameStr = "Goerli";
+        }
+        if (chaiIdNum === 123) {
+          chainNameStr = "Calaveras";
+        }
+        if (chaiIdNum === 56) {
+          chainNameStr = "BNB";
+        }
+        if (chaiIdNum === 97) {
+          chainNameStr = "BNB";
+        }
+        setNetwork_Name(chaiIdNum);
+        that.setChaindUpdateCheck(chaiIdNum);
+        window.location.reload();
       });
     },
     getAccount(account, isClickLogin) {
@@ -383,7 +531,7 @@ export default {
 .tabTitle {
   /* text-shadow: 0 0 3px #fff, 0 0 3px #fff; */
   color: #111;
-  font-size: 0.55rem;
+  font-size: 0.45rem;
   /* margin-left: 0.4rem; */
   padding-left: 0.3rem;
   padding-right: 0.3rem;
@@ -398,7 +546,7 @@ export default {
 .tabActiveTitle {
   cursor: pointer;
   color: #f7b500;
-  font-size: 0.55rem;
+  font-size: .45rem;
   text-align: center;
   vertical-align: middle;
   padding-left: 0.3rem;
@@ -459,21 +607,21 @@ export default {
 .loginBtn {
   cursor: pointer;
   width: 4.75rem;
-  height: 1.25rem;
-  border-radius: 0.625rem;
+  height: 1rem;
+  border-radius: 0.5rem;
   background-color: #f7b500;
   border-style: none;
-  font-size: 0.45rem;
+  font-size: 0.4rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
   line-height: 0.625rem;
 }
 .accountBox {
-  width: 4.75rem;
-  height: 1.25rem;
+  width: 4.25rem;
+  height: 1rem;
   display: flex;
-  border-radius: 0.625rem;
+  border-radius: 0.5rem;
   background-color: #f7b500;
   flex-direction: row;
   align-items: center;
@@ -481,13 +629,13 @@ export default {
 
 .account_img {
   margin-left: 0.25rem;
-  width: 1rem;
-  height: 1rem;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .account_text {
   margin-left: 0.25rem;
-  font-size: 0.45rem;
+  font-size: 0.4rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -495,7 +643,7 @@ export default {
 }
 
 .dropdownBox {
-  width: 4rem;
+  width: 3.5rem;
   /* background-color: #f7b500; */
   margin-top: -0.51rem;
   /* margin-top: 18px; */
@@ -513,9 +661,9 @@ export default {
 }
 
 .changeLangeBtn {
-  height: 1.25rem;
-  width: 3.5rem;
-  font-size: 0.45rem;
+  height: 1rem;
+  width: 3rem;
+  font-size: 0.4rem;
   color: #f7b500;
   border-color: #f7b500;
   border-style: solid;

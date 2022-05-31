@@ -48,6 +48,13 @@ export default {
   //     this.$router.go(0);
   //   }
   // },
+
+  watch: {
+    $route(to, from) {
+      this.$bus.$emit("chainIdUpdate", 1);
+      this.$bus.$emit("loginErrorAlertNotClose", 1);
+    }
+  },
   created() {
     var html = document.documentElement; //获取到html元素
     var hWidth = document.documentElement.clientWidth; //获取到html的宽度
