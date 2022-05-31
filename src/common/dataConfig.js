@@ -132,7 +132,7 @@ const poolDatas = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon3.png"),
-            name: "Elftown.wtf (ELFT)",
+            name: "PLUR (PLUR)",
             contractAddress: "",
         }
     },
