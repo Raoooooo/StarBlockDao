@@ -41,7 +41,6 @@ var protocol_1 = require("./protocol");
 var DaoPort = /** @class */ (function () {
     function DaoPort(provider, networkName) {
         this._protocol = new protocol_1.Protocol(provider, networkName);
-        // this._protocol.account = this.account;
     }
     DaoPort.prototype.setAccount = function (account) {
         this._protocol.account = account;
@@ -115,9 +114,7 @@ var DaoPort = /** @class */ (function () {
                         _b.label = 2;
                     case 2:
                         REC721Contract = this._protocol.setERC721Addess(REC721Address);
-                        return [4 /*yield*/, REC721Contract.methods
-                                .isApprovedForAll(owner, operator)
-                                .call()];
+                        return [4 /*yield*/, REC721Contract.methods.isApprovedForAll(owner, operator).call()];
                     case 3:
                         isApproved = _b.sent();
                         return [2 /*return*/, isApproved];
@@ -152,9 +149,7 @@ var DaoPort = /** @class */ (function () {
                         _b.trys.push([3, 5, , 6]);
                         txnData = { from: owner };
                         REC721Contract = this._protocol.setERC721Addess(REC721Address);
-                        return [4 /*yield*/, REC721Contract.methods
-                                .setApprovalForAll(operator, true)
-                                .send(txnData)];
+                        return [4 /*yield*/, REC721Contract.methods.setApprovalForAll(operator, true).send(txnData)];
                     case 4:
                         txHash = _b.sent();
                         return [3 /*break*/, 6];
@@ -259,7 +254,6 @@ var DaoPort = /** @class */ (function () {
                                 .call()];
                     case 1:
                         _b = _c.sent(), poolInfo = _b.poolInfo, rewardForEachBlock = _b.rewardForEachBlock, rewardPerNFTForEachBlock = _b.rewardPerNFTForEachBlock, endBlock = _b.endBlock, mining = _b.mining, dividend = _b.dividend, nftQuantity = _b.nftQuantity, wnftQuantity = _b.wnftQuantity;
-                        console.log("chefInfo---", poolInfo, rewardForEachBlock, rewardPerNFTForEachBlock, endBlock, mining, dividend, nftQuantity, wnftQuantity);
                         return [2 /*return*/, {
                                 poolInfo: poolInfo,
                                 rewardForEachBlock: rewardForEachBlock,
