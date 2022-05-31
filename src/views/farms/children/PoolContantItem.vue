@@ -392,6 +392,7 @@ export default {
   color: #fff;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
+  cursor: pointer;
 }
 .unPledgeBtn {
   border-style: solid;
@@ -408,6 +409,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .getAwardBtn {
   border-style: none;
@@ -424,6 +426,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .getBonuBtn {
   border-style: none;

@@ -478,11 +478,13 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+
 .account_img {
   margin-left: 0.25rem;
-  width: .625rem;
-  /* height: 1rem; */
+  width: 1rem;
+  height: 1rem;
 }
+
 .account_text {
   margin-left: 0.25rem;
   font-size: 0.45rem;

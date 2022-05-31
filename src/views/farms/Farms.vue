@@ -594,6 +594,16 @@ export default {
       this.$bus.$emit("selectNftAction", 1);
     },
     closeAlertAction() {
+      this.selectTokenIdsArr = [];
+      this.selectCount = 0;
+      Object.keys(this.NFTItems).forEach(key => {
+        var item = this.NFTItems[key];
+        item.select = false;
+      });
+      Object.keys(this.WNFTItems).forEach(key => {
+        var item = this.WNFTItems[key];
+        item.select = false;
+      });
       this.actionAlertShow = false;
     },
     resetApp() {
