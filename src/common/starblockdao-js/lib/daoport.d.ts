@@ -38,10 +38,10 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }, handle: Web3Callback<T>): Promise<void>;
-    getNFTMasterChefInfos({ nftMasterchef, pid, owner }: {
+    getNFTMasterChefInfos({ nftMasterchef, pid, owner, maxTokenId }: {
         nftMasterchef?: string;
         pid: number;
         owner: string;
-        maxTokenId: number;
+        maxTokenId?: number;
     }): Promise<MasterChefPoolsInfo>;
 }

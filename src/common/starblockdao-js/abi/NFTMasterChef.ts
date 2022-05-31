@@ -27,13 +27,13 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "_pid",
+        name: "pid",
         type: "uint256"
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "_addDividend",
+        name: "addDividend",
         type: "uint256"
       }
     ],
@@ -81,7 +81,7 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         ],
         indexed: false,
         internalType: "struct INFTMasterChef.RewardInfo[]",
-        name: "_rewards",
+        name: "rewards",
         type: "tuple[]"
       },
       {
@@ -93,7 +93,7 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       {
         indexed: false,
         internalType: "contract IERC20",
-        name: "_dividendToken",
+        name: "dividendToken",
         type: "address"
       },
       {
@@ -218,7 +218,7 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       {
         indexed: false,
         internalType: "uint256[]",
-        name: "_wnftTokenIds",
+        name: "wnftTokenIds",
         type: "uint256[]"
       },
       {
@@ -264,12 +264,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "contract IHarvestStrategy",
         name: "harvestStrategy",
         type: "address"
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "withUpdate",
-        type: "bool"
       }
     ],
     name: "SetHarvestStrategy",
@@ -289,12 +283,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "uint256",
         name: "depositFee",
         type: "uint256"
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "withUpdate",
-        type: "bool"
       }
     ],
     name: "SetPoolDepositFee",
@@ -314,12 +302,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "contract IERC20",
         name: "dividendToken",
         type: "address"
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "withUpdate",
-        type: "bool"
       }
     ],
     name: "SetPoolDividendToken",
@@ -339,12 +321,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "uint256",
         name: "startBlock",
         type: "uint256"
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "withUpdate",
-        type: "bool"
       }
     ],
     name: "SetStartBlock",
@@ -361,6 +337,43 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       }
     ],
     name: "UpdateDevAddress",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "pid",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardIndex",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardBlock",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardForEachBlock",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardPerNFTForEachBlock",
+        type: "uint256"
+      }
+    ],
+    name: "UpdatePoolReward",
     type: "event"
   },
   {
@@ -495,7 +508,7 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       },
       {
         internalType: "address",
-        name: "_to",
+        name: "_forUser",
         type: "address"
       },
       {
@@ -609,6 +622,47 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         type: "uint256"
       }
     ],
+    name: "getPoolCurrentReward",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "rewardBlock",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "rewardForEachBlock",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "rewardPerNFTForEachBlock",
+            type: "uint256"
+          }
+        ],
+        internalType: "struct INFTMasterChef.RewardInfo",
+        name: "_rewardInfo",
+        type: "tuple"
+      },
+      {
+        internalType: "uint256",
+        name: "_currentRewardIndex",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_pid",
+        type: "uint256"
+      }
+    ],
     name: "getPoolEndBlock",
     outputs: [
       {
@@ -629,7 +683,7 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       },
       {
         internalType: "address",
-        name: "_to",
+        name: "_forUser",
         type: "address"
       },
       {
@@ -909,32 +963,9 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_depositFee",
-        type: "uint256"
-      },
-      {
-        internalType: "bool",
-        name: "_withUpdate",
-        type: "bool"
-      }
-    ],
-    name: "setAllPoolDepositFee",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
         internalType: "contract IHarvestStrategy",
         name: "_harvestStrategy",
         type: "address"
-      },
-      {
-        internalType: "bool",
-        name: "_withUpdate",
-        type: "bool"
       }
     ],
     name: "setHarvestStrategy",
@@ -953,11 +984,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "uint256",
         name: "_depositFee",
         type: "uint256"
-      },
-      {
-        internalType: "bool",
-        name: "_withUpdate",
-        type: "bool"
       }
     ],
     name: "setPoolDepositFee",
@@ -976,11 +1002,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "contract IERC20",
         name: "_dividendToken",
         type: "address"
-      },
-      {
-        internalType: "bool",
-        name: "_withUpdate",
-        type: "bool"
       }
     ],
     name: "setPoolDividendToken",
@@ -999,11 +1020,6 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
         internalType: "uint256",
         name: "_startBlock",
         type: "uint256"
-      },
-      {
-        internalType: "bool",
-        name: "_withUpdate",
-        type: "bool"
       }
     ],
     name: "setStartBlock",
@@ -1059,6 +1075,39 @@ export const NFTMasterChef: PartialReadonlyContractAbi = [
       }
     ],
     name: "updatePool",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_pid",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_rewardIndex",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_rewardBlock",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_rewardForEachBlock",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_rewardPerNFTForEachBlock",
+        type: "uint256"
+      }
+    ],
+    name: "updatePoolReward",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"

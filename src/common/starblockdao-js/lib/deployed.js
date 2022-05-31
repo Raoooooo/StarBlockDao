@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deployed = void 0;
 exports.deployed = {
     rinkeby: {
-        NFTMasterChef: "0x8a777015b72127f79F16A3521323bf8DFd0228Fe".toLowerCase(),
-        NFTUtils: "0x066b9BCD326bC70407b25f21078521D8825c6EdD".toLowerCase()
+        NFTMasterChef: "0x45c8B5dCA7eDd4788E7EdcA104b958443F3A61ec".toLowerCase(),
+        NFTUtils: "0x16532fe455Fcc7712eda6FDc6181E30E1Bd4dE3e".toLowerCase()
     },
     main: {
         NFTMasterChef: "".toLowerCase(),
