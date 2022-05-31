@@ -153,7 +153,7 @@ export const NFTUtils: PartialReadonlyContractAbi = [
       },
       {
         internalType: "address",
-        name: "_nft",
+        name: "nft",
         type: "address"
       }
     ],
@@ -214,3 +214,89 @@ export const NFTUtils: PartialReadonlyContractAbi = [
     type: "function"
   }
 ];
+
+// main
+// export const NFTUtils: PartialReadonlyContractAbi = [
+//   {
+//     inputs: [
+//       {
+//         internalType: "contract IERC721Enumerable",
+//         name: "_nftEnumerable",
+//         type: "address"
+//       },
+//       {
+//         internalType: "address",
+//         name: "_owner",
+//         type: "address"
+//       }
+//     ],
+//     name: "ownedNFTEnumerableTokenIds",
+//     outputs: [
+//       {
+//         internalType: "uint256[]",
+//         name: "_totalTokenIds",
+//         type: "uint256[]"
+//       }
+//     ],
+//     stateMutability: "view",
+//     type: "function"
+//   },
+//   {
+//     inputs: [
+//       {
+//         internalType: "contract IERC721",
+//         name: "_nft",
+//         type: "address"
+//       },
+//       {
+//         internalType: "address",
+//         name: "_owner",
+//         type: "address"
+//       },
+//       {
+//         internalType: "uint256",
+//         name: "_maxTokenId",
+//         type: "uint256"
+//       }
+//     ],
+//     name: "ownedNFTNotEnumerableTokenIds",
+//     outputs: [
+//       {
+//         internalType: "uint256[]",
+//         name: "_totalTokenIds",
+//         type: "uint256[]"
+//       }
+//     ],
+//     stateMutability: "view",
+//     type: "function"
+//   },
+//   {
+//     inputs: [
+//       {
+//         internalType: "contract IERC721",
+//         name: "_nft",
+//         type: "address"
+//       },
+//       {
+//         internalType: "address",
+//         name: "_owner",
+//         type: "address"
+//       },
+//       {
+//         internalType: "uint256",
+//         name: "_maxTokenId",
+//         type: "uint256"
+//       }
+//     ],
+//     name: "ownedNFTTokenIds",
+//     outputs: [
+//       {
+//         internalType: "uint256[]",
+//         name: "_totalTokenIds",
+//         type: "uint256[]"
+//       }
+//     ],
+//     stateMutability: "view",
+//     type: "function"
+//   }
+// ];
