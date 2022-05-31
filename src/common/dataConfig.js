@@ -23,42 +23,41 @@ const poolDatas = [
         dividend: "--",
         mining: "--",
         showImgLoading: false,
-        isNFTApprove:false,
-        isWNFTApprove:false,
+        isNFTApprove: false,
+        isWNFTApprove: false,
         collection: {
-            name: "BakerLion",
+            name: "BZUKI",
             contractAddress: "",
         }
     },
-    // {
+    {
 
-    //     poolInfo: {
-    //         pid: 1,
-    //         maxTokenId: 10000,
-    //         startBlock: 0,
-    //         amount: 0,
-    //         wnft: "",
-    //         currentRewardEndBlock: 0,
-    //         currentRewardIndex: 0,
-    //         lastRewardBlock: 0,
+        poolInfo: {
+            pid: 1,
+            maxTokenId: 10000,
+            startBlock: 0,
+            amount: 0,
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
 
-
-    //     },
-    //     nftQuantity: "--",
-    //     wnftQuantity: "--",
-    //     rewardForEachBlock: "--",
-    //     rewardPerNFTForEachBlock: "--",
-    //     endBlock: 0,
-    //     dividend: "--",
-    //     mining: "--",
-    //     showImgLoading: false,
-    //     isNFTApprove:false,
-    //     isWNFTApprove:false,
-    //     collection: {
-    //         name: "BakerLion1",
-    //         contractAddress: "",
-    //     }
-    // },
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApprove: false,
+        isWNFTApprove: false,
+        collection: {
+            name: "BZUKI-E",
+            contractAddress: "",
+        }
+    },
 ]
 
 
