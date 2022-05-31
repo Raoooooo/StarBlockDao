@@ -139,7 +139,22 @@ export class DaoPort {
     return txHash;
   }
 
-  public async ownedNFTTokens({
+  // public async ownedNFTTokens({
+  //   contractAddress,
+  //   owner,
+  //   maxTokenId
+  // }: {
+  //   contractAddress: string;
+  //   owner: string;
+  //   maxTokenId: number;
+  // }): Promise<number[]> {
+  //   const tokenIds = await this._protocol.NFTUtilsContract.methods
+  //     .ownedNFTTokens(contractAddress, owner, maxTokenId)
+  //     .call();
+  //   return tokenIds;
+  // }
+
+  public async ownedNFTTokenIds({
     contractAddress,
     owner,
     maxTokenId
@@ -149,7 +164,7 @@ export class DaoPort {
     maxTokenId: number;
   }): Promise<number[]> {
     const tokenIds = await this._protocol.NFTUtilsContract.methods
-      .ownedNFTTokens(contractAddress, owner, maxTokenId)
+      .ownedNFTNotEnumerableTokenIds(contractAddress, owner, maxTokenId)
       .call();
     return tokenIds;
   }

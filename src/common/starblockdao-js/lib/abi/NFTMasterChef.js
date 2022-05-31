@@ -3,27 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NFTMasterChef = void 0;
 exports.NFTMasterChef = [
     {
-        inputs: [
-            {
-                internalType: "contract IWrappedNFTFactory",
-                name: "_wnftFactory",
-                type: "address"
-            },
-            {
-                internalType: "contract IERC20",
-                name: "_token",
-                type: "address"
-            },
-            {
-                internalType: "address payable",
-                name: "_devAddress",
-                type: "address"
-            }
-        ],
-        stateMutability: "nonpayable",
-        type: "constructor"
-    },
-    {
         anonymous: false,
         inputs: [
             {
@@ -243,25 +222,6 @@ exports.NFTMasterChef = [
         anonymous: false,
         inputs: [
             {
-                indexed: true,
-                internalType: "address",
-                name: "previousOwner",
-                type: "address"
-            },
-            {
-                indexed: true,
-                internalType: "address",
-                name: "newOwner",
-                type: "address"
-            }
-        ],
-        name: "OwnershipTransferred",
-        type: "event"
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
                 indexed: false,
                 internalType: "contract IHarvestStrategy",
                 name: "harvestStrategy",
@@ -436,126 +396,6 @@ exports.NFTMasterChef = [
                 type: "uint256"
             },
             {
-                internalType: "uint256",
-                name: "_addDividend",
-                type: "uint256"
-            }
-        ],
-        name: "addDividendForPool",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "contract IERC721Metadata",
-                name: "_nft",
-                type: "address"
-            },
-            {
-                internalType: "uint256",
-                name: "_startBlock",
-                type: "uint256"
-            },
-            {
-                components: [
-                    {
-                        internalType: "uint256",
-                        name: "rewardBlock",
-                        type: "uint256"
-                    },
-                    {
-                        internalType: "uint256",
-                        name: "rewardForEachBlock",
-                        type: "uint256"
-                    },
-                    {
-                        internalType: "uint256",
-                        name: "rewardPerNFTForEachBlock",
-                        type: "uint256"
-                    }
-                ],
-                internalType: "struct INFTMasterChef.RewardInfo[]",
-                name: "_rewards",
-                type: "tuple[]"
-            },
-            {
-                internalType: "uint256",
-                name: "_depositFee",
-                type: "uint256"
-            },
-            {
-                internalType: "contract IERC20",
-                name: "_dividendToken",
-                type: "address"
-            },
-            {
-                internalType: "bool",
-                name: "_withUpdate",
-                type: "bool"
-            }
-        ],
-        name: "addPoolInfo",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
-                internalType: "address",
-                name: "_forUser",
-                type: "address"
-            },
-            {
-                internalType: "uint256[]",
-                name: "_wnftTokenIds",
-                type: "uint256[]"
-            }
-        ],
-        name: "canHarvest",
-        outputs: [
-            {
-                internalType: "bool",
-                name: "",
-                type: "bool"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
-                internalType: "address payable",
-                name: "_to",
-                type: "address"
-            }
-        ],
-        name: "closePool",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
                 internalType: "uint256[]",
                 name: "_tokenIds",
                 type: "uint256[]"
@@ -564,56 +404,6 @@ exports.NFTMasterChef = [
         name: "deposit",
         outputs: [],
         stateMutability: "payable",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "devAddress",
-        outputs: [
-            {
-                internalType: "address payable",
-                name: "",
-                type: "address"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "address payable",
-                name: "_to",
-                type: "address"
-            }
-        ],
-        name: "emergencyStop",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_from",
-                type: "uint256"
-            },
-            {
-                internalType: "uint256",
-                name: "_to",
-                type: "uint256"
-            }
-        ],
-        name: "getMultiplier",
-        outputs: [
-            {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-            }
-        ],
-        stateMutability: "pure",
         type: "function"
     },
     {
@@ -711,19 +501,6 @@ exports.NFTMasterChef = [
         type: "function"
     },
     {
-        inputs: [],
-        name: "harvestStrategy",
-        outputs: [
-            {
-                internalType: "contract IHarvestStrategy",
-                name: "",
-                type: "address"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
         inputs: [
             {
                 internalType: "uint256",
@@ -737,26 +514,6 @@ exports.NFTMasterChef = [
                 internalType: "bool",
                 name: "",
                 type: "bool"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "massUpdatePools",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "owner",
-        outputs: [
-            {
-                internalType: "address",
-                name: "",
-                type: "address"
             }
         ],
         stateMutability: "view",
@@ -795,7 +552,7 @@ exports.NFTMasterChef = [
         inputs: [
             {
                 internalType: "uint256",
-                name: "",
+                name: "_pid",
                 type: "uint256"
             }
         ],
@@ -803,52 +560,52 @@ exports.NFTMasterChef = [
         outputs: [
             {
                 internalType: "contract IWrappedNFT",
-                name: "wnft",
+                name: "_wnft",
                 type: "address"
             },
             {
                 internalType: "uint256",
-                name: "startBlock",
+                name: "_startBlock",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "currentRewardIndex",
+                name: "_currentRewardIndex",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "currentRewardEndBlock",
+                name: "_currentRewardEndBlock",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "amount",
+                name: "_amount",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "lastRewardBlock",
+                name: "_lastRewardBlock",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "accTokenPerShare",
+                name: "_accTokenPerShare",
                 type: "uint256"
             },
             {
                 internalType: "contract IERC20",
-                name: "dividendToken",
+                name: "_dividendToken",
                 type: "address"
             },
             {
                 internalType: "uint256",
-                name: "accDividendPerShare",
+                name: "_accDividendPerShare",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "depositFee",
+                name: "_depositFee",
                 type: "uint256"
             }
         ],
@@ -872,12 +629,12 @@ exports.NFTMasterChef = [
         inputs: [
             {
                 internalType: "uint256",
-                name: "",
+                name: "_pid",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "",
+                name: "_nftTokenId",
                 type: "uint256"
             }
         ],
@@ -885,17 +642,17 @@ exports.NFTMasterChef = [
         outputs: [
             {
                 internalType: "bool",
-                name: "deposited",
+                name: "_deposited",
                 type: "bool"
             },
             {
                 internalType: "uint256",
-                name: "rewardDebt",
+                name: "_rewardDebt",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "dividendDebt",
+                name: "_dividendDebt",
                 type: "uint256"
             }
         ],
@@ -925,174 +682,17 @@ exports.NFTMasterChef = [
         inputs: [
             {
                 internalType: "uint256",
-                name: "",
+                name: "_pid",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "",
+                name: "_rewardInfoId",
                 type: "uint256"
             }
         ],
         name: "poolsRewardInfos",
         outputs: [
-            {
-                internalType: "uint256",
-                name: "rewardBlock",
-                type: "uint256"
-            },
-            {
-                internalType: "uint256",
-                name: "rewardForEachBlock",
-                type: "uint256"
-            },
-            {
-                internalType: "uint256",
-                name: "rewardPerNFTForEachBlock",
-                type: "uint256"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "renounceOwnership",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "contract IHarvestStrategy",
-                name: "_harvestStrategy",
-                type: "address"
-            }
-        ],
-        name: "setHarvestStrategy",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
-                internalType: "uint256",
-                name: "_depositFee",
-                type: "uint256"
-            }
-        ],
-        name: "setPoolDepositFee",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
-                internalType: "contract IERC20",
-                name: "_dividendToken",
-                type: "address"
-            }
-        ],
-        name: "setPoolDividendToken",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
-                internalType: "uint256",
-                name: "_startBlock",
-                type: "uint256"
-            }
-        ],
-        name: "setStartBlock",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "token",
-        outputs: [
-            {
-                internalType: "contract IERC20",
-                name: "",
-                type: "address"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "address",
-                name: "newOwner",
-                type: "address"
-            }
-        ],
-        name: "transferOwnership",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "address payable",
-                name: "_devAddress",
-                type: "address"
-            }
-        ],
-        name: "updateDevAddress",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            }
-        ],
-        name: "updatePool",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_pid",
-                type: "uint256"
-            },
-            {
-                internalType: "uint256",
-                name: "_rewardIndex",
-                type: "uint256"
-            },
             {
                 internalType: "uint256",
                 name: "_rewardBlock",
@@ -1109,9 +709,7 @@ exports.NFTMasterChef = [
                 type: "uint256"
             }
         ],
-        name: "updatePoolReward",
-        outputs: [],
-        stateMutability: "nonpayable",
+        stateMutability: "view",
         type: "function"
     },
     {
@@ -1148,19 +746,6 @@ exports.NFTMasterChef = [
         name: "withdrawWithoutHarvest",
         outputs: [],
         stateMutability: "nonpayable",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "wnftFactory",
-        outputs: [
-            {
-                internalType: "contract IWrappedNFTFactory",
-                name: "",
-                type: "address"
-            }
-        ],
-        stateMutability: "view",
         type: "function"
     }
 ];
