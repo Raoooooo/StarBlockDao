@@ -185,6 +185,22 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
+    DaoPort.prototype.ownedNFTTokens = function (_a) {
+        var contractAddress = _a.contractAddress, owner = _a.owner, maxTokenId = _a.maxTokenId;
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
+                            .ownedNFTTokens(contractAddress, owner, maxTokenId)
+                            .call()];
+                    case 1:
+                        tokenIds = _b.sent();
+                        return [2 /*return*/, tokenIds];
+                }
+            });
+        });
+    };
     DaoPort.prototype.ownedTokens = function (_a) {
         var contractAddress = _a.contractAddress, owner = _a.owner;
         return __awaiter(this, void 0, void 0, function () {

@@ -961,7 +961,8 @@ export default {
       }
 
       const pid = 0;
-      const owner = accounts[0];
+      // const owner = accounts[0];
+      const owner = "0x06074740fcefec15f8cee02a4e128088caee0711";
       const maxTokenId = 10000;
       let parameters = {
         pid,
@@ -980,9 +981,10 @@ export default {
 
       parameters = {
         contractAddress,
-        owner
+        owner,
+        maxTokenId
       };
-      const tokenIds = await daoport.ownedTokens(parameters);
+      const tokenIds = await daoport.ownedNFTTokens(parameters);
       console.log("daoportAction=== tokenIds:", tokenIds);
     },
 
