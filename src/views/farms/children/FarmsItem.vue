@@ -70,11 +70,7 @@
           </div>
           <div class="contantDetailSection1_rightBox">
             <p class="contantDetailSection1_rightBox_topText">
-              {{
-                (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2) +
-                "/" +
-                " STB"
-              }}
+              {{ rewardPerNFTAmount(item) }}
             </p>
             <p class="contantDetailSection1_rightBox_bottomText">
               {{ $t("farms.awardNFT") + "/" + $t("farms.month") }}
@@ -287,6 +283,26 @@ export default {
     };
   },
   methods: {
+    rewardPerNFTAmount(item) {
+      if (Number(item.rewardPerNFTForEachBlock) > 0) {
+        return (
+          (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2) +
+          "/" +
+          " STB"
+        );
+      } else if (Number(item.rewardForEachBlock) > 0) {
+        return (
+          (
+            (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
+            Number(item.poolInfo.amount)
+          ).toFixed(2) +
+          "/" +
+          " STB"
+        );
+      } else {
+        return "--" + "/" + " STB";
+      }
+    },
     formmatBlockStr(blockNumber) {
       if (blockNumber > 1000 && blockNumber < 10000) {
         return Number(blockNumber / 1000).toFixed(2) + "K";
@@ -455,7 +471,6 @@ export default {
   background: #e5e9f2;
 }
 .grid-content {
-  cursor: pointer;
   border-radius: 10px;
   /* min-height: 80px; */
   display: flex;
@@ -478,6 +493,7 @@ export default {
   /* margin-left: 0.5rem; */
   /* margin-right: 0.5rem; */
   height: 100%;
+  cursor: default;
 }
 .contantDetailTopBox {
   /* background-color: aqua; */
@@ -487,6 +503,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  cursor: default;
 }
 .contantDetailTopBox_leftBox {
   margin-left: 0.5rem;
@@ -589,6 +606,7 @@ export default {
   height: 3.25rem;
   margin-left: 2.5%;
   width: 95%;
+  cursor: default;
 }
 
 .contantDetailSection1_leftBox {
@@ -668,6 +686,7 @@ export default {
   height: 2rem;
   margin-left: 2.5%;
   width: 95%;
+  cursor: default;
 }
 .contantDetailSection2_leftText {
   margin-left: 0.5rem;
