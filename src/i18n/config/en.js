@@ -77,12 +77,17 @@ export default {
 
     common: {
         
+        txHash: "交易哈希",
         defaultMessSub1: "确定抵押",
         defaultMessSub2: "个",
         defaultMessSub3: "确定解抵押",
         defaultMessSub4: "确定领取奖励",
 
+        defaultMessSub4Des: "抵押奖励",
+        defaultMessSub3Des: "解抵押的时候将自动领取所有奖励",
+        defaultMessSub1Des: "抵押以后将会给您抵押凭证：WNFT WNFT是解抵押NFT的唯一凭证，千万不可丢失",
 
+        copySucceess: "Copy Succeess",
         confirm: "Confirm",
         cancle: "Cancle",
         alertClose: "Close",

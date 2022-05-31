@@ -25,6 +25,8 @@ const poolDatas = [
         showImgLoading: false,
         isNFTApprove: false,
         isWNFTApprove: false,
+        NFTItems: [],
+        WNFTItems: [],
         collection: {
             name: "BZUKI",
             contractAddress: "",
@@ -53,6 +55,8 @@ const poolDatas = [
         showImgLoading: false,
         isNFTApprove: false,
         isWNFTApprove: false,
+        NFTItems: [],
+        WNFTItems: [],
         collection: {
             name: "BZUKI-E",
             contractAddress: "",
