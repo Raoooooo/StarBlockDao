@@ -54,10 +54,7 @@
         <!-- 奖励 -->
         <div class="contantDetailSection1">
           <div class="contantDetailSection1_leftBox">
-            <img
-              class="contantDetailSection1_leftBox_img"
-              src="@/assets/img/farms/collectionIcon.png"
-            />
+            <img class="contantDetailSection1_leftBox_img" v-lazy="item.collection.imagePath" />
             <div class="contantDetailSection1_leftBox_subBox">
               <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.name }}</p>
               <div class="linkIconBox">
@@ -94,7 +91,9 @@
           </p>
           <p class="contantDetailSection2_rightText">
             TVL
-            <span class="contantDetailSection2_rightText1">--</span>
+            <span class="contantDetailSection2_rightText1">
+              {{ item.floor_price > 0 ? item.floor_price + " ETH" : "--" }}
+            </span>
           </p>
         </div>
 
@@ -298,7 +297,7 @@ export default {
   methods: {
     linkOfType(item, type) {
       if (type == 1) {
-        return getStarBlockOfCollection(item.collection.contractAddress);
+        return getStarBlockOfCollection(item.nft);
       }
       // opensea
       if (type == 2) {
@@ -306,7 +305,7 @@ export default {
       }
       // nft
       else if (type == 3) {
-        return getEtherscanOfCollection(item.collection.contractAddress, item.tokenId);
+        return getEtherscanOfCollection(item.nft, item.tokenId);
       }
       // wnft
       else if (type == 4) {
@@ -316,8 +315,7 @@ export default {
     rewardPerNFTAmount(item) {
       if (Number(item.rewardPerNFTForEachBlock) > 0) {
         return (
-          (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(4) +
-          "/" +
+          (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2) +
           " STB"
         );
       } else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
@@ -325,34 +323,37 @@ export default {
           (
             (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
             Number(item.poolInfo.amount)
-          ).toFixed(4) +
-          "/" +
-          " STB"
+          ).toFixed(2) + " STB"
         );
       } else {
-        return "--" + "/" + " STB";
+        return "--" + " STB";
       }
     },
     formmatBlockStr(blockNumber) {
       if (blockNumber > 1000 && blockNumber < 10000) {
-        return Number(blockNumber / 1000).toFixed(4) + "K";
+        return Number(blockNumber / 1000).toFixed(2) + "K";
       } else if (blockNumber >= 10000 && blockNumber < 10000000) {
-        return Number(blockNumber / 10000).toFixed(4) + "W";
+        return Number(blockNumber / 10000).toFixed(2) + "W";
       } else if (blockNumber >= 10000000) {
-        return Number(blockNumber / 10000000).toFixed(4) + "KW";
+        return Number(blockNumber / 10000000).toFixed(2) + "KW";
       } else {
         return blockNumber;
       }
     },
     awardAmountStr(item) {
       if (item.mining != "--") {
-        return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
+        return (item.mining * Math.pow(10, -18)).toFixed(2) + " STB";
       }
       return item.mining;
     },
     bonusAmountStr(item) {
       if (item.dividend != "--") {
-        return (item.dividend * Math.pow(10, -18)).toFixed(4) + " WNFT";
+        var number = item.dividend * Math.pow(10, -18);
+        if (number >= 10000) {
+          return number.toFixed(0) + " WNFT";
+        } else {
+          return Number(number.toFixed(2)) + " WNFT";
+        }
       }
       return item.dividend;
     },
@@ -372,7 +373,7 @@ export default {
       if (item.isShowLoading) {
         return "";
       }
-      if (!item.isNFTApprove) {
+      if (!item.isNFTApproved) {
         return "抵押授权";
       } else {
       }
@@ -411,22 +412,31 @@ export default {
     },
     rewardAmount(item) {
       if (item.rewardForEachBlock) {
-        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(4);
+        var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
+        if (number >= 10000) {
+          return number.toFixed(0);
+        } else {
+          return Number(number.toFixed(2));
+        }
       }
       if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
-        return (
+        var number =
           Number(item.rewardPerNFTForEachBlock) *
           6500 *
           30 *
           Number(item.poolInfo.amount) *
-          Math.pow(10, -18)
-        ).toFixed(4);
+          Math.pow(10, -18);
+        if (number >= 10000) {
+          return number.toFixed(0);
+        } else {
+          return Number(number.toFixed(2));
+        }
       } else if (Number(item.poolInfo.amount) == 0) {
         return "--";
       }
     },
     pledgeBtnAction(item) {
-      if (!item.isNFTApprove) {
+      if (!item.isNFTApproved) {
         approveNFTAction(item, this.handleNftApprove, 0, false);
         return;
       }
@@ -435,7 +445,7 @@ export default {
       this.$bus.$emit("pledgeBtnAction", { item: item, isNFTSell: true, isWNFTSell: false });
     },
     unPledgeBtnAction(item) {
-      if (!item.isWNFTApprove) {
+      if (!item.isWNFTApproved) {
         approveWNFTAction(item, this.handleWNftApprove, 0, false);
         return;
       }

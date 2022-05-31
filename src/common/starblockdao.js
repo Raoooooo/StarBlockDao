@@ -7,7 +7,7 @@ import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
 var utils = require('web3-utils')
 
-var network_Name = Network.Rinkeby;
+var network_Name = Network.Main;
 var accounts;
 var daoport;
 
@@ -179,9 +179,10 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
     }
     const owner = accounts[0];
     //获取可抵押tokens
-    var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
+    // var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
+    var contractAddress = item.nft;
     item.collection.contractAddress = contractAddress;
-    const maxTokenId = 10000;
+    const maxTokenId = item.poolInfo.maxTokenId;
     var parameters = {
         contractAddress,
         owner,
@@ -194,7 +195,7 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
     }
 }
 
-export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
+export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
     if (!accounts) {
         await getAccounts();
     }
@@ -202,7 +203,7 @@ export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
         getDaoPort(accounts[0]);
     }
     const owner = accounts[0];
-    const maxTokenId = 10000;
+    const maxTokenId = item.poolInfo.maxTokenId;
     //获取可抵押tokens
     var contractAddress = item.poolInfo.wnft;
     var parameters = {
@@ -213,7 +214,7 @@ export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, index) {
     const tokenIds = await daoport.ownedNFTTokens(parameters);
     console.log("daoportAction=== tokenIds:", tokenIds);
     if (handleGetWNFTTokenIDs) {
-        handleGetWNFTTokenIDs(tokenIds, item, index);
+        handleGetWNFTTokenIDs(tokenIds, item, isHarvest);
     }
 }
 
@@ -429,6 +430,7 @@ export async function getCurrentChainId(handle) {
 
 
 
+
 export function getEtherscanOfCollection(contractAddress) {
     if (network_Name == Network.Rinkeby) {
         return "https://rinkeby.etherscan.io/address/" + contractAddress;
@@ -475,6 +477,14 @@ export function getStarBlockOfNFT(contractAddress, tokenID) {
         return "https://testnets.opensea.io/assets/rinkeby/" + contractAddress + "/" + tokenID;
     } else {
         return "https://opensea.io/collection/assets/" + contractAddress + "/" + tokenID;
+    }
+}
+
+export function openseaApiBaseUrl() {
+    if (network_Name == Network.Rinkeby) {
+        return "https://testnets-api.opensea.io/api/v1/";
+    } else {
+        return "https://api.opensea.io/api/v1/";
     }
 }
 

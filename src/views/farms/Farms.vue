@@ -16,7 +16,7 @@
           <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">--</p>
+              <p class="itemDataBox_topText">{{ totalTVL > 0 ? totalTVL + " ETH" : "--" }}</p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem1") }}</p>
             </div>
             <div class="vSepLine"></div>
@@ -28,7 +28,7 @@
             <div class="vSepLine"></div>
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ (totalReward * Math.pow(10, -18)).toFixed(4) + " STB" }}
+                {{ totalRewardStr }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
             </div>
@@ -104,7 +104,7 @@
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">
-            {{ (totalReward * Math.pow(10, -18)).toFixed(4) + " STB" }}
+            {{ (selectPollItem.mining * Math.pow(10, -18)).toFixed(2) + " STB" }}
           </p>
           <p class="itemDataBox_bottomText_alert">{{ $t("farms.getAwardAmount") }}</p>
         </div>
@@ -264,7 +264,8 @@ import {
   daoporDeposit,
   getWNFTTokenIDs,
   daoporWithdraw,
-  daoporHarvest
+  daoporHarvest,
+  openseaApiBaseUrl
 } from "@/common/starblockdao";
 
 export default {
@@ -278,6 +279,15 @@ export default {
     Bottom
   },
   computed: {
+    totalRewardStr() {
+      if (this.totalReward * Math.pow(10, -18) > 10000) {
+        return (this.totalReward * Math.pow(10, -18)).toFixed(0);
+      } else {
+        return this.totalReward > 0
+          ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " STB"
+          : "--" + " STB";
+      }
+    },
     defaultMessageStr() {
       if (this.isGetReward) {
         return this.$t("common.defaultMessSub4");
@@ -304,7 +314,7 @@ export default {
         return this.$t("common.defaultMessSub4Des");
       }
       if (this.isSwitch1) {
-        return this.$t("farms.tip4") + this.$t("farms.tip6");
+        return this.$t("farms.tip4") + "，" + this.$t("farms.tip6");
       } else {
         return this.$t("farms.tip3");
       }
@@ -350,12 +360,13 @@ export default {
       txHashOringion: "111111",
       successVisible: false,
       // defaultMessageDesStr: "",
-      selectPollItem: null,
+      selectPollItem: {},
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
       warningDefaultVisible: false,
       selectTokenIdsArr: [],
       selectCount: 0,
       totalNftQuantity: 0,
+      totalTVL: 0,
       totalReward: 0,
       currentBlockNumber: 100000000,
       topImgHeight: topImgHeight,
@@ -399,6 +410,8 @@ export default {
     });
   },
   created() {
+    // this.requestFloorPrice();
+
     getBlockNumber(this.updateBlockData);
     onBlockNumberChange(this.updateBlockData);
     setTimeout(() => {
@@ -411,9 +424,13 @@ export default {
 
     this.poolItems = poolDatas;
     this.getMasterChefInfo();
+    setTimeout(() => {
+      this.getFloorPriceData();
+    }, 2000);
+
     setInterval(() => {
       this.getMasterChefInfo();
-    }, 10000 * 60 * 3 * 60);
+    }, 1000 * 60 * 2);
 
     this.$nextTick(() => {
       // console.log("this.$route.path*******",this.$route.path);
@@ -504,9 +521,38 @@ export default {
   },
 
   methods: {
+    requestFloorPrice(item, handleFloorPrice, index) {
+      var urlPath = openseaApiBaseUrl() + "collection/" + item.collection.name + "/stats";
+      this.$axios
+        .get(urlPath, {
+          params: {}
+        })
+        .then(res => {
+          if (handleFloorPrice) {
+            handleFloorPrice(item, res.data.stats.floor_price, index);
+          }
+          console.log("collection/doodles-official/stats", res.data.stats.floor_price);
+        });
+    },
+    handleFloorPrice(item, floor_price, index) {
+      item.floor_price = floor_price;
+
+      if (index == this.poolItems.length - 1) {
+        this.totalTVL = 0;
+        for (var i = 0; i < this.poolItems.length; i++) {
+          const item = this.poolItems[i];
+          this.totalTVL += Number(item.floor_price);
+        }
+      }
+    },
     awardAmountStr(item) {
       if (item.mining != "--") {
-        return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
+        var number = item.mining * Math.pow(10, -18);
+        if (number >= 10000) {
+          return number.toFixed(0) + " STB";
+        } else {
+          return Number(number.toFixed(2)) + " STB";
+        }
       }
       return item.mining;
     },
@@ -546,18 +592,13 @@ export default {
     defaultBtnAction() {
       this.warningDefaultVisible = false;
       this.actionAlertShow = false;
+
+      var isHarvest = true;
+      // if (this.isGetReward) {
+      //   getWNFTTokenIDs(this.selectPollItem, this.handleGetWNFTTokenIDs, isHarvest);
+      // }
       if (this.isGetReward) {
-        var emptyArr = [];
-        for (var i = 0; i < this.WNFTItems.length; i++) {
-          var miniItem = this.WNFTItems[i];
-          emptyArr.push(miniItem.tokenId);
-        }
-        daoporHarvest(
-          this.selectPollItem,
-          this.handleHarvest,
-          emptyArr,
-          this.faildHandleDaoporHarvest
-        );
+        getWNFTTokenIDs(this.selectPollItem, this.handleGetWNFTTokenIDs, isHarvest);
         this.$bus.$emit("defaultBtnNotiAction", { selectItem: this.selectPollItem, clickType: 2 });
       } else {
         if (this.isSwitch1) {
@@ -629,10 +670,16 @@ export default {
       for (var i = 0; i < this.poolItems.length; i++) {
         var item = this.poolItems[i];
         await daoportAction(item, this.handleMasterChefInfo, i);
-        await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
-        approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
+        // await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
+        // approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
         // getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
         // getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
+      }
+    },
+    async getFloorPriceData() {
+      for (var i = 0; i < this.poolItems.length; i++) {
+        var item = this.poolItems[i];
+        await this.requestFloorPrice(item, this.handleFloorPrice, i);
       }
     },
 
@@ -645,8 +692,11 @@ export default {
       // item.poolInfo.startBlock = 10746993;
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
       item.dividend = Number(masterChefInfo.dividend);
+      item.isNFTApproved = masterChefInfo.isNFTApproved;
+      item.isWNFTApproved = masterChefInfo.isWNFTApproved;
       item.mining = Number(masterChefInfo.mining);
       item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
+      item.nft = masterChefInfo.nft;
       item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
       item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
       if (index == this.poolItems.length - 1) {
@@ -655,13 +705,19 @@ export default {
         for (var i = 0; i < this.poolItems.length; i++) {
           const item = this.poolItems[i];
           this.totalNftQuantity += Number(item.poolInfo.amount);
-          this.totalReward += Number(item.mining);
+          var reward = 0;
+          if (this.currentBlockNumber > Number(item.poolInfo.startBlock)) {
+            reward =
+              (this.currentBlockNumber - Number(item.poolInfo.startBlock)) *
+              Number(item.rewardForEachBlock);
+          }
+          this.totalReward += reward;
         }
       }
     },
 
     handleNftApprove(isApprove, item, index) {
-      item.isNFTApprove = isApprove;
+      item.isNFTApproved = isApprove;
     },
     faildHandleApproveNFT(item) {},
     handleWNftApprove(isApprove, item, index) {
@@ -690,7 +746,7 @@ export default {
         this.isShowEmptyImg = true;
       }
     },
-    handleGetWNFTTokenIDs(WNFTTokenIDs, item, index) {
+    handleGetWNFTTokenIDs(WNFTTokenIDs, item, isHarvest) {
       var emptyArr = [];
       for (var i = 0; i < WNFTTokenIDs.length; i++) {
         var miniItem = {};
@@ -707,6 +763,20 @@ export default {
       this.canSelectNftItems = this.WNFTItems;
       this.actionAlertShowLoading = false;
       this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
+
+      if (isHarvest) {
+        var emptyArr = [];
+        for (var i = 0; i < this.WNFTItems.length; i++) {
+          var miniItem = this.WNFTItems[i];
+          emptyArr.push(miniItem.tokenId);
+        }
+        daoporHarvest(
+          this.selectPollItem,
+          this.handleHarvest,
+          emptyArr,
+          this.faildHandleDaoporHarvest
+        );
+      }
     },
     handleGetBonusReward(result, item) {
       var result0 = result[0];

@@ -55,17 +55,17 @@ export default {
         getBonusAmount: "可领取分红奖励",
         detailInfo: "详细信息",
         option: "操作",
-        optionTip1: "解抵押的时候将自动领取所有奖励；",
-        optionTip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红；",
-        optionTip3: "根据您持有WNFT可解抵押对应的NFT；",
-        optionTip4: "WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
+        optionTip1: "解抵押的时候将自动领取所有奖励",
+        optionTip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红",
+        optionTip3: "根据您持有WNFT可解抵押对应的NFT",
+        optionTip4: "WNFT是解抵押NFT的唯一凭证，千万不要丢失",
 
         tip1: "StarBlock DAO支持抵押NFT",
-        tip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红；",
-        tip3: "解抵押的时候将自动领取所有奖励；",
-        tip4: "抵押NFT以后将给您抵押凭证：WNFT；",
-        tip5: "根据您持有WNFT可解抵押对应的NFT；",
-        tip6: "WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
+        tip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红",
+        tip3: "解抵押的时候将自动领取所有奖励",
+        tip4: "抵押NFT以后将给您抵押凭证：WNFT",
+        tip5: "根据您持有WNFT可解抵押对应的NFT",
+        tip6: "WNFT是解抵押NFT的唯一凭证，千万不要丢失",
 
         noWNFTDes: "暂无此合集的WNF",
         noNFTDes: "暂无此合集的NFT",
@@ -96,7 +96,8 @@ export default {
         checkChainId4Des: "为了能够正常操作，请切换至MetaMask钱包内的以太坊 Rinkeby网络",
         loginError: "请点击导航栏【登录】按钮，完成登录后操作",
         iKnow: "我知道了",
-
+        stakeApprove: "抵押授权",
+        unstakeApprove: "解抵押授权"
 
     },
 

@@ -56,17 +56,17 @@ export default {
         getBonusAmount: "Dividend to collect",
         detailInfo: "Detail Info",
         option: "Operation",
-        optionTip1: "All rewards will be automatically claimed when unstaking;",
-        optionTip2: "Staking NFT you hold into the pool to participate in farming and dividends;",
-        optionTip3: "According to your holding of WNFT, to unstake corresponding NFT;",
-        optionTip4: "WNFT is the only certificate for unstaking NFT, don't lose it.",
+        optionTip1: "All rewards will be automatically claimed when unstaking",
+        optionTip2: "Staking NFT you hold into the pool to participate in farming and dividends",
+        optionTip3: "According to your holding of WNFT, to unstake corresponding NFT",
+        optionTip4: "WNFT is the only certificate for unstaking NFT, don't lose it",
 
         tip1: "StarBlock DAO supports staking NFT",
-        tip2: "Staking NFT you hold into the pool to participate in farming and dividends;",
-        tip3: "All rewards will be automatically claimed when unstaking;",
-        tip4: "Staking NFT will give you the staking certificate: WNFT;",
-        tip5: "According to your holding of WNFT, to unstake corresponding NFT;",
-        tip6: "WNFT is the only certificate for unstaking NFT, don't lose it.",
+        tip2: "Staking NFT you hold into the pool to participate in farming and dividends",
+        tip3: "All rewards will be automatically claimed when unstaking",
+        tip4: "Staking NFT will give you the staking certificate: WNFT",
+        tip5: "According to your holding of WNFT, to unstake corresponding NFT",
+        tip6: "WNFT is the only certificate for unstaking NFT, don't lose it",
 
         noWNFTDes: "No WNFT for this collection",
         noNFTDes: "No NFT for this collection",
@@ -95,6 +95,9 @@ export default {
         checkChainId4Des: "In order to trade items, please switch to Rinkeby network within your MetaMask wallet.",
         loginError: "Please click the [login] button on the navigation bar to complete the operation after login.",
         iKnow: " OK ",
+        stakeApprove:"Stake Approve",
+        unstakeApprove:"Unstake Approve"
+
 
 
     },
