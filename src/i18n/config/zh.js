@@ -36,7 +36,7 @@ export default {
     farms: {
         topDes: "押NFT将获得WNFT，它是赎回抵押NFT的唯一凭证，切勿丢失！",
         topItem1: "TVL",
-        topItem2: "NFT抵押总数量",
+        topItem2: "抵押总数量",
         topItem3: "总奖励",
         earn: "赚取",
         month: "月",
@@ -65,7 +65,14 @@ export default {
         tip3: "解抵押的时候将自动领取所有奖励；",
         tip4: "抵押NFT以后将给您抵押凭证：WNFT；",
         tip5: "根据您持有WNFT可解抵押对应的NFT；",
-        tip6: "WNFT是解抵押NFT的唯一凭证，千万不要丢失。"
+        tip6: "WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
+
+        noWNFTDes: "暂无此合集的WNF",
+        noNFTDes: "暂无此合集的NFT",
+        getRewardSuccess: "领取奖励成功",
+        depositSuccess: "抵押NFT成功",
+        withdrawSuccess: "解抵押NFT成功",
+
     },
 
 
@@ -73,6 +80,8 @@ export default {
         defaultMessSub1: "确定抵押",
         defaultMessSub2: "个",
         defaultMessSub3: "确定解抵押",
+        defaultMessSub4: "确定领取奖励",
+
         confirm: "确定",
         cancle: "取消",
         alertClose: "关闭",

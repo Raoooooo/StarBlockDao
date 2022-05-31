@@ -5,6 +5,8 @@ import { Network } from "./starblockdao-js/lib/types";
 import { getRequestBaseUrl, getProdcutMode } from "@/common/starBlockConfig";
 import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
+var utils = require('web3-utils')
+
 var network_Name = Network.Rinkeby;
 var accounts;
 var daoport;
@@ -14,12 +16,12 @@ export function setNetwork_Name(chaiIdNum) {
 
     if (chaiIdNum === 1) {
         network_Name = Network.Main;
-        isEther = true;
+        // isEther = true;
     }
 
     if (chaiIdNum === 4) {
         network_Name = Network.Rinkeby;
-        isEther = true;
+        // isEther = true;
     }
     // if (chaiIdNum === 56) {
     //     network_Name = Network.BSC_Main;
@@ -175,7 +177,7 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
     const owner = accounts[0];
     //获取可抵押tokens
     var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
-    item.contractAddress = contractAddress;
+    item.collection.contractAddress = contractAddress;
     var parameters = {
         contractAddress,
         owner
@@ -409,6 +411,48 @@ export async function getDaoPort(account) {
     daoport.setAccount(account);
 }
 
+
+export async function getCurrentChainId(handle) {
+    const chainId = await ethereum.request({ method: 'eth_chainId' });
+    if (handle && chainId) {
+        handle(utils.hexToNumber(chainId));
+    }
+    console.log(utils.hexToNumber(chainId));
+}
+
+
+
+export function getEtherscanOfCollection(contractAddress) {
+    if (network_Name == Network.Rinkeby) {
+        return "https://rinkeby.etherscan.io/address/" + contractAddress;
+    } else {
+        return "https://etherscan.io/address/" + contractAddress;
+    }
+}
+
+export function getEtherscanOfNFT(contractAddress, tokenID) {
+    if (network_Name == Network.Rinkeby) {
+        return "https://rinkeby.etherscan.io/token/" + contractAddress + "?" + "@={" + tokenID + "}" + "#inventory";
+    } else {
+        return "https://etherscan.io/token/" + contractAddress + "?" + "@={" + tokenID + "}" + "#inventory";
+    }
+}
+
+export function getOpenSeaOfCollection(name) {
+    if (network_Name == Network.Rinkeby) {
+        return "https://testnets.opensea.io/collection/" + name;
+    } else {
+        return "https://opensea.io/collection/" + name;
+    }
+}
+
+export function getOpenSeaOfNFT(contractAddress, tokenID) {
+    if (network_Name == Network.Rinkeby) {
+        return "https://testnets.opensea.io/assets/rinkeby/" + contractAddress + "/" + tokenID;
+    } else {
+        return "https://opensea.io/collection/assets/" + contractAddress + "/" + tokenID;
+    }
+}
 
 
 

@@ -283,10 +283,11 @@ export default {
     };
   },
   methods: {
+    
     rewardPerNFTAmount(item) {
       if (Number(item.rewardPerNFTForEachBlock) > 0) {
         return (
-          (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2) +
+          (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(4) +
           "/" +
           " STB"
         );
@@ -295,7 +296,7 @@ export default {
           (
             (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
             Number(item.poolInfo.amount)
-          ).toFixed(2) +
+          ).toFixed(4) +
           "/" +
           " STB"
         );
@@ -305,24 +306,24 @@ export default {
     },
     formmatBlockStr(blockNumber) {
       if (blockNumber > 1000 && blockNumber < 10000) {
-        return Number(blockNumber / 1000).toFixed(2) + "K";
+        return Number(blockNumber / 1000).toFixed(4) + "K";
       } else if (blockNumber >= 10000 && blockNumber < 10000000) {
-        return Number(blockNumber / 10000).toFixed(2) + "W";
+        return Number(blockNumber / 10000).toFixed(4) + "W";
       } else if (blockNumber >= 10000000) {
-        return Number(blockNumber / 10000000).toFixed(2) + "KW";
+        return Number(blockNumber / 10000000).toFixed(4) + "KW";
       } else {
         return blockNumber;
       }
     },
     awardAmountStr(item) {
       if (item.mining != "--") {
-        return (item.mining * Math.pow(10, -18)).toFixed(2) + " STB";
+        return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
       }
       return item.mining;
     },
     bonusAmountStr(item) {
       if (item.dividend != "--") {
-        return (item.dividend * Math.pow(10, -18)).toFixed(2) + " WNFT";
+        return (item.dividend * Math.pow(10, -18)).toFixed(4) + " WNFT";
       }
       return item.dividend;
     },
@@ -381,7 +382,7 @@ export default {
     },
     rewardAmount(item) {
       if (item.rewardForEachBlock) {
-        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2);
+        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(4);
       }
       if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
         return (
@@ -390,7 +391,7 @@ export default {
           30 *
           Number(item.poolInfo.amount) *
           Math.pow(10, -18)
-        ).toFixed(2);
+        ).toFixed(4);
       } else if (Number(item.poolInfo.amount) == 0) {
         return "--";
       }
@@ -938,7 +939,7 @@ export default {
     flex-direction: row;
     align-items: center;
     background-color: #fff8e6;
-    border-radius: 0.1rem;
+    border-radius: 0.15rem;
     justify-content: space-between;
     height: 1.75rem;
     margin-left: 5%;
@@ -1012,12 +1013,12 @@ export default {
   }
 
   .contantDetailSection2 {
-    margin-top: 0.25rem;
+    margin-top: 0.375rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     background-color: #fff8e6;
-    border-radius: 0.1rem;
+    border-radius: 0.15rem;
     justify-content: space-between;
     height: 1rem;
     margin-left: 5%;

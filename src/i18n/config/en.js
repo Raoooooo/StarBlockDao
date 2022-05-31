@@ -37,7 +37,7 @@ export default {
     farms: {
         topDes: "Staking NFT will get WNFT, which is only certificate to unstake NFT. Don't lose it!",
         topItem1: "TVL",
-        topItem2: "NFT Staking Amount",
+        topItem2: "Staking Amount",
         topItem3: "Total Rewards",
         earn: "Earn",
         month: "M",
@@ -66,16 +66,32 @@ export default {
         tip3: "All rewards will be automatically claimed when unstaking;",
         tip4: "Staking NFT will give you the staking certificate: WNFT;",
         tip5: "According to your holding of WNFT, to unstake corresponding NFT;",
-        tip6: "WNFT is the only certificate for unstaking NFT, don't lose it."
+        tip6: "WNFT is the only certificate for unstaking NFT, don't lose it.",
+
+        noWNFTDes: "No WNFT for this collection",
+        noNFTDes: "No NFT for this collection",
+        getRewardSuccess: "领取奖励成功",
+        depositSuccess: "抵押NFT成功",
+        withdrawSuccess: "解抵押NFT成功",
     },
 
     common: {
+        
         defaultMessSub1: "确定抵押",
         defaultMessSub2: "个",
         defaultMessSub3: "确定解抵押",
-        confirm: "确定",
-        cancle: "取消",
+        defaultMessSub4: "确定领取奖励",
+
+
+        confirm: "Confirm",
+        cancle: "Cancle",
         alertClose: "Close",
+        checkChainId1: "Please switch to Ethereum network",
+        checkChainId4: "Please switch to Rinkeby network",
+        checkChainId1Des: "In order to trade items, please switch to Ethereum network within your MetaMask wallet.",
+        checkChainId4Des: "In order to trade items, please switch to Rinkeby network within your MetaMask wallet.",
+        loginError: "Please click the [login] button on the navigation bar to complete the operation after login.",
+        iKnow: " OK ",
 
 
     },

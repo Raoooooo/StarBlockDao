@@ -28,7 +28,7 @@
             <div class="vSepLine"></div>
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ (totalReward * Math.pow(10, -18)).toFixed(2) + " STB" }}
+                {{ (totalReward * Math.pow(10, -18)).toFixed(4) + " STB" }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
             </div>
@@ -88,7 +88,7 @@
     >
       <div class="alertContantBox1">
         <div class=""></div>
-        <p class="alertTitle">合集NFT</p>
+        <p class="alertTitle">{{ $t("farms.NFTOfCollection") }}</p>
         <img
           class="closeAlertIcon"
           src="@/assets/img/farms/optionViewClose.svg"
@@ -99,33 +99,33 @@
       <div class="alertSectionBox1">
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">{{ this.WNFTItems.length }}</p>
-          <p class="itemDataBox_bottomText_alert">{{ "已抵押" }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("farms.havePledge") }}</p>
         </div>
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">
-            {{ (totalReward * Math.pow(10, -18)).toFixed(2) + " STB" }}
+            {{ (totalReward * Math.pow(10, -18)).toFixed(4) + " STB" }}
           </p>
-          <p class="itemDataBox_bottomText_alert">{{ "可领取挖矿奖励" }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("farms.getAwardAmount") }}</p>
         </div>
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">--</p>
-          <p class="itemDataBox_bottomText_alert">{{ "可领取分红奖励" }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("farms.getBonusAmount") }}</p>
         </div>
       </div>
 
       <div class="alertSectionBox2">
         <div class="switchBtnBox">
           <button :class="isSwitch1 ? 'switchBtn_on' : 'switchBtn_off'" @click="switchBtn(1)">
-            抵押
+            {{ $t("farms.pledge") }}
           </button>
           <button :class="!isSwitch1 ? 'switchBtn_on' : 'switchBtn_off'" @click="switchBtn(2)">
-            已抵押
+            {{ $t("farms.havePledge") }}
           </button>
         </div>
         <button class="unPledgeAction" @click="alertBeforeAction">
-          {{ alertActionStr + " " + selectCount + "个" }}
+          {{ alertActionStr + " " + selectCount + $t("common.defaultMessSub2") }}
         </button>
       </div>
 
@@ -135,10 +135,10 @@
             <p class="alertSectionBox3_text1">NFT</p>
           </div>
           <div class="alertSectionBox3_textBox2">
-            <p class="alertSectionBox3_text2">详细信息</p>
+            <p class="alertSectionBox3_text2">{{ $t("farms.detailInfo") }}</p>
           </div>
           <div class="alertSectionBox3_textBox3">
-            <p class="alertSectionBox3_text3">操作</p>
+            <p class="alertSectionBox3_text3">{{ $t("farms.option") }}</p>
           </div>
         </div>
         <div class="selectItemSepLine"></div>
@@ -147,8 +147,10 @@
         <!-- </div> -->
       </div>
 
-      <p class="alertTip1">· 抵押或解压后将自动领取当前奖励</p>
-      <p class="alertTip2">· 根据您出游WrappedNFT可解抵押对应的NFT</p>
+      <p class="alertTip1">{{ "· " + $t("farms.optionTip1") }}</p>
+      <p class="alertTip2">{{ "· " + $t("farms.optionTip2") }}</p>
+      <p class="alertTip2">{{ "· " + $t("farms.optionTip3") }}</p>
+      <p class="alertTip2">{{ "· " + $t("farms.optionTip4") }}</p>
     </el-dialog>
 
     <el-dialog
@@ -217,7 +219,15 @@ import poolDatas from "@/common/dataConfig";
 import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
 import Bottom from "../home/children/Bottom.vue";
-
+import {
+  web3ProviderUrl,
+  getProdcutMode,
+  getSurpportChainId,
+  getEtherscanOfCollection,
+  getEtherscanOfNFT,
+  getOpenSeaOfCollection,
+  getOpenSeaOfNFT
+} from "@/common/starBlockConfig";
 import {
   daoportAction,
   getBlockNumber,
@@ -245,7 +255,7 @@ export default {
   computed: {
     defaultMessageStr() {
       if (this.isGetReward) {
-        return "确定领取奖励";
+        return this.$t("common.defaultMessSub4");
       }
       if (this.isSwitch1) {
         return (
@@ -266,20 +276,20 @@ export default {
 
     requestSuccessStr() {
       if (this.isGetReward) {
-        return "领取奖励成功";
+        return this.$t("farms.getRewardSuccess");
       }
       if (this.isSwitch1) {
-        return "抵押NFT成功";
+        return this.$t("farms.depositSuccess");
       } else {
-        return "解抵押NFT成功";
+        return this.$t("farms.withdrawSuccess");
       }
     },
 
     alertActionStr() {
       if (this.isSwitch1) {
-        return "抵押";
+        return this.$t("farms.pledge");
       } else {
-        return "解抵押";
+        return this.$t("farms.unPledge");
       }
     }
   },
@@ -566,6 +576,8 @@ export default {
         miniItem.select = false;
         miniItem.collection = {};
         miniItem.collection.name = item.collection.name;
+        miniItem.collection.contractAddress = item.collection.contractAddress;
+        // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
       }
       this.NFTItems = emptyArr;
@@ -578,6 +590,8 @@ export default {
         miniItem.select = false;
         miniItem.collection = {};
         miniItem.collection.name = item.collection.name;
+        miniItem.collection.contractAddress = item.poolInfo.wnft;
+        // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
       }
       this.WNFTItems = emptyArr;
@@ -715,6 +729,7 @@ export default {
   align-items: center;
   margin-bottom: 0.75rem;
   justify-content: space-between;
+  width: 33.33%;
 }
 .itemDataBox_topText {
   font-size: 0.6rem;
@@ -738,7 +753,7 @@ export default {
 }
 
 .itemsBox {
-  margin-top: 0.75rem;
+  margin-top: 0.25rem;
   width: 101%;
 }
 
@@ -753,15 +768,15 @@ export default {
   align-items: center;
 }
 .alertTitle {
-  font-size: 0.45rem;
+  font-size: 0.75rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
-  line-height: 0.45rem;
+  line-height: 0.75rem;
 }
 .closeAlertIcon {
-  width: 0.4rem;
-  height: 0.4rem;
+  width: 0.575rem;
+  height: 0.575rem;
 }
 .alertSectionBox1 {
   margin-top: 0.75rem;
@@ -773,29 +788,29 @@ export default {
   align-items: center;
   background-color: #fff8e6;
   border-radius: 0.1rem;
-  height: 2.25rem;
+  height: 3rem;
 }
 
 .itemDataBox_topText_alert {
   margin-top: 0.25rem;
-  font-size: 0.45rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
-  line-height: 0.45rem;
+  line-height: 0.7rem;
 }
 
 .itemDataBox_bottomText_alert {
   margin-top: 0.375rem;
-  font-size: 0.35rem;
+  font-size: 0.5rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #8c9399;
-  line-height: 0.35rem;
+  line-height: 0.5rem;
 }
 .vSepLine_alert {
   width: 0.7px;
-  height: 1.15rem;
+  height: 1.525rem;
   background-color: #e5e5e5;
 }
 
@@ -811,21 +826,21 @@ export default {
 }
 .switchBtnBox {
   border-style: solid;
-  border-width: 0.025rem;
+  border-width: 0.035rem;
   border-color: #f7b500;
-  width: 4rem;
-  border-radius: 0.5rem;
-  height: 1rem;
+  width: 6rem;
+  border-radius: 0.75rem;
+  height: 1.5rem;
   display: flex;
   flex-direction: row;
   background-color: #fff8e6;
 }
 .switchBtn_off {
   background-color: #fff8e6;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   width: 50%;
   border-style: none;
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #f7b500;
@@ -833,10 +848,10 @@ export default {
 }
 .switchBtn_on {
   background-color: #f7b500;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   width: 50%;
   border-style: none;
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #fff;
@@ -845,11 +860,11 @@ export default {
 .unPledgeAction {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
-  height: 1rem;
-  border-radius: 0.5rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
   border-style: none;
   background-color: #f7b500;
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -857,7 +872,7 @@ export default {
 }
 
 .itemsSuperBox {
-  margin-top: 0.5rem;
+  margin-top: 1.325rem;
   border-radius: 0.25rem;
   border-style: solid;
   border-color: #ececec;
@@ -866,7 +881,7 @@ export default {
 }
 
 .alertSectionBox3 {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   width: 100%;
   /* height: 1.25rem; */
   display: flex;
@@ -895,14 +910,14 @@ export default {
 }
 .alertSectionBox3_text1 {
   margin-left: 0.525rem;
-  font-size: 0.45rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
   line-height: 0.45rem;
 }
 .alertSectionBox3_text2 {
-  font-size: 0.45rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
@@ -911,7 +926,7 @@ export default {
 
 .alertSectionBox3_text3 {
   margin-right: 0.525rem;
-  font-size: 0.45rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
@@ -919,27 +934,27 @@ export default {
 }
 
 .selectItemSepLine {
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
   width: 100%;
   background-color: #f1f1f1;
   height: 0.025rem;
 }
 
 .alertTip1 {
-  margin-top: 0.5rem;
-  font-size: 0.35rem;
+  margin-top: 1.1rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #8c9399;
-  line-height: 0.35rem;
+  line-height: 0.6rem;
 }
 .alertTip2 {
-  margin-top: 0.35rem;
-  font-size: 0.35rem;
+  margin-top: 0.5rem;
+  font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #8c9399;
-  line-height: 0.35rem;
+  line-height: 0.6rem;
 }
 
 .bottomDesBox {
@@ -950,7 +965,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .farmsDesImg {
@@ -1217,6 +1232,7 @@ export default {
     align-items: center;
     margin-bottom: 0.75rem;
     justify-content: space-between;
+    width: 33.33%;
   }
   .itemDataBox_topText {
     font-size: 0.6rem;
@@ -1450,7 +1466,7 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .farmsDesImg {

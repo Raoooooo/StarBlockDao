@@ -1,7 +1,7 @@
 
 // 是否是生产环境 0否 1是(需手动修改)
 export function getProdcutMode() {
-    return 1;
+    return 0;
 }
 // 是否是debug模式
 export function getDebugMode() {
@@ -52,6 +52,40 @@ export function getChainWebUrl(chainID, transationHash) {
         return "https://rinkeby.etherscan.io/tx/" + transationHash;
     } else {
         return "https://etherscan.io/tx/" + transationHash;
+    }
+}
+
+
+
+export function getEtherscanOfCollection(chainID, contractAddress) {
+    if (chainID == 4) {
+        return "https://rinkeby.etherscan.io/address/" + contractAddress;
+    } else {
+        return "https://etherscan.io/address/" + contractAddress;
+    }
+}
+
+export function getEtherscanOfNFT(chainID, contractAddress, tokenID) {
+    if (chainID == 4) {
+        return "https://rinkeby.etherscan.io/token/" + contractAddress + tokenID + "#inventory";
+    } else {
+        return "https://etherscan.io/address/" + contractAddress + tokenID + "#inventory";
+    }
+}
+
+export function getOpenSeaOfCollection(chainID, name) {
+    if (chainID == 4) {
+        return "https://testnets.opensea.io/collection/" + name;
+    } else {
+        return "https://opensea.io/collection/" + name;
+    }
+}
+
+export function getOpenSeaOfNFT(chainID, tokenID) {
+    if (chainID == 4) {
+        return "https://testnets.opensea.io/assets/" + tokenID;
+    } else {
+        return "https://opensea.io/collection/assets/" + tokenID;
     }
 }
 

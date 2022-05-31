@@ -1,5 +1,5 @@
 <template>
-  <div class="contant" :class="{ contantSroll: items.length > 7 }">
+  <div class="contant">
     <!-- 抵押、解抵押 -->
     <div class="pledgeBtnBox">
       <button class="pledgeBtn" @click="pledgeBtnAction()">
@@ -176,24 +176,24 @@ export default {
   methods: {
     formmatBlockStr(blockNumber) {
       if (blockNumber > 1000 && blockNumber < 10000) {
-        return Number(blockNumber / 1000).toFixed(2) + "K";
+        return Number(blockNumber / 1000).toFixed(4) + "K";
       } else if (blockNumber >= 10000 && blockNumber < 10000000) {
-        return Number(blockNumber / 10000).toFixed(2) + "W";
+        return Number(blockNumber / 10000).toFixed(4) + "W";
       } else if (blockNumber >= 10000000) {
-        return Number(blockNumber / 10000000).toFixed(2) + "KW";
+        return Number(blockNumber / 10000000).toFixed(4) + "KW";
       } else {
         return blockNumber;
       }
     },
     awardAmountStr(item) {
       if (item.mining != "--") {
-        return (item.mining * Math.pow(10, -18)).toFixed(2) + " STB";
+        return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
       }
       return item.mining;
     },
     bonusAmountStr(item) {
       if (item.dividend != "--") {
-        return (item.dividend * Math.pow(10, -18)).toFixed(2) + " WNFT";
+        return (item.dividend * Math.pow(10, -18)).toFixed(4) + " WETH";
       }
       return item.dividend;
     },
@@ -249,7 +249,7 @@ export default {
     },
     rewardAmount(item) {
       if (item.rewardForEachBlock) {
-        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2);
+        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(4);
       }
       if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
         return (
@@ -258,7 +258,7 @@ export default {
           30 *
           Number(item.poolInfo.amount) *
           Math.pow(10, -18)
-        ).toFixed(2);
+        ).toFixed(4);
       } else if (Number(item.poolInfo.amount) == 0) {
         return "--";
       }
@@ -385,7 +385,7 @@ export default {
 
 .pledgeBtn {
   border-style: none;
-  width: 45%;
+  width: 47%;
   height: 1.75rem;
   background-color: #f7b500;
   border-radius: 0.875rem;
@@ -396,10 +396,10 @@ export default {
 }
 .unPledgeBtn {
   border-style: solid;
-  border-width: 0.025rem;
+  border-width: .0375rem;
   border-color: #f7b500;
   /* width: 3.55rem; */
-  width: 45%;
+  width: 47%;
   height: 1.75rem;
   background-color: #fff;
   border-radius: 0.875rem;
@@ -456,7 +456,7 @@ export default {
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .pledgeBtnBox {
-    margin-top: 0.5rem;
+    margin-top: .625rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -469,7 +469,7 @@ export default {
 
   .pledgeBtn {
     border-style: none;
-    width: 45%;
+    width: 47%;
     height: 1rem;
     background-color: #f7b500;
     border-radius: 0.5rem;
@@ -479,10 +479,10 @@ export default {
   }
   .unPledgeBtn {
     border-style: solid;
-    border-width: 0.025rem;
+    border-width: .0375rem;
     border-color: #f7b500;
     /* width: 3.55rem; */
-    width: 45%;
+    width: 47%;
     height: 1rem;
     background-color: #fff;
     border-radius: 0.5rem;
