@@ -659,9 +659,9 @@ export default {
 }
 
 .dropdownBox {
-  width: 3.5rem;
+  width: 3.2rem;
   /* background-color: #f7b500; */
-  margin-top: -0.51rem;
+  margin-top: -0.45rem;
   /* margin-top: 18px; */
   /* align-items: center; */
   /* flex: 1; */

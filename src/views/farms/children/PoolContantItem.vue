@@ -58,7 +58,15 @@ import {
   daoporHarvest,
   getAccounts
 } from "@/common/starblockdao";
-
+import {
+  getLocalStorage,
+  setLocalStorage,
+  isLogin,
+  localAccount,
+  localUserLoginObject,
+  getETHPriceItemCell,
+  checkChainIdError
+} from "@/common/utils";
 export default {
   name: "Poolcontantitem",
   components: {},
@@ -233,6 +241,11 @@ export default {
       if (!this.isBtnActive) {
         return;
       }
+
+      if (checkChainIdError()) {
+        this.$bus.$emit("checkChainIdError", "1");
+        return;
+      }
       getAccounts().then(accounts => {
         if (accounts) {
           if (!this.item.isNFTApproved) {
@@ -262,7 +275,7 @@ export default {
         } else {
           this.$message.error(this.$t("common.connectWalletMsg"));
         }
-      });
+      }).catch(error => this.$message.error(this.$t("common.connectWalletMsg")));;
       // if (getAccounts()) {
       //   alert(getAccounts());
       // } else {
@@ -278,6 +291,11 @@ export default {
         return;
       }
       if (!this.isBtnActive) {
+        return;
+      }
+
+      if (checkChainIdError()) {
+        this.$bus.$emit("checkChainIdError", "1");
         return;
       }
       getAccounts().then(accounts => {
@@ -305,7 +323,7 @@ export default {
         } else {
           this.$message.error(this.$t("common.connectWalletMsg"));
         }
-      });
+      }).catch(error => this.$message.error(this.$t("common.connectWalletMsg")));
     },
     getAwardBtnAction() {
       if (this.item.mining <= 0) {
@@ -314,16 +332,29 @@ export default {
       if (this.showImgLoading2) {
         return;
       }
+
+      if (checkChainIdError()) {
+        this.$bus.$emit("checkChainIdError", "1");
+        return;
+      }
       if (!Number(this.item.mining) < 0) {
         return;
       }
-      //   this.showImgLoading2 = true;
-      this.$bus.$emit("pledgeBtnNotiAction", {
-        item: this.item,
-        isNFTSell: false,
-        isWNFTSell: false,
-        isGetReward: true
-      });
+
+      getAccounts()
+        .then(accounts => {
+          if (accounts) {
+            this.$bus.$emit("pledgeBtnNotiAction", {
+              item: this.item,
+              isNFTSell: false,
+              isWNFTSell: false,
+              isGetReward: true
+            });
+          } else {
+            this.$message.error(this.$t("common.connectWalletMsg"));
+          }
+        })
+        .catch(error => this.$message.error(this.$t("common.connectWalletMsg")));
     },
 
     handleNftApprove(isApprove, item, index) {
