@@ -60,7 +60,12 @@
                 {{ item.collection.showName }}
               </span>
               <div class="linkIconBox">
-                <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
+                <a
+                  :href="linkOfType(item, 1)"
+                  target="_blank"
+                  class="linkIconUrl"
+                  v-show="item.poolInfo.pid <= 2"
+                >
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
                 </a>
                 <a :href="linkOfType(item, 2)" target="_blank" class="linkIconUrl">
@@ -347,21 +352,21 @@ export default {
     formmatBlockStr(blockNumber, type) {
       if (blockNumber / 6500 > 1000 && blockNumber / 6500 < 10000) {
         return (
-          Number(blockNumber / 1000 / 6500).toFixed(2) +
+          Number(blockNumber / 1000 / 6500).toFixed(0) +
           "K" +
           " " +
           (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
         );
       } else if (blockNumber / 6500 >= 10000 && blockNumber / 6500 < 10000000) {
         return (
-          Number(blockNumber / 10000 / 6500).toFixed(2) +
+          Number(blockNumber / 10000 / 6500).toFixed(0) +
           "W" +
           " " +
           (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
         );
       } else if (blockNumber / 6500 >= 10000000) {
         return (
-          Number(blockNumber / 10000000 / 6500).toFixed(2) +
+          Number(blockNumber / 10000000 / 6500).toFixed(0) +
           "KW" +
           " " +
           (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
@@ -369,7 +374,7 @@ export default {
       } else {
         if (blockNumber / 6500 > 3) {
           return (
-            Number((blockNumber / 6500).toFixed(2)) +
+            Number((blockNumber / 6500).toFixed(0)) +
             " " +
             (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
           );
@@ -730,7 +735,7 @@ export default {
 }
 
 .linkIconBox {
-  margin-top: .25rem;
+  margin-top: 0.25rem;
   display: flex;
   flex-direction: row;
 }

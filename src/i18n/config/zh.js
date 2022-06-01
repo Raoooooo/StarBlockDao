@@ -71,7 +71,7 @@ export default {
         tip5: "根据您持有WNFT可解抵押对应的NFT",
         tip6: "WNFT是解抵押NFT的唯一凭证，千万不要丢失",
 
-        noWNFTDes: "暂无此合集的WNFT",
+        noWNFTDes: "暂无此合集的NFT",
         noNFTDes: "暂无此合集的NFT",
         getRewardSuccess: "领取奖励成功",
         depositSuccess: "抵押NFT成功",

@@ -9,7 +9,12 @@
 
         <div class="linkIconBox">
           <!-- <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" /> -->
-          <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
+          <a
+            :href="linkOfType(item, 1)"
+            target="_blank"
+            class="linkIconUrl"
+            v-show="item.poolInfo.pid <= 2"
+          >
             <img class="linkIcon" src="@/assets/img/farms/linkIcon2.png" />
           </a>
           <a :href="linkOfType(item, 2)" target="_blank" v-show="!isWNFT" class="linkIconUrl">

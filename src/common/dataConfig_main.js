@@ -6,7 +6,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 0,
-            rangeTokenIds: [0, 0],
+            rangeTokenIds: [0, 10000],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -32,7 +32,7 @@ const poolDatas_main = [
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon0.png"),
             name: "starblock-genesis-pass",
-            showName: "StarBlock Genesis Pass",
+            showName: "Genesis Pass",
             contractAddress: "",
         }
     },
@@ -40,7 +40,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 1,
-            rangeTokenIds: [0, 0],
+            rangeTokenIds: [0, 10000],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -75,7 +75,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 2,
-            rangeTokenIds: [0, 0],
+            rangeTokenIds: [0, 10000],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -110,7 +110,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 3,
-            rangeTokenIds: [0, 0],
+            rangeTokenIds: [0, 10000],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -218,7 +218,7 @@ const poolDatas_main = [
         poolInfo: {
             pid: 6,
             fromTokenId: 0,
-            rangeTokenIds: [0, 0],
+            rangeTokenIds: [0, 10000],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -292,7 +292,7 @@ const poolDatas_main = [
         poolInfo: {
             pid: 8,
             fromTokenId: 0,
-            rangeTokenIds: [0, 99999],
+            rangeTokenIds: [0, 9999],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -328,7 +328,7 @@ const poolDatas_main = [
         poolInfo: {
             pid: 9,
             fromTokenId: 0,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 10000],
             startBlock: 0,
             amount: "--",
             wnft: "",

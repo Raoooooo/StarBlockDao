@@ -73,7 +73,7 @@ export default {
         tip5: "According to your holding of WNFT, to unstake corresponding NFT",
         tip6: "WNFT is the only certificate for unstaking NFT, don't lose it",
 
-        noWNFTDes: "No WNFT for this collection",
+        noWNFTDes: "No NFT for this collection",
         noNFTDes: "No NFT for this collection",
         getRewardSuccess: "Reward received succeeded",
         depositSuccess: "Stake NFT succeeded",

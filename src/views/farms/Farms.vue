@@ -754,6 +754,8 @@ export default {
         miniItem.select = false;
         miniItem.collection = {};
         miniItem.collection.showName = item.collection.showName;
+        miniItem.poolInfo = {};
+        miniItem.poolInfo.pid = item.poolInfo.pid;
         miniItem.collection.contractAddress = item.collection.contractAddress;
         // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
@@ -775,6 +777,8 @@ export default {
         miniItem.tokenId = Number(WNFTTokenIDs[i]);
         miniItem.select = false;
         miniItem.collection = {};
+        miniItem.poolInfo = {};
+        miniItem.poolInfo.pid = item.poolInfo.pid;
         miniItem.collection.showName = item.collection.showName;
         miniItem.collection.contractAddress = item.poolInfo.wnft;
         // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;

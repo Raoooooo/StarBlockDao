@@ -235,25 +235,33 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
 }
 
 export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
-    var owner = "";
+    // var owner = "";
+    // if (!accounts) {
+    //     // await getAccounts();
+
+    //     await getAccounts()
+    //         .then(accounts => {
+    //             if (accounts) {
+
+    //             } else {
+    //                 owner = "0x0000000000000000000000000000000000000000"
+    //                 // this.$message.error(this.$t("common.connectWalletMsg"));
+    //             }
+    //         })
+    //         .catch(error => this.$message.error(owner = "0x0000000000000000000000000000000000000000"));
+    // }
+    // if (!daoport) {
+    //     getDaoPort(owner);
+    // }
+
     if (!accounts) {
-        // await getAccounts();
-
-        await getAccounts()
-            .then(accounts => {
-                if (accounts) {
-
-                } else {
-                    owner = "0x0000000000000000000000000000000000000000"
-                    // this.$message.error(this.$t("common.connectWalletMsg"));
-                }
-            })
-            .catch(error => this.$message.error(owner = "0x0000000000000000000000000000000000000000"));
+        await getAccounts();
     }
+
     if (!daoport) {
-        getDaoPort(owner);
+        getDaoPort(accounts[0]);
     }
-    // const owner = accounts[0];
+    const owner = accounts[0];
     // owner = "0x0000000000000000000000000000000000000000";
     const rangeTokenIds = item.poolInfo.rangeTokenIds;
     //获取可抵押tokens

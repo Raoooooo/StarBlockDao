@@ -192,7 +192,13 @@ export default {
   created() {
     var isClickLogin = false;
     // if (!getLocalStorage("isFirstLoad")) {
-    onConnect(this.getAccount, isClickLogin);
+    if (!ethereum.isConnected()) {
+      // onConnect(this.getAccount, isClickLogin);
+    }else{
+      onConnect(this.getAccount, isClickLogin);
+    }
+
+    // onConnect(this.getAccount, isClickLogin);
     // }
     setLocalStorage("isFirstLoad", true);
     this.accountsChange();
