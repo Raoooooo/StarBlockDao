@@ -4,8 +4,9 @@ export const deployed = {
     NFTUtils: "0xE4aece461561758C8aB3218bC1511A45C77F6333".toLowerCase()
   },
   main: {
-    NFTMasterChef: "".toLowerCase(),
-    NFTUtils: "0x334098e929af4F3DFdF9145C09F6949D0Fd8d7dC".toLowerCase()
+    NFTMasterChef: "0xbbf9cc5decdb8e1d9895b7d98793136798bd512e".toLowerCase(),
+    NFTUtils: "0x106257002ad21bc2d8C3391186Fe8c9121F88C40".toLowerCase(),
+    FACTORY: "0x6df4A699Ac7086Ee4a8d0602F2D00A0054a0930A".toLowerCase()
   }
 };
 

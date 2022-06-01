@@ -961,28 +961,22 @@ export default {
       }
 
       let owner = "0x06074740FCefEC15F8Cee02a4E128088cAeE0711";
-      // const maxTokenId = 99;
-      // const pid = 8;
-      // let parameters = {
-      //   pid,
-      //   owner,
-      //   maxTokenId
-      // };
-
+      owner = "0x0000000000000000000000000000000000000000";
       const poolsRangeTokenIds = [
+        [0, 0],
+        [0, 0],
+        [0, 0],
         [0, 99],
         [0, 99],
         [0, 99],
-        [0, 99],
-        [0, 99],
-        [0, 99],
-        [0, 99],
+        [0, 0],
         [1, 100],
         [0, 99],
-        [0, 99]
+        [0, 0],
+        [0, 0]
       ];
 
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < poolsRangeTokenIds.length; i++) {
         const rangeTokenIds = poolsRangeTokenIds[i];
         const pid = i;
         let parameters = {
