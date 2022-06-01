@@ -16,7 +16,9 @@
           <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">{{ totalTVL > 0 ? totalTVL + " ETH" : "--" }}</p>
+              <p class="itemDataBox_topText">
+                {{ totalTVL > 0 ? Number(totalTVL.toFixed(2)) + " ETH" : "--" }}
+              </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem1") }}</p>
             </div>
             <div class="vSepLine"></div>
@@ -522,7 +524,9 @@ export default {
 
   methods: {
     requestFloorPrice(item, handleFloorPrice, index) {
-      var urlPath = openseaApiBaseUrl() + "collection/" + item.collection.name + "/stats";
+      // var urlPath = openseaApiBaseUrl() + "collection/" + item.collection.name + "/stats";
+      var urlPath = "collection/" + item.collection.name + "/stats";
+
       this.$axios
         .get(urlPath, {
           params: {}
@@ -536,7 +540,6 @@ export default {
     },
     handleFloorPrice(item, floor_price, index) {
       item.floor_price = floor_price;
-
       if (index == this.poolItems.length - 1) {
         this.totalTVL = 0;
         for (var i = 0; i < this.poolItems.length; i++) {
@@ -641,22 +644,22 @@ export default {
     },
 
     handleDeposit(txHash, item) {
-      this.txHash = this.getFrommatAccount(txHash);
-      this.txHashOringion = txHash;
+      this.txHash = this.getFrommatAccount(txHash.blockHash);
+      this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo();
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
     },
     handleWithdraw(txHash, item) {
-      this.txHash = this.getFrommatAccount(txHash);
-      this.txHashOringion = txHash;
+      this.txHash = this.getFrommatAccount(txHash.blockHash);
+      this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo();
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
     },
     handleHarvest(txHash, item) {
-      this.txHash = this.getFrommatAccount(txHash);
-      this.txHashOringion = txHash;
+      this.txHash = this.getFrommatAccount(txHash.blockHash);
+      this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo();
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
@@ -699,6 +702,9 @@ export default {
       item.nft = masterChefInfo.nft;
       item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
       item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
+      // if (index == 0) {
+      //   item.poolInfo.startBlock = 10776740;
+      // }
       if (index == this.poolItems.length - 1) {
         this.totalNftQuantity = 0;
         this.totalReward = 0;
@@ -1885,7 +1891,7 @@ export default {
   .emptyImgBox_des {
     margin-top: 0.5rem;
     color: #666;
-    font-size: 0.5rem;
+    font-size: 0.4rem;
   }
 
   .txHashBox {

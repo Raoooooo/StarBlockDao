@@ -43,7 +43,7 @@ Vue.use(VueLazyLoad, {
 Vue.prototype.$axios = axios;
 // axios.defaults.baseURL = "/api";
 
-axios.defaults.baseURL = "";
+axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
 
 axios.interceptors.request.use(
 

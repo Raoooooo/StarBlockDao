@@ -15,38 +15,38 @@
             </div>
 
             <!-- 区块后结束 -->
+
             <div
               class="contantDetailTopBox_rightBox"
               v-if="isShowEndBlock(item, currentBlockNumber)"
             >
-              <p class="contantDetailTopBox_rightBox_text">
-                {{
-                  formmatBlockStr(Number(item.endBlock) - currentBlockNumber) +
-                  " " +
-                  $t("farms.endBlock")
-                }}
-              </p>
+              <a :href="countdownUrl(item, 1)" target="_blank">
+                <p class="contantDetailTopBox_rightBox_text">
+                  {{ formmatBlockStr(Number(item.endBlock) - currentBlockNumber, 1) }}
+                </p>
+              </a>
             </div>
             <!-- 区块后开始 -->
             <div
               class="contantDetailTopBox_rightBox_startBlock"
               v-if="isShowStartBlock(item, currentBlockNumber)"
             >
-              <p class="contantDetailTopBox_rightBox_text_startBlock">
-                {{
-                  formmatBlockStr(Number(item.poolInfo.startBlock) - currentBlockNumber) +
-                  $t("farms.startBlock")
-                }}
-              </p>
+              <a :href="countdownUrl(item, 2)" target="_blank">
+                <p class="contantDetailTopBox_rightBox_text_startBlock">
+                  {{ formmatBlockStr(Number(item.poolInfo.startBlock) - currentBlockNumber, 2) }}
+                </p>
+              </a>
             </div>
             <!-- 已结束 -->
             <div
               class="contantDetailTopBox_rightBox_sellEnd"
               v-if="isShowSellEndBlock(item, currentBlockNumber)"
             >
-              <p class="contantDetailTopBox_rightBox_text_sellEnd">
-                {{ $t("common.blockEnd") }}
-              </p>
+              <a :href="countdownUrl(item, 1)" target="_blank">
+                <p class="contantDetailTopBox_rightBox_text_sellEnd">
+                  {{ $t("common.blockEnd") }}
+                </p>
+              </a>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <div class="contantDetailSection1_leftBox">
             <img class="contantDetailSection1_leftBox_img" v-lazy="item.collection.imagePath" />
             <div class="contantDetailSection1_leftBox_subBox">
-              <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.name }}</p>
+              <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.showName }}</p>
               <div class="linkIconBox">
                 <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
@@ -97,7 +97,7 @@
           </p>
         </div>
 
-        <poolcontantitem :item="item"></poolcontantitem>
+        <poolcontantitem :item="item" :currentBlockNumber="currentBlockNumber"></poolcontantitem>
         <!-- 抵押、解抵押 -->
         <!-- <div class="pledgeBtnBox">
           <button class="pledgeBtn" @click="pledgeBtnAction(item)">
@@ -137,6 +137,8 @@ import {
   checkChainIdError
 } from "@/common/utils";
 import poolDatas from "@/common/dataConfig";
+import { etherscanCountDownBase } from "@/common/starblockdao";
+
 import Poolcontantitem from "../children/PoolContantItem.vue";
 import {
   daoportAction,
@@ -295,6 +297,13 @@ export default {
     };
   },
   methods: {
+    countdownUrl(item, type) {
+      if (type == 1) {
+        return etherscanCountDownBase() + Number(item.endBlock);
+      } else if (type == 2) {
+        return etherscanCountDownBase() + Number(item.poolInfo.startBlock);
+      }
+    },
     linkOfType(item, type) {
       if (type == 1) {
         return getStarBlockOfCollection(item.nft);
@@ -329,15 +338,42 @@ export default {
         return "--" + " STB";
       }
     },
-    formmatBlockStr(blockNumber) {
+    formmatBlockStr(blockNumber, type) {
       if (blockNumber / 6500 > 1000 && blockNumber / 6500 < 10000) {
-        return Number(blockNumber / 1000 / 6500).toFixed(2) + "K";
+        return (
+          Number(blockNumber / 1000 / 6500).toFixed(2) +
+          "K" +
+          " " +
+          (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
+        );
       } else if (blockNumber / 6500 >= 10000 && blockNumber / 6500 < 10000000) {
-        return Number(blockNumber / 10000 / 6500).toFixed(2) + "W";
+        return (
+          Number(blockNumber / 10000 / 6500).toFixed(2) +
+          "W" +
+          " " +
+          (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
+        );
       } else if (blockNumber / 6500 >= 10000000) {
-        return Number(blockNumber / 10000000 / 6500).toFixed(2) + "KW";
+        return (
+          Number(blockNumber / 10000000 / 6500).toFixed(2) +
+          "KW" +
+          " " +
+          (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
+        );
       } else {
-        return Number((blockNumber / 6500).toFixed(2));
+        if (blockNumber / 6500 > 3) {
+          return (
+            Number((blockNumber / 6500).toFixed(2)) +
+            " " +
+            (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
+          );
+        } else {
+          return (
+            blockNumber +
+            " " +
+            (type == 1 ? this.$t("farms.endBlock") : this.$t("farms.startBlock"))
+          );
+        }
       }
     },
     awardAmountStr(item) {
@@ -411,6 +447,12 @@ export default {
       }
     },
     rewardAmount(item) {
+      if (
+        Number(item.poolInfo.startBlock) > 0 &&
+        Number(item.poolInfo.startBlock) > this.currentBlockNumber
+      ) {
+        return "--";
+      }
       if (item.rewardForEachBlock) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
         if (number >= 10000) {
@@ -658,6 +700,7 @@ export default {
   margin-left: 0.25rem;
   width: 2.25rem;
   height: 2.25rem;
+  border-radius: 1.125rem;
 }
 .contantDetailSection1_leftBox_subBox {
   margin-left: 0.5rem;
@@ -999,6 +1042,7 @@ export default {
     margin-left: 0.25rem;
     width: 1.25rem;
     height: 1.25rem;
+    border-radius: 0.625rem;
   }
   .contantDetailSection1_leftBox_subBox {
     margin-left: 0.25rem;

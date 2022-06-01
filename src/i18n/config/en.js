@@ -10,7 +10,9 @@ export default {
         twwiter: "Docs",
         English: "English",
         chinese: "简体中文",
-        github: "Github"
+        github: "Github",
+        login: "Connect Wallet",
+
     },
 
     home: {
@@ -41,8 +43,10 @@ export default {
         topItem3: "Total Rewards",
         earn: "Earn",
         month: "M",
-        endBlock: "End Day",
-        startBlock: "Start Day",
+        endBlock: "End Block",
+        endBlockDay: "End Day",
+        startBlock: "Start Block",
+        startBlockDay: "Start Day",
         awardNFT: "Reward per NFT",
         pledgeAmount: "Total Staking Amount",
         pledge: "Stake",
@@ -96,7 +100,8 @@ export default {
         loginError: "Please click the [login] button on the navigation bar to complete the operation after login.",
         iKnow: " OK ",
         stakeApprove: "Stake Approve",
-        unstakeApprove: "Unstake Approve"
+        unstakeApprove: "Unstake Approve",
+        connectWalletMsg: "Please try again after connect your wallet.",
 
 
 

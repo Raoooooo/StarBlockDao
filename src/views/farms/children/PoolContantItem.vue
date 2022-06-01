@@ -2,7 +2,11 @@
   <div class="contant">
     <!-- 抵押、解抵押 -->
     <div class="pledgeBtnBox">
-      <button class="pledgeBtn" @click="pledgeBtnAction()">
+      <button
+        class="pledgeBtn"
+        :class="isBtnActive ? 'pledgeBtn' : 'pledgeBtn_unActive'"
+        @click="pledgeBtnAction()"
+      >
         <p class="pledgeBtn_text" v-show="!showImgLoading">{{ getPledgeBtnStr }}</p>
         <img
           class="loadingImg"
@@ -11,7 +15,10 @@
         />
       </button>
 
-      <button class="unPledgeBtn" @click="unPledgeBtnAction()">
+      <button
+        :class="isBtnActive ? 'unPledgeBtn' : 'pledgeBtn_unActive'"
+        @click="unPledgeBtnAction()"
+      >
         <p class="pledgeBtn_text" v-show="!showImgLoading1">{{ getUnPledgeBtnStr }}</p>
         <img
           class="loadingImg"
@@ -48,8 +55,10 @@ import {
   daoporDeposit,
   getWNFTTokenIDs,
   daoporWithdraw,
-  daoporHarvest
+  daoporHarvest,
+  getAccounts
 } from "@/common/starblockdao";
+
 export default {
   name: "Poolcontantitem",
   components: {},
@@ -82,6 +91,13 @@ export default {
     // }
   },
   computed: {
+    isBtnActive() {
+      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     getPledgeBtnStr() {
       // if (isLogin != "1") {
       //   return "链接钱包";
@@ -119,6 +135,12 @@ export default {
         return [];
       }
     },
+    currentBlockNumber: {
+      type: Number,
+      default() {
+        return 0;
+      }
+    },
     item: {
       type: Object,
       default() {
@@ -141,6 +163,9 @@ export default {
   mounted() {
     this.$bus.$on("defaultBtnNotiAction", val => {
       if (val.selectItem.poolInfo.pid != this.item.poolInfo.pid) {
+        // this.showImgLoading = true;
+        // this.showImgLoading1 = false;
+        // this.showImgLoading2 = false;
         return;
       }
       if (val.clickType == 0) {
@@ -201,93 +226,49 @@ export default {
       return item.dividend;
     },
 
-    bonusAmountAtr(item) {},
-    // showImgLoading(item) {
-    //   if (this.currentPollItem && this.currentPollItem.poolInfo.uid == item.poolInfo.uid) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
-    // pledgeBtnStr(item) {
-    //   // if (isLogin != "1") {
-    //   //   return "链接钱包";
-    //   // }s
-    //   if (!item.isNFTApprove) {
-    //     return "抵押授权";
-    //   } else {
-    //   }
-    //   return this.$t("farms.pledge") + "(" + item.nftQuantity + ")";
-    // },
-    // unPledgeBtnStr(item) {
-    //   if (!item.isWNFTApprove) {
-    //     return "解抵押授权";
-    //   } else {
-    //   }
-    //   return this.$t("farms.unPledge") + "(" + item.wnftQuantity + ")";
-    // },
-    isShowEndBlock(item, currentBlockNumber) {
-      if (
-        Number(item.poolInfo.endBlock) - currentBlockNumber > 0 &&
-        Number(item.poolInfo.startBlock) - currentBlockNumber <= 0
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    isShowStartBlock(item, currentBlockNumber) {
-      if (Number(item.poolInfo.startBlock) - currentBlockNumber > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    isShowSellEndBlock(item, currentBlockNumber) {
-      if (Number(item.poolInfo.endBlock) - currentBlockNumber <= 0) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    rewardAmount(item) {
-      if (item.rewardForEachBlock) {
-        return (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(4);
-      }
-      if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
-        return (
-          Number(item.rewardPerNFTForEachBlock) *
-          6500 *
-          30 *
-          Number(item.poolInfo.amount) *
-          Math.pow(10, -18)
-        ).toFixed(4);
-      } else if (Number(item.poolInfo.amount) == 0) {
-        return "--";
-      }
-    },
     pledgeBtnAction() {
       if (this.showImgLoading) {
         return;
       }
-      if (!this.item.isNFTApproved) {
-        if (this.showImgLoading) {
-          return;
-        }
-        approveNFTAction(this.item, this.handleNftApprove, 0, false, this.faildHandleApproveNFT);
-        this.showImgLoading = true;
+      if (!this.isBtnActive) {
         return;
       }
-      //   this.showImgLoading = true;
-      //   this.$bus.$emit("daoporDepositNotiAction", this.item);
-      this.pledgeBtnStr = "";
-      //   this.item.showImgLoading = true;
-      this.$bus.$emit("pledgeBtnNotiAction", {
-        item: this.item,
-        isNFTSell: true,
-        isWNFTSell: false,
-        isGetReward: false
+      getAccounts().then(accounts => {
+        if (accounts) {
+          if (!this.item.isNFTApproved) {
+            if (this.showImgLoading) {
+              return;
+            }
+            approveNFTAction(
+              this.item,
+              this.handleNftApprove,
+              0,
+              false,
+              this.faildHandleApproveNFT
+            );
+            this.showImgLoading = true;
+            return;
+          }
+          //   this.showImgLoading = true;
+          //   this.$bus.$emit("daoporDepositNotiAction", this.item);
+          this.pledgeBtnStr = "";
+          //   this.item.showImgLoading = true;
+          this.$bus.$emit("pledgeBtnNotiAction", {
+            item: this.item,
+            isNFTSell: true,
+            isWNFTSell: false,
+            isGetReward: false
+          });
+        } else {
+          this.$message.error(this.$t("common.connectWalletMsg"));
+        }
       });
+      // if (getAccounts()) {
+      //   alert(getAccounts());
+      // } else {
+      //   this.$message.error("请先链接钱包");
+      //   return;
+      // }
     },
     faildHandleApproveNFT(item) {
       this.showImgLoading = false;
@@ -296,26 +277,35 @@ export default {
       if (this.showImgLoading1) {
         return;
       }
-      if (!this.item.isWNFTApproved) {
-        if (this.showImgLoading1) {
-          return;
-        }
-        approveWNFTAction(this.item, this.handleWNftApprove, 0, false, this.faildHandleApproveWNFT);
-        this.showImgLoading1 = true;
+      if (!this.isBtnActive) {
         return;
       }
-      this.$bus.$emit("pledgeBtnNotiAction", {
-        item: this.item,
-        isNFTSell: false,
-        isWNFTSell: true,
-        isGetReward: false
+      getAccounts().then(accounts => {
+        if (accounts) {
+          if (!this.item.isWNFTApproved) {
+            if (this.showImgLoading1) {
+              return;
+            }
+            approveWNFTAction(
+              this.item,
+              this.handleWNftApprove,
+              0,
+              false,
+              this.faildHandleApproveWNFT
+            );
+            this.showImgLoading1 = true;
+            return;
+          }
+          this.$bus.$emit("pledgeBtnNotiAction", {
+            item: this.item,
+            isNFTSell: false,
+            isWNFTSell: true,
+            isGetReward: false
+          });
+        } else {
+          this.$message.error(this.$t("common.connectWalletMsg"));
+        }
       });
-      //   this.showImgLoading1 = true;
-      // onBlockNumberChange();
-      // watchEtherTransfers()
-      // console.log(poolDatas);
-      // daoportAction();
-      // this.$bus.$emit("alertAction", "1");
     },
     getAwardBtnAction() {
       if (this.item.mining <= 0) {
@@ -400,6 +390,18 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   cursor: pointer;
 }
+
+.pledgeBtn_unActive {
+  border-style: none;
+  width: 47%;
+  height: 1.75rem;
+  background-color: #e5e5e5;
+  border-radius: 0.875rem;
+  color: #8c9399;
+  font-size: 0.6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  cursor: default;
+}
 .unPledgeBtn {
   border-style: solid;
   border-width: 0.0375rem;
@@ -417,6 +419,7 @@ export default {
   justify-content: center;
   cursor: pointer;
 }
+
 .getAwardBtn {
   border-style: none;
   margin-top: 0.75rem;
@@ -501,6 +504,18 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
+  .pledgeBtn_unActive {
+    border-style: none;
+    width: 47%;
+    height: 1rem;
+    background-color: #e5e5e5;
+    border-radius: 0.5rem;
+    color: #8c9399;
+    font-size: 0.35rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+  }
+
   .unPledgeBtn {
     border-style: solid;
     border-width: 0.0375rem;
