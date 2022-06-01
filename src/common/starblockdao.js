@@ -119,8 +119,13 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
             getIsApproveNFT(true, item, index);
         }
     } catch (error) {
-        if (faildHandle) {
-            faildHandle(item)
+        var reg = RegExp(/Transaction was not mined within/);
+        if (error.message.match(reg)) {
+
+        } else {
+            if (faildHandle) {
+                faildHandle(item)
+            }
         }
     }
 }
@@ -167,8 +172,13 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
             getIsApproveNFT(true, item, index);
         }
     } catch (error) {
-        if (faildHandle) {
-            faildHandle(item)
+        var reg = RegExp(/Transaction was not mined within/);
+        if (error.message.match(reg)) {
+
+        } else {
+            if (faildHandle) {
+                faildHandle(item)
+            }
         }
     }
 }
@@ -244,8 +254,13 @@ export async function daoporDeposit(item, handleDeposit, tokenIds, faildHandle) 
             handleDeposit(txHash, item);
         }
     } catch (error) {
-        if (faildHandle) {
-            faildHandle(item)
+        var reg = RegExp(/Transaction was not mined within/);
+        if (error.message.match(reg)) {
+
+        } else {
+            if (faildHandle) {
+                faildHandle(item)
+            }
         }
     }
 }
@@ -272,8 +287,13 @@ export async function daoporWithdraw(item, handleWithdraw, tokenIds, faildHandle
             handleWithdraw(txHash, item);
         }
     } catch (error) {
-        if (faildHandle) {
-            faildHandle(item)
+        var reg = RegExp(/Transaction was not mined within/);
+        if (error.message.match(reg)) {
+
+        } else {
+            if (faildHandle) {
+                faildHandle(item)
+            }
         }
     }
 }
@@ -302,9 +322,16 @@ export async function daoporHarvest(item, handleHarvest, tokenIds, faildHandle) 
             handleHarvest(txHash, item)
         }
     } catch (error) {
-        if (faildHandle) {
-            faildHandle(item)
+
+        var reg = RegExp(/Transaction was not mined within/);
+        if (error.message.match(reg)) {
+
+        } else {
+            if (faildHandle) {
+                faildHandle(item)
+            }
         }
+
     }
 }
 

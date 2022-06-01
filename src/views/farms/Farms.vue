@@ -492,20 +492,11 @@ export default {
           if (val.isNFTSell) {
             getNFTTokenIDs(val.item, this.handleGetNFTTokenIDs);
             this.isSwitch1 = true;
-            // this.NFTItems = val.item.NFTItems;
-            // this.canSelectNftItems = this.NFTItems;
           }
           if (val.isWNFTSell) {
             getWNFTTokenIDs(val.item, this.handleGetWNFTTokenIDs);
             this.isSwitch1 = false;
-            // this.WNFTItems = val.item.WNFTItems;
-            // this.canSelectNftItems = this.WNFTItems;
           }
-          // if (this.canSelectNftItems.length > 0) {
-          //   this.isShowEmptyImg = false;
-          // } else {
-          //   this.isShowEmptyImg = true;
-          // }
           this.$bus.$emit("switchBtnAction", this.isSwitch1);
           this.actionAlertShow = true;
         }
@@ -792,8 +783,14 @@ export default {
     },
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
-      this.canSelectNftItems = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
-      this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
+      this.actionAlertShowLoading = true;
+      if (this.isSwitch1) {
+        getNFTTokenIDs(this.selectPollItem, this.handleGetNFTTokenIDs);
+      } else {
+        getWNFTTokenIDs(this.selectPollItem, this.handleGetWNFTTokenIDs);
+      }
+      // this.canSelectNftItems = this.isSwitch1 ? this.NFTItems : this.WNFTItems;
+      // this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
       this.$bus.$emit("selectNftAction", 1);
       this.$bus.$emit("switchBtnAction", this.isSwitch1);
     },
