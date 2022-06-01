@@ -142,50 +142,19 @@ export class DaoPort {
   public async ownedNFTTokens({
     contractAddress,
     owner,
-    maxTokenId
+    rangeTokenIds
   }: {
     contractAddress: string;
     owner: string;
-    maxTokenId: number;
+    rangeTokenIds: number[];
   }): Promise<number[]> {
+    if (rangeTokenIds.length != 2) {
+      throw new Error(`beyend token range..."`);
+    }
     const tokenIds = await this._protocol.NFTUtilsContract.methods
-      .ownedNFTTokens(contractAddress, owner, maxTokenId)
+      .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
       .call();
     return tokenIds;
-  }
-
-  // public async ownedNFTTokenIds({
-  //   contractAddress,
-  //   owner,
-  //   maxTokenId
-  // }: {
-  //   contractAddress: string;
-  //   owner: string;
-  //   maxTokenId: number;
-  // }): Promise<number[]> {
-  //   const tokenIds = await this._protocol.NFTUtilsContract.methods
-  //     .ownedNFTTokenIds(contractAddress, owner, maxTokenId)
-  //     .call();
-  //   return tokenIds;
-  // }
-
-  public async ownedTokens({
-    contractAddress,
-    owner
-  }: {
-    contractAddress: string;
-    owner: string;
-  }): Promise<number[]> {
-    const tokenIds = await this._protocol.NFTUtilsContract.methods
-      .ownedTokens(contractAddress, owner)
-      .call();
-    return tokenIds;
-  }
-
-  public async getNFTContractAddress(wnftContract: string): Promise<string> {
-    const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-    const nftAddress = await WNFTContract.methods.nft().call();
-    return nftAddress;
   }
 
   public async pending<T>(
@@ -220,33 +189,40 @@ export class DaoPort {
     nftMasterchef,
     pid,
     owner,
-    maxTokenId
+    rangeTokenIds
   }: {
     nftMasterchef?: string;
     pid: number;
     owner: string;
-    maxTokenId?: number;
+    rangeTokenIds: number[];
   }): Promise<MasterChefPoolsInfo> {
+    if (rangeTokenIds.length != 2) {
+      throw new Error(` beyend token range..."`);
+    }
     nftMasterchef = this._protocol.NFTMasterChefContractAddress;
     const {
-      poolInfo,
-      rewardInfo,
-      userInfo,
-      currentRewardIndex,
-      endBlock,
-      nft
+      _poolInfo,
+      _rewardInfo,
+      _userInfo,
+      _currentRewardIndex,
+      _endBlock,
+      _nft
     } = await this._protocol.NFTUtilsContract.methods
-      .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
+      .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
       .call();
 
-    const rewardForEachBlock = rewardInfo["rewardForEachBlock"];
-    const rewardPerNFTForEachBlock = rewardInfo["rewardPerNFTForEachBlock"];
-    const mining = userInfo["mining"];
-    const dividend = userInfo["dividend"];
-    const nftQuantity = userInfo["nftQuantity"];
-    const wnftQuantity = userInfo["wnftQuantity"];
-    const isNFTApproved = userInfo["isNFTApproved"];
-    const isWNFTApproved = userInfo["isWNFTApproved"];
+    const rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
+    const rewardPerNFTForEachBlock = _rewardInfo["rewardPerNFTForEachBlock"];
+    const mining = _userInfo["mining"];
+    const dividend = _userInfo["dividend"];
+    const nftQuantity = _userInfo["nftQuantity"];
+    const wnftQuantity = _userInfo["wnftQuantity"];
+    const isNFTApproved = _userInfo["isNFTApproved"];
+    const isWNFTApproved = _userInfo["isWNFTApproved"];
+
+    const poolInfo = _poolInfo;
+    const endBlock = _endBlock;
+    const nft = _nft;
 
     return {
       poolInfo,
