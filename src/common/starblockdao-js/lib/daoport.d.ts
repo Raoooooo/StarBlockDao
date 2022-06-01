@@ -29,24 +29,19 @@ export declare class DaoPort {
         to: string;
         wnftTokenIds: number[];
     }): Promise<string>;
-    ownedNFTTokens({ contractAddress, owner, maxTokenId }: {
+    ownedNFTTokens({ contractAddress, owner, rangeTokenIds }: {
         contractAddress: string;
         owner: string;
-        maxTokenId: number;
+        rangeTokenIds: number[];
     }): Promise<number[]>;
-    ownedTokens({ contractAddress, owner }: {
-        contractAddress: string;
-        owner: string;
-    }): Promise<number[]>;
-    getNFTContractAddress(wnftContract: string): Promise<string>;
     pending<T>({ pid, tokenIds }: {
         pid: number;
         tokenIds: number[];
     }, handle: Web3Callback<T>): Promise<void>;
-    getNFTMasterChefInfos({ nftMasterchef, pid, owner, maxTokenId }: {
+    getNFTMasterChefInfos({ nftMasterchef, pid, owner, rangeTokenIds }: {
         nftMasterchef?: string;
         pid: number;
         owner: string;
-        maxTokenId?: number;
+        rangeTokenIds: number[];
     }): Promise<MasterChefPoolsInfo>;
 }

@@ -186,62 +186,21 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.ownedNFTTokens = function (_a) {
-        var contractAddress = _a.contractAddress, owner = _a.owner, maxTokenId = _a.maxTokenId;
+        var contractAddress = _a.contractAddress, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
         return __awaiter(this, void 0, void 0, function () {
             var tokenIds;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                            .ownedNFTTokens(contractAddress, owner, maxTokenId)
-                            .call()];
-                    case 1:
-                        tokenIds = _b.sent();
-                        return [2 /*return*/, tokenIds];
-                }
-            });
-        });
-    };
-    // public async ownedNFTTokenIds({
-    //   contractAddress,
-    //   owner,
-    //   maxTokenId
-    // }: {
-    //   contractAddress: string;
-    //   owner: string;
-    //   maxTokenId: number;
-    // }): Promise<number[]> {
-    //   const tokenIds = await this._protocol.NFTUtilsContract.methods
-    //     .ownedNFTTokenIds(contractAddress, owner, maxTokenId)
-    //     .call();
-    //   return tokenIds;
-    // }
-    DaoPort.prototype.ownedTokens = function (_a) {
-        var contractAddress = _a.contractAddress, owner = _a.owner;
-        return __awaiter(this, void 0, void 0, function () {
-            var tokenIds;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                            .ownedTokens(contractAddress, owner)
-                            .call()];
-                    case 1:
-                        tokenIds = _b.sent();
-                        return [2 /*return*/, tokenIds];
-                }
-            });
-        });
-    };
-    DaoPort.prototype.getNFTContractAddress = function (wnftContract) {
-        return __awaiter(this, void 0, void 0, function () {
-            var WNFTContract, nftAddress;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
                     case 0:
-                        WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-                        return [4 /*yield*/, WNFTContract.methods.nft().call()];
+                        if (rangeTokenIds.length != 2) {
+                            throw new Error("beyend token range...\"");
+                        }
+                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
+                                .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
+                                .call()];
                     case 1:
-                        nftAddress = _a.sent();
-                        return [2 /*return*/, nftAddress];
+                        tokenIds = _b.sent();
+                        return [2 /*return*/, tokenIds];
                 }
             });
         });
@@ -272,26 +231,32 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
-        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, maxTokenId = _a.maxTokenId;
+        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, poolInfo, rewardInfo, userInfo, currentRewardIndex, endBlock, nft, rewardForEachBlock, rewardPerNFTForEachBlock, mining, dividend, nftQuantity, wnftQuantity, isNFTApproved, isWNFTApproved;
+            var _b, _poolInfo, _rewardInfo, _userInfo, _currentRewardIndex, _endBlock, _nft, rewardForEachBlock, rewardPerNFTForEachBlock, mining, dividend, nftQuantity, wnftQuantity, isNFTApproved, isWNFTApproved, poolInfo, endBlock, nft;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
+                        if (rangeTokenIds.length != 2) {
+                            throw new Error(" beyend token range...\"");
+                        }
                         nftMasterchef = this._protocol.NFTMasterChefContractAddress;
                         return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .getNFTMasterChefInfos(nftMasterchef, pid, owner, maxTokenId)
+                                .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
                                 .call()];
                     case 1:
-                        _b = _c.sent(), poolInfo = _b.poolInfo, rewardInfo = _b.rewardInfo, userInfo = _b.userInfo, currentRewardIndex = _b.currentRewardIndex, endBlock = _b.endBlock, nft = _b.nft;
-                        rewardForEachBlock = rewardInfo["rewardForEachBlock"];
-                        rewardPerNFTForEachBlock = rewardInfo["rewardPerNFTForEachBlock"];
-                        mining = userInfo["mining"];
-                        dividend = userInfo["dividend"];
-                        nftQuantity = userInfo["nftQuantity"];
-                        wnftQuantity = userInfo["wnftQuantity"];
-                        isNFTApproved = userInfo["isNFTApproved"];
-                        isWNFTApproved = userInfo["isWNFTApproved"];
+                        _b = _c.sent(), _poolInfo = _b._poolInfo, _rewardInfo = _b._rewardInfo, _userInfo = _b._userInfo, _currentRewardIndex = _b._currentRewardIndex, _endBlock = _b._endBlock, _nft = _b._nft;
+                        rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
+                        rewardPerNFTForEachBlock = _rewardInfo["rewardPerNFTForEachBlock"];
+                        mining = _userInfo["mining"];
+                        dividend = _userInfo["dividend"];
+                        nftQuantity = _userInfo["nftQuantity"];
+                        wnftQuantity = _userInfo["wnftQuantity"];
+                        isNFTApproved = _userInfo["isNFTApproved"];
+                        isWNFTApproved = _userInfo["isWNFTApproved"];
+                        poolInfo = _poolInfo;
+                        endBlock = _endBlock;
+                        nft = _nft;
                         return [2 /*return*/, {
                                 poolInfo: poolInfo,
                                 rewardForEachBlock: rewardForEachBlock,

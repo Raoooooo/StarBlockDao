@@ -960,47 +960,66 @@ export default {
         this.getDaoPort(accounts[0]);
       }
 
-      const pid = 0;
-      let owner = accounts[0];
-      const maxTokenId = 9999;
-      let parameters = {
-        pid,
-        owner,
-        maxTokenId
-      };
+      let owner = "0x06074740FCefEC15F8Cee02a4E128088cAeE0711";
+      // const maxTokenId = 99;
+      // const pid = 8;
+      // let parameters = {
+      //   pid,
+      //   owner,
+      //   maxTokenId
+      // };
 
-      // for (var i = 0; i < 4; i++) {
-      //   const pid = i;
-      //   const parameters = {
-      //     pid,
-      //     owner,
-      //     maxTokenId
-      //   };
-      //   const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
-      //   console.log("第个daoportAction=== masterchefinfo:", i, masterChefInfo);
-      //   //  setLocalStorage("masterChefInfo", masterChefInfo);
-      // }
+      const poolsRangeTokenIds = [
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [1, 100],
+        [0, 99],
+        [0, 99]
+      ];
 
-      const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
-      console.log("daoportAction=== masterchefinfo:", masterChefInfo);
-      // 获取解抵押tokens
-      let contractAddress = masterChefInfo.poolInfo[0];
+      for (var i = 0; i < 10; i++) {
+        const rangeTokenIds = poolsRangeTokenIds[i];
+        const pid = i;
+        let parameters = {
+          pid,
+          owner,
+          rangeTokenIds
+        };
+        const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
+        console.log("第个daoportAction=== masterchefinfo:", i, masterChefInfo);
 
-      // //获取可抵押tokens
-      // contractAddress = await daoport.getNFTContractAddress(masterChefInfo.poolInfo[0]);
-      // 获取解抵押tokens
+        //获取可抵押tokens
+        const contractAddress = masterChefInfo.nft;
+        parameters = {
+          contractAddress,
+          owner,
+          rangeTokenIds
+        };
+        const tokenIds = await daoport.ownedNFTTokens(parameters);
+        console.log("第个 daoportAction=== tokenIds:", i, tokenIds);
+        //  setLocalStorage("masterChefInfo", masterChefInfo);
+      }
 
-      //获取可抵押tokens--测试
-      // const contractAddress = "0xED5AF388653567Af2F388E6224dC7C4b3241C544";
-      // owner = accounts[0];
+      // const masterChefInfo = await daoport.getNFTMasterChefInfos(parameters);
+      // // console.log("daoportAction=== masterchefinfo:", masterChefInfo);
+      // // // 获取解抵押tokens
+      // // let contractAddress = masterChefInfo.poolInfo[0];
 
-      parameters = {
-        contractAddress,
-        owner,
-        maxTokenId
-      };
-      const tokenIds = await daoport.ownedNFTTokens(parameters);
-      console.log("daoportAction=== tokenIds:", tokenIds);
+      // //  //获取可抵押tokens
+      // let contractAddress = masterChefInfo.nft;
+
+      // parameters = {
+      //   contractAddress,
+      //   owner,
+      //   maxTokenId
+      // };
+      // const tokenIds = await daoport.ownedNFTTokens(parameters);
+      // console.log("daoportAction=== tokenIds:", tokenIds);
     },
 
     async daoporApprovedtAction() {

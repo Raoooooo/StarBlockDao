@@ -21,7 +21,12 @@ exports.NFTUtils = [
             },
             {
                 internalType: "uint256",
-                name: "_maxTokenId",
+                name: "_fromTokenId",
+                type: "uint256"
+            },
+            {
+                internalType: "uint256",
+                name: "_toTokenId",
                 type: "uint256"
             }
         ],
@@ -81,7 +86,7 @@ exports.NFTUtils = [
                     }
                 ],
                 internalType: "struct INFTMasterChef.PoolInfo",
-                name: "poolInfo",
+                name: "_poolInfo",
                 type: "tuple"
             },
             {
@@ -103,7 +108,7 @@ exports.NFTUtils = [
                     }
                 ],
                 internalType: "struct INFTMasterChef.RewardInfo",
-                name: "rewardInfo",
+                name: "_rewardInfo",
                 type: "tuple"
             },
             {
@@ -139,23 +144,23 @@ exports.NFTUtils = [
                         type: "bool"
                     }
                 ],
-                internalType: "struct UserInfo",
-                name: "userInfo",
+                internalType: "struct NFTUtils.UserInfo",
+                name: "_userInfo",
                 type: "tuple"
             },
             {
                 internalType: "uint256",
-                name: "currentRewardIndex",
+                name: "_currentRewardIndex",
                 type: "uint256"
             },
             {
                 internalType: "uint256",
-                name: "endBlock",
+                name: "_endBlock",
                 type: "uint256"
             },
             {
-                internalType: "address",
-                name: "nft",
+                internalType: "contract IERC721Metadata",
+                name: "_nft",
                 type: "address"
             }
         ],
@@ -165,7 +170,31 @@ exports.NFTUtils = [
     {
         inputs: [
             {
-                internalType: "contract IERC721Metadata",
+                internalType: "contract IERC721Enumerable",
+                name: "_nftEnumerable",
+                type: "address"
+            },
+            {
+                internalType: "address",
+                name: "_owner",
+                type: "address"
+            }
+        ],
+        name: "ownedNFTEnumerableTokens",
+        outputs: [
+            {
+                internalType: "uint256[]",
+                name: "_totalTokenIds",
+                type: "uint256[]"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [
+            {
+                internalType: "contract IERC721",
                 name: "_nft",
                 type: "address"
             },
@@ -176,15 +205,20 @@ exports.NFTUtils = [
             },
             {
                 internalType: "uint256",
-                name: "_maxTokenId",
+                name: "_fromTokenId",
+                type: "uint256"
+            },
+            {
+                internalType: "uint256",
+                name: "_toTokenId",
                 type: "uint256"
             }
         ],
-        name: "ownedNFTTokens",
+        name: "ownedNFTNotEnumerableTokens",
         outputs: [
             {
                 internalType: "uint256[]",
-                name: "totalTokens",
+                name: "_totalTokenIds",
                 type: "uint256[]"
             }
         ],
@@ -194,22 +228,127 @@ exports.NFTUtils = [
     {
         inputs: [
             {
-                internalType: "contract IERC721Enumerable",
-                name: "_nftContract",
+                internalType: "contract IERC721",
+                name: "_nft",
                 type: "address"
             },
             {
                 internalType: "address",
                 name: "_owner",
                 type: "address"
+            },
+            {
+                internalType: "uint256",
+                name: "_fromTokenId",
+                type: "uint256"
+            },
+            {
+                internalType: "uint256",
+                name: "_toTokenId",
+                type: "uint256"
             }
         ],
-        name: "ownedTokens",
+        name: "ownedNFTTokens",
         outputs: [
             {
                 internalType: "uint256[]",
-                name: "totalTokens",
+                name: "_totalTokenIds",
                 type: "uint256[]"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [
+            {
+                internalType: "contract IERC721",
+                name: "_nft",
+                type: "address"
+            }
+        ],
+        name: "supportERC721",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [
+            {
+                internalType: "contract IERC721",
+                name: "_nft",
+                type: "address"
+            }
+        ],
+        name: "supportERC721Enumerable",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [
+            {
+                internalType: "contract IERC721",
+                name: "_nft",
+                type: "address"
+            }
+        ],
+        name: "supportERC721Metadata",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [
+            {
+                internalType: "contract IERC721",
+                name: "_nft",
+                type: "address"
+            }
+        ],
+        name: "supportIWrappedNFT",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [
+            {
+                internalType: "contract IERC721",
+                name: "_nft",
+                type: "address"
+            }
+        ],
+        name: "supportIWrappedNFTEnumerable",
+        outputs: [
+            {
+                internalType: "bool",
+                name: "",
+                type: "bool"
             }
         ],
         stateMutability: "view",
