@@ -10,7 +10,8 @@ export default {
         twwiter: "文档",
         English: "English",
         chinese: "简体中文",
-        github: "Github"
+        github: "Github",
+        login: "连接钱包",
     },
 
     home: {
@@ -40,8 +41,10 @@ export default {
         topItem3: "总奖励",
         earn: "赚取",
         month: "月",
-        endBlock: "天后结束",
-        startBlock: "天后开始",
+        endBlock: "区块后结束",
+        endBlockDay: "天后结束",
+        startBlock: "区块后开始",
+        startBlockDay: "天后开始",
         awardNFT: "单NFT奖励",
         pledgeAmount: "抵押总量",
         pledge: "抵押",
@@ -67,7 +70,7 @@ export default {
         tip5: "根据您持有WNFT可解抵押对应的NFT",
         tip6: "WNFT是解抵押NFT的唯一凭证，千万不要丢失",
 
-        noWNFTDes: "暂无此合集的WNF",
+        noWNFTDes: "暂无此合集的WNFT",
         noNFTDes: "暂无此合集的NFT",
         getRewardSuccess: "领取奖励成功",
         depositSuccess: "抵押NFT成功",
@@ -97,8 +100,8 @@ export default {
         loginError: "请点击导航栏【登录】按钮，完成登录后操作",
         iKnow: "我知道了",
         stakeApprove: "抵押授权",
-        unstakeApprove: "解抵押授权"
-
+        unstakeApprove: "解抵押授权",
+        connectWalletMsg: "请连接钱包后再试",
     },
 
 

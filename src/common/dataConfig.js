@@ -31,7 +31,8 @@ const poolDatas = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon0.png"),
-            name: "Gensis Pass",
+            name: "starblock-genesis-pass",
+            showName: "StarBlock Genesis Pass",
             contractAddress: "",
         }
     },
@@ -64,7 +65,8 @@ const poolDatas = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon1.png"),
-            name: "Bzuki",
+            name: "bzuki-on-starblock",
+            showName: "Bzuki",
             contractAddress: "",
         }
     },
@@ -98,7 +100,8 @@ const poolDatas = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon2.png"),
-            name: "3Landers (3L)",
+            name: "3landers",
+            showName: "3Landers",
             contractAddress: "",
         }
     },
@@ -106,8 +109,8 @@ const poolDatas = [
     {
 
         poolInfo: {
-            pid: 2,
-            maxTokenId: 9999,
+            pid: 3,
+            maxTokenId: 99,
             startBlock: 0,
             amount: 0,
             wnft: "",
@@ -132,7 +135,8 @@ const poolDatas = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon3.png"),
-            name: "PLUR (PLUR)",
+            name: "plurofficial",
+            showName: "PLUR",
             contractAddress: "",
         }
     },

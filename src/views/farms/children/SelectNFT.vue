@@ -4,7 +4,7 @@
       <div class="sepLine" v-show="index != 0"></div>
       <div class="itemContantBox">
         <div class="nftNameBox">
-          <p class="nftName">{{ item.collection.name + "#" + item.tokenId }}</p>
+          <p class="nftName">{{ item.collection.showName + "#" + item.tokenId }}</p>
         </div>
 
         <div class="linkIconBox">
@@ -187,8 +187,8 @@ export default {
     },
     selectIconUrl(item) {
       return item.select
-        ? require("@/assets/img/farms/nft_select_y.png")
-        : require("@/assets/img/farms/nft_select_n.png");
+        ? require("@/assets/img/farms/nft_select_y.svg")
+        : require("@/assets/img/farms/nft_select_n.svg");
     },
     selectAction(item) {
       item.select = !item.select;
@@ -370,11 +370,12 @@ export default {
     flex-direction: row-reverse;
     width: 33%;
   }
+
   .selectIcon {
     cursor: pointer;
     margin-right: 0.675rem;
-    width: 0.6rem;
-    height: 0.6rem;
+    width: 0.5rem;
+    height: 0.5rem;
   }
 
   .linkIconBox {

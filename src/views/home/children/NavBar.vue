@@ -12,7 +12,9 @@
             {{ $t(tabTitle) }}
           </p>
 
-          <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">登录</button>
+          <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">
+            {{ $t("navBar.login") }}
+          </button>
           <div class="accountBox" v-show="isLogin">
             <img class="account_img" src="@/assets/img/farms/accountIcon.png" />
             <p class="account_text">{{ account }}</p>
@@ -160,11 +162,12 @@ export default {
     // onBlockOut();
     var isClickLogin = false;
     // if (!getLocalStorage("isFirstLoad")) {
-      onConnect(this.getAccount, isClickLogin);
+    onConnect(this.getAccount, isClickLogin);
     // }
     setLocalStorage("isFirstLoad", true);
     this.accountsChange();
     this.chainidChange();
+    this.walletConnect();
     getCurrentChainId(this.handleCurentChainid);
     // this.$router.push({ path: "/" });
   },
@@ -318,6 +321,19 @@ export default {
         window.location.reload();
       });
     },
+    async walletConnect() {
+      const provider = await initWeb3Modal().connect();
+      var that = this;
+      provider.on("connect", function (info) {
+        // that.setLoginData(accounts[0]);
+        window.location.reload();
+        console.log("connect", info);
+      });
+      provider.on("disconnect", error => {
+        console.log("disconnect", error);
+         window.location.reload();
+      });
+    },
     async chainidChange() {
       const provider = await initWeb3Modal().connect();
       var that = this;
@@ -355,16 +371,16 @@ export default {
     },
     getAccount(account, isClickLogin) {
       console.log(account);
-      if (isClickLogin) {
-        this.setLoginData(account);
-      } else {
-        if (localAccount() && localAccount() != account) {
-          setLocalStorage("isLogin", "0");
-          this.isLogin = false;
-        } else {
-          this.setLoginData(account);
-        }
-      }
+      // if (isClickLogin) {
+      this.setLoginData(account);
+      // } else {
+      //   if (localAccount() && localAccount() != account) {
+      //     setLocalStorage("isLogin", "0");
+      //     this.isLogin = false;
+      //   } else {
+      //     this.setLoginData(account);
+      //   }
+      // }
     },
 
     setLoginData(account) {
@@ -546,7 +562,7 @@ export default {
 .tabActiveTitle {
   cursor: pointer;
   color: #f7b500;
-  font-size: .45rem;
+  font-size: 0.45rem;
   text-align: center;
   vertical-align: middle;
   padding-left: 0.3rem;

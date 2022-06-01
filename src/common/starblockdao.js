@@ -10,7 +10,7 @@ var utils = require('web3-utils')
 var network_Name = Network.Main;
 var accounts;
 var daoport;
-
+var web3;
 
 export function setNetwork_Name(chaiIdNum) {
 
@@ -34,27 +34,31 @@ export function setNetwork_Name(chaiIdNum) {
     // alert(network_Name);
 }
 export function initWeb3() {
-    var web3;
-    if (window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        // 请求用户授权
-        window.ethereum.enable();
-    } else if (typeof web3 !== "undefined") {
-        web3 = new Web3(web3.currentProvider);
-        // web3.eth.defaultAccount = web3.eth.accounts[0];
-        // console.log(web3.eth.defaultAccount);
+    if (web3) {
+        return web3;
     } else {
-        // set the provider you want from Web3.providers
-        // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.61:8080"));
-        var PROVIDER_URL = "";
-        if (getProdcutMode() == 1) {
-            PROVIDER_URL = "https://mainnet.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280"
+        if (window.ethereum) {
+            web3 = new Web3(window.ethereum);
+            // 请求用户授权
+            window.ethereum.enable();
+        } else if (typeof web3 !== "undefined") {
+            web3 = new Web3(web3.currentProvider);
+            // web3.eth.defaultAccount = web3.eth.accounts[0];
+            // console.log(web3.eth.defaultAccount);
         } else {
-            PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
+            // set the provider you want from Web3.providers
+            // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.61:8080"));
+            var PROVIDER_URL = "";
+            if (getProdcutMode() == 1) {
+                PROVIDER_URL = "https://mainnet.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280"
+            } else {
+                PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
+            }
+            web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
         }
-        web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+        return web3;
     }
-    return web3;
+
 }
 
 export async function daoportAction(item, handleMasterChefInfo, index) {
@@ -402,7 +406,7 @@ export async function getAccounts() {
     const web3Modal = new Web3Modal({
         theme: "dark",
         // network: getChainData(walletObj.chainId).network,
-        network: "rinkeby",
+        network: network_Name,
         cacheProvider: true,
         providerOptions
     });
@@ -412,6 +416,10 @@ export async function getAccounts() {
 
     web3 = new Web3(provider);
     accounts = await web3.eth.getAccounts();
+    return accounts;
+    // if (getAccountHandle) {
+    //     getAccountHandle(accounts)
+    // }
 }
 
 export async function getDaoPort(account) {
@@ -485,6 +493,14 @@ export function openseaApiBaseUrl() {
         return "https://testnets-api.opensea.io/api/v1/";
     } else {
         return "https://api.opensea.io/api/v1/";
+    }
+}
+
+export function etherscanCountDownBase() {
+    if (network_Name == Network.Rinkeby) {
+        return "https://etherscan.io/block/countdown/";
+    } else {
+        return "https://etherscan.io/block/countdown/";
     }
 }
 
