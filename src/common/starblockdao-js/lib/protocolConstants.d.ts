@@ -7,6 +7,7 @@ export declare const constants: {
         main: {
             NFTMasterChef: string;
             NFTUtils: string;
+            FACTORY: string;
         };
     };
     NFTMASTERCHEF_ABI: import("./types").PartialReadonlyContractAbi;

@@ -6,5 +6,6 @@ export declare const deployed: {
     main: {
         NFTMasterChef: string;
         NFTUtils: string;
+        FACTORY: string;
     };
 };
