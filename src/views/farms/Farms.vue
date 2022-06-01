@@ -358,8 +358,8 @@ export default {
 
     return {
       actionAlertShowLoading: false,
-      txHash: "0xddsdddsddsd",
-      txHashOringion: "111111",
+      txHash: "",
+      txHashOringion: "",
       successVisible: false,
       // defaultMessageDesStr: "",
       selectPollItem: {},
@@ -367,10 +367,10 @@ export default {
       warningDefaultVisible: false,
       selectTokenIdsArr: [],
       selectCount: 0,
-      totalNftQuantity: 0,
-      totalTVL: 0,
+      totalNftQuantity: "--",
+      totalTVL: "--",
       totalReward: 0,
-      currentBlockNumber: 100000000,
+      currentBlockNumber: 0,
       topImgHeight: topImgHeight,
       topBackImgUrl:
         document.documentElement.clientWidth > 750
@@ -535,7 +535,7 @@ export default {
         this.totalTVL = 0;
         for (var i = 0; i < this.poolItems.length; i++) {
           const item = this.poolItems[i];
-          this.totalTVL += Number(item.floor_price);
+          this.totalTVL += Number(item.floor_price) * Number(item.poolInfo.amount);
         }
       }
     },

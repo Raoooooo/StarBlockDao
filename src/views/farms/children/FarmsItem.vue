@@ -56,7 +56,9 @@
           <div class="contantDetailSection1_leftBox">
             <img class="contantDetailSection1_leftBox_img" v-lazy="item.collection.imagePath" />
             <div class="contantDetailSection1_leftBox_subBox">
-              <p class="contantDetailSection1_leftBox_subBox_topText">{{ item.collection.showName }}</p>
+              <p class="contantDetailSection1_leftBox_subBox_topText">
+                {{ item.collection.showName }}
+              </p>
               <div class="linkIconBox">
                 <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
@@ -92,7 +94,11 @@
           <p class="contantDetailSection2_rightText">
             TVL
             <span class="contantDetailSection2_rightText1">
-              {{ item.floor_price > 0 ? item.floor_price + " ETH" : "--" }}
+              {{
+                item.floor_price > 0 && Number(item.poolInfo.amount) > 0
+                  ? Number((item.floor_price * Number(item.poolInfo.amount)).toFixed(2)) + " ETH"
+                  : "--"
+              }}
             </span>
           </p>
         </div>
@@ -453,13 +459,16 @@ export default {
       ) {
         return "--";
       }
-      if (item.rewardForEachBlock) {
+      if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
         if (number >= 10000) {
           return number.toFixed(0);
         } else {
           return Number(number.toFixed(2));
         }
+      }
+      if (item.rewardForEachBlock == "--") {
+        return "--";
       }
       if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
         var number =
