@@ -144,7 +144,9 @@ export default {
       tabItems: [
         "navBar.homepage",
         "navBar.section1",
+        "navBar.starBlock",
         "navBar.github"
+
         // "navBar.section2",
         // "navBar.section3",
         // "navBar.section4",
@@ -159,6 +161,10 @@ export default {
   watch: {},
 
   created() {
+    ethereum.on("accountsChanged", function (accounts) {
+      // alert(accounts[0]);
+      window.location.reload();
+    });
     // onBlockOut();
     var isClickLogin = false;
     // if (!getLocalStorage("isFirstLoad")) {
@@ -309,6 +315,20 @@ export default {
       this.chainIdErrorDialog = false;
     },
     loginBtnAction() {
+      if (!ethereum.isConnected()) {
+        // this.$message.error("未检测到ethereum，需要重新加载");
+        window.location.reload();
+        return;
+      }
+      var isUnlocked = false;
+      ethereum._metamask.isUnlocked().then(res => {
+        isUnlocked = res;
+        console.log("ethereum._metamask.isUnlocked()", res);
+        if (!isUnlocked) {
+          this.$message.error(this.$t("common.metaMaskCheck"));
+          return;
+        }
+      });
       var isClickLogin = true;
       onConnect(this.getAccount, isClickLogin);
     },
@@ -331,7 +351,7 @@ export default {
       });
       provider.on("disconnect", error => {
         console.log("disconnect", error);
-         window.location.reload();
+        window.location.reload();
       });
     },
     async chainidChange() {
@@ -415,6 +435,10 @@ export default {
       // }
       if (item == "navBar.github") {
         window.open("https://github.com/StarBlockDAO", "_blank");
+        return;
+      }
+      if (item == "navBar.starBlock") {
+        window.open("https://www.starblock.io", "_blank");
         return;
       }
       this.active = index;

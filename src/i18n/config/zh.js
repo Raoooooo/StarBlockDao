@@ -12,6 +12,7 @@ export default {
         chinese: "简体中文",
         github: "Github",
         login: "连接钱包",
+        starBlock:"StarBlock",
     },
 
     home: {
@@ -102,6 +103,8 @@ export default {
         stakeApprove: "抵押授权",
         unstakeApprove: "解抵押授权",
         connectWalletMsg: "请连接钱包后再试",
+        metaMaskCheck: "请先解锁MetaMask或下载MetaMask后再试",
+
     },
 
 

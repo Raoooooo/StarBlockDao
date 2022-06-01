@@ -724,13 +724,13 @@ export default {
   font-weight: 500;
   color: #111111;
   line-height: 1rem;
-  width: 3rem;
+  /* width: 3rem;
   white-space: nowrap;
   /* overflow: hidden; */
-  text-overflow: ellipsis;
 }
 
 .linkIconBox {
+  margin-top: .25rem;
   display: flex;
   flex-direction: row;
 }
@@ -1065,18 +1065,18 @@ export default {
     /* justify-content: space-between; */
   }
   .contantDetailSection1_leftBox_subBox_topText {
-    font-size: 0.36rem;
+    font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #111111;
     line-height: 0.4rem;
-    width: 2.5rem;
+    /* width: 2.5rem;
     white-space: nowrap;
     /* overflow: hidden; */
-    text-overflow: ellipsis;
   }
 
   .linkIconBox {
+    margin-top: 0rem;
     display: flex;
     flex-direction: row;
   }

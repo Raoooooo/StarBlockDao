@@ -297,8 +297,8 @@ export default {
   flex-direction: row;
   justify-content: center;
 }
-.linkIconUrl{
-  margin-top: .25rem;
+.linkIconUrl {
+  margin-top: 0.25rem;
 }
 .linkIcon {
   width: 1rem;

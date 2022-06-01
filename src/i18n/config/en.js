@@ -12,6 +12,7 @@ export default {
         chinese: "简体中文",
         github: "Github",
         login: "Connect Wallet",
+        starBlock: "StarBlock",
 
     },
 
@@ -85,7 +86,7 @@ export default {
         txHash: "Transaction Hash",
         defaultMessSub1: "Are you sure to stake",
         defaultMessSub2: "",
-        defaultMessSub3: "Are you sure to unstake WNFT",
+        defaultMessSub3: "Are you sure to unstake",
         defaultMessSub4: "Are you sure to receive reward",
         defaultMessSub4Des: "Staking Rewards",
 
@@ -102,7 +103,7 @@ export default {
         stakeApprove: "Stake Approve",
         unstakeApprove: "Unstake Approve",
         connectWalletMsg: "Please try again after connect your wallet.",
-
+        metaMaskCheck: "Please download MetaMask or unlock metaMask first.",
 
 
     },

@@ -130,9 +130,11 @@
             {{ $t("farms.havePledge") }}
           </button>
         </div>
-        <button class="unPledgeAction" @click="alertBeforeAction">
-          {{ alertActionStr + " " + selectCount + $t("common.defaultMessSub2") }}
-        </button>
+        <div class="unPledgeActionBox">
+          <button class="unPledgeAction" @click="alertBeforeAction">
+            {{ alertActionStr + " " + selectCount + $t("common.defaultMessSub2") }}
+          </button>
+        </div>
       </div>
 
       <div class="itemsSuperBox">
@@ -184,7 +186,7 @@
 
         <div class="txHashBox">
           <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
-          <a :href="txHashOringion" target="_blank">
+          <a :href="getChainWebUrl(txHashOringion)" target="_blank">
             <p class="txHash">{{ txHash }}</p>
           </a>
           <img
@@ -297,19 +299,29 @@ export default {
         return this.$t("common.defaultMessSub4");
       }
       if (this.isSwitch1) {
-        return (
-          this.$t("common.defaultMessSub1") +
-          this.selectCount +
-          this.$t("common.defaultMessSub2") +
-          "NFT"
-        );
+        this.selectCount == 1
+          ? this.$t("common.defaultMessSub1") +
+            this.selectCount +
+            " " +
+            this.$t("common.defaultMessSub2") +
+            "NFT"
+          : this.$t("common.defaultMessSub1") +
+            this.selectCount +
+            " " +
+            this.$t("common.defaultMessSub2") +
+            "NFTs";
       } else {
-        return (
-          this.$t("common.defaultMessSub3") +
-          this.selectCount +
-          this.$t("common.defaultMessSub2") +
-          "NFT"
-        );
+        return this.selectCount == 1
+          ? this.$t("common.defaultMessSub3") +
+              " " +
+              this.selectCount +
+              this.$t("common.defaultMessSub2") +
+              "WNFT"
+          : this.$t("common.defaultMessSub3") +
+              " " +
+              this.selectCount +
+              this.$t("common.defaultMessSub2") +
+              "WNFTs";
       }
     },
 
@@ -520,6 +532,13 @@ export default {
   },
 
   methods: {
+    getChainWebUrl(subStr) {
+      if (getProdcutMode() == 1) {
+        return "https://etherscan.io/tx/" + subStr;
+      } else {
+        return "https://rinkeby.etherscan.io/tx/" + subStr;
+      }
+    },
     requestFloorPrice(item, handleFloorPrice, index) {
       // var urlPath = openseaApiBaseUrl() + "collection/" + item.collection.name + "/stats";
       var urlPath = "collection/" + item.collection.name + "/stats";
@@ -734,7 +753,7 @@ export default {
         miniItem.tokenId = Number(NFTTokenIDs[i]);
         miniItem.select = false;
         miniItem.collection = {};
-        miniItem.collection.name = item.collection.name;
+        miniItem.collection.showName = item.collection.showName;
         miniItem.collection.contractAddress = item.collection.contractAddress;
         // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
@@ -756,7 +775,7 @@ export default {
         miniItem.tokenId = Number(WNFTTokenIDs[i]);
         miniItem.select = false;
         miniItem.collection = {};
-        miniItem.collection.name = item.collection.name;
+        miniItem.collection.showName = item.collection.showName;
         miniItem.collection.contractAddress = item.poolInfo.wnft;
         // miniItem.collection.wnftContractAddress = item.poolInfo.wnft;
         emptyArr.push(miniItem);
@@ -1057,6 +1076,12 @@ export default {
   font-weight: 500;
   color: #fff;
   line-height: 0.4rem;
+}
+
+.unPledgeActionBox {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 .unPledgeAction {
   padding-left: 0.4rem;
@@ -1373,6 +1398,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 }
 
 .txHash_pre {
@@ -1917,8 +1943,8 @@ export default {
     color: #2c6ff8;
   }
   .txHash_copy {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.5rem;
+    height: 0.5rem;
     cursor: pointer;
   }
 }

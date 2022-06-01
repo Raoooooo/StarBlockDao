@@ -172,7 +172,8 @@ export default {
         { title: "navBar.homepage", path: "" },
 
         { title: "navBar.section1", path: "" },
-        { title: "navBar.github", path: "https://github.com/StarBlockDAO" },
+        { title: "navBar.starBlock", path: "https://github.com/StarBlockDAO" },
+        { title: "navBar.github", path: "https://www.starblock.io" },
         // { title: "navBar.section2", path: "" },
         // { title: "navBar.section3", path: "" },
         // { title: "navBar.section4", path: "" },
@@ -448,6 +449,9 @@ export default {
       if (item.title == "navBar.github") {
         window.open("https://github.com/StarBlockDAO", "_blank");
       }
+      if (item.title == "navBar.starBlock") {
+        window.open("https://www.starblock.io", "_blank");
+      }
       if (index == this.tabItems.length - 1) {
         if (this.$i18n.locale == "en") {
           this.$bus.$emit("changeDescripHeight", "navBar.chinese");
@@ -661,9 +665,8 @@ export default {
   margin-right: 0px;
   margin-top: 0.25rem;
   /* background-color: #111; */
-  
-  background-color: rgba(120, 120, 120, 0.95);
 
+  background-color: rgba(120, 120, 120, 0.95);
 }
 
 .moreOptionSubView {

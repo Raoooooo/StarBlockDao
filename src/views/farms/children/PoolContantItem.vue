@@ -496,7 +496,7 @@ export default {
   height: 1.75rem;
   margin-left: 2.5%;
   width: 95%;
-  height: 1rem;
+  height: 1.75rem;
   background-color: #e5e5e5;
   border-radius: 0.875rem;
   color: #8c9399;

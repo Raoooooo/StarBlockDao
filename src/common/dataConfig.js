@@ -32,7 +32,7 @@ const poolDatas = [
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon0.png"),
             name: "starblock-genesis-pass",
-            showName: "StarBlock Genesis Pass",
+            showName: "Genesis Pass",
             contractAddress: "",
         }
     },
