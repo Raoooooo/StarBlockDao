@@ -6,7 +6,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 0,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 0],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -40,7 +40,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 1,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 0],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -75,7 +75,7 @@ const poolDatas_main = [
 
         poolInfo: {
             pid: 2,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 0],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -100,6 +100,41 @@ const poolDatas_main = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon2.png"),
+            name: "gzuki-on-starblock",
+            showName: "Gzuki",
+            contractAddress: "",
+        }
+    },
+
+    {
+
+        poolInfo: {
+            pid: 3,
+            rangeTokenIds: [0, 0],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon10.png"),
             name: "3landers",
             showName: "3Landers",
             contractAddress: "",
@@ -109,9 +144,9 @@ const poolDatas_main = [
     {
 
         poolInfo: {
-            pid: 3,
+            pid: 4,
             fromTokenId: 0,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 8584],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -145,9 +180,9 @@ const poolDatas_main = [
     {
 
         poolInfo: {
-            pid: 4,
+            pid: 5,
             fromTokenId: 0,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 9999],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -181,9 +216,9 @@ const poolDatas_main = [
     {
 
         poolInfo: {
-            pid: 5,
+            pid: 6,
             fromTokenId: 0,
-            rangeTokenIds: [0, 99],
+            rangeTokenIds: [0, 0],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -219,7 +254,7 @@ const poolDatas_main = [
         poolInfo: {
             pid: 7,
             fromTokenId: 0,
-            rangeTokenIds: [1, 100],
+            rangeTokenIds: [1, 8888],
             startBlock: 0,
             amount: "--",
             wnft: "",
@@ -249,6 +284,81 @@ const poolDatas_main = [
             contractAddress: "",
         }
     },
+
+
+
+    {
+
+        poolInfo: {
+            pid: 8,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 99999],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon8.png"),
+            name: "ainightbirds",
+            showName: "AINightbirds",
+            contractAddress: "",
+        }
+    },
+
+    {
+
+        poolInfo: {
+            pid: 9,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 99],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon9.png"),
+            name: "tastybonesxyz",
+            showName: "Tasty Bones",
+            contractAddress: "",
+        }
+    },
+
 ]
 
 

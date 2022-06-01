@@ -62,6 +62,29 @@ export function initWeb3() {
 }
 
 export async function daoportAction(item, handleMasterChefInfo, index) {
+    // var owner = "";
+    // await getAccounts()
+    //     .then(accounts => {
+    //         if (accounts) {
+
+    //             if (!accounts) {
+    //                 getAccounts();
+    //             }
+    //             owner = accounts[0];
+    //         } else {
+    //             owner = "0x0000000000000000000000000000000000000000";
+
+    //         }
+    //     })
+    //     .catch(error => owner = "0x0000000000000000000000000000000000000000");
+
+
+
+    // if (!daoport) {
+    //     getDaoPort(owner);
+    // }
+
+
     if (!accounts) {
         await getAccounts();
     }
@@ -69,6 +92,7 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
     if (!daoport) {
         getDaoPort(accounts[0]);
     }
+    // const owner = accounts[0];
     const pid = item.poolInfo.pid;
     const owner = accounts[0];
     // const maxTokenId = item.poolInfo.maxTokenId;
@@ -211,13 +235,26 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
 }
 
 export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
+    var owner = "";
     if (!accounts) {
-        await getAccounts();
+        // await getAccounts();
+
+        await getAccounts()
+            .then(accounts => {
+                if (accounts) {
+
+                } else {
+                    owner = "0x0000000000000000000000000000000000000000"
+                    // this.$message.error(this.$t("common.connectWalletMsg"));
+                }
+            })
+            .catch(error => this.$message.error(owner = "0x0000000000000000000000000000000000000000"));
     }
     if (!daoport) {
-        getDaoPort(accounts[0]);
+        getDaoPort(owner);
     }
-    const owner = accounts[0];
+    // const owner = accounts[0];
+    // owner = "0x0000000000000000000000000000000000000000";
     const rangeTokenIds = item.poolInfo.rangeTokenIds;
     //获取可抵押tokens
     var contractAddress = item.poolInfo.wnft;

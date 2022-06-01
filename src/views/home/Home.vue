@@ -13,7 +13,7 @@
             <p class="contantDetailBox_des">
               {{ $t("home.topDes") }}
             </p>
-            <countdown></countdown>
+            <!-- <countdown></countdown> -->
           </div>
         </div>
       </div>

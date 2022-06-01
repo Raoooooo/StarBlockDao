@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <el-dialog
+    <!-- <el-dialog
       title=""
       :visible.sync="chainIdErrorDialog"
       :width="elDialogWidth"
@@ -78,7 +78,7 @@
           {{ $t("common.iKnow") }}
         </button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
 
     <!-- <el-dialog
       title=""
@@ -666,7 +666,7 @@ export default {
   margin-top: 0.25rem;
   /* background-color: #111; */
 
-  background-color: rgba(120, 120, 120, 0.95);
+  /* background-color: rgba(120, 120, 120, 0.95); */
 }
 
 .moreOptionSubView {

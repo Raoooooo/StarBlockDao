@@ -173,7 +173,7 @@ export default {
     setLocalStorage("isFirstLoad", true);
     this.accountsChange();
     this.chainidChange();
-    this.walletConnect();
+    // this.walletConnect();
     getCurrentChainId(this.handleCurentChainid);
     // this.$router.push({ path: "/" });
   },
