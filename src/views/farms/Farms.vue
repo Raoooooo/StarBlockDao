@@ -243,6 +243,8 @@ import { onConnect, initWeb3Modal, resetApp } from "@/common/useWallet";
 import Farmitem from "../farms/children/FarmsItem.vue";
 import Selectnft from "../farms/children/SelectNFT.vue";
 import poolDatas from "@/common/dataConfig";
+import poolDatas_main from "@/common/dataConfig_main";
+
 import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
 import Bottom from "../home/children/Bottom.vue";
@@ -423,8 +425,12 @@ export default {
     // this.accountsChange();
 
     // daoportAction(0);
+    if (getProdcutMode() == 1) {
+      this.poolItems = poolDatas_main;
+    } else {
+      this.poolItems = poolDatas;
+    }
 
-    this.poolItems = poolDatas;
     this.getMasterChefInfo();
     setTimeout(() => {
       this.getFloorPriceData();
@@ -784,6 +790,7 @@ export default {
     switchBtn(index) {
       this.isSwitch1 = index == 1 ? true : false;
       this.actionAlertShowLoading = true;
+      this.resetSelectNFT();
       if (this.isSwitch1) {
         getNFTTokenIDs(this.selectPollItem, this.handleGetNFTTokenIDs);
       } else {
@@ -795,6 +802,11 @@ export default {
       this.$bus.$emit("switchBtnAction", this.isSwitch1);
     },
     closeAlertAction() {
+      this.resetSelectNFT();
+      this.actionAlertShow = false;
+    },
+
+    resetSelectNFT() {
       this.selectTokenIdsArr = [];
       this.selectCount = 0;
       this.canSelectNftItems = [];
@@ -808,7 +820,6 @@ export default {
         var item = this.WNFTItems[key];
         item.select = false;
       });
-      this.actionAlertShow = false;
     },
     resetApp() {
       resetApp();

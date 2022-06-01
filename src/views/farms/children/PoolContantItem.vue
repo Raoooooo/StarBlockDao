@@ -246,36 +246,38 @@ export default {
         this.$bus.$emit("checkChainIdError", "1");
         return;
       }
-      getAccounts().then(accounts => {
-        if (accounts) {
-          if (!this.item.isNFTApproved) {
-            if (this.showImgLoading) {
+      getAccounts()
+        .then(accounts => {
+          if (accounts) {
+            if (!this.item.isNFTApproved) {
+              if (this.showImgLoading) {
+                return;
+              }
+              approveNFTAction(
+                this.item,
+                this.handleNftApprove,
+                0,
+                false,
+                this.faildHandleApproveNFT
+              );
+              this.showImgLoading = true;
               return;
             }
-            approveNFTAction(
-              this.item,
-              this.handleNftApprove,
-              0,
-              false,
-              this.faildHandleApproveNFT
-            );
-            this.showImgLoading = true;
-            return;
+            //   this.showImgLoading = true;
+            //   this.$bus.$emit("daoporDepositNotiAction", this.item);
+            this.pledgeBtnStr = "";
+            //   this.item.showImgLoading = true;
+            this.$bus.$emit("pledgeBtnNotiAction", {
+              item: this.item,
+              isNFTSell: true,
+              isWNFTSell: false,
+              isGetReward: false
+            });
+          } else {
+            this.$message.error(this.$t("common.connectWalletMsg"));
           }
-          //   this.showImgLoading = true;
-          //   this.$bus.$emit("daoporDepositNotiAction", this.item);
-          this.pledgeBtnStr = "";
-          //   this.item.showImgLoading = true;
-          this.$bus.$emit("pledgeBtnNotiAction", {
-            item: this.item,
-            isNFTSell: true,
-            isWNFTSell: false,
-            isGetReward: false
-          });
-        } else {
-          this.$message.error(this.$t("common.connectWalletMsg"));
-        }
-      }).catch(error => this.$message.error(this.$t("common.connectWalletMsg")));;
+        })
+        .catch(error => this.$message.error(this.$t("common.connectWalletMsg")));
       // if (getAccounts()) {
       //   alert(getAccounts());
       // } else {
@@ -298,32 +300,34 @@ export default {
         this.$bus.$emit("checkChainIdError", "1");
         return;
       }
-      getAccounts().then(accounts => {
-        if (accounts) {
-          if (!this.item.isWNFTApproved) {
-            if (this.showImgLoading1) {
+      getAccounts()
+        .then(accounts => {
+          if (accounts) {
+            if (!this.item.isWNFTApproved) {
+              if (this.showImgLoading1) {
+                return;
+              }
+              approveWNFTAction(
+                this.item,
+                this.handleWNftApprove,
+                0,
+                false,
+                this.faildHandleApproveWNFT
+              );
+              this.showImgLoading1 = true;
               return;
             }
-            approveWNFTAction(
-              this.item,
-              this.handleWNftApprove,
-              0,
-              false,
-              this.faildHandleApproveWNFT
-            );
-            this.showImgLoading1 = true;
-            return;
+            this.$bus.$emit("pledgeBtnNotiAction", {
+              item: this.item,
+              isNFTSell: false,
+              isWNFTSell: true,
+              isGetReward: false
+            });
+          } else {
+            this.$message.error(this.$t("common.connectWalletMsg"));
           }
-          this.$bus.$emit("pledgeBtnNotiAction", {
-            item: this.item,
-            isNFTSell: false,
-            isWNFTSell: true,
-            isGetReward: false
-          });
-        } else {
-          this.$message.error(this.$t("common.connectWalletMsg"));
-        }
-      }).catch(error => this.$message.error(this.$t("common.connectWalletMsg")));
+        })
+        .catch(error => this.$message.error(this.$t("common.connectWalletMsg")));
     },
     getAwardBtnAction() {
       if (this.item.mining <= 0) {

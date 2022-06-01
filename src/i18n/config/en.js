@@ -60,14 +60,14 @@ export default {
         getBonusAmount: "Dividend to collect",
         detailInfo: "Detail Info",
         option: "Operation",
-        optionTip1: "All rewards will be automatically claimed when unstaking",
+        optionTip1: "All corresponding NFT rewards will be automatically claimed when unstaking",
         optionTip2: "Staking NFT you hold into the pool to participate in farming and dividends",
         optionTip3: "According to your holding of WNFT, to unstake corresponding NFT",
         optionTip4: "WNFT is the only certificate for unstaking NFT, don't lose it",
 
         tip1: "StarBlock DAO supports staking NFT",
         tip2: "Staking NFT you hold into the pool to participate in farming and dividends",
-        tip3: "All rewards will be automatically claimed when unstaking",
+        tip3: "All corresponding NFT rewards will be automatically claimed when unstaking",
         tip4: "Staking NFT will give you the staking certificate: WNFT",
         tip5: "According to your holding of WNFT, to unstake corresponding NFT",
         tip6: "WNFT is the only certificate for unstaking NFT, don't lose it",
@@ -83,8 +83,8 @@ export default {
     common: {
 
         txHash: "Transaction Hash",
-        defaultMessSub1: "Are you sure to stake 23",
-        defaultMessSub2: "NFTs",
+        defaultMessSub1: "Are you sure to stake",
+        defaultMessSub2: "",
         defaultMessSub3: "Are you sure to unstake WNFT",
         defaultMessSub4: "Are you sure to receive reward",
         defaultMessSub4Des: "Staking Rewards",

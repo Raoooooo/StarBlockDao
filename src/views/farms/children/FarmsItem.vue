@@ -56,9 +56,9 @@
           <div class="contantDetailSection1_leftBox">
             <img class="contantDetailSection1_leftBox_img" v-lazy="item.collection.imagePath" />
             <div class="contantDetailSection1_leftBox_subBox">
-              <p class="contantDetailSection1_leftBox_subBox_topText">
+              <span class="contantDetailSection1_leftBox_subBox_topText">
                 {{ item.collection.showName }}
-              </p>
+              </span>
               <div class="linkIconBox">
                 <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
@@ -724,6 +724,10 @@ export default {
   font-weight: 500;
   color: #111111;
   line-height: 1rem;
+  width: 3rem;
+  white-space: nowrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
 }
 
 .linkIconBox {
@@ -1061,11 +1065,15 @@ export default {
     /* justify-content: space-between; */
   }
   .contantDetailSection1_leftBox_subBox_topText {
-    font-size: 0.4rem;
+    font-size: 0.36rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #111111;
     line-height: 0.4rem;
+    width: 2.5rem;
+    white-space: nowrap;
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
   }
 
   .linkIconBox {
