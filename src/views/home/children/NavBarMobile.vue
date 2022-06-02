@@ -4,11 +4,7 @@
       <div class="topBackView">
         <!-- <div></div> -->
         <img class="topLogo" src="@/assets/img/home/topLogo.png" />
-        <img
-          class="moreAction"
-          src="@/assets/img/home/mobile/moreAction.svg"
-          @click="moreOptionAction"
-        />
+        <img class="moreAction" src="@/assets/img/home/mobile/moreAction.svg" @click="moreOptionAction" />
       </div>
     </div>
 
@@ -19,23 +15,16 @@
           <img class="closeImg" src="@/assets/img/home/mobile/optionViewClose.svg" />
         </div>
         <div class="moreOptionSubView" v-for="(item, index) in tabItems">
-          <div
-            :class="active === index ? 'optionItemActive' : 'optionItem'"
-            @click="changeTab(index, item)"
-          >
+          <div :class="active === index ? 'optionItemActive' : 'optionItem'" @click="changeTab(index, item)">
             <p class="optionItemTitle-active" v-if="index == 0">
               {{ account }}
             </p>
-            <p
-              :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
-              v-if="index < tabItems.length - 1 && index != 0"
-            >
+            <p :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
+              v-if="index < tabItems.length - 1 && index != 0">
               {{ $t(item.title) }}
             </p>
-            <p
-              :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
-              v-if="index == tabItems.length - 1"
-            >
+            <p :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
+              v-if="index == tabItems.length - 1">
               {{ $t(currentLangrage) }}
             </p>
 
@@ -49,19 +38,9 @@
       </div>
     </div>
 
-    <!-- <el-dialog
-      title=""
-      :visible.sync="chainIdErrorDialog"
-      :width="elDialogWidth"
-      :show-close="false"
-      center
-      :top="elDialogTopMargin"
-      :close-on-click-modal="false"
-      :fullscreen="false"
-      :lock-scroll="false"
-      :append-to-body="true"
-      :close-on-press-escape="false"
-    >
+    <el-dialog title="" :visible.sync="chainIdErrorDialog" :width="elDialogWidth" :show-close="false" center
+      :top="elDialogTopMargin" :close-on-click-modal="false" :fullscreen="false" :lock-scroll="false"
+      :append-to-body="true" :close-on-press-escape="false">
       <div class="dialogBack">
         <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
         <p class="dialopTitle1">
@@ -70,15 +49,11 @@
         <p class="dialogDes">
           {{ chainErrorDes() }}
         </p>
-        <button
-          class="dialogBottomBtn"
-          @click="chainIdErrorDialogCloseAction"
-          v-show="isShowCloseChainErrorBtn"
-        >
+        <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
           {{ $t("common.iKnow") }}
         </button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
 
     <!-- <el-dialog
       title=""
@@ -104,7 +79,7 @@
           {{ $t("common.iKnow") }}
         </button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
     <!-- <div class="selectLangrageBox" v-show="isShowLangrageView">
       <div class="langrageItemBox" v-for="(langrageItem, index) in langrageItemArr">
         <p
@@ -194,7 +169,7 @@ export default {
     // if (!getLocalStorage("isFirstLoad")) {
     if (!ethereum.isConnected()) {
       // onConnect(this.getAccount, isClickLogin);
-    }else{
+    } else {
       onConnect(this.getAccount, isClickLogin);
     }
 
@@ -439,7 +414,7 @@ export default {
     moreOptionAction() {
       this.moreOptionViewShow = true;
     },
-    showSelectView() {},
+    showSelectView() { },
     changeTab(index, item) {
       this.moreOptionViewShow = false;
       this.active = index;
@@ -622,6 +597,7 @@ export default {
   align-items: center;
   /* flex-direction: row-reverse; */
 }
+
 .itemBtn {
   margin-left: 0.25rem;
   /* width: 0.625rem; */
@@ -650,6 +626,7 @@ export default {
   z-index: 100;
   /* justify-content: space-around; */
 }
+
 .langrageItem {
   color: #8f4800;
   font-size: 0.6rem;
@@ -685,6 +662,7 @@ export default {
   /* background-color: rgba(59, 30, 1, 0.95); */
   z-index: 100;
 }
+
 .closeView {
   display: flex;
   flex-direction: row-reverse;
@@ -705,6 +683,7 @@ export default {
 .itemBtnBox {
   /* margin-top: -0.25rem; */
 }
+
 .optionItem {
   display: flex;
   align-items: center;
@@ -712,6 +691,7 @@ export default {
   width: 100%;
   height: 2.25rem;
 }
+
 .optionItemActive {
   display: flex;
   align-items: center;
@@ -722,15 +702,18 @@ export default {
   /* background-color: #fe2ce7; */
   /* background-color: #f2610c; */
 }
+
 .optionItemTitle {
   font-size: 0.75rem;
   color: #111;
 }
+
 .optionItemTitle-active {
   font-size: 0.75rem;
   /* color: #fff; */
   color: #111;
 }
+
 .moreOptionViewBack {
   margin-left: 0px;
   margin-right: 0px;
@@ -747,6 +730,7 @@ export default {
   top: 0%;
   width: 100%;
 }
+
 .topBackView {
   display: flex;
   flex-direction: row;
@@ -757,10 +741,12 @@ export default {
   background-color: white;
   box-shadow: 0px 5px 12px 0px rgb(207 214 230 / 30%);
 }
+
 .topLogo {
   margin-left: 0.75rem;
   height: 1.5rem;
 }
+
 .moreAction {
   margin-right: 0.75rem;
   height: 0.85rem;
@@ -776,14 +762,14 @@ export default {
 }
 
 .dialopTitle1 {
-  font-size: 0.4rem;
+  font-size: 0.6rem;
   font-weight: 500;
   color: #111;
   margin-top: -0.85rem;
 }
 
 .dialogDes {
-  font-size: 0.325rem;
+  font-size: 0.5rem;
   margin-top: 0.25rem;
   align-content: center;
   text-align: center;
@@ -791,20 +777,20 @@ export default {
 
 .dialogTopImg {
   margin-top: -1rem;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.75rem;
+  height: 1.75rem;
   margin-bottom: 1rem;
 }
 
 .dialogBottomBtn {
-  margin-top: 0.35rem;
+  margin-top: 0.5rem;
   margin-bottom: -0.25rem;
-  width: 90%;
-  height: 1.5rem;
+  width: 95%;
+  height: 1.75rem;
   border-radius: 0.75rem;
   border-style: none;
-  background-color: #f7b500;
+  background-color: f7b500;
   color: white;
-  font-size: 0.4rem;
+  font-size: 0.65rem;
 }
 </style>
