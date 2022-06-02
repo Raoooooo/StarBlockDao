@@ -39,11 +39,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DaoPort = void 0;
 var protocol_1 = require("./protocol");
 var DaoPort = /** @class */ (function () {
-    function DaoPort(provider, networkName) {
-        this._protocol = new protocol_1.Protocol(provider, networkName);
+    function DaoPort(provider, chainId) {
+        this._protocol = new protocol_1.Protocol(provider, chainId);
     }
     DaoPort.prototype.setAccount = function (account) {
         this._protocol.account = account;
+    };
+    DaoPort.prototype.setOnlyReadWeb3Provider = function (provider) {
+        this._protocol.onlyReadNFTUtilsContract(provider);
     };
     DaoPort.prototype.deposit = function (_a) {
         var pid = _a.pid, tokenIds = _a.tokenIds;
@@ -123,40 +126,30 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.setApprovalForAll = function (_a) {
-        var owner = _a.owner, operator = _a.operator, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
+        var owner = _a.owner, nftContract = _a.nftContract, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, REC721Address, WNFTContract, nftAddress, txnData, REC721Contract, error_3;
+            var txHash, REC721Address, operator, txnData, REC721Contract, error_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         REC721Address = wnftContract;
-                        if (!isApproveNFT) return [3 /*break*/, 2];
-                        WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-                        return [4 /*yield*/, WNFTContract.methods.nft().call()];
-                    case 1:
-                        nftAddress = _b.sent();
-                        if (nftAddress) {
-                            REC721Address = nftAddress;
+                        if (isApproveNFT) {
+                            REC721Address = nftContract;
                         }
-                        else {
-                            throw new Error("Failed to setApprovalForAll transaction: \"".concat("user denied", "...\""));
-                        }
-                        _b.label = 2;
-                    case 2:
                         operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
-                        _b.label = 3;
-                    case 3:
-                        _b.trys.push([3, 5, , 6]);
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
                         txnData = { from: owner };
                         REC721Contract = this._protocol.setERC721Addess(REC721Address);
                         return [4 /*yield*/, REC721Contract.methods.setApprovalForAll(operator, true).send(txnData)];
-                    case 4:
+                    case 2:
                         txHash = _b.sent();
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_3 = _b.sent();
                         throw new Error("Failed to setApprovalForAll transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
-                    case 6: return [2 /*return*/, txHash];
+                    case 4: return [2 /*return*/, txHash];
                 }
             });
         });
@@ -241,7 +234,8 @@ var DaoPort = /** @class */ (function () {
                             throw new Error(" beyend token range...\"");
                         }
                         nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
+                        return [4 /*yield*/, this
+                                ._protocol.NFTUtilsContract.methods
                                 .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
                                 .call()];
                     case 1:
