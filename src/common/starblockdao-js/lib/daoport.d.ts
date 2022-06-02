@@ -1,9 +1,10 @@
 import Web3 from "web3";
-import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import { MasterChefPoolsInfo, Web3Callback } from "./types";
 export declare class DaoPort {
     private _protocol;
-    constructor(provider: Web3, networkName: Network);
+    constructor(provider: Web3, chainId: number);
     setAccount(account: string): void;
+    setOnlyReadWeb3Provider(provider: Web3): void;
     deposit({ pid, tokenIds }: {
         pid: number;
         tokenIds: number[];
@@ -18,9 +19,9 @@ export declare class DaoPort {
         wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<boolean>;
-    setApprovalForAll({ owner, operator, wnftContract, isApproveNFT }: {
+    setApprovalForAll({ owner, nftContract, wnftContract, isApproveNFT }: {
         owner: string;
-        operator?: string;
+        nftContract?: string;
         wnftContract: string;
         isApproveNFT: Boolean;
     }): Promise<string>;

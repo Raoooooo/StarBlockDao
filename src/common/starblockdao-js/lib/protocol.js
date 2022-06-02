@@ -37,24 +37,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Protocol = void 0;
+var types_1 = require("./types");
 var protocolConstants_1 = require("./protocolConstants");
 var Protocol = /** @class */ (function () {
-    function Protocol(provider, networkName) {
+    function Protocol(provider, chainId) {
         this.account = "";
+        this._networkName = types_1.Network.Main;
         this.web3 = provider;
-        this._networkName = networkName;
-        this.NFTMasterChefContractAddress = protocolConstants_1.constants.DEPLOYED[networkName].NFTMasterChef;
+        if (chainId === 1) {
+            this._networkName = types_1.Network.Main;
+        }
+        else if (chainId === 4) {
+            this._networkName = types_1.Network.Rinkeby;
+        }
+        this.NFTMasterChefContractAddress = protocolConstants_1.constants.DEPLOYED[this._networkName].NFTMasterChef;
         var NFTMasterChefAbi = protocolConstants_1.constants.NFTMASTERCHEF_ABI;
         this.NFTMasterChefContract = new this.web3.eth.Contract(NFTMasterChefAbi, this.NFTMasterChefContractAddress);
-        var NFTUtilsAddress = protocolConstants_1.constants.DEPLOYED[networkName].NFTUtils;
-        var NFTUtilsAbi = protocolConstants_1.constants.NFTUtils_ABI;
-        this.NFTUtilsContract = new this.web3.eth.Contract(NFTUtilsAbi, NFTUtilsAddress);
+        this.NFTUtilsAddress = protocolConstants_1.constants.DEPLOYED[this._networkName].NFTUtils;
+        this.NFTUtilsAbi = protocolConstants_1.constants.NFTUtils_ABI;
+        this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
     }
     Protocol.prototype.setERC721Addess = function (address) {
         return new this.web3.eth.Contract(protocolConstants_1.constants.REC721_ABI, address);
     };
     Protocol.prototype.setIWrappedNFTAddress = function (address) {
         return new this.web3.eth.Contract(protocolConstants_1.constants.IWrappedNFT_ABI, address);
+    };
+    Protocol.prototype.onlyReadNFTUtilsContract = function (provider) {
+        this.NFTUtilsContract = new provider.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
     };
     Protocol.prototype.deposit = function (pid, tokenIds) {
         return __awaiter(this, void 0, void 0, function () {

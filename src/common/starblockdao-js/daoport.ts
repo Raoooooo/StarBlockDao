@@ -5,12 +5,16 @@ import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 
 export class DaoPort {
   private _protocol: Protocol;
-  constructor(provider: Web3, networkName: Network) {
-    this._protocol = new Protocol(provider, networkName);
+  constructor(provider: Web3, chainId: number) {
+    this._protocol = new Protocol(provider, chainId);
   }
 
   public setAccount(account: string) {
     this._protocol.account = account;
+  }
+
+  public setOnlyReadWeb3Provider(provider: Web3) {
+    this._protocol.onlyReadNFTUtilsContract(provider);
   }
 
   public async deposit({ pid, tokenIds }: { pid: number; tokenIds: number[] }): Promise<string> {
@@ -77,28 +81,22 @@ export class DaoPort {
 
   public async setApprovalForAll({
     owner,
-    operator,
+    nftContract,
     wnftContract,
     isApproveNFT
   }: {
     owner: string;
-    operator?: string;
+    nftContract?: string;
     wnftContract: string;
     isApproveNFT: Boolean;
   }): Promise<string> {
     let txHash;
     let REC721Address = wnftContract;
     if (isApproveNFT) {
-      const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-      const nftAddress = await WNFTContract.methods.nft().call();
-      if (nftAddress) {
-        REC721Address = nftAddress;
-      } else {
-        throw new Error(`Failed to setApprovalForAll transaction: "${"user denied"}..."`);
-      }
+      REC721Address = nftContract as string;
     }
 
-    operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
+    const operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
     try {
       const txnData = { from: owner };
       const REC721Contract = this._protocol.setERC721Addess(REC721Address);
@@ -151,7 +149,7 @@ export class DaoPort {
     if (rangeTokenIds.length != 2) {
       throw new Error(`beyend token range..."`);
     }
-    const tokenIds = await this._protocol.NFTUtilsContract.methods
+    const tokenIds = await (this._protocol.NFTUtilsContract as Contract).methods
       .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
       .call();
     return tokenIds;
@@ -200,14 +198,8 @@ export class DaoPort {
       throw new Error(` beyend token range..."`);
     }
     nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-    const {
-      _poolInfo,
-      _rewardInfo,
-      _userInfo,
-      _currentRewardIndex,
-      _endBlock,
-      _nft
-    } = await this._protocol.NFTUtilsContract.methods
+    const { _poolInfo, _rewardInfo, _userInfo, _currentRewardIndex, _endBlock, _nft } = await (this
+      ._protocol.NFTUtilsContract as Contract).methods
       .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
       .call();
 

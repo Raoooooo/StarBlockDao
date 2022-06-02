@@ -82,15 +82,19 @@ export default {
       } else {
         // set the provider you want from Web3.providers
         // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8080"));
-        const PROVIDER_URL = "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180";
+        const PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
         web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
       }
       return web3;
     },
 
     async getDaoPort(account) {
-      daoport = new DaoPort(this.initWeb3(), network_Name);
+      //主网 1： 测试：4
+      daoport = new DaoPort(this.initWeb3(), 4);
       daoport.setAccount(account);
+      const PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
+      const onlyReadWeb3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+      daoport.setOnlyReadWeb3Provider(onlyReadWeb3);
     },
 
     async getAccounts() {
@@ -961,19 +965,34 @@ export default {
       }
 
       let owner = "0x06074740FCefEC15F8Cee02a4E128088cAeE0711";
-      owner = "0x0000000000000000000000000000000000000000";
-      const poolsRangeTokenIds = [
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 8584],
-        [0, 9999],
-        [0, 0],
+
+      //正式
+      // let poolsRangeTokenIds = [
+      //   [0, 9999],
+      //   [0, 4999],
+      //   [0, 4999],
+      //   [0, 9999],
+      //   [1, 8584],
+      //   [0, 9999],
+      //   [0, 9998],
+      //   [1, 8888],
+      //   [0, 9999],
+      //   [0, 9999]
+      // ];
+
+      //测试
+
+      let poolsRangeTokenIds = [
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
+        [0, 99],
         [1, 100],
         [0, 99],
-        [0, 0],
-        [0, 0]
+        [0, 99]
       ];
 
       for (var i = 0; i < poolsRangeTokenIds.length; i++) {
@@ -1026,22 +1045,24 @@ export default {
 
       const masterChefInfo = JSON.parse(getLocalStorage("masterChefInfo"));
       const owner = accounts[0];
+      const nftContract = masterChefInfo.nft;
       const wnftContract = masterChefInfo.poolInfo[0];
       const isApproveNFT = true;
 
-      let parameters = {
+      const parameters = {
         owner,
+        nftContract,
         wnftContract,
         isApproveNFT
       };
 
-      const isApprove = await daoport.isApprovedForAll(parameters);
-      console.log("daoporApprovedtAction==", isApprove);
+      // const isApprove = await daoport.isApprovedForAll(parameters);
+      // console.log("daoporApprovedtAction==", isApprove);
 
-      if (isApprove) {
-        console.log("已授权wnft合约");
-        return true;
-      }
+      // if (isApprove) {
+      //   console.log("已授权wnft合约");
+      //   return true;
+      // }
 
       try {
         const txHash = await daoport.setApprovalForAll(parameters);

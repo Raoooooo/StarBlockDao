@@ -9,13 +9,20 @@ export class Protocol {
   public NFTMasterChefContract: Contract;
   public NFTUtilsContract: Contract;
   public web3: Web3;
-  private _networkName: Network;
+  private NFTUtilsAddress: string;
+  private NFTUtilsAbi: PartialReadonlyContractAbi;
+  private _networkName = Network.Main;
 
-  constructor(provider: Web3, networkName: Network) {
+  constructor(provider: Web3, chainId: number) {
     this.web3 = provider;
-    this._networkName = networkName;
 
-    this.NFTMasterChefContractAddress = constants.DEPLOYED[networkName].NFTMasterChef;
+    if (chainId === 1) {
+      this._networkName = Network.Main;
+    } else if (chainId === 4) {
+      this._networkName = Network.Rinkeby;
+    }
+
+    this.NFTMasterChefContractAddress = constants.DEPLOYED[this._networkName].NFTMasterChef;
     const NFTMasterChefAbi: PartialReadonlyContractAbi = constants.NFTMASTERCHEF_ABI;
 
     this.NFTMasterChefContract = new this.web3.eth.Contract(
@@ -23,10 +30,10 @@ export class Protocol {
       this.NFTMasterChefContractAddress
     );
 
-    const NFTUtilsAddress = constants.DEPLOYED[networkName].NFTUtils;
-    const NFTUtilsAbi: PartialReadonlyContractAbi = constants.NFTUtils_ABI;
+    this.NFTUtilsAddress = constants.DEPLOYED[this._networkName].NFTUtils;
+    this.NFTUtilsAbi = constants.NFTUtils_ABI;
 
-    this.NFTUtilsContract = new this.web3.eth.Contract(NFTUtilsAbi, NFTUtilsAddress);
+    this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
   }
 
   public setERC721Addess(address: string): Contract {
@@ -35,6 +42,10 @@ export class Protocol {
 
   public setIWrappedNFTAddress(address: string): Contract {
     return new this.web3.eth.Contract(constants.IWrappedNFT_ABI, address);
+  }
+
+  public onlyReadNFTUtilsContract(provider: Web3) {
+    this.NFTUtilsContract = new provider.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
   }
 
   public async deposit(pid: number, tokenIds: number[]): Promise<string> {
