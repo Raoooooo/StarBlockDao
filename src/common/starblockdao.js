@@ -7,7 +7,7 @@ import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
 var utils = require('web3-utils')
 
-var network_Name = Network.Main;
+var network_Name = getProdcutMode() == 1 ? Network.Main : Network.Rinkeby;
 var accounts;
 var daoport;
 var web3;
@@ -34,30 +34,46 @@ export function setNetwork_Name(chaiIdNum) {
     // alert(network_Name);
 }
 export function initWeb3() {
-    if (web3) {
-        return web3;
+
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        // 请求用户授权
+        // window.ethereum.enable();
+    } else if (typeof web3 !== "undefined") {
+        web3 = new Web3(web3.currentProvider);
+        // web3.eth.defaultAccount = web3.eth.accounts[0];
+        // console.log(web3.eth.defaultAccount);
     } else {
-        if (window.ethereum) {
-            web3 = new Web3(window.ethereum);
-            // 请求用户授权
-            window.ethereum.enable();
-        } else if (typeof web3 !== "undefined") {
-            web3 = new Web3(web3.currentProvider);
-            // web3.eth.defaultAccount = web3.eth.accounts[0];
-            // console.log(web3.eth.defaultAccount);
+        // set the provider you want from Web3.providers
+        // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.61:8080"));
+        var PROVIDER_URL = "";
+        if (getProdcutMode() == 1) {
+            PROVIDER_URL = "https://mainnet.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280"
         } else {
-            // set the provider you want from Web3.providers
-            // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.61:8080"));
-            var PROVIDER_URL = "";
-            if (getProdcutMode() == 1) {
-                PROVIDER_URL = "https://mainnet.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280"
-            } else {
-                PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
-            }
-            web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+            PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
         }
-        return web3;
+        web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
     }
+    return web3;
+
+
+}
+
+
+export function initReadWeb3() {
+
+
+    // set the provider you want from Web3.providers
+    // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.61:8080"));
+    var PROVIDER_URL = "";
+    if (getProdcutMode() == 1) {
+        PROVIDER_URL = "https://mainnet.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280"
+    } else {
+        PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
+    }
+    var readWeb3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+
+    return readWeb3;
 
 }
 
@@ -434,7 +450,7 @@ export function getInfura() {
 }
 
 export function getBlockNumber(updateBlockData) {
-    initWeb3().eth.getBlockNumber()
+    initReadWeb3().eth.getBlockNumber()
         .then((blockNumber) => {
             if (updateBlockData) {
                 updateBlockData(blockNumber);
@@ -476,20 +492,30 @@ export function onBlockNumberChange(updateBlockData) {
 }
 
 export async function getAccounts() {
-    const web3Modal = new Web3Modal({
-        theme: "dark",
-        // network: getChainData(walletObj.chainId).network,
-        network: network_Name,
-        cacheProvider: true,
-        providerOptions
-    });
+    if (!window.ethereum) {
+        accounts = ["0x0000000000000000000000000000000000000000"];
+        return accounts;
+    }
+    if (!ethereum.selectedAddress) {
+        accounts = ["0x0000000000000000000000000000000000000000"];
+        return accounts;
+    } else {
+        const web3Modal = new Web3Modal({
+            theme: "dark",
+            // network: getChainData(walletObj.chainId).network,
+            network: network_Name,
+            cacheProvider: true,
+            providerOptions
+        });
 
-    const provider = await web3Modal.connect();
-    // await subscribeProvider(provider);
+        const provider = await web3Modal.connect();
+        // await subscribeProvider(provider);
 
-    web3 = new Web3(provider);
-    accounts = await web3.eth.getAccounts();
-    return accounts;
+        web3 = new Web3(provider);
+        accounts = await web3.eth.getAccounts();
+        return accounts;
+    }
+
     // if (getAccountHandle) {
     //     getAccountHandle(accounts)
     // }
@@ -507,6 +533,28 @@ export async function getCurrentChainId(handle) {
         handle(utils.hexToNumber(chainId));
     }
     console.log(utils.hexToNumber(chainId));
+}
+
+// 获取当前Metamaske账户
+export async function getAccount(updateLoginBtn, getAccountError) {
+
+    ethereum
+        .request({ method: 'eth_requestAccounts' })
+        .then((account) => {
+            // alert(account);
+            updateLoginBtn(account[0]);
+        })
+        .catch((err) => {
+            // Some unexpected error.
+            // For backwards compatibility reasons, if no accounts are available,
+            // eth_accounts will return an empty array.
+            if (getAccountError) {
+                getAccountError();
+            }
+            console.error(err);
+            // alert(err);
+
+        });
 }
 
 

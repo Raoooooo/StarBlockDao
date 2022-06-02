@@ -15,7 +15,7 @@ const providerOptions = {
   // walletconnect: {
   //   package: WalletConnectProvider, // required
   //   options: {
-  //     infuraId: "INFURA_ID" // required
+  //     infuraId: "7581b5aab9b4489ba1517a3e06e84280" // required
   //   }
   // },
   // https://github.com/torusresearch/torus-embed#readme

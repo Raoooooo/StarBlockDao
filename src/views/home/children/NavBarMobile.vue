@@ -234,6 +234,10 @@ export default {
     },
     setChaindUpdateCheckShowClose(chainId) {
       chainId = this.currentChainId;
+      if (!window.ethereum) {
+        this.chainIdErrorDialog = false;
+        return;
+      }
       if (getProdcutMode() == 1) {
         if (getProdcutMode() == 1 && chainId != 1) {
           this.isShowCloseChainErrorBtn = true;
@@ -250,6 +254,11 @@ export default {
 
     setChaindUpdateCheck(chainId) {
       chainId = this.currentChainId;
+
+      if (!window.ethereum) {
+        this.chainIdErrorDialog = false;
+        return;
+      }
       if (getProdcutMode() == 1) {
         if (getProdcutMode() == 1 && chainId != 1) {
           // if (this.isShowAlertCloseBtn()) {
@@ -789,8 +798,8 @@ export default {
   height: 1.75rem;
   border-radius: 0.75rem;
   border-style: none;
-  background-color: f7b500;
   color: white;
+  background-color: #f7b500;
   font-size: 0.65rem;
 }
 </style>

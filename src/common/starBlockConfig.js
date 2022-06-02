@@ -3,10 +3,6 @@
 export function getProdcutMode() {
     return 0;
 }
-// 是否是debug模式
-export function getDebugMode() {
-    return 1;
-}
 
 export function getRequestBaseUrl() {
     if (getProdcutMode() == 0) {

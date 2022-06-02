@@ -130,8 +130,8 @@ export default {
     setTimeout(() => {
       this.$bus.$emit("updateTabIndex", 0);
     });
-    getBlockNumber(this.updateBlockData);
-    onBlockNumberChange(this.updateBlockData);
+    // getBlockNumber(this.updateBlockData);
+    // onBlockNumberChange(this.updateBlockData);
     // resetApp();
     // this.accountsChange();
 

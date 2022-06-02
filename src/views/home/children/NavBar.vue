@@ -4,11 +4,8 @@
       <div class="topItemBox">
         <img class="logoImg" v-lazy="logoImgUrl()" @click="logoImgClick()" />
         <div class="tabBox" v-show="isShowTabBox">
-          <p
-            @click="changeTab(index, tabTitle)"
-            v-for="(tabTitle, index) in tabItems"
-            :class="active === index ? 'tabActiveTitle' : 'tabTitle'"
-          >
+          <p @click="changeTab(index, tabTitle)" v-for="(tabTitle, index) in tabItems"
+            :class="active === index ? 'tabActiveTitle' : 'tabTitle'">
             {{ $t(tabTitle) }}
           </p>
 
@@ -32,19 +29,9 @@
       </div>
     </div>
 
-    <el-dialog
-      title=""
-      :visible.sync="chainIdErrorDialog"
-      :width="elDialogWidth"
-      :show-close="false"
-      center
-      :top="elDialogTopMargin"
-      :close-on-click-modal="false"
-      :fullscreen="false"
-      :lock-scroll="false"
-      :append-to-body="true"
-      :close-on-press-escape="false"
-    >
+    <el-dialog title="" :visible.sync="chainIdErrorDialog" :width="elDialogWidth" :show-close="false" center
+      :top="elDialogTopMargin" :close-on-click-modal="false" :fullscreen="false" :lock-scroll="false"
+      :append-to-body="true" :close-on-press-escape="false">
       <div class="dialogBack">
         <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
         <p class="dialopTitle1">
@@ -53,11 +40,7 @@
         <p class="dialogDes">
           {{ chainErrorDes() }}
         </p>
-        <button
-          class="dialogBottomBtn"
-          @click="chainIdErrorDialogCloseAction"
-          v-show="isShowCloseChainErrorBtn"
-        >
+        <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
           {{ $t("common.iKnow") }}
         </button>
       </div>
@@ -95,7 +78,9 @@
 import { onConnect, initWeb3Modal, resetApp, onBlockOut } from "@/common/useWallet";
 import { getLocalStorage, setLocalStorage, isLogin, localAccount } from "@/common/utils";
 import { web3ProviderUrl, getProdcutMode, getSurpportChainId } from "@/common/starBlockConfig";
-import { setNetwork_Name, getCurrentChainId } from "@/common/starblockdao";
+import { setNetwork_Name, getCurrentChainId, getAccount } from "@/common/starblockdao";
+// import '@metamask/legacy-web3'
+
 var utils = require("web3-utils");
 
 export default {
@@ -161,21 +146,48 @@ export default {
   watch: {},
 
   created() {
-    ethereum.on("accountsChanged", function (accounts) {
-      // alert(accounts[0]);
-      window.location.reload();
-    });
-    // onBlockOut();
-    var isClickLogin = false;
-    // if (!getLocalStorage("isFirstLoad")) {
-    onConnect(this.getAccount, isClickLogin);
+    // const { ethereum } = window;
+
+    // alert(ethereum._metamask.isConnected());
+    // if (typeof window.ethereum !== 'undefined') {
+    //   console.log('MetaMask is installed!');
+    //   alert(ethereum.selectedAddress);
     // }
+
+    // alert(ethereum.isMetaMask);
+    // var isUnlocked = true;
+    // ethereum._metamask.isUnlocked().then(res => {
+    //   isUnlocked = res;
+    //   console.log("ethereum._metamask.isUnlocked()", res);
+    //   if (!isUnlocked) {
+    //     this.$message.error(this.$t("common.metaMaskCheck"));
+    //     return;
+    //   }
+    // });
+
+    // getAccount(this.getAccount, this.getAccountError)
+    // const { web3 } = window;
+    // var from = web3.eth.defaultAccount;
+    // alert(from);
+    // alert(ethereum.isConnected())
+
     setLocalStorage("isFirstLoad", true);
     this.accountsChange();
+    if (window.ethereum) {
+      getCurrentChainId(this.handleCurentChainid);
+    }
     this.chainidChange();
-    // this.walletConnect();
-    getCurrentChainId(this.handleCurentChainid);
-    // this.$router.push({ path: "/" });
+    this.walletConnect();
+    setTimeout(() => {
+      if (!window.ethereum) {
+        return;
+      }
+      if (ethereum.selectedAddress) {
+        getAccount(this.getAccount, this.getAccountError)
+      } else {
+
+      }
+    }, 1000);
   },
 
   mounted() {
@@ -220,6 +232,11 @@ export default {
     });
   },
   methods: {
+
+    getAccountError() {
+      setLocalStorage("isLogin", "");
+      this.account = "";
+    },
     handleCurentChainid(chainId) {
       this.currentChainId = chainId;
       setLocalStorage("chaiIdNum", chainId);
@@ -229,6 +246,10 @@ export default {
     },
     setChaindUpdateCheckShowClose(chainId) {
       chainId = this.currentChainId;
+      if (!window.ethereum) {
+        this.chainIdErrorDialog = false;
+        return;
+      }
       if (getProdcutMode() == 1) {
         if (getProdcutMode() == 1 && chainId != 1) {
           this.isShowCloseChainErrorBtn = true;
@@ -245,6 +266,10 @@ export default {
 
     setChaindUpdateCheck(chainId) {
       chainId = this.currentChainId;
+      if (!window.ethereum) {
+        this.chainIdErrorDialog = false;
+        return;
+      }
       if (getProdcutMode() == 1) {
         if (getProdcutMode() == 1 && chainId != 1) {
           // if (this.isShowAlertCloseBtn()) {
@@ -315,6 +340,10 @@ export default {
       this.chainIdErrorDialog = false;
     },
     loginBtnAction() {
+      if (!window.ethereum) {
+        this.$message.error(this.$t("common.metaMaskCheck"));
+        return;
+      }
       if (!ethereum.isConnected()) {
         // this.$message.error("未检测到ethereum，需要重新加载");
         window.location.reload();
@@ -333,31 +362,36 @@ export default {
       onConnect(this.getAccount, isClickLogin);
     },
 
-    async accountsChange() {
-      const provider = await initWeb3Modal().connect();
+    accountsChange() {
+      if (!window.ethereum) {
+        return;
+      }
       var that = this;
-      provider.on("accountsChanged", function (accounts) {
+      ethereum.on("accountsChanged", function (accounts) {
+        // alert(accounts[0]);
         that.setLoginData(accounts[0]);
         window.location.reload();
       });
     },
-    async walletConnect() {
-      const provider = await initWeb3Modal().connect();
-      var that = this;
-      provider.on("connect", function (info) {
-        // that.setLoginData(accounts[0]);
-        window.location.reload();
-        console.log("connect", info);
-      });
-      provider.on("disconnect", error => {
-        console.log("disconnect", error);
-        window.location.reload();
-      });
+    walletConnect() {
+      // const provider = await initWeb3Modal().connect();
+      // var that = this;
+      // provider.on("connect", function (info) {
+      //   // that.setLoginData(accounts[0]);
+      //   window.location.reload();
+      //   console.log("connect", info);
+      // });
+      // provider.on("disconnect", error => {
+      //   console.log("disconnect", error);
+      //   window.location.reload();
+      // });
     },
-    async chainidChange() {
-      const provider = await initWeb3Modal().connect();
+    chainidChange() {
+      if (!window.ethereum) {
+        return;
+      }
       var that = this;
-      provider.on("chainChanged", function (chainId) {
+      ethereum.on("chainChanged", function (chainId) {
         const chaiIdNum = utils.hexToNumber(chainId);
         var chainNameStr = "";
         if (chaiIdNum === 1) {
@@ -619,6 +653,7 @@ export default {
   z-index: 100;
   /* justify-content: space-around; */
 }
+
 .langrageItem {
   color: #8f4800;
   font-size: 0.6rem;
@@ -630,11 +665,13 @@ export default {
   font-size: 0.6rem;
   margin-top: 0.2rem;
 }
+
 .topBackImgView {
   height: 2.25rem;
   width: 100%;
   background-color: white;
 }
+
 .contantView {
   z-index: 100;
   position: fixed;
@@ -657,6 +694,7 @@ export default {
   color: #ffffff;
   line-height: 0.625rem;
 }
+
 .accountBox {
   width: 4.25rem;
   height: 1rem;

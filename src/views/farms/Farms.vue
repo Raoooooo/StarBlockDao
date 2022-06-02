@@ -74,28 +74,13 @@
 
     <bottom></bottom>
 
-    <el-dialog
-      title=""
-      :visible.sync="actionAlertShow"
-      :width="elDialogEditSellDataWidth"
-      :height="elDialogEditSellDataHeight"
-      :close-on-click-modal="false"
-      :show-close="false"
-      :fullscreen="false"
-      :destroy-on-close="true"
-      center
-      top="70px"
-      :lock-scroll="false"
-      :close-on-press-escape="false"
-    >
+    <el-dialog title="" :visible.sync="actionAlertShow" :width="elDialogEditSellDataWidth"
+      :height="elDialogEditSellDataHeight" :close-on-click-modal="false" :show-close="false" :fullscreen="false"
+      :destroy-on-close="true" center top="70px" :lock-scroll="false" :close-on-press-escape="false">
       <div class="alertContantBox1">
         <div class=""></div>
         <p class="alertTitle">{{ $t("farms.NFTOfCollection") }}</p>
-        <img
-          class="closeAlertIcon"
-          src="@/assets/img/farms/optionViewClose.svg"
-          @click="closeAlertAction"
-        />
+        <img class="closeAlertIcon" src="@/assets/img/farms/optionViewClose.svg" @click="closeAlertAction" />
       </div>
 
       <div class="alertSectionBox1">
@@ -117,11 +102,8 @@
         </div>
       </div>
 
-      <div
-        class="alertSectionBox2"
-        v-loading.lock="actionAlertShowLoading"
-        element-loading-background="rgba(0, 0, 0, 0.0)"
-      >
+      <div class="alertSectionBox2" v-loading.lock="actionAlertShowLoading"
+        element-loading-background="rgba(0, 0, 0, 0.0)">
         <div class="switchBtnBox">
           <button :class="isSwitch1 ? 'switchBtn_on' : 'switchBtn_off'" @click="switchBtn(1)">
             {{ $t("farms.pledge") }}
@@ -166,18 +148,8 @@
       <p class="alertTip2">{{ "· " + $t("farms.optionTip4") }}</p>
     </el-dialog>
 
-    <el-dialog
-      title=""
-      :visible.sync="successVisible"
-      :width="elDialogWidth"
-      :show-close="false"
-      center
-      top="200px"
-      :close-on-click-modal="false"
-      append-to-body
-      :lock-scroll="false"
-      :close-on-press-escape="false"
-    >
+    <el-dialog title="" :visible.sync="successVisible" :width="elDialogWidth" :show-close="false" center top="200px"
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
         <p class="dialopTitle">
@@ -189,11 +161,7 @@
           <a :href="getChainWebUrl(txHashOringion)" target="_blank">
             <p class="txHash">{{ txHash }}</p>
           </a>
-          <img
-            class="txHash_copy"
-            src="@/assets/img/common/copy.svg"
-            @click="copyAddressAction(txHashOringion)"
-          />
+          <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
         </div>
         <div class="bottomBtnBox1">
           <button class="alertCloseBtn" @click="alertCloseBtnAction">
@@ -203,18 +171,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog
-      title=""
-      :visible.sync="warningDefaultVisible"
-      :width="elDialogWidth"
-      :show-close="false"
-      center
-      top="200px"
-      :close-on-click-modal="false"
-      append-to-body
-      :lock-scroll="false"
-      :close-on-press-escape="false"
-    >
+    <el-dialog title="" :visible.sync="warningDefaultVisible" :width="elDialogWidth" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
@@ -222,9 +180,9 @@
         </p>
         <span class="dialogDes" v-bind="{ color: dialogDesColor }">
           {{
-            !isGetReward
-              ? defaultMessageDesStr
-              : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+              !isGetReward
+                ? defaultMessageDesStr
+                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
           }}
         </span>
         <div class="bottomBtnBox1">
@@ -301,27 +259,27 @@ export default {
       if (this.isSwitch1) {
         this.selectCount == 1
           ? this.$t("common.defaultMessSub1") +
-            this.selectCount +
-            " " +
-            this.$t("common.defaultMessSub2") +
-            "NFT"
+          this.selectCount +
+          " " +
+          this.$t("common.defaultMessSub2") +
+          "NFT"
           : this.$t("common.defaultMessSub1") +
-            this.selectCount +
-            " " +
-            this.$t("common.defaultMessSub2") +
-            "NFTs";
+          this.selectCount +
+          " " +
+          this.$t("common.defaultMessSub2") +
+          "NFTs";
       } else {
         return this.selectCount == 1
           ? this.$t("common.defaultMessSub3") +
-              " " +
-              this.selectCount +
-              this.$t("common.defaultMessSub2") +
-              "WNFT"
+          " " +
+          this.selectCount +
+          this.$t("common.defaultMessSub2") +
+          "WNFT"
           : this.$t("common.defaultMessSub3") +
-              " " +
-              this.selectCount +
-              this.$t("common.defaultMessSub2") +
-              "WNFTs";
+          " " +
+          this.selectCount +
+          this.$t("common.defaultMessSub2") +
+          "WNFTs";
       }
     },
 
@@ -375,7 +333,6 @@ export default {
       txHash: "",
       txHashOringion: "",
       successVisible: false,
-      // defaultMessageDesStr: "",
       selectPollItem: {},
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
       warningDefaultVisible: false,
@@ -416,7 +373,7 @@ export default {
       // 通过 `vm` 访问组件实例,将值传入fromPath
     });
   },
-  beforeUpdate() {},
+  beforeUpdate() { },
   beforeRouteEnter(to, from, next) {
     undefined;
     next(vm => {
@@ -426,17 +383,13 @@ export default {
     });
   },
   created() {
-    // this.requestFloorPrice();
+
 
     getBlockNumber(this.updateBlockData);
-    onBlockNumberChange(this.updateBlockData);
+    // onBlockNumberChange(this.updateBlockData);
     setTimeout(() => {
       this.$bus.$emit("updateTabIndex", 1);
     });
-    // resetApp();
-    // this.accountsChange();
-
-    // daoportAction(0);
     if (getProdcutMode() == 1) {
       this.poolItems = poolDatas_main;
     } else {
@@ -450,18 +403,9 @@ export default {
 
     setInterval(() => {
       this.getMasterChefInfo();
+      getBlockNumber(this.updateBlockData);
     }, 1000 * 60 * 2);
 
-    this.$nextTick(() => {
-      // console.log("this.$route.path*******",this.$route.path);
-      // this.setScrollToPostion();
-    });
-    // this.ratio = this.detectZoom();
-
-    if (this.ratio > 100) {
-      this.metaItemContantDesFontSize = 14 / bili + "px";
-    }
-    // this.startCountTime();
   },
   watch: {
     windowWidth(val) {
@@ -741,11 +685,11 @@ export default {
     handleNftApprove(isApprove, item, index) {
       item.isNFTApproved = isApprove;
     },
-    faildHandleApproveNFT(item) {},
+    faildHandleApproveNFT(item) { },
     handleWNftApprove(isApprove, item, index) {
       item.isWNFTApprove = isApprove;
     },
-    faildHandleApproveWNFT(item) {},
+    faildHandleApproveWNFT(item) { },
     handleGetNFTTokenIDs(NFTTokenIDs, item, index) {
       var emptyArr = [];
       for (var i = 0; i < NFTTokenIDs.length; i++) {
@@ -906,6 +850,7 @@ export default {
   width: 100%;
   height: 6.7rem;
 }
+
 .topBackContant {
   top: 0%;
   left: 0%;
@@ -916,6 +861,7 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .topTitle {
   margin-top: -0.2rem;
   font-size: 0.9rem;
@@ -926,6 +872,7 @@ export default {
   letter-spacing: 1px;
   text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
 }
+
 .topSubTitle {
   margin-top: 0.05rem;
   font-size: 0.45rem;
@@ -946,6 +893,7 @@ export default {
   align-items: center;
   justify-content: space-around;
 }
+
 .itemDataBox {
   margin-top: 0.75rem;
   display: flex;
@@ -955,6 +903,7 @@ export default {
   justify-content: space-between;
   width: 33.33%;
 }
+
 .itemDataBox_topText {
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -962,6 +911,7 @@ export default {
   color: #111111;
   line-height: 0.6rem;
 }
+
 .itemDataBox_bottomText {
   margin-top: 0.375rem;
   font-size: 20px;
@@ -970,6 +920,7 @@ export default {
   color: #8c9399;
   line-height: 18px;
 }
+
 .vSepLine {
   width: 0.7px;
   height: 1.5rem;
@@ -991,6 +942,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .alertTitle {
   font-size: 0.75rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -998,10 +950,12 @@ export default {
   color: #111111;
   line-height: 0.75rem;
 }
+
 .closeAlertIcon {
   width: 0.575rem;
   height: 0.575rem;
 }
+
 .alertSectionBox1 {
   margin-top: 0.75rem;
   width: 100%;
@@ -1032,6 +986,7 @@ export default {
   color: #8c9399;
   line-height: 0.5rem;
 }
+
 .vSepLine_alert {
   width: 0.7px;
   height: 1.525rem;
@@ -1048,6 +1003,7 @@ export default {
   align-items: center;
   border-radius: 0.1rem;
 }
+
 .switchBtnBox {
   border-style: solid;
   border-width: 0.035rem;
@@ -1059,6 +1015,7 @@ export default {
   flex-direction: row;
   background-color: #fff8e6;
 }
+
 .switchBtn_off {
   background-color: #fff8e6;
   border-radius: 0.75rem;
@@ -1070,6 +1027,7 @@ export default {
   color: #f7b500;
   line-height: 0.4rem;
 }
+
 .switchBtn_on {
   background-color: #f7b500;
   border-radius: 0.75rem;
@@ -1087,6 +1045,7 @@ export default {
   flex-direction: row-reverse;
   align-items: center;
 }
+
 .unPledgeAction {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
@@ -1138,6 +1097,7 @@ export default {
   flex-direction: row-reverse;
   width: 33.33%;
 }
+
 .alertSectionBox3_text1 {
   margin-left: 0.525rem;
   font-size: 0.6rem;
@@ -1146,6 +1106,7 @@ export default {
   color: #111111;
   line-height: 0.45rem;
 }
+
 .alertSectionBox3_text2 {
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -1178,6 +1139,7 @@ export default {
   color: #8c9399;
   line-height: 0.6rem;
 }
+
 .alertTip2 {
   margin-top: 0.5rem;
   font-size: 0.6rem;
@@ -1245,10 +1207,12 @@ export default {
 .topImgIconBox {
   position: relative;
 }
+
 .topImgIcon {
   width: 7rem;
   height: 1.425rem;
 }
+
 .topImgIconBox_contantBox {
   top: 0%;
   left: 0%;
@@ -1260,6 +1224,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .topImgIconBox_contantBox_text {
   margin-top: -0.7rem;
   font-size: 0.6rem;
@@ -1281,11 +1246,13 @@ export default {
   align-items: center;
   margin-bottom: 1.5rem;
 }
+
 .emptyContantBox_img {
   margin-top: 0.75rem;
   width: 13.25rem;
   height: 6.675rem;
 }
+
 .countDownBox {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
@@ -1397,6 +1364,7 @@ export default {
   color: #666;
   font-size: 0.35rem;
 }
+
 .txHashBox {
   margin-top: 0.25rem;
   display: flex;
@@ -1409,10 +1377,12 @@ export default {
   font-size: 0.375rem;
   color: #666;
 }
+
 .txHash {
   font-size: 0.375rem;
   color: #2c6ff8;
 }
+
 .txHash_copy {
   width: 0.5rem;
   height: 0.5rem;
@@ -1463,6 +1433,7 @@ export default {
     width: 100%;
     height: 8.5rem;
   }
+
   .topBackContant {
     top: 0%;
     left: 0%;
@@ -1473,6 +1444,7 @@ export default {
     flex-direction: column;
     align-items: center;
   }
+
   .topTitle {
     margin-top: 0rem;
     /* margin-top: 0.5rem; */
@@ -1484,6 +1456,7 @@ export default {
     letter-spacing: 1px;
     text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
   }
+
   .topSubTitle {
     margin-top: 0.325rem;
     font-size: 0.6rem;
@@ -1504,6 +1477,7 @@ export default {
     align-items: center;
     justify-content: space-around;
   }
+
   .itemDataBox {
     margin-top: 0.75rem;
     display: flex;
@@ -1513,12 +1487,14 @@ export default {
     justify-content: space-between;
     width: 33.33%;
   }
+
   .itemDataBox_topText {
     font-size: 0.6rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #111111;
   }
+
   .itemDataBox_bottomText {
     margin-top: 0.525rem;
     font-size: 0.4rem;
@@ -1526,6 +1502,7 @@ export default {
     font-weight: 400;
     color: #8c9399;
   }
+
   .vSepLine {
     width: 0.7px;
     height: 1.5rem;
@@ -1547,6 +1524,7 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+
   .alertTitle {
     font-size: 0.45rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -1554,10 +1532,12 @@ export default {
     color: #111111;
     line-height: 0.45rem;
   }
+
   .closeAlertIcon {
     width: 0.4rem;
     height: 0.4rem;
   }
+
   .alertSectionBox1 {
     margin-top: 0.75rem;
     width: 100%;
@@ -1588,6 +1568,7 @@ export default {
     color: #8c9399;
     line-height: 0.35rem;
   }
+
   .vSepLine_alert {
     width: 0.7px;
     height: 1.15rem;
@@ -1604,6 +1585,7 @@ export default {
     align-items: center;
     border-radius: 0.1rem;
   }
+
   .switchBtnBox {
     border-style: solid;
     border-width: 0.025rem;
@@ -1615,6 +1597,7 @@ export default {
     flex-direction: row;
     background-color: #fff8e6;
   }
+
   .switchBtn_off {
     background-color: #fff8e6;
     border-radius: 0.5rem;
@@ -1626,6 +1609,7 @@ export default {
     color: #f7b500;
     line-height: 0.4rem;
   }
+
   .switchBtn_on {
     background-color: #f7b500;
     border-radius: 0.5rem;
@@ -1637,6 +1621,7 @@ export default {
     color: #fff;
     line-height: 0.4rem;
   }
+
   .unPledgeAction {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
@@ -1688,6 +1673,7 @@ export default {
     flex-direction: row-reverse;
     width: 33.33%;
   }
+
   .alertSectionBox3_text1 {
     margin-left: 0.525rem;
     font-size: 0.45rem;
@@ -1696,6 +1682,7 @@ export default {
     color: #111111;
     line-height: 0.45rem;
   }
+
   .alertSectionBox3_text2 {
     font-size: 0.45rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -1728,6 +1715,7 @@ export default {
     color: #8c9399;
     line-height: 0.35rem;
   }
+
   .alertTip2 {
     margin-top: 0.35rem;
     font-size: 0.35rem;
@@ -1796,10 +1784,12 @@ export default {
   .topImgIconBox {
     position: relative;
   }
+
   .topImgIcon {
     width: 7rem;
     height: 1.425rem;
   }
+
   .topImgIconBox_contantBox {
     top: 0%;
     left: 0%;
@@ -1811,6 +1801,7 @@ export default {
     justify-content: center;
     align-items: center;
   }
+
   .topImgIconBox_contantBox_text {
     margin-top: -0.7rem;
     font-size: 0.6rem;
@@ -1832,11 +1823,13 @@ export default {
     align-items: center;
     margin-bottom: 1.5rem;
   }
+
   .emptyContantBox_img {
     margin-top: 0.75rem;
     width: 13.25rem;
     height: 6.675rem;
   }
+
   .countDownBox {
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
@@ -1912,6 +1905,7 @@ export default {
     /* border-color: #111; */
     width: 90%;
   }
+
   .emptyImgBox {
     margin-top: 1.5rem;
     width: 100%;
@@ -1942,10 +1936,12 @@ export default {
     font-size: 0.375rem;
     color: #666;
   }
+
   .txHash {
     font-size: 0.375rem;
     color: #2c6ff8;
   }
+
   .txHash_copy {
     width: 0.5rem;
     height: 0.5rem;
