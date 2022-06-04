@@ -184,8 +184,11 @@ export default {
       }
       if (ethereum.selectedAddress) {
         getAccount(this.getAccount, this.getAccountError)
+        this.isLogin = true;
+        this.account = ethereum.selectedAddress;
         setLocalStorage("ethereumSelectedAddress", ethereum.selectedAddress);
       } else {
+        this.isLogin = false;
         setLocalStorage("ethereumSelectedAddress", null);
       }
     }, 1000);
@@ -267,12 +270,12 @@ export default {
 
     setChaindUpdateCheck(chainId) {
       chainId = this.currentChainId;
-     
+
       if (!window.ethereum) {
         this.chainIdErrorDialog = false;
         return;
       }
-      if(!window.ethereum.selectedAddress){
+      if (!window.ethereum.selectedAddress) {
         this.chainIdErrorDialog = false;
         return;
       }
@@ -689,7 +692,7 @@ export default {
 
 .loginBtn {
   cursor: pointer;
-  width: 4.75rem;
+  width: 4.25rem;
   height: 1rem;
   border-radius: 0.5rem;
   background-color: #f7b500;
