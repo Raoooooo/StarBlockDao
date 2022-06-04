@@ -34,7 +34,8 @@ const poolDatas_main = [
             name: "starblock-genesis-pass",
             showName: "Genesis Pass",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
     {
 
@@ -68,7 +69,8 @@ const poolDatas_main = [
             name: "bzuki-on-starblock",
             showName: "Bzuki",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -103,7 +105,8 @@ const poolDatas_main = [
             name: "gzuki-on-starblock",
             showName: "Gzuki",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -138,7 +141,8 @@ const poolDatas_main = [
             name: "3landers",
             showName: "3Landers",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -174,7 +178,8 @@ const poolDatas_main = [
             name: "plurofficial",
             showName: "PLUR",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -210,7 +215,8 @@ const poolDatas_main = [
             name: "dourdarcels",
             showName: "Dour Darcels",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -246,7 +252,8 @@ const poolDatas_main = [
             name: "goblintownwtf",
             showName: "goblintown",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -282,7 +289,8 @@ const poolDatas_main = [
             name: "degentoonz-collection",
             showName: "DEGEN TOONZ",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
 
@@ -320,7 +328,8 @@ const poolDatas_main = [
             name: "ainightbirds",
             showName: "AINightbirds",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
     {
@@ -356,7 +365,8 @@ const poolDatas_main = [
             name: "tastybonesxyz",
             showName: "Tasty Bones",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
 
 ]

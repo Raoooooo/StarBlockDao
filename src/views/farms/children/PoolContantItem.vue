@@ -2,42 +2,20 @@
   <div class="contant">
     <!-- 抵押、解抵押 -->
     <div class="pledgeBtnBox">
-      <button
-        class="pledgeBtn"
-        :class="isBtnActive ? 'pledgeBtn' : 'pledgeBtn_unActive'"
-        @click="pledgeBtnAction()"
-      >
+      <button class="pledgeBtn" :class="isBtnActive ? 'pledgeBtn' : 'pledgeBtn_unActive'" @click="pledgeBtnAction()">
         <p class="pledgeBtn_text" v-show="!showImgLoading">{{ getPledgeBtnStr }}</p>
-        <img
-          class="loadingImg"
-          src="@/assets/img/common/requestLoading_white.svg"
-          v-show="showImgLoading"
-        />
+        <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg" v-show="showImgLoading" />
       </button>
 
-      <button
-        :class="isBtnActive ? 'unPledgeBtn' : 'pledgeBtn_unActive'"
-        @click="unPledgeBtnAction()"
-      >
+      <button :class="isBtnActive ? 'unPledgeBtn' : 'pledgeBtn_unActive'" @click="unPledgeBtnAction()">
         <p class="pledgeBtn_text" v-show="!showImgLoading1">{{ getUnPledgeBtnStr }}</p>
-        <img
-          class="loadingImg"
-          src="@/assets/img/common/requestLoading_yellow.svg"
-          v-show="showImgLoading1"
-        />
+        <img class="loadingImg" src="@/assets/img/common/requestLoading_yellow.svg" v-show="showImgLoading1" />
       </button>
     </div>
     <!-- 领取奖励 -->
-    <button
-      :class="item.mining > 0 ? 'getAwardBtn' : 'getAwardBtn_unActive'"
-      @click="getAwardBtnAction"
-    >
+    <button :class="item.mining > 0 ? 'getAwardBtn' : 'getAwardBtn_unActive'" @click="getAwardBtnAction">
       <p v-show="!showImgLoading2">{{ $t("farms.getAward") + " " + awardAmountStr(item) }}</p>
-      <img
-        class="loadingImg"
-        src="@/assets/img/common/requestLoading_white.svg"
-        v-show="showImgLoading2"
-      />
+      <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg" v-show="showImgLoading2" />
     </button>
     <button class="getBonuBtn">{{ $t("farms.getBonus") + " " + bonusAmountStr(item) }}</button>
   </div>
@@ -100,8 +78,21 @@ export default {
   },
   computed: {
     isBtnActive() {
-      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber) {
+      if (!window.ethereum) {
         return false;
+      }
+      if (!this.item.selectedAddress) {
+        return false;
+      }
+      if (Number(this.item.endBlock) == 0) {
+        return false;
+      }
+      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber) {
+        if (window.ethereum.selectedAddress) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return true;
       }
@@ -115,7 +106,7 @@ export default {
         this.pledgeBtnStr = "";
       }
       if (this.item && !this.item.isNFTApproved) {
-        this.pledgeBtnStr = this.$t("common.stakeApprove");
+        this.pledgeBtnStr = this.$t("common.stakeApprove") + "(" + this.item.nftQuantity + ")";
         // return "抵押授权";
       } else {
         this.pledgeBtnStr = this.$t("farms.pledge") + "(" + this.item.nftQuantity + ")";
@@ -128,7 +119,7 @@ export default {
         this.pledgeBtnStr = "";
       }
       if (this.item && !this.item.isWNFTApproved) {
-        this.unPledgeBtnStr = this.$t("common.unstakeApprove");
+        this.unPledgeBtnStr = this.$t("common.unstakeApprove") + "(" + this.item.wnftQuantity + ")";
       } else {
         this.unPledgeBtnStr = this.$t("farms.unPledge") + "(" + this.item.wnftQuantity + ")";
       }
@@ -437,6 +428,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   cursor: default;
 }
+
 .unPledgeBtn {
   border-style: solid;
   border-width: 0.0375rem;
@@ -490,6 +482,7 @@ export default {
   justify-content: center;
   cursor: default;
 }
+
 .getBonuBtn {
   border-style: none;
   margin-top: 0.5rem;
@@ -511,6 +504,7 @@ export default {
 .commonBtnBox {
   position: relative;
 }
+
 .loadingImg {
   width: 1.75rem;
   height: 1.75rem;
@@ -564,6 +558,7 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
   .getAwardBtn {
     border-style: none;
     margin-top: 0.25rem;
@@ -577,6 +572,7 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
   .getAwardBtn_unActive {
     border-style: none;
     margin-top: 0.25rem;
@@ -590,6 +586,7 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
   .getBonuBtn {
     border-style: none;
     margin-top: 0.25rem;
@@ -608,6 +605,7 @@ export default {
   .commonBtnBox {
     position: relative;
   }
+
   .loadingImg {
     width: 1rem;
     height: 1rem;

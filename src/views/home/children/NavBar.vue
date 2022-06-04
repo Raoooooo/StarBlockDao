@@ -40,9 +40,9 @@
         <p class="dialogDes">
           {{ chainErrorDes() }}
         </p>
-        <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
+        <!-- <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
           {{ $t("common.iKnow") }}
-        </button>
+        </button> -->
       </div>
     </el-dialog>
 
@@ -184,8 +184,9 @@ export default {
       }
       if (ethereum.selectedAddress) {
         getAccount(this.getAccount, this.getAccountError)
+        setLocalStorage("ethereumSelectedAddress", ethereum.selectedAddress);
       } else {
-
+        setLocalStorage("ethereumSelectedAddress", null);
       }
     }, 1000);
   },

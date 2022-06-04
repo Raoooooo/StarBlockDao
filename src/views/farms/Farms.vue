@@ -17,20 +17,20 @@
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ totalTVL > 0 ? Number(totalTVL.toFixed(2)) + " ETH" : "--" }}
+                {{ totalTVL > 0 ? Number(totalTVL.toFixed(2)) + " ETH" : "-- ETH" }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem1") }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">{{ totalNftQuantity }}</p>
+              <p class="itemDataBox_topText">{{ totalNftQuantity + " ETH" }}</p>
               <!-- <p class="itemDataBox_topText">{{ "--" }}</p> -->
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ totalRewardStr }}
+                {{ totalRewardStr + " STB" }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
             </div>
@@ -85,7 +85,7 @@
 
       <div class="alertSectionBox1">
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">{{ this.WNFTItems.length }}</p>
+          <p class="itemDataBox_topText_alert">{{ this.WNFTItems.length + " NFT" }}</p>
           <p class="itemDataBox_bottomText_alert">{{ $t("farms.havePledge") }}</p>
         </div>
         <div class="vSepLine_alert"></div>
@@ -97,7 +97,7 @@
         </div>
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">--</p>
+          <p class="itemDataBox_topText_alert">{{ "0 WETH" }}</p>
           <p class="itemDataBox_bottomText_alert">{{ $t("farms.getBonusAmount") }}</p>
         </div>
       </div>
@@ -116,6 +116,10 @@
           <button class="unPledgeAction" @click="alertBeforeAction">
             {{ alertActionStr + " " + selectCount + $t("common.defaultMessSub2") }}
           </button>
+          <div class="selectAllBtnBox" @click="selectAllAction">
+            <p class="selectAllBtnBox_text">{{ "全选" }}</p>
+            <img class="selectAllBtnBox_img" :src="selectIconUrl" />
+          </div>
         </div>
       </div>
 
@@ -243,6 +247,11 @@ export default {
     Bottom
   },
   computed: {
+    selectIconUrl() {
+      return this.selectAll
+        ? require("@/assets/img/farms/nft_select_y.svg")
+        : require("@/assets/img/farms/nft_select_n.svg");
+    },
     totalRewardStr() {
       if (this.totalReward * Math.pow(10, -18) > 10000) {
         return (this.totalReward * Math.pow(10, -18)).toFixed(0);
@@ -329,6 +338,7 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      selectAll: false,
       actionAlertShowLoading: false,
       txHash: "",
       txHashOringion: "",
@@ -339,7 +349,7 @@ export default {
       selectTokenIdsArr: [],
       selectCount: 0,
       totalNftQuantity: "--",
-      totalTVL: "--",
+      totalTVL: 0,
       totalReward: 0,
       currentBlockNumber: 0,
       topImgHeight: topImgHeight,
@@ -395,11 +405,14 @@ export default {
     } else {
       this.poolItems = poolDatas;
     }
-
-    this.getMasterChefInfo();
     setTimeout(() => {
-      this.getFloorPriceData();
-    }, 2000);
+      var isFirstLoad = true;
+      this.getMasterChefInfo(isFirstLoad);
+    }, 1500);
+
+    // setTimeout(() => {
+    //   this.getFloorPriceData();
+    // }, 2000);
 
     setInterval(() => {
       this.getMasterChefInfo();
@@ -431,15 +444,7 @@ export default {
   },
   mounted() {
     this.$bus.$on("selectNftAction", val => {
-      var selectTokenIdsArr = [];
-      Object.keys(this.canSelectNftItems).forEach(key => {
-        var item = this.canSelectNftItems[key];
-        if (item.select) {
-          selectTokenIdsArr.push(item.tokenId);
-        }
-      });
-      this.selectTokenIdsArr = selectTokenIdsArr;
-      this.selectCount = this.selectTokenIdsArr.length;
+      this.setSelectIdsArr();
     }),
       this.$bus.$on("pledgeBtnNotiAction", val => {
         this.actionAlertShowLoading = true;
@@ -476,6 +481,25 @@ export default {
   },
 
   methods: {
+    setSelectIdsArr() {
+      var selectTokenIdsArr = [];
+      Object.keys(this.canSelectNftItems).forEach(key => {
+        var item = this.canSelectNftItems[key];
+        if (item.select) {
+          selectTokenIdsArr.push(item.tokenId);
+        }
+      });
+      this.selectTokenIdsArr = selectTokenIdsArr;
+      this.selectCount = this.selectTokenIdsArr.length;
+    },
+    selectAllAction() {
+      this.selectAll = !this.selectAll;
+      Object.keys(this.canSelectNftItems).forEach(key => {
+        var item = this.canSelectNftItems[key];
+        item.select = this.selectAll;
+      });
+      this.setSelectIdsArr();
+    },
     getChainWebUrl(subStr) {
       if (getProdcutMode() == 1) {
         return "https://etherscan.io/tx/" + subStr;
@@ -494,19 +518,24 @@ export default {
         .then(res => {
           if (handleFloorPrice) {
             handleFloorPrice(item, res.data.stats.floor_price, index);
+
           }
           console.log("collection/doodles-official/stats", res.data.stats.floor_price);
         });
     },
     handleFloorPrice(item, floor_price, index) {
       item.floor_price = floor_price;
-      if (index == this.poolItems.length - 1) {
-        this.totalTVL = 0;
-        for (var i = 0; i < this.poolItems.length; i++) {
-          const item = this.poolItems[i];
-          this.totalTVL += Number(item.floor_price) * Number(item.poolInfo.amount);
-        }
+      if (Number(item.poolInfo.amount) > 0) {
+        this.totalTVL += Number(item.floor_price) * Number(item.poolInfo.amount);
       }
+
+      // // if (index == this.poolItems.length - 1) {
+      // this.totalTVL = 0;
+      // for (var i = 0; i < this.poolItems.length; i++) {
+      //   const item = this.poolItems[i];
+      //   this.totalTVL += Number(item.floor_price) * Number(item.poolInfo.amount);
+      // }
+      // }
     },
     awardAmountStr(item) {
       if (item.mining != "--") {
@@ -606,21 +635,21 @@ export default {
     handleDeposit(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
-      this.getMasterChefInfo();
+      this.getMasterChefInfo(false);
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
     },
     handleWithdraw(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
-      this.getMasterChefInfo();
+      this.getMasterChefInfo(false);
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
     },
     handleHarvest(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
-      this.getMasterChefInfo();
+      this.getMasterChefInfo(false);
       this.successVisible = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
     },
@@ -629,10 +658,10 @@ export default {
       console.log("currentBlockNumber", this.currentBlockNumber);
     },
 
-    async getMasterChefInfo() {
+    async getMasterChefInfo(isFirstLoad) {
       for (var i = 0; i < this.poolItems.length; i++) {
         var item = this.poolItems[i];
-        await daoportAction(item, this.handleMasterChefInfo, i);
+        await daoportAction(item, this.handleMasterChefInfo, i, isFirstLoad);
         // await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
         // approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
         // getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
@@ -646,12 +675,14 @@ export default {
       }
     },
 
-    handleMasterChefInfo(masterChefInfo, item, index) {
+    handleMasterChefInfo(masterChefInfo, item, index, isFirstLoad) {
+
       console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
       item.endBlock = masterChefInfo.endBlock;
       item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
       item.nftQuantity = masterChefInfo.nftQuantity;
       item.wnftQuantity = masterChefInfo.wnftQuantity;
+      item.selectedAddress = window.ethereum.selectedAddress;
       // item.poolInfo.startBlock = 10746993;
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
       item.dividend = Number(masterChefInfo.dividend);
@@ -662,6 +693,9 @@ export default {
       item.nft = masterChefInfo.nft;
       item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
       item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
+      if (isFirstLoad) {
+        this.requestFloorPrice(item, this.handleFloorPrice, index);
+      }
       // if (index == 0) {
       //   item.poolInfo.startBlock = 10776740;
       // }
@@ -778,7 +812,7 @@ export default {
       this.selectCount = 0;
       this.canSelectNftItems = [];
       this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
-
+      this.selectAll = false;
       Object.keys(this.NFTItems).forEach(key => {
         var item = this.NFTItems[key];
         item.select = false;
@@ -1058,6 +1092,38 @@ export default {
   font-weight: 500;
   color: #ffffff;
   line-height: 0.4rem;
+}
+
+.selectAllBtnBox {
+  margin-right: 0.5rem;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  border-style: none;
+  /* background-color: #f7b500; */
+  font-size: 0.6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 0.4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.selectAllBtnBox_text {
+  font-size: .4rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #111111;
+  line-height: .4rem;
+}
+
+.selectAllBtnBox_img {
+  margin-left: 0.25rem;
+  width: .6rem;
+  height: .6rem;
 }
 
 .itemsSuperBox {
@@ -1636,6 +1702,33 @@ export default {
     line-height: 0.4rem;
   }
 
+  .selectAllBtnBox {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E5E5E5;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    /* background-color: #f7b500; */
+    font-size: 0.4rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 0.4rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .selectAllBtnBox_text {
+    font-size: .4rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #111111;
+    line-height: .4rem;
+  }
+
   .itemsSuperBox {
     margin-top: 0.5rem;
     border-radius: 0.25rem;
@@ -1676,7 +1769,7 @@ export default {
 
   .alertSectionBox3_text1 {
     margin-left: 0.525rem;
-    font-size: 0.45rem;
+    font-size: .4rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #111111;
@@ -1850,7 +1943,7 @@ export default {
 
   .dialogDes {
     color: #666;
-    font-size: 0.325rem;
+    font-size: .35rem;
     margin-top: 0.25rem;
     align-content: center;
     text-align: center;

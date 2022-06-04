@@ -49,9 +49,9 @@
         <p class="dialogDes">
           {{ chainErrorDes() }}
         </p>
-        <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
+        <!-- <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
           {{ $t("common.iKnow") }}
-        </button>
+        </button> -->
       </div>
     </el-dialog>
 

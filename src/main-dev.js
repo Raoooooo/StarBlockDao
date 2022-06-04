@@ -20,17 +20,17 @@ import i18n from "./i18n"
 import 'view-design/dist/styles/iview.css';
 import VueClipboard from "vue-clipboard2";
 
-import { Dropdown, DropdownMenu, DropdownItem, Tag, Table } from 'view-design';
+import { Dropdown, DropdownMenu, DropdownItem } from 'view-design';
 
-Vue.config.productionTip = true;
+Vue.config.productionTip = false;
 
 Vue.use(VueClipboard);
 
 Vue.component('Dropdown', Dropdown);
 Vue.component('DropdownMenu', DropdownMenu);
 Vue.component('DropdownItem', DropdownItem);
-Vue.component('Table', Table);
-Vue.component('Tag', Tag);
+// Vue.component('Table', Table);
+// Vue.component('Tag', Tag);
 // 全局实例化$bus事件总线
 Vue.prototype.$bus = new Vue();
 

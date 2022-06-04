@@ -34,7 +34,8 @@ const poolDatas = [
             name: "starblock-genesis-pass",
             showName: "Genesis Pass",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null
     },
     {
 
@@ -68,7 +69,8 @@ const poolDatas = [
             name: "bzuki-on-starblock",
             showName: "Bzuki",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
     },
 
     {
@@ -103,7 +105,9 @@ const poolDatas = [
             name: "3landers",
             showName: "3Landers",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
+
     },
 
     {
@@ -139,7 +143,8 @@ const poolDatas = [
             name: "plurofficial",
             showName: "PLUR",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
     },
 
     {
@@ -175,7 +180,8 @@ const poolDatas = [
             name: "dourdarcels",
             showName: "Dour Darcels",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
     },
 
     {
@@ -211,7 +217,8 @@ const poolDatas = [
             name: "goblintownwtf",
             showName: "goblintown",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
     },
 
     {
@@ -248,6 +255,7 @@ const poolDatas = [
             showName: "DEGEN TOONZ",
             contractAddress: "",
         }
+        ,selectedAddress:null,
     },
 
     {
@@ -283,7 +291,8 @@ const poolDatas = [
             name: "ainightbirds",
             showName: "AINightbirds",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
     },
 
     {
@@ -319,7 +328,8 @@ const poolDatas = [
             name: "tastybonesxyz",
             showName: "Tasty Bones",
             contractAddress: "",
-        }
+        },
+        selectedAddress:null,
     },
 ]
 

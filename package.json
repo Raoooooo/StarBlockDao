@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "analyze": "NODE_ENV=production npm_config_report=true npm run build"
   },
   "dependencies": {
     "@types/web3": "^1.2.2",

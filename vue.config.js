@@ -2,7 +2,6 @@ module.exports = {
   // BASE_API:"http://192.168.1.211:8886",
   productionSourceMap: false,
   publicPath: './',
-
   // publicPath: process.env.NODE_ENV === "production" ? "/shop" : "/",
   chainWebpack: config => {
     // 发布阶段打包入口

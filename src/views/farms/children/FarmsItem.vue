@@ -16,10 +16,7 @@
 
             <!-- 区块后结束 -->
 
-            <div
-              class="contantDetailTopBox_rightBox"
-              v-if="isShowEndBlock(item, currentBlockNumber)"
-            >
+            <div class="contantDetailTopBox_rightBox" v-if="isShowEndBlock(item, currentBlockNumber)">
               <a :href="countdownUrl(item, 1)" target="_blank">
                 <p class="contantDetailTopBox_rightBox_text">
                   {{ formmatBlockStr(Number(item.endBlock) - currentBlockNumber, 1) }}
@@ -27,10 +24,7 @@
               </a>
             </div>
             <!-- 区块后开始 -->
-            <div
-              class="contantDetailTopBox_rightBox_startBlock"
-              v-if="isShowStartBlock(item, currentBlockNumber)"
-            >
+            <div class="contantDetailTopBox_rightBox_startBlock" v-if="isShowStartBlock(item, currentBlockNumber)">
               <a :href="countdownUrl(item, 2)" target="_blank">
                 <p class="contantDetailTopBox_rightBox_text_startBlock">
                   {{ formmatBlockStr(Number(item.poolInfo.startBlock) - currentBlockNumber, 2) }}
@@ -38,10 +32,7 @@
               </a>
             </div>
             <!-- 已结束 -->
-            <div
-              class="contantDetailTopBox_rightBox_sellEnd"
-              v-if="isShowSellEndBlock(item, currentBlockNumber)"
-            >
+            <div class="contantDetailTopBox_rightBox_sellEnd" v-if="isShowSellEndBlock(item, currentBlockNumber)">
               <a :href="countdownUrl(item, 1)" target="_blank">
                 <p class="contantDetailTopBox_rightBox_text_sellEnd">
                   {{ $t("common.blockEnd") }}
@@ -60,12 +51,7 @@
                 {{ item.collection.showName }}
               </span>
               <div class="linkIconBox">
-                <a
-                  :href="linkOfType(item, 1)"
-                  target="_blank"
-                  class="linkIconUrl"
-                  v-show="item.poolInfo.pid <= 2"
-                >
+                <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl" v-show="item.poolInfo.pid <= 2">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
                 </a>
                 <a :href="linkOfType(item, 2)" target="_blank" class="linkIconUrl">
@@ -94,15 +80,15 @@
         <div class="contantDetailSection2">
           <p class="contantDetailSection2_leftText">
             {{ $t("farms.pledgeAmount") }}
-            <span class="contantDetailSection2_leftText1">{{ item.poolInfo.amount }}</span>
+            <span class="contantDetailSection2_leftText1">{{ item.poolInfo.amount +" NFT" }}</span>
           </p>
           <p class="contantDetailSection2_rightText">
             TVL
             <span class="contantDetailSection2_rightText1">
               {{
-                item.floor_price > 0 && Number(item.poolInfo.amount) > 0
-                  ? Number((item.floor_price * Number(item.poolInfo.amount)).toFixed(2)) + " ETH"
-                  : "--"
+                  item.floor_price > 0 && Number(item.poolInfo.amount) > 0
+                    ? Number((item.floor_price * Number(item.poolInfo.amount)).toFixed(2)) + " ETH"
+                    : "-- ETH"
               }}
             </span>
           </p>
@@ -405,7 +391,7 @@ export default {
       return item.dividend;
     },
 
-    bonusAmountAtr(item) {},
+    bonusAmountAtr(item) { },
     showImgLoading(item) {
       if (this.currentPollItem && this.currentPollItem.poolInfo.uid == item.poolInfo.uid) {
         return true;
@@ -549,11 +535,13 @@ export default {
   border-radius: 4px;
   /* background-color: antiquewhite; */
 }
+
 .bg-purple-dark {
   background: #99a9bf;
   border-color: lightgray;
   border-width: 0.05px;
 }
+
 .bg-purple {
   background: white;
   border-color: #99a9bf;
@@ -563,9 +551,11 @@ export default {
   margin-left: 2px;
   margin-right: 2px;
 }
+
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 .grid-content {
   border-radius: 10px;
   /* min-height: 80px; */
@@ -574,6 +564,7 @@ export default {
   flex-wrap: wrap;
   z-index: -1;
 }
+
 .row-bg {
   padding: 0 0.25rem;
   /* background-color: white; */
@@ -591,6 +582,7 @@ export default {
   height: 100%;
   cursor: default;
 }
+
 .contantDetailTopBox {
   /* background-color: aqua; */
   margin-top: 0.5rem;
@@ -601,12 +593,14 @@ export default {
   width: 100%;
   cursor: default;
 }
+
 .contantDetailTopBox_leftBox {
   margin-left: 0.5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .contantDetailTopBox_leftBox_title {
   font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -614,10 +608,12 @@ export default {
   color: #111111;
   line-height: 0.825rem;
 }
+
 .contantDetailTopBox_leftBox_img {
   width: 0.75rem;
   height: 0.75rem;
 }
+
 .contantDetailTopBox_leftBox_imgDes {
   margin-left: 0.15rem;
   font-size: 0.6rem;
@@ -626,6 +622,7 @@ export default {
   color: #111111;
   line-height: 0.825rem;
 }
+
 .contantDetailTopBox_leftBox_des {
   margin-left: 0.1rem;
   font-size: 0.5rem;
@@ -634,6 +631,7 @@ export default {
   color: #8c9399;
   line-height: 0.7rem;
 }
+
 .contantDetailTopBox_rightBox {
   margin-right: 0.5rem;
   display: flex;
@@ -653,6 +651,7 @@ export default {
   background-color: #dffff6;
   border-radius: 4px;
 }
+
 .contantDetailTopBox_rightBox_sellEnd {
   margin-right: 0.5rem;
   display: flex;
@@ -662,6 +661,7 @@ export default {
   background-color: #e5e5e5;
   border-radius: 4px;
 }
+
 .contantDetailTopBox_rightBox_text {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -691,6 +691,7 @@ export default {
   color: #8c9399;
   line-height: 0.7rem;
 }
+
 .contantDetailSection1 {
   margin-top: 0.425rem;
   display: flex;
@@ -710,12 +711,14 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+
 .contantDetailSection1_leftBox_img {
   margin-left: 0.25rem;
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 1.125rem;
 }
+
 .contantDetailSection1_leftBox_subBox {
   margin-left: 0.5rem;
   display: flex;
@@ -723,6 +726,7 @@ export default {
   height: 2.25rem;
   /* justify-content: space-between; */
 }
+
 .contantDetailSection1_leftBox_subBox_topText {
   font-size: 0.7rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -743,7 +747,9 @@ export default {
 .linkIconUrl {
   margin-top: -0.35rem;
 }
+
 .linkIcon {
+  margin-right: 0.25rem;
   /* margin-top: -1.5rem; */
   width: 1rem;
   height: 1rem;
@@ -751,7 +757,7 @@ export default {
 
 .linkIcon1 {
   /* margin-top: -1.5rem; */
-  margin-left: 0.25rem;
+  margin-right: 0.25rem;
   width: 1rem;
   height: 1rem;
 }
@@ -764,6 +770,7 @@ export default {
   margin-right: 0.25rem;
   justify-content: space-between;
 }
+
 .contantDetailSection1_rightBox_topText {
   width: 100%;
   text-align: right;
@@ -773,6 +780,7 @@ export default {
   color: #111111;
   line-height: 0.825rem;
 }
+
 .contantDetailSection1_rightBox_bottomText {
   font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -794,6 +802,7 @@ export default {
   width: 95%;
   cursor: default;
 }
+
 .contantDetailSection2_leftText {
   margin-left: 0.5rem;
   font-size: 0.6rem;
@@ -802,6 +811,7 @@ export default {
   color: #8c9399;
   line-height: 0.825rem;
 }
+
 .contantDetailSection2_leftText1 {
   font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -818,6 +828,7 @@ export default {
   color: #8c9399;
   line-height: 0.825rem;
 }
+
 .contantDetailSection2_rightText1 {
   font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -825,6 +836,7 @@ export default {
   color: #111;
   line-height: 0.825rem;
 }
+
 .pledgeBtnBox {
   margin-top: 0.75rem;
   display: flex;
@@ -864,6 +876,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .unPledgeBtn {
   border-style: solid;
   border-width: 0.025rem;
@@ -880,6 +893,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .getAwardBtn {
   border-style: none;
   margin-top: 0.75rem;
@@ -893,6 +907,7 @@ export default {
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
 }
+
 .getBonuBtn {
   border-style: none;
   margin-top: 0.5rem;
@@ -912,17 +927,20 @@ export default {
   position: relative;
   background-color: #03cd93;
 }
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .el-col {
     /* margin-left: -0.25rem; */
     margin-bottom: 1.2rem;
     border-radius: 4px;
   }
+
   .bg-purple-dark {
     background: #99a9bf;
     border-color: rgb(48, 29, 29);
     border-width: 0.05px;
   }
+
   .row-bg {
     /* padding: 0 -0.25rem; */
     /* background-color: white; */
@@ -939,6 +957,7 @@ export default {
     /* margin-right: 0.5rem; */
     height: 100%;
   }
+
   .contantDetailTopBox {
     /* background-color: aqua; */
     margin-top: 0.5rem;
@@ -948,12 +967,14 @@ export default {
     justify-content: space-between;
     width: 100%;
   }
+
   .contantDetailTopBox_leftBox {
     margin-left: 0.5rem;
     display: flex;
     flex-direction: row;
     align-items: center;
   }
+
   .contantDetailTopBox_leftBox_title {
     font-size: 0.4rem;
     font-family: PingFangSC-Regular, PingFang SC;
@@ -961,10 +982,12 @@ export default {
     color: #111111;
     line-height: 0.55rem;
   }
+
   .contantDetailTopBox_leftBox_img {
     width: 0.5rem;
     height: 0.5rem;
   }
+
   .contantDetailTopBox_leftBox_imgDes {
     margin-left: 0.15rem;
     font-size: 0.4rem;
@@ -973,6 +996,7 @@ export default {
     color: #111111;
     line-height: 0.55rem;
   }
+
   .contantDetailTopBox_leftBox_des {
     margin-left: 0.1rem;
     font-size: 0.3rem;
@@ -981,6 +1005,7 @@ export default {
     color: #8c9399;
     line-height: 0.425rem;
   }
+
   .contantDetailTopBox_rightBox {
     margin-right: 0.5rem;
     display: flex;
@@ -1010,6 +1035,7 @@ export default {
     background-color: #e5e5e5;
     border-radius: 4px;
   }
+
   .contantDetailTopBox_rightBox_text {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
@@ -1029,6 +1055,7 @@ export default {
     color: #03cd93;
     line-height: 0.425rem;
   }
+
   .contantDetailTopBox_rightBox_text_sellEnd {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
@@ -1038,6 +1065,7 @@ export default {
     color: #8c9399;
     line-height: 0.425rem;
   }
+
   .contantDetailSection1 {
     margin-top: 0.425rem;
     display: flex;
@@ -1056,12 +1084,14 @@ export default {
     flex-direction: row;
     align-items: center;
   }
+
   .contantDetailSection1_leftBox_img {
     margin-left: 0.25rem;
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 0.625rem;
   }
+
   .contantDetailSection1_leftBox_subBox {
     margin-left: 0.25rem;
     display: flex;
@@ -1069,6 +1099,7 @@ export default {
     height: 1.25rem;
     /* justify-content: space-between; */
   }
+
   .contantDetailSection1_leftBox_subBox_topText {
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -1089,13 +1120,15 @@ export default {
   .linkIconUrl {
     margin-top: -0.35rem;
   }
+
   .linkIcon {
+    margin-right: 0.25rem;
     width: 0.5rem;
     height: 0.5rem;
   }
 
   .linkIcon1 {
-    margin-left: 0.25rem;
+    margin-right: 0.25rem;
     width: 0.5rem;
     height: 0.5rem;
   }
@@ -1108,6 +1141,7 @@ export default {
     margin-right: 0.25rem;
     justify-content: space-between;
   }
+
   .contantDetailSection1_rightBox_topText {
     width: 100%;
     text-align: right;
@@ -1117,6 +1151,7 @@ export default {
     color: #111111;
     line-height: 0.4rem;
   }
+
   .contantDetailSection1_rightBox_bottomText {
     font-size: 0.35rem;
     font-family: PingFangSC-Regular, PingFang SC;
@@ -1137,6 +1172,7 @@ export default {
     margin-left: 5%;
     width: 90%;
   }
+
   .contantDetailSection2_leftText {
     margin-left: 0.25rem;
     font-size: 0.35rem;
@@ -1145,6 +1181,7 @@ export default {
     color: #8c9399;
     line-height: 0.5rem;
   }
+
   .contantDetailSection2_leftText1 {
     font-size: 0.35rem;
     font-family: PingFang SC;
@@ -1161,6 +1198,7 @@ export default {
     color: #8c9399;
     line-height: 0.5rem;
   }
+
   .contantDetailSection2_rightText1 {
     font-size: 0.35rem;
     font-family: PingFang SC;
@@ -1168,6 +1206,7 @@ export default {
     color: #111111;
     line-height: 0.5rem;
   }
+
   .pledgeBtnBox {
     margin-top: 0.5rem;
     display: flex;
@@ -1190,6 +1229,7 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
   .unPledgeBtn {
     border-style: solid;
     border-width: 0.025rem;
@@ -1203,6 +1243,7 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
   .getAwardBtn {
     border-style: none;
     margin-top: 0.25rem;
@@ -1216,6 +1257,7 @@ export default {
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
   }
+
   .getBonuBtn {
     border-style: none;
     margin-top: 0.25rem;
@@ -1234,6 +1276,7 @@ export default {
   .commonBtnBox {
     position: relative;
   }
+
   .loadingImg {
     width: 0.625rem;
     height: 0.625rem;

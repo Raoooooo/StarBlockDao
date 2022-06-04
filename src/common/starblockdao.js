@@ -5,15 +5,18 @@ import { Network } from "./starblockdao-js/lib/types";
 import { getRequestBaseUrl, getProdcutMode } from "@/common/starBlockConfig";
 import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
+import { getLocalStorage } from "./utils";
 var utils = require('web3-utils')
 
 var network_Name = getProdcutMode() == 1 ? Network.Main : Network.Rinkeby;
+var chain_Id = getProdcutMode() == 1 ? 1 : 4;
+
 var accounts;
 var daoport;
 var web3;
 
 export function setNetwork_Name(chaiIdNum) {
-
+    chain_Id = chaiIdNum;
     if (chaiIdNum === 1) {
         network_Name = Network.Main;
         // isEther = true;
@@ -77,29 +80,7 @@ export function initReadWeb3() {
 
 }
 
-export async function daoportAction(item, handleMasterChefInfo, index) {
-    // var owner = "";
-    // await getAccounts()
-    //     .then(accounts => {
-    //         if (accounts) {
-
-    //             if (!accounts) {
-    //                 getAccounts();
-    //             }
-    //             owner = accounts[0];
-    //         } else {
-    //             owner = "0x0000000000000000000000000000000000000000";
-
-    //         }
-    //     })
-    //     .catch(error => owner = "0x0000000000000000000000000000000000000000");
-
-
-
-    // if (!daoport) {
-    //     getDaoPort(owner);
-    // }
-
+export async function daoportAction(item, handleMasterChefInfo, index, isFirstLoad) {
 
     if (!accounts) {
         await getAccounts();
@@ -123,7 +104,7 @@ export async function daoportAction(item, handleMasterChefInfo, index) {
 
     // console.log("document=== masterchefinfo: pid", pid, masterChefInfo);
     if (handleMasterChefInfo) {
-        handleMasterChefInfo(masterChefInfo, item, index);
+        handleMasterChefInfo(masterChefInfo, item, index,isFirstLoad);
     }
 }
 
@@ -137,9 +118,11 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
     }
     const owner = accounts[0];
     const wnftContract = item.poolInfo.wnft;
+    const nftContract = item.nft;
     const isApproveNFT = true;
     let parameters = {
         owner,
+        nftContract,
         wnftContract,
         isApproveNFT
     };
@@ -440,9 +423,9 @@ export async function getBonusRewardAction(item, handleGetBonusReward, index) {
 
 export function getInfura() {
     let infura;
-    if (network_Name === Network.Main) {
+    if (chain_Id === 1) {
         infura = "https://mainnet.infura.io/";
-    } else if (network_Name === Network.Rinkeby) {
+    } else if (chain_Id === 4) {
         infura = "https://rinkeby.infura.io/";
     }
     infura += "v3/c1b0dbb2fcf445278b966cc102873180";
@@ -496,7 +479,7 @@ export async function getAccounts() {
         accounts = ["0x0000000000000000000000000000000000000000"];
         return accounts;
     }
-    if (!ethereum.selectedAddress) {
+    if (!window.ethereum.selectedAddress) {
         accounts = ["0x0000000000000000000000000000000000000000"];
         return accounts;
     } else {
@@ -522,8 +505,10 @@ export async function getAccounts() {
 }
 
 export async function getDaoPort(account) {
-    daoport = new DaoPort(initWeb3(), network_Name);
+    daoport = new DaoPort(initWeb3(), chain_Id);
     daoport.setAccount(account);
+    daoport.setOnlyReadWeb3Provider(initReadWeb3());
+
 }
 
 
