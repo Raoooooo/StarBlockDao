@@ -137,6 +137,33 @@ export class DaoPort {
     return txHash;
   }
 
+  public async harvestAll({
+    owner,
+    pid,
+    tokenIdRange
+  }: {
+    owner: string;
+    pid: number;
+    tokenIdRange: number[][];
+  }): Promise<string> {
+    let txHash;
+    try {
+      const txnData = { from: this._protocol.account };
+      const nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+      txHash = await this._protocol.NFTMasterChefContract.methods
+        .harvestAll(nftMasterchef, owner, pid, tokenIdRange)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to harvest transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
   public async ownedNFTTokens({
     contractAddress,
     owner,
@@ -149,7 +176,7 @@ export class DaoPort {
     if (rangeTokenIds.length != 2) {
       throw new Error(`beyend token range..."`);
     }
-    const tokenIds = await (this._protocol.NFTUtilsContract as Contract).methods
+    const tokenIds = await this._protocol.NFTUtilsContract.methods
       .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
       .call();
     return tokenIds;
@@ -183,6 +210,37 @@ export class DaoPort {
     }
   }
 
+  public async pendingAll<T>(
+    {
+      owner,
+      pid,
+      tokenIdRange
+    }: {
+      owner: string;
+      pid: number;
+      tokenIdRange: number[][];
+    },
+    handle: Web3Callback<T>
+  ): Promise<void> {
+    try {
+      const nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+      const { mining, dividend } = await this._protocol.NFTUtilsContract.methods
+        .pendingAll(nftMasterchef, owner, pid, tokenIdRange)
+        .call();
+      const result: T[] = [mining, dividend];
+      handle(null, result);
+    } catch (error) {
+      handle(
+        new Error(
+          `Failed to pending transaction: "${
+            error instanceof Error && error.message ? error.message : "user denied"
+          }..."`
+        ),
+        null
+      );
+    }
+  }
+
   public async getNFTMasterChefInfos({
     nftMasterchef,
     pid,
@@ -198,8 +256,14 @@ export class DaoPort {
       throw new Error(` beyend token range..."`);
     }
     nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-    const { _poolInfo, _rewardInfo, _userInfo, _currentRewardIndex, _endBlock, _nft } = await (this
-      ._protocol.NFTUtilsContract as Contract).methods
+    const {
+      _poolInfo,
+      _rewardInfo,
+      _userInfo,
+      _currentRewardIndex,
+      _endBlock,
+      _nft
+    } = await this._protocol.NFTUtilsContract.methods
       .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
       .call();
 

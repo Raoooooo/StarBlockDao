@@ -30,6 +30,11 @@ export declare class DaoPort {
         to: string;
         wnftTokenIds: number[];
     }): Promise<string>;
+    harvestAll({ owner, pid, tokenIdRange }: {
+        owner: string;
+        pid: number;
+        tokenIdRange: number[][];
+    }): Promise<string>;
     ownedNFTTokens({ contractAddress, owner, rangeTokenIds }: {
         contractAddress: string;
         owner: string;
@@ -38,6 +43,11 @@ export declare class DaoPort {
     pending<T>({ pid, tokenIds }: {
         pid: number;
         tokenIds: number[];
+    }, handle: Web3Callback<T>): Promise<void>;
+    pendingAll<T>({ owner, pid, tokenIdRange }: {
+        owner: string;
+        pid: number;
+        tokenIdRange: number[][];
     }, handle: Web3Callback<T>): Promise<void>;
     getNFTMasterChefInfos({ nftMasterchef, pid, owner, rangeTokenIds }: {
         nftMasterchef?: string;

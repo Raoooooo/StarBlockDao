@@ -964,7 +964,7 @@ export default {
         this.getDaoPort(accounts[0]);
       }
 
-      let owner = "0x06074740FCefEC15F8Cee02a4E128088cAeE0711";
+      let owner = "0x0000000000000000000000000000000000000000";
 
       //正式
       // let poolsRangeTokenIds = [
