@@ -4,17 +4,16 @@
       <div class="sepLine" v-show="index != 0"></div>
       <div class="itemContantBox">
         <div class="nftNameBox">
-          <p class="nftName">{{ item.collection.showName + "#" + item.tokenId }}</p>
+          <p class="nftName">{{ isWNFT ? ("Wrapped " + item.collection.showName + "#" + item.tokenId) :
+              (item.collection.showName +
+                "#" +
+                item.tokenId)
+          }}</p>
         </div>
 
         <div class="linkIconBox">
           <!-- <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" /> -->
-          <a
-            :href="linkOfType(item, 1)"
-            target="_blank"
-            class="linkIconUrl"
-            v-show="item.poolInfo.pid <= 2"
-          >
+          <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl" v-show="item.poolInfo.pid <= 2">
             <img class="linkIcon" src="@/assets/img/farms/linkIcon2.png" />
           </a>
           <a :href="linkOfType(item, 2)" target="_blank" v-show="!isWNFT" class="linkIconUrl">
@@ -254,6 +253,7 @@ export default {
   width: 100%;
   height: 1.75rem;
 }
+
 .itemContantBox {
   display: flex;
   flex-direction: row;
@@ -263,19 +263,23 @@ export default {
   height: 100%;
   /* background-color: aqua; */
 }
+
 .sepLine {
   margin-left: 0.525rem;
   margin-right: 0.525rem;
   background-color: #f1f1f1;
   height: 0.025rem;
 }
+
 .itemContantBox {
   width: 100%;
   /* background-color: aqua; */
 }
+
 .nftNameBox {
   width: 33%;
 }
+
 .nftName {
   margin-left: 0.525rem;
   font-size: 0.55rem;
@@ -284,11 +288,13 @@ export default {
   color: #111111;
   line-height: 0.55rem;
 }
+
 .selectIconBox {
   display: flex;
   flex-direction: row-reverse;
   width: 33%;
 }
+
 .selectIcon {
   cursor: pointer;
   margin-right: 0.675rem;
@@ -302,9 +308,11 @@ export default {
   flex-direction: row;
   justify-content: center;
 }
+
 .linkIconUrl {
   margin-top: 0.25rem;
 }
+
 .linkIcon {
   width: 1rem;
   height: 1rem;
@@ -340,6 +348,7 @@ export default {
     width: 100%;
     height: 1.5rem;
   }
+
   .itemContantBox {
     display: flex;
     flex-direction: row;
@@ -349,19 +358,23 @@ export default {
     height: 100%;
     /* background-color: aqua; */
   }
+
   .sepLine {
     margin-left: 0.525rem;
     margin-right: 0.525rem;
     background-color: #f1f1f1;
     height: 0.025rem;
   }
+
   .itemContantBox {
     width: 100%;
     /* background-color: aqua; */
   }
+
   .nftNameBox {
     width: 33%;
   }
+
   .nftName {
     margin-left: 0.525rem;
     font-size: 0.4rem;
@@ -370,6 +383,7 @@ export default {
     color: #111111;
     line-height: 0.4rem;
   }
+
   .selectIconBox {
     display: flex;
     flex-direction: row-reverse;

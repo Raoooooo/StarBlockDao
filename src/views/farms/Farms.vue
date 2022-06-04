@@ -85,7 +85,7 @@
 
       <div class="alertSectionBox1">
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">{{ this.WNFTItems.length + " NFT" }}</p>
+          <p class="itemDataBox_topText_alert">{{ this.selectPollItem.wnftQuantity + " NFT" }}</p>
           <p class="itemDataBox_bottomText_alert">{{ $t("farms.havePledge") }}</p>
         </div>
         <div class="vSepLine_alert"></div>
@@ -355,7 +355,7 @@ export default {
     },
     totalRewardStr() {
       if (this.totalReward * Math.pow(10, -18) > 10000) {
-        return (this.totalReward * Math.pow(10, -18)).toFixed(0);
+        return (this.totalReward * Math.pow(10, -18)).toFixed(0) + " STB";
       } else {
         return this.totalReward > 0
           ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " STB"

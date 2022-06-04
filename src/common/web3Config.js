@@ -1,5 +1,5 @@
 
-import WalletConnectProvider from "@walletconnect/web3-provider";
+// import WalletConnectProvider from "@walletconnect/web3-provider";
 
 // import Torus from '@toruslabs/torus-embed';
 // import Authereum from 'authereum';
