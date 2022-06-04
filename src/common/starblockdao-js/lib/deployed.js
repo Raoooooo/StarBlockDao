@@ -4,7 +4,7 @@ exports.deployed = void 0;
 exports.deployed = {
     rinkeby: {
         NFTMasterChef: "0x8378fC30c25Ef28c6A7c89037846192Bf2D5e7Fc".toLowerCase(),
-        NFTUtils: "0xE4aece461561758C8aB3218bC1511A45C77F6333".toLowerCase()
+        NFTUtils: "0xe01A0CCE85c90aA4F537c449ac66ae5B56440f3F".toLowerCase()
     },
     main: {
         NFTMasterChef: "0xbbf9cc5decdb8e1d9895b7d98793136798bd512e".toLowerCase(),
