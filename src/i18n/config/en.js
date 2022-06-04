@@ -10,7 +10,7 @@ export default {
         twwiter: "Docs",
         English: "English",
         chinese: "简体中文",
-        github: "Github",
+        github: "GitHub",
         login: "Connect Wallet",
         starBlock: "StarBlock",
 
@@ -104,7 +104,7 @@ export default {
         unstakeApprove: "Unstake Approve",
         connectWalletMsg: "Please try again after connect your wallet.",
         metaMaskCheck: "Please download MetaMask or unlock metaMask first.",
-
+        sellectAll:"Sellect All",
 
     },
 

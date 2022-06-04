@@ -10,7 +10,7 @@ export default {
         twwiter: "文档",
         English: "English",
         chinese: "简体中文",
-        github: "Github",
+        github: "GitHub",
         login: "连接钱包",
         starBlock:"StarBlock",
     },
@@ -36,7 +36,7 @@ export default {
     },
 
     farms: {
-        topDes: "押NFT将获得WNFT，它是赎回抵押NFT的唯一凭证，切勿丢失！",
+        topDes: "抵押NFT将获得WNFT，它是赎回抵押NFT的唯一凭证，切勿丢失！",
         topItem1: "TVL",
         topItem2: "抵押总数量",
         topItem3: "总奖励",
@@ -104,6 +104,7 @@ export default {
         unstakeApprove: "解抵押授权",
         connectWalletMsg: "请连接钱包后再试",
         metaMaskCheck: "请先解锁MetaMask或下载MetaMask后再试",
+        sellectAll:"全选",
 
     },
 

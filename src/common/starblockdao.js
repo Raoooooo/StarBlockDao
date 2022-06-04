@@ -85,13 +85,13 @@ export async function daoportAction(item, handleMasterChefInfo, index, isFirstLo
     if (!accounts) {
         await getAccounts();
     }
-
+    // alert(accounts[0])
     if (!daoport) {
         getDaoPort(accounts[0]);
     }
     // const owner = accounts[0];
     const pid = item.poolInfo.pid;
-    const owner = accounts[0];
+    var owner = accounts[0];
     // const maxTokenId = item.poolInfo.maxTokenId;
     const rangeTokenIds = item.poolInfo.rangeTokenIds;
     var parameters = {

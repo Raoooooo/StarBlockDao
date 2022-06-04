@@ -267,7 +267,12 @@ export default {
 
     setChaindUpdateCheck(chainId) {
       chainId = this.currentChainId;
+     
       if (!window.ethereum) {
+        this.chainIdErrorDialog = false;
+        return;
+      }
+      if(!window.ethereum.selectedAddress){
         this.chainIdErrorDialog = false;
         return;
       }

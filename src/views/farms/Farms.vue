@@ -9,7 +9,7 @@
           <div class="topImgIconBox">
             <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
             <div class="topImgIconBox_contantBox">
-              <p class="topImgIconBox_contantBox_text">Stake NFTs to Earn</p>
+              <p class="topImgIconBox_contantBox_text">Stake NFT to Earn</p>
             </div>
           </div>
           <p class="topTitle">{{ $t("navBar.section1") }}</p>
@@ -23,14 +23,14 @@
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">{{ totalNftQuantity + " ETH" }}</p>
+              <p class="itemDataBox_topText">{{ totalNftQuantity + " NFT" }}</p>
               <!-- <p class="itemDataBox_topText">{{ "--" }}</p> -->
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ totalRewardStr + " STB" }}
+                {{ totalRewardStr }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
             </div>
@@ -117,7 +117,7 @@
             {{ alertActionStr + " " + selectCount + $t("common.defaultMessSub2") }}
           </button>
           <div class="selectAllBtnBox" @click="selectAllAction">
-            <p class="selectAllBtnBox_text">{{ "全选" }}</p>
+            <p class="selectAllBtnBox_text">{{ $t("common.sellectAll") }}</p>
             <img class="selectAllBtnBox_img" :src="selectIconUrl" />
           </div>
         </div>
@@ -175,7 +175,108 @@
       </div>
     </el-dialog>
 
+
+    <el-dialog title="" :visible.sync="successVisible1" :width="elDialogWidth" :show-close="false" center top="200px"
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
+        <p class="dialopTitle">
+          {{ requestSuccessStr1 }}
+        </p>
+
+        <div class="txHashBox">
+          <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+          <a :href="getChainWebUrl(txHashOringion)" target="_blank">
+            <p class="txHash">{{ txHash }}</p>
+          </a>
+          <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
+        </div>
+        <div class="bottomBtnBox1">
+          <button class="alertCloseBtn" @click="alertCloseBtnAction">
+            {{ $t("common.alertClose") }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="" :visible.sync="successVisible2" :width="elDialogWidth" :show-close="false" center top="200px"
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
+        <p class="dialopTitle">
+          {{ requestSuccessStr2 }}
+        </p>
+
+        <div class="txHashBox">
+          <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+          <a :href="getChainWebUrl(txHashOringion)" target="_blank">
+            <p class="txHash">{{ txHash }}</p>
+          </a>
+          <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
+        </div>
+        <div class="bottomBtnBox1">
+          <button class="alertCloseBtn" @click="alertCloseBtnAction">
+            {{ $t("common.alertClose") }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+
+
     <el-dialog title="" :visible.sync="warningDefaultVisible" :width="elDialogWidth" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
+        <p class="dialopTitle">
+          {{ defaultMessageStr }}
+        </p>
+        <span class="dialogDes" v-bind="{ color: dialogDesColor }">
+          {{
+              !isGetReward
+                ? defaultMessageDesStr
+                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+          }}
+        </span>
+        <div class="bottomBtnBox1">
+          <button class="goOnCreatBtn" @click="defaultBtnAction">
+            {{ $t("common.confirm") }}
+          </button>
+          <button class="lookDetailBtn" @click="cancleBtnAction">
+            {{ $t("common.cancle") }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="" :visible.sync="warningDefaultVisible1" :width="elDialogWidth" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
+        <p class="dialopTitle">
+          {{ defaultMessageStr }}
+        </p>
+        <span class="dialogDes" v-bind="{ color: dialogDesColor }">
+          {{
+              !isGetReward
+                ? defaultMessageDesStr
+                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+          }}
+        </span>
+        <div class="bottomBtnBox1">
+          <button class="goOnCreatBtn" @click="defaultBtnAction">
+            {{ $t("common.confirm") }}
+          </button>
+          <button class="lookDetailBtn" @click="cancleBtnAction">
+            {{ $t("common.cancle") }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="" :visible.sync="warningDefaultVisible2" :width="elDialogWidth" :show-close="false" center
       top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
@@ -266,16 +367,15 @@ export default {
         return this.$t("common.defaultMessSub4");
       }
       if (this.isSwitch1) {
-        this.selectCount == 1
+        return this.selectCount == 1
           ? this.$t("common.defaultMessSub1") +
           this.selectCount +
-          " " +
-          this.$t("common.defaultMessSub2") +
+
+          this.$t("common.defaultMessSub2") + " " +
           "NFT"
           : this.$t("common.defaultMessSub1") +
           this.selectCount +
-          " " +
-          this.$t("common.defaultMessSub2") +
+          this.$t("common.defaultMessSub2") + " " +
           "NFTs";
       } else {
         return this.selectCount == 1
@@ -315,14 +415,15 @@ export default {
     },
 
     requestSuccessStr() {
-      if (this.isGetReward) {
-        return this.$t("farms.getRewardSuccess");
-      }
-      if (this.isSwitch1) {
-        return this.$t("farms.depositSuccess");
-      } else {
-        return this.$t("farms.withdrawSuccess");
-      }
+      return this.$t("farms.depositSuccess");
+    },
+
+    requestSuccessStr1() {
+      return this.$t("farms.withdrawSuccess");
+    },
+
+    requestSuccessStr2() {
+      return this.$t("farms.getRewardSuccess");
     },
 
     alertActionStr() {
@@ -343,9 +444,16 @@ export default {
       txHash: "",
       txHashOringion: "",
       successVisible: false,
+      successVisible1: false,
+      successVisible2: false,
+
       selectPollItem: {},
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
       warningDefaultVisible: false,
+      warningDefaultVisible1: false,
+      warningDefaultVisible2: false,
+
+
       selectTokenIdsArr: [],
       selectCount: 0,
       totalNftQuantity: "--",
@@ -415,7 +523,7 @@ export default {
     // }, 2000);
 
     setInterval(() => {
-      this.getMasterChefInfo();
+      this.getMasterChefInfo(false);
       getBlockNumber(this.updateBlockData);
     }, 1000 * 60 * 2);
 
@@ -574,6 +682,8 @@ export default {
     },
     alertCloseBtnAction() {
       this.successVisible = false;
+      this.successVisible1 = false;
+      this.successVisible2 = false;
     },
     alertBeforeAction() {
       if (this.selectTokenIdsArr.length == 0) {
@@ -583,6 +693,9 @@ export default {
     },
     defaultBtnAction() {
       this.warningDefaultVisible = false;
+      this.warningDefaultVisible1 = false;
+      this.warningDefaultVisible2 = false;
+
       this.actionAlertShow = false;
 
       var isHarvest = true;
@@ -630,6 +743,9 @@ export default {
 
     cancleBtnAction() {
       this.warningDefaultVisible = false;
+      this.warningDefaultVisible1 = false;
+      this.warningDefaultVisible2 = false;
+
     },
 
     handleDeposit(txHash, item) {
@@ -643,14 +759,14 @@ export default {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
-      this.successVisible = true;
+      this.successVisible1 = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
     },
     handleHarvest(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
-      this.successVisible = true;
+      this.successVisible2 = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
     },
     updateBlockData(number, web3) {
@@ -671,7 +787,7 @@ export default {
     async getFloorPriceData() {
       for (var i = 0; i < this.poolItems.length; i++) {
         var item = this.poolItems[i];
-        await this.requestFloorPrice(item, this.handleFloorPrice, i);
+        this.requestFloorPrice(item, this.handleFloorPrice, i);
       }
     },
 
@@ -681,8 +797,13 @@ export default {
       item.endBlock = masterChefInfo.endBlock;
       item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
       item.nftQuantity = masterChefInfo.nftQuantity;
+
       item.wnftQuantity = masterChefInfo.wnftQuantity;
-      item.selectedAddress = window.ethereum.selectedAddress;
+      if (window.ethereum) {
+        item.selectedAddress = window.ethereum.selectedAddress;
+      } else {
+        item.selectedAddress = null;
+      }
       // item.poolInfo.startBlock = 10746993;
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
       item.dividend = Number(masterChefInfo.dividend);
@@ -1110,6 +1231,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 }
 
 .selectAllBtnBox_text {
@@ -1122,8 +1244,8 @@ export default {
 
 .selectAllBtnBox_img {
   margin-left: 0.25rem;
-  width: .6rem;
-  height: .6rem;
+  width: .5rem;
+  height: .5rem;
 }
 
 .itemsSuperBox {
