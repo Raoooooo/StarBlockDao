@@ -178,6 +178,31 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
+    DaoPort.prototype.harvestAll = function (_a) {
+        var owner = _a.owner, pid = _a.pid, tokenIdRange = _a.tokenIdRange;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, nftMasterchef, error_5;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+                        return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
+                                .harvestAll(nftMasterchef, owner, pid, tokenIdRange)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_5 = _b.sent();
+                        console.error(error_5);
+                        throw new Error("Failed to harvest transaction: \"".concat(error_5 instanceof Error && error_5.message ? error_5.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
     DaoPort.prototype.ownedNFTTokens = function (_a) {
         var contractAddress = _a.contractAddress, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
         return __awaiter(this, void 0, void 0, function () {
@@ -201,7 +226,7 @@ var DaoPort = /** @class */ (function () {
     DaoPort.prototype.pending = function (_a, handle) {
         var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, mining, dividend, result, error_5;
+            var _b, mining, dividend, result, error_6;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -215,8 +240,34 @@ var DaoPort = /** @class */ (function () {
                         handle(null, result);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_5 = _c.sent();
-                        handle(new Error("Failed to pending transaction: \"".concat(error_5 instanceof Error && error_5.message ? error_5.message : "user denied", "...\"")), null);
+                        error_6 = _c.sent();
+                        handle(new Error("Failed to pending transaction: \"".concat(error_6 instanceof Error && error_6.message ? error_6.message : "user denied", "...\"")), null);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.pendingAll = function (_a, handle) {
+        var owner = _a.owner, pid = _a.pid, tokenIdRange = _a.tokenIdRange;
+        return __awaiter(this, void 0, void 0, function () {
+            var nftMasterchef, _b, mining, dividend, result, error_7;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
+                                .pendingAll(nftMasterchef, owner, pid, tokenIdRange)
+                                .call()];
+                    case 1:
+                        _b = _c.sent(), mining = _b.mining, dividend = _b.dividend;
+                        result = [mining, dividend];
+                        handle(null, result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_7 = _c.sent();
+                        handle(new Error("Failed to pending transaction: \"".concat(error_7 instanceof Error && error_7.message ? error_7.message : "user denied", "...\"")), null);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -234,8 +285,7 @@ var DaoPort = /** @class */ (function () {
                             throw new Error(" beyend token range...\"");
                         }
                         nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-                        return [4 /*yield*/, this
-                                ._protocol.NFTUtilsContract.methods
+                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
                                 .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
                                 .call()];
                     case 1:

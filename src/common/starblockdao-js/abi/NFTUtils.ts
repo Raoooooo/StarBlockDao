@@ -168,6 +168,34 @@ export const NFTUtils: PartialReadonlyContractAbi = [
   {
     inputs: [
       {
+        internalType: "contract INFTMasterChef",
+        name: "_nftMasterchef",
+        type: "address"
+      },
+      {
+        internalType: "address",
+        name: "_forUser",
+        type: "address"
+      },
+      {
+        internalType: "uint256[]",
+        name: "_pids",
+        type: "uint256[]"
+      },
+      {
+        internalType: "uint256[][]",
+        name: "_tokenIdRange",
+        type: "uint256[][]"
+      }
+    ],
+    name: "harvestAll",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
         internalType: "contract IERC721Enumerable",
         name: "_nftEnumerable",
         type: "address"
@@ -252,6 +280,45 @@ export const NFTUtils: PartialReadonlyContractAbi = [
         internalType: "uint256[]",
         name: "_totalTokenIds",
         type: "uint256[]"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract INFTMasterChef",
+        name: "_nftMasterchef",
+        type: "address"
+      },
+      {
+        internalType: "address",
+        name: "_forUser",
+        type: "address"
+      },
+      {
+        internalType: "uint256[]",
+        name: "_pids",
+        type: "uint256[]"
+      },
+      {
+        internalType: "uint256[][]",
+        name: "_tokenIdRange",
+        type: "uint256[][]"
+      }
+    ],
+    name: "pendingAll",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "_mining",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_dividend",
+        type: "uint256"
       }
     ],
     stateMutability: "view",
