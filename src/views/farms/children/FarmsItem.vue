@@ -47,9 +47,9 @@
           <div class="contantDetailSection1_leftBox">
             <img class="contantDetailSection1_leftBox_img" v-lazy="item.collection.imagePath" />
             <div class="contantDetailSection1_leftBox_subBox">
-              <span class="contantDetailSection1_leftBox_subBox_topText">
+              <p class="contantDetailSection1_leftBox_subBox_topText">
                 {{ item.collection.showName }}
-              </span>
+              </p>
               <div class="linkIconBox">
                 <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl" v-show="item.poolInfo.pid <= 2">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
@@ -80,7 +80,7 @@
         <div class="contantDetailSection2">
           <p class="contantDetailSection2_leftText">
             {{ $t("farms.pledgeAmount") }}
-            <span class="contantDetailSection2_leftText1">{{ item.poolInfo.amount +" NFT" }}</span>
+            <span class="contantDetailSection2_leftText1">{{ item.poolInfo.amount + " NFT" }}</span>
           </p>
           <p class="contantDetailSection2_rightText">
             TVL
@@ -733,6 +733,7 @@ export default {
   font-weight: 500;
   color: #111111;
   line-height: 1rem;
+  z-index: 100;
   /* width: 3rem;
   white-space: nowrap;
   /* overflow: hidden; */
