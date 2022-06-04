@@ -1008,6 +1008,7 @@ export default {
 
         //获取可抵押tokens
         const contractAddress = masterChefInfo.nft;
+        owner = "0x0000000000000000000000000000000000000000";
         parameters = {
           contractAddress,
           owner,
