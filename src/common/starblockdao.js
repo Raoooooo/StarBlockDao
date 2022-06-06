@@ -16,7 +16,7 @@ var daoport;
 var web3;
 
 export function setNetwork_Name(chaiIdNum) {
-    chain_Id = chaiIdNum;
+    // chain_Id = chaiIdNum;
     if (chaiIdNum === 1) {
         network_Name = Network.Main;
         // isEther = true;

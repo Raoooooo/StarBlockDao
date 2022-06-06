@@ -51,8 +51,8 @@ export default {
 
   watch: {
     $route(to, from) {
-      this.$bus.$emit("chainIdUpdate", 1);
-      this.$bus.$emit("loginErrorAlertNotClose", 1);
+      // this.$bus.$emit("chainIdUpdate", 1);
+      // this.$bus.$emit("loginErrorAlertNotClose", 1);
     }
   },
   created() {

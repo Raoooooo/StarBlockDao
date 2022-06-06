@@ -242,7 +242,7 @@ export default {
 
 .topImg {
   width: 100%;
-  height: 24.475rem;
+  height: 17.7rem;
 }
 .topBackContant {
   top: 0%;

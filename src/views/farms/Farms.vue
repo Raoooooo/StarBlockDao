@@ -153,7 +153,8 @@
     </el-dialog>
 
     <el-dialog title="" :visible.sync="successVisible" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
         <p class="dialopTitle">
@@ -177,7 +178,8 @@
 
 
     <el-dialog title="" :visible.sync="successVisible1" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
         <p class="dialopTitle">
@@ -201,7 +203,8 @@
 
 
     <el-dialog title="" :visible.sync="successVisible2" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
         <p class="dialopTitle">
@@ -225,7 +228,8 @@
 
 
     <el-dialog title="" :visible.sync="warningDefaultVisible" :width="elDialogWidth" :show-close="false" center
-      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
@@ -251,7 +255,8 @@
 
 
     <el-dialog title="" :visible.sync="warningDefaultVisible1" :width="elDialogWidth" :show-close="false" center
-      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
@@ -277,7 +282,8 @@
 
 
     <el-dialog title="" :visible.sync="warningDefaultVisible2" :width="elDialogWidth" :show-close="false" center
-      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false">
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
@@ -336,6 +342,16 @@ import {
   daoporHarvest,
   openseaApiBaseUrl
 } from "@/common/starblockdao";
+
+import {
+  getLocalStorage,
+  setLocalStorage,
+  isLogin,
+  localAccount,
+  localUserLoginObject,
+  getETHPriceItemCell,
+  checkChainIdError
+} from "@/common/utils";
 
 export default {
   name: "Farms",
@@ -689,9 +705,18 @@ export default {
       if (this.selectTokenIdsArr.length == 0) {
         return;
       }
+      if (checkChainIdError()) {
+        this.$bus.$emit("checkChainIdError", "1");
+        return;
+      }
       this.warningDefaultVisible = true;
     },
     defaultBtnAction() {
+
+      if (checkChainIdError()) {
+        this.$bus.$emit("checkChainIdError", "1");
+        return;
+      }
       this.warningDefaultVisible = false;
       this.warningDefaultVisible1 = false;
       this.warningDefaultVisible2 = false;

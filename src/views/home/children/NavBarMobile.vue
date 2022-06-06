@@ -16,7 +16,7 @@
         </div>
         <div class="moreOptionSubView" v-for="(item, index) in tabItems">
           <div :class="active === index ? 'optionItemActive' : 'optionItem'" @click="changeTab(index, item)">
-            <p class="optionItemTitle-active" v-if="index == 0">
+            <p class="optionItemTitle-active" v-if="index == 0 && actualAccount.length > 0">
               {{ account }}
             </p>
             <p :class="active === index ? 'optionItemTitle-active' : 'optionItemTitle'"
@@ -40,7 +40,7 @@
 
     <el-dialog title="" :visible.sync="chainIdErrorDialog" :width="elDialogWidth" :show-close="false" center
       :top="elDialogTopMargin" :close-on-click-modal="false" :fullscreen="false" :lock-scroll="false"
-      :append-to-body="true" :close-on-press-escape="false">
+      :append-to-body="true" :close-on-press-escape="false" :destroy-on-close="true">
       <div class="dialogBack">
         <img class="dialogTopImg" :src="getDailogTopImgFaildUrl" />
         <p class="dialopTitle1">
@@ -49,9 +49,9 @@
         <p class="dialogDes">
           {{ chainErrorDes() }}
         </p>
-        <!-- <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
+        <button class="dialogBottomBtn" @click="chainIdErrorDialogCloseAction" v-show="isShowCloseChainErrorBtn">
           {{ $t("common.iKnow") }}
-        </button> -->
+        </button>
       </div>
     </el-dialog>
 
@@ -136,6 +136,7 @@ export default {
       langrageList: ["navBar.English", "navBar.chinese"],
       isLogin: false,
       account: "",
+      actualAccount: "",
       moreOptionViewShow: false,
       currentLangrage: currentLangrage,
       isShowLangrageView: false,
@@ -228,9 +229,9 @@ export default {
     handleCurentChainid(chainId) {
       this.currentChainId = chainId;
       setLocalStorage("chaiIdNum", chainId);
-      this.$bus.$emit("chainIdUpdate", chainId);
+      // this.$bus.$emit("chainIdUpdate", chainId);
       setNetwork_Name(chainId);
-      this.setChaindUpdateCheck(chainId);
+      // this.setChaindUpdateCheck(chainId);
     },
     setChaindUpdateCheckShowClose(chainId) {
       chainId = this.currentChainId;
@@ -374,7 +375,7 @@ export default {
           chainNameStr = "BNB";
         }
         setNetwork_Name(chaiIdNum);
-        that.setChaindUpdateCheck(chaiIdNum);
+        // that.setChaindUpdateCheck(chaiIdNum);
         window.location.reload();
       });
     },
@@ -382,6 +383,7 @@ export default {
     getAccount(account, isClickLogin) {
       console.log(account);
       this.account = this.getFrommatAccount(account);
+      this.actualAccount = account;
       if (isClickLogin) {
         this.setLoginData(account);
       } else {
@@ -658,7 +660,7 @@ export default {
   margin-top: 0.25rem;
   /* background-color: #111; */
 
-  /* background-color: rgba(120, 120, 120, 0.95); */
+  background-color: rgba(120, 120, 120, 0.95);
 }
 
 .moreOptionSubView {
