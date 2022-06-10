@@ -35,7 +35,8 @@ const poolDatas = [
             showName: "Genesis Pass",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
     {
 
@@ -70,7 +71,8 @@ const poolDatas = [
             showName: "Bzuki",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: true,
     },
 
     {
@@ -106,7 +108,8 @@ const poolDatas = [
             showName: "3Landers",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: false,
 
     },
 
@@ -144,7 +147,8 @@ const poolDatas = [
             showName: "PLUR",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -181,7 +185,8 @@ const poolDatas = [
             showName: "Dour Darcels",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -218,7 +223,8 @@ const poolDatas = [
             showName: "goblintown",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -254,8 +260,9 @@ const poolDatas = [
             name: "degentoonz-collection",
             showName: "DEGEN TOONZ",
             contractAddress: "",
-        }
-        ,selectedAddress:null,
+        },
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -292,7 +299,8 @@ const poolDatas = [
             showName: "AINightbirds",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -329,7 +337,8 @@ const poolDatas = [
             showName: "Tasty Bones",
             contractAddress: "",
         },
-        selectedAddress:null,
+        selectedAddress: null,
+        isFree: false,
     },
 ]
 

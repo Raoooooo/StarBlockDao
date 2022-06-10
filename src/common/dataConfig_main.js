@@ -35,7 +35,46 @@ const poolDatas_main = [
             showName: "Genesis Pass",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
+    },
+
+
+    {
+
+        poolInfo: {
+            pid: 10,
+            rangeTokenIds: [0, 10000],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon11.jpg"),
+            name: "Witchtown.wtf",
+            showName: "Witchtown.wtf",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: true,
     },
     {
 
@@ -70,7 +109,8 @@ const poolDatas_main = [
             showName: "Bzuki",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: true,
     },
 
     {
@@ -106,7 +146,8 @@ const poolDatas_main = [
             showName: "Gzuki",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -142,7 +183,8 @@ const poolDatas_main = [
             showName: "3Landers",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -179,7 +221,8 @@ const poolDatas_main = [
             showName: "PLUR",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -216,7 +259,8 @@ const poolDatas_main = [
             showName: "Dour Darcels",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -253,7 +297,8 @@ const poolDatas_main = [
             showName: "goblintown",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -290,7 +335,8 @@ const poolDatas_main = [
             showName: "DEGEN TOONZ",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
 
@@ -329,7 +375,8 @@ const poolDatas_main = [
             showName: "AINightbirds",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
     {
@@ -366,7 +413,8 @@ const poolDatas_main = [
             showName: "Tasty Bones",
             contractAddress: "",
         },
-        selectedAddress:null
+        selectedAddress: null,
+        isFree: false,
     },
 
 ]

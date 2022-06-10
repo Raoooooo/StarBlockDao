@@ -104,7 +104,7 @@ export async function daoportAction(item, handleMasterChefInfo, index, isFirstLo
 
     // console.log("document=== masterchefinfo: pid", pid, masterChefInfo);
     if (handleMasterChefInfo) {
-        handleMasterChefInfo(masterChefInfo, item, index,isFirstLoad);
+        handleMasterChefInfo(masterChefInfo, item, index, isFirstLoad);
     }
 }
 
@@ -473,6 +473,35 @@ export function onBlockNumberChange(updateBlockData) {
         }
     });
 }
+
+
+export function onLogsChange() {
+    var subscription = initWeb3().eth.subscribe('logs', {
+        address: '0xBDfbad1376a7acf5Cd1692DdE2981174cE989D80',
+        // topics: ['0x12345...']
+    }, function (error, result) {
+        if (!error)
+            console.log("onLogsChange********", result);
+    })
+        .on("connected", function (subscriptionId) {
+            console.log(subscriptionId);
+        })
+        .on("data", function (log) {
+            console.log(log);
+        })
+        .on("changed", function (log) {
+        });
+
+    // unsubscribes the subscription
+    subscription.unsubscribe(function (error, success) {
+        if (success)
+            console.log('Successfully unsubscribed!');
+    });
+}
+
+
+
+
 
 export async function getAccounts() {
     if (!window.ethereum) {

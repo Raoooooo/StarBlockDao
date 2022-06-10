@@ -278,6 +278,7 @@ export default {
     },
     faildHandleApproveNFT(item) {
       this.showImgLoading = false;
+      this.$message.error(this.$t("common.transactionCancle"))
     },
     unPledgeBtnAction() {
       if (this.showImgLoading1) {
@@ -362,6 +363,7 @@ export default {
     },
     faildHandleApproveWNFT() {
       this.showImgLoading1 = false;
+      this.$message.error(this.$t("common.transactionCancle"))
     }
   }
 };

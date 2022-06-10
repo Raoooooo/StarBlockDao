@@ -6,12 +6,27 @@
       <div class="topBackBox">
         <img :src="topBackImgUrl" class="topImg" />
         <div class="topBackContant">
-          <div class="topImgIconBox">
-            <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
-            <div class="topImgIconBox_contantBox">
-              <p class="topImgIconBox_contantBox_text">Stake NFT to Earn</p>
+          <div class="topImgIconBox_super">
+            <div class="curseBox"></div>
+            <div class="topImgIconBox">
+              <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
+              <div class="topImgIconBox_contantBox">
+                <p class="topImgIconBox_contantBox_text">Stake NFT to Earn</p>
+              </div>
+            </div>
+
+            <div class="curseBox">
+              <a :href="$t('common.curseLinkUrl')" target="_blank">
+                <div class="curseBox_contantBox">
+                  <img class="curseBox_contantBox_imgLeft" src="@/assets/img/farms/curse_left.svg" />
+                  <p class="curseBox_contantBox_text">{{ $t("common.curse") }}</p>
+                  <img class="curseBox_contantBox_imgRight" src="@/assets/img/farms/curse_right.svg" />
+                </div>
+              </a>
+
             </div>
           </div>
+
           <p class="topTitle">{{ $t("navBar.section1") }}</p>
           <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
@@ -33,6 +48,15 @@
                 {{ totalRewardStr }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
+            </div>
+
+
+            <div class="vSepLine" v-show="!isShowMobile"></div>
+            <div class="itemDataBox" v-show="!isShowMobile">
+              <p class="itemDataBox_topText">
+                {{ totalBonusStr }}
+              </p>
+              <p class="itemDataBox_bottomText">{{ $t("farms.topItem4") }}</p>
             </div>
           </div>
         </div>
@@ -332,6 +356,7 @@ import {
   daoportAction,
   getBlockNumber,
   onBlockNumberChange,
+  onLogsChange,
   approveNFTAction,
   approveWNFTAction,
   getBonusRewardAction,
@@ -376,6 +401,18 @@ export default {
         return this.totalReward > 0
           ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " STB"
           : "--" + " STB";
+      }
+    },
+
+    totalBonusStr() {
+      if (this.totalBonus * Math.pow(10, -18) > 10000) {
+        return (this.totalBonus * Math.pow(10, -18)).toFixed(0) + " WETH";
+      } else {
+        return (this.totalBonus * Math.pow(10, -18)).toFixed(2) + " WETH"
+
+        // return this.totalBonus > 0
+        //   ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " WETH"
+        //   : "--" + " WETH";
       }
     },
     defaultMessageStr() {
@@ -475,6 +512,8 @@ export default {
       totalNftQuantity: "--",
       totalTVL: 0,
       totalReward: 0,
+      totalBonus: 0,
+
       currentBlockNumber: 0,
       topImgHeight: topImgHeight,
       topBackImgUrl:
@@ -520,6 +559,7 @@ export default {
 
 
     getBlockNumber(this.updateBlockData);
+    onLogsChange();
     // onBlockNumberChange(this.updateBlockData);
     setTimeout(() => {
       this.$bus.$emit("updateTabIndex", 1);
@@ -758,12 +798,15 @@ export default {
     },
     faildHandleDaoporDeposit(item) {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
+      this.$message.error(this.$t("common.transactionCancle"))
     },
     faildHandleDaoporWithdraw(item) {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
+      this.$message.error(this.$t("common.transactionCancle"))
     },
     faildHandleDaoporHarvest(item) {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
+      this.$message.error(this.$t("common.transactionCancle"))
     },
 
     cancleBtnAction() {
@@ -848,6 +891,7 @@ export default {
       if (index == this.poolItems.length - 1) {
         this.totalNftQuantity = 0;
         this.totalReward = 0;
+        this.totalBonus = 0;
         for (var i = 0; i < this.poolItems.length; i++) {
           const item = this.poolItems[i];
           this.totalNftQuantity += Number(item.poolInfo.amount);
@@ -858,6 +902,7 @@ export default {
               Number(item.rewardForEachBlock);
           }
           this.totalReward += reward;
+          this.totalBonus += item.dividend;
         }
       }
     },
@@ -1417,8 +1462,63 @@ export default {
   flex-direction: row;
 }
 
+.topImgIconBox_super {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.curseBox {
+  display: flex;
+  justify-content: right;
+  width: 33.33%;
+  flex-direction: row;
+}
+
+.curseBox_contantBox {
+  margin-top: .35rem;
+  margin-right: .35rem;
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.curseBox_contantBox_imgLeft {
+  margin-left: .125rem;
+  width: .6327rem;
+  height: .6rem;
+}
+
+.curseBox_contantBox_imgRight {
+  margin-left: .1rem;
+  width: .2rem;
+  height: .35rem;
+  margin-right: .125rem;
+}
+
+
+.curseBox_contantBox_text {
+  margin-left: .15rem;
+  font-size: .45rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #F7B500;
+  line-height: .7rem;
+}
+
 .topImgIconBox {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
   position: relative;
+  width: 33.33%;
 }
 
 .topImgIcon {
@@ -2023,6 +2123,66 @@ export default {
 
   .topImgIconBox {
     position: relative;
+  }
+
+
+  .topImgIconBox_super {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .curseBox {
+    display: flex;
+    justify-content: right;
+    width: 33.33%;
+    flex-direction: row;
+  }
+
+  .curseBox_contantBox {
+    margin-top: .375rem;
+    margin-right: .375rem;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 1rem;
+    cursor: pointer;
+  }
+
+  .curseBox_contantBox_imgLeft {
+    margin-left: .25rem;
+    width: .6327rem;
+    height: .6rem;
+  }
+
+  .curseBox_contantBox_imgRight {
+    margin-left: .1rem;
+    width: .2rem;
+    height: .35rem;
+    margin-right: .25rem;
+  }
+
+
+  .curseBox_contantBox_text {
+    margin-left: .15rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #F7B500;
+    line-height: .7rem;
+  }
+
+  .topImgIconBox {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    position: relative;
+    width: 33.33%;
   }
 
   .topImgIcon {

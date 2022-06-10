@@ -15,7 +15,6 @@
             </div>
 
             <!-- 区块后结束 -->
-
             <div class="contantDetailTopBox_rightBox" v-if="isShowEndBlock(item, currentBlockNumber)">
               <a :href="countdownUrl(item, 1)" target="_blank">
                 <p class="contantDetailTopBox_rightBox_text">
@@ -51,12 +50,12 @@
                 {{ item.collection.showName }}
               </p>
               <div class="linkIconBox">
-                <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl" v-show="item.poolInfo.pid <= 2">
+                <!-- <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl" v-show="isShowStarBlockLink(item)">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
                 </a>
                 <a :href="linkOfType(item, 2)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon1" src="@/assets/img/farms/linkIcon2.png" />
-                </a>
+                </a> -->
                 <a :href="linkOfType(item, 3)" target="_blank" class="linkIconUrl">
                   <img class="linkIcon1" src="@/assets/img/farms/linkIcon3.png" />
                 </a>
@@ -75,6 +74,28 @@
             </p>
           </div>
         </div>
+
+        <div class="linkTopBox">
+          <!-- <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl"> -->
+          <div :class="isShowStarBlockLink(item) ? 'linkTopBox_left' : 'linkTopBox_left_unActive'"
+            @click="pushToUrl(item, 1)">
+            <img class="linkTopBox_left_img" :src="link1ImgUrl(item)" />
+            <p :class="isShowStarBlockLink(item) ? 'linkTopBox_left_text' : 'linkTopBox_left_text_unActive'">
+              {{ !item.isFree ? 'Mint on StarBlock' : "Free Mint" }}</p>
+          </div>
+          <!-- </a> -->
+          <div class="linkTopBox_right" @click="pushToUrl(item, 2)">
+            <img class="linkTopBox_left_img" src="@/assets/img/farms/linkIcon2.png" />
+            <p class="linkTopBox_left_text">Buy on Opensea</p>
+          </div>
+        </div>
+
+        <!-- <div class="linkBottomBox">
+          <div class="linkBottomBox_sub">
+            <img class="linkBottomBox_sub_img" src="@/assets/img/farms/linkIcon1.png" />
+            <p class="linkTopBox_left_text_unActive">Trading Wrapped BakerLion</p>
+          </div>
+        </div> -->
 
         <!-- 抵押总量、TVL -->
         <div class="contantDetailSection2">
@@ -294,12 +315,34 @@ export default {
     };
   },
   methods: {
+    link1ImgUrl(item) {
+      return this.isShowStarBlockLink(item) ? require('@/assets/img/farms/linkIcon1.png') : require('@/assets/img/farms/linkIcon1_unActive.png')
+    },
+    isShowStarBlockLink(item) {
+      if (item.poolInfo.pid <= 2 || item.poolInfo.pid == 10) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     countdownUrl(item, type) {
       if (type == 1) {
         return etherscanCountDownBase() + Number(item.endBlock);
       } else if (type == 2) {
         return etherscanCountDownBase() + Number(item.poolInfo.startBlock);
       }
+    },
+
+    pushToUrl(item, type) {
+      
+      if (type == 1) {
+        if (this.isShowStarBlockLink(item)) {
+          window.open(this.linkOfType(item, type));
+        }
+      } else {
+        window.open(this.linkOfType(item, type));
+      }
+
     },
     linkOfType(item, type) {
       if (type == 1) {
@@ -698,7 +741,7 @@ export default {
   flex-direction: row;
   align-items: center;
   background-color: #fff8e6;
-  border-radius: 0.25rem;
+  border-radius: 0.25rem 0.25rem 0px 0px;
   justify-content: space-between;
   height: 3.25rem;
   margin-left: 2.5%;
@@ -929,6 +972,119 @@ export default {
   background-color: #03cd93;
 }
 
+
+.linkTopBox {
+  margin-left: 2.5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  background-color: #FFF8E6;
+  border-radius: 0px 0px .15rem .15rem;
+
+}
+
+.linkTopBox_left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: .25rem;
+  margin-left: .25rem;
+  border-radius: 4px;
+  border: 1px solid #F7B500;
+  width: 46%;
+  height: 1.2rem;
+  margin-bottom: .5rem;
+
+}
+
+.linkTopBox_left_unActive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* cursor: d; */
+  margin-top: .25rem;
+  margin-left: .25rem;
+  border-radius: 4px;
+  border: 1px solid #8C9399;
+  width: 46%;
+  height: 1.2rem;
+  margin-bottom: .5rem;
+
+}
+
+.linkTopBox_right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: .25rem;
+  margin-right: .25rem;
+  border-radius: 4px;
+  border: 1px solid #F7B500;
+  width: 46%;
+  height: 1.2rem;
+  margin-bottom: .5rem;
+}
+
+.linkBottomBox {
+  background-color: #fff8e6;
+  border-radius: 0px 0px .15rem .15rem;
+  margin-left: 5%;
+  width: 90%;
+}
+
+.linkBottomBox_sub {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* cursor: pointer; */
+  margin-top: .25rem;
+  margin-left: .25rem;
+  margin-right: .25rem;
+  border-radius: 4px;
+  border: 1px solid #8C9399;
+  height: .75rem;
+  margin-bottom: .5rem;
+
+}
+
+.linkBottomBox_sub_img {
+  width: .8rem;
+  height: .8rem;
+}
+
+.linkTopBox_left_img {
+  width: .8rem;
+  height: .8rem;
+  /* margin-left: .175rem; */
+}
+
+.linkTopBox_left_text {
+  margin-left: .25rem;
+  font-size: .5rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #F7B500;
+  line-height: .425rem;
+}
+
+.linkTopBox_left_text_unActive {
+  margin-left: .125rem;
+  font-size: .5rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #8C9399;
+  line-height: .425rem;
+}
+
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .el-col {
     /* margin-left: -0.25rem; */
@@ -1073,12 +1229,127 @@ export default {
     flex-direction: row;
     align-items: center;
     background-color: #fff8e6;
-    border-radius: 0.15rem;
+    border-radius: 6px 6px 0px 0px;
     justify-content: space-between;
     height: 1.75rem;
     margin-left: 5%;
     width: 90%;
+
   }
+
+
+  .linkTopBox {
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    background-color: #FFF8E6;
+    border-radius: 0px 0px .15rem .15rem;
+
+  }
+
+  .linkTopBox_left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: .25rem;
+    margin-left: .25rem;
+    border-radius: 4px;
+    border: 1px solid #F7B500;
+    width: 46%;
+    height: .75rem;
+    margin-bottom: .25rem;
+
+  }
+
+  .linkTopBox_left_unActive {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* cursor: d; */
+    margin-top: .25rem;
+    margin-left: .25rem;
+    border-radius: 4px;
+    border: 1px solid #8C9399;
+    width: 46%;
+    height: .75rem;
+    margin-bottom: .25rem;
+  }
+
+  .linkTopBox_right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: .25rem;
+    margin-right: .25rem;
+    border-radius: 4px;
+    border: 1px solid #F7B500;
+    width: 46%;
+    height: .75rem;
+    margin-bottom: .25rem;
+  }
+
+  .linkBottomBox {
+    background-color: #fff8e6;
+    border-radius: 0px 0px .15rem .15rem;
+    margin-left: 5%;
+    width: 90%;
+  }
+
+  .linkBottomBox_sub {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* cursor: pointer; */
+    margin-top: .25rem;
+    margin-left: .25rem;
+    margin-right: .25rem;
+    border-radius: 4px;
+    border: 1px solid #8C9399;
+    height: .75rem;
+    margin-bottom: .25rem;
+
+  }
+
+  .linkBottomBox_sub_img {
+    width: .4rem;
+    height: .4rem;
+  }
+
+  .linkTopBox_left_img {
+    width: .4rem;
+    height: .4rem;
+    /* margin-left: .175rem; */
+  }
+
+  .linkTopBox_left_text {
+    overflow: hidden;
+    margin-left: .125rem;
+    font-size: .3rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #F7B500;
+    line-height: .425rem;
+  }
+
+  .linkTopBox_left_text_unActive {
+    overflow: hidden;
+    margin-left: .125rem;
+    font-size: .3rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #8C9399;
+    line-height: .425rem;
+  }
+
 
   .contantDetailSection1_leftBox {
     display: flex;

@@ -101,13 +101,13 @@ export default {
   data() {
     var langType = navigator.language;
     var currentLangrage = "navBar.English";
-    if (langType == "en") {
-      currentLangrage = "navBar.English";
-    } else if (langType.startsWith("zh")) {
-      currentLangrage = "navBar.chinese";
-    } else {
-      currentLangrage = "navBar.English";
-    }
+    // if (langType == "en") {
+    //   currentLangrage = "navBar.English";
+    // } else if (langType.startsWith("zh")) {
+    //   currentLangrage = "navBar.chinese";
+    // } else {
+    //   currentLangrage = "navBar.English";
+    // }
     return {
       elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
       loginErrorDialog: false,

@@ -42,6 +42,7 @@ export default {
         topItem1: "TVL",
         topItem2: "Staking Amount",
         topItem3: "Total Rewards",
+        topItem4: "Total Staking Bonus",
         earn: "Earn",
         month: "M",
         endBlock: "End Block",
@@ -104,7 +105,11 @@ export default {
         unstakeApprove: "Unstake Approve",
         connectWalletMsg: "Please try again after connect your wallet.",
         metaMaskCheck: "Please download MetaMask or unlock metaMask first.",
-        sellectAll:"Sellect All",
+        sellectAll: "Sellect All",
+        transactionCancle: "You have canceled this transaction",
+        transactionConfirm: "The transaction has been confirmed. Please wait for the completion of the transaction on the blockchain.",
+        curseLinkUrl: "https://starblock.gitbook.io/main/v/english/starblock-dao/tutorials/nft-staking",
+        curse: "Staking Tutorials"
 
     },
 

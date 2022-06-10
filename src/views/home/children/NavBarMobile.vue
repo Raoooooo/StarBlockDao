@@ -116,14 +116,16 @@ export default {
   },
   data() {
     var langType = navigator.language;
-    var currentLangrage = "navBar.English";
-    if (langType == "en") {
-      currentLangrage = "navBar.chinese";
-    } else if (langType.startsWith("zh")) {
-      currentLangrage = "navBar.English";
-    } else {
-      currentLangrage = "navBar.English";
-    }
+    // var currentLangrage = "navBar.English";
+    var currentLangrage = "navBar.chinese";
+
+    // if (langType == "en") {
+    //   currentLangrage = "navBar.chinese";
+    // } else if (langType.startsWith("zh")) {
+    //   currentLangrage = "navBar.English";
+    // } else {
+    //   currentLangrage = "navBar.English";
+    // }
     return {
       elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
       loginErrorDialog: false,

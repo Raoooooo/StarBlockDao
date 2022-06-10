@@ -31,13 +31,13 @@ console.log("navigator.language*******", navigator.language);
 //     defaultLocale = localStorage.getItem('lang');
 // } else {
 console.log("langType****", langType);
-if (langType == "en") {
-    defaultLocale = "en";
-} else if (langType.startsWith("zh")) {
-    defaultLocale = "zh";
-} else {
-    defaultLocale = "en";
-}
+// if (langType == "en") {
+//     defaultLocale = "en";
+// } else if (langType.startsWith("zh")) {
+//     defaultLocale = "zh";
+// } else {
+//     defaultLocale = "en";
+// }
 
 // defaultLocale = "zh";
 // defaultLocale = "en";

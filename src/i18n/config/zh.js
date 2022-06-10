@@ -12,7 +12,7 @@ export default {
         chinese: "简体中文",
         github: "GitHub",
         login: "连接钱包",
-        starBlock:"StarBlock",
+        starBlock: "StarBlock",
     },
 
     home: {
@@ -40,6 +40,7 @@ export default {
         topItem1: "TVL",
         topItem2: "抵押总数量",
         topItem3: "总奖励",
+        topItem4:"总抵押分红奖励",
         earn: "赚取",
         month: "月",
         endBlock: "区块后结束",
@@ -104,8 +105,11 @@ export default {
         unstakeApprove: "解抵押授权",
         connectWalletMsg: "请连接钱包后再试",
         metaMaskCheck: "请先解锁MetaMask或下载MetaMask后再试",
-        sellectAll:"全选",
-
+        sellectAll: "全选",
+        transactionCancle: "您已取消交易",
+        transactionConfirm:"交易已确认，请等待链上交易完成",
+        curseLinkUrl:"https://starblock.gitbook.io/main/starblock-dao/tutorials/nft-staking",
+        curse:"挖矿教程"
     },
 
 
