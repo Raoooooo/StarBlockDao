@@ -7,7 +7,7 @@
         <img :src="topBackImgUrl" class="topImg" />
         <div class="topBackContant">
           <div class="topImgIconBox_super">
-            <div class="curseBox"></div>
+            <div class="courseBox"></div>
             <div class="topImgIconBox">
               <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
               <div class="topImgIconBox_contantBox">
@@ -15,15 +15,15 @@
               </div>
             </div>
 
-            <div class="curseBox">
-              <a :href="$t('common.curseLinkUrl')" target="_blank">
-                <div class="curseBox_contantBox">
-                  <img class="curseBox_contantBox_imgLeft" src="@/assets/img/farms/curse_left.svg" />
-                  <p class="curseBox_contantBox_text">{{ $t("common.curse") }}</p>
-                  <img class="curseBox_contantBox_imgRight" src="@/assets/img/farms/curse_right.svg" />
+            <div class="courseBox">
+              <a :href="$t('common.courseLinkUrl')" target="_blank">
+                <div class="courseBox_contantBox">
+                  <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left.svg" />
+                  <p class="courseBox_contantBox_text">{{ isShowMobile ? $t("common.courseMobile") : $t("common.course")
+                  }}</p>
+                  <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" />
                 </div>
               </a>
-
             </div>
           </div>
 
@@ -1469,14 +1469,14 @@ export default {
   justify-content: space-between;
 }
 
-.curseBox {
+.courseBox {
   display: flex;
   justify-content: right;
   width: 33.33%;
-  flex-direction: row;
+  flex-direction: row-reverse;
 }
 
-.curseBox_contantBox {
+.courseBox_contantBox {
   margin-top: .35rem;
   margin-right: .35rem;
   background-color: white;
@@ -1490,13 +1490,13 @@ export default {
   cursor: pointer;
 }
 
-.curseBox_contantBox_imgLeft {
+.courseBox_contantBox_imgLeft {
   margin-left: .125rem;
   width: .6327rem;
   height: .6rem;
 }
 
-.curseBox_contantBox_imgRight {
+.courseBox_contantBox_imgRight {
   margin-left: .1rem;
   width: .2rem;
   height: .35rem;
@@ -1504,7 +1504,7 @@ export default {
 }
 
 
-.curseBox_contantBox_text {
+.courseBox_contantBox_text {
   margin-left: .15rem;
   font-size: .45rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -1539,7 +1539,7 @@ export default {
 }
 
 .topImgIconBox_contantBox_text {
-  margin-top: -0.7rem;
+  margin-top: -0.3rem;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -2133,14 +2133,14 @@ export default {
     justify-content: space-between;
   }
 
-  .curseBox {
+  .courseBox {
     display: flex;
     justify-content: right;
     width: 33.33%;
-    flex-direction: row;
+    flex-direction: row-reverse;
   }
 
-  .curseBox_contantBox {
+  .courseBox_contantBox {
     margin-top: .375rem;
     margin-right: .375rem;
     background-color: white;
@@ -2154,13 +2154,13 @@ export default {
     cursor: pointer;
   }
 
-  .curseBox_contantBox_imgLeft {
+  .courseBox_contantBox_imgLeft {
     margin-left: .25rem;
     width: .6327rem;
     height: .6rem;
   }
 
-  .curseBox_contantBox_imgRight {
+  .courseBox_contantBox_imgRight {
     margin-left: .1rem;
     width: .2rem;
     height: .35rem;
@@ -2168,7 +2168,7 @@ export default {
   }
 
 
-  .curseBox_contantBox_text {
+  .courseBox_contantBox_text {
     margin-left: .15rem;
     font-size: .35rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -2203,7 +2203,7 @@ export default {
   }
 
   .topImgIconBox_contantBox_text {
-    margin-top: -0.7rem;
+    margin-top: -0.3rem;
     font-size: 0.6rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;

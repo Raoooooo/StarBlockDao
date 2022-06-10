@@ -40,7 +40,7 @@ export default {
         topItem1: "TVL",
         topItem2: "抵押总数量",
         topItem3: "总奖励",
-        topItem4:"总抵押分红奖励",
+        topItem4: "总抵押分红奖励",
         earn: "赚取",
         month: "月",
         endBlock: "区块后结束",
@@ -65,7 +65,7 @@ export default {
         optionTip3: "根据您持有WNFT可解抵押对应的NFT",
         optionTip4: "WNFT是解抵押NFT的唯一凭证，千万不要丢失",
 
-        tip1: "StarBlock DAO支持抵押NFT",
+        tip1: "StarBlock DAO支持抵押NFT，获得STB和分红",
         tip2: "抵押您持有的NFT进对应的池子可以参与挖矿和分红",
         tip3: "解抵押的时候将自动领取对应NFT的所有奖励",
         tip4: "抵押NFT以后将给您抵押凭证：WNFT",
@@ -107,9 +107,12 @@ export default {
         metaMaskCheck: "请先解锁MetaMask或下载MetaMask后再试",
         sellectAll: "全选",
         transactionCancle: "您已取消交易",
-        transactionConfirm:"交易已确认，请等待链上交易完成",
-        curseLinkUrl:"https://starblock.gitbook.io/main/starblock-dao/tutorials/nft-staking",
-        curse:"挖矿教程"
+        transactionConfirm: "交易已确认，请等待链上交易完成",
+        courseLinkUrl: "https://starblock.gitbook.io/main/starblock-dao/tutorials/nft-staking",
+        course: "挖矿教程",
+        courseMobile: "挖矿教程"
+
+
     },
 
 

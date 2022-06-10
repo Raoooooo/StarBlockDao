@@ -334,7 +334,7 @@ export default {
     },
 
     pushToUrl(item, type) {
-      
+
       if (type == 1) {
         if (this.isShowStarBlockLink(item)) {
           window.open(this.linkOfType(item, type));
@@ -383,28 +383,24 @@ export default {
         return (
           Number(blockNumber / 1000 / 6500).toFixed(0) +
           "K" +
-          " " +
           (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
         );
       } else if (blockNumber / 6500 >= 10000 && blockNumber / 6500 < 10000000) {
         return (
           Number(blockNumber / 10000 / 6500).toFixed(0) +
           "W" +
-          " " +
           (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
         );
       } else if (blockNumber / 6500 >= 10000000) {
         return (
           Number(blockNumber / 10000000 / 6500).toFixed(0) +
           "KW" +
-          " " +
           (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
         );
       } else {
         if (blockNumber / 6500 > 3) {
           return (
             Number((blockNumber / 6500).toFixed(0)) +
-            " " +
             (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
           );
         } else {
@@ -716,6 +712,7 @@ export default {
 }
 
 .contantDetailTopBox_rightBox_text_startBlock {
+  margin-top: .05rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   font-size: 0.5rem;
@@ -723,9 +720,11 @@ export default {
   font-weight: 400;
   color: #03cd93;
   line-height: 0.7rem;
+  margin-bottom: .05rem;
 }
 
 .contantDetailTopBox_rightBox_text_sellEnd {
+  margin-top: .05rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   font-size: 0.5rem;
@@ -733,6 +732,7 @@ export default {
   font-weight: 400;
   color: #8c9399;
   line-height: 0.7rem;
+  margin-bottom: .05rem;
 }
 
 .contantDetailSection1 {
@@ -1088,7 +1088,7 @@ export default {
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .el-col {
     /* margin-left: -0.25rem; */
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.9rem;
     border-radius: 4px;
   }
 
