@@ -226,7 +226,7 @@ var DaoPort = /** @class */ (function () {
     DaoPort.prototype.pending = function (_a, handle) {
         var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, mining, dividend, result, error_6;
+            var _b, _mining, _dividend, result, error_6;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -235,8 +235,8 @@ var DaoPort = /** @class */ (function () {
                                 .pending(pid, tokenIds)
                                 .call()];
                     case 1:
-                        _b = _c.sent(), mining = _b.mining, dividend = _b.dividend;
-                        result = [mining, dividend];
+                        _b = _c.sent(), _mining = _b._mining, _dividend = _b._dividend;
+                        result = [_mining, _dividend];
                         handle(null, result);
                         return [3 /*break*/, 3];
                     case 2:

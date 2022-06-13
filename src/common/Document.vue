@@ -29,6 +29,7 @@
     <button id="button" @click="daoporDeposit">dao deposit</button>
     <button id="button" @click="daoporWithdraw">dao withdraw</button>
     <button id="button" @click="daoporHarvest">dao 领取奖励分红</button>
+    <button id="button" @click="daoportPending">dao pending</button>
   </div>
 </template>
 
@@ -1134,6 +1135,26 @@ export default {
         const txHash = await daoport.harvest(parameters);
         console.log("daoporHarvest==txhash", txHash);
       } catch (error) {}
+    },
+
+    async daoportPending() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const owner = accounts[0];
+      const pid = 1;
+      const tokenIds = [0];
+      const parameters = {
+        pid,
+        tokenIds
+      };
+
+      await daoport.pending(parameters, function handle(error, result) {
+        console.log("error result==txhash", error, result);
+      });
     },
 
     toggleShow() {

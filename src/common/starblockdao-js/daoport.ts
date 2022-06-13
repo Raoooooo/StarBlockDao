@@ -193,10 +193,10 @@ export class DaoPort {
     handle: Web3Callback<T>
   ): Promise<void> {
     try {
-      const { mining, dividend } = await this._protocol.NFTMasterChefContract.methods
+      const { _mining, _dividend } = await this._protocol.NFTMasterChefContract.methods
         .pending(pid, tokenIds)
         .call();
-      const result: T[] = [mining, dividend];
+      const result: T[] = [_mining, _dividend];
       handle(null, result);
     } catch (error) {
       handle(
