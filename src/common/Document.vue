@@ -30,6 +30,9 @@
     <button id="button" @click="daoporWithdraw">dao withdraw</button>
     <button id="button" @click="daoporHarvest">dao 领取奖励分红</button>
     <button id="button" @click="daoportPending">dao pending</button>
+    <button id="button" @click="daoporClaim">dao claim</button>
+    <button id="button" @click="daoportUpdateTradingRewards">dao updateTradingRewards</button>
+    <button id="button" @click="daoportCanClaim">dao canClaim</button>
   </div>
 </template>
 
@@ -1058,14 +1061,6 @@ export default {
         isApproveNFT
       };
 
-      // const isApprove = await daoport.isApprovedForAll(parameters);
-      // console.log("daoporApprovedtAction==", isApprove);
-
-      // if (isApprove) {
-      //   console.log("已授权wnft合约");
-      //   return true;
-      // }
-
       try {
         const txHash = await daoport.setApprovalForAll(parameters);
         console.log("daoporApprovedtAction --txHash", txHash);
@@ -1153,6 +1148,90 @@ export default {
       };
 
       await daoport.pending(parameters, function handle(error, result) {
+        console.log("error result==txhash", error, result);
+      });
+    },
+
+    async daoporClaim() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const treeIds = [0, 1];
+      const amounts = [1000000000000000000];
+      const merkleProofs = [
+        [
+          "0xcbcbac4280cffcff7f0ab9fbee42c2bde89eb7152a992f8dfa7869ab731dddd1",
+          "0xe292aea4d359cc1769232f543ec72a01af30d6febc09444ee235930d4927e3cf"
+        ]
+      ];
+      const parameters = {
+        treeIds,
+        amounts,
+        merkleProofs
+      };
+      try {
+        const txHash = await daoport.claim(parameters);
+        console.log("daoporWithdraw==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async daoportUpdateTradingRewards() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const treeIds = [0, 1];
+      const merkleRoots = [
+        "0x724fc33e3d1fa4521f25c4e7bbeadb2961478e44a3669bca2771ac4773524dd1",
+        "0x2e199cb5c61a320d2aef610ede1658d0f13694285a9691e8f38b199ad781ebe2"
+      ];
+      const maxAmountsPerUser = ["1000000000000000000", "1000000000000000000"];
+      const merkleProofsSafeGuards = [
+        ["0xffb9dbc4c97d5710413f25e9aea8c1237992364dadeef55b2cd3ba54a6a020ad"],
+        ["0xffb9dbc4c97d5710413f25e9aea8c1237992364dadeef55b2cd3ba54a6a020ad"]
+      ];
+      const parameters = {
+        treeIds,
+        merkleRoots,
+        maxAmountsPerUser,
+        merkleProofsSafeGuards
+      };
+
+      try {
+        const txHash = await daoport.withdraw(parameters);
+        console.log("daoporWithdraw==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async daoportCanClaim() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const user = accounts[0];
+      const treeIds = [0, 1];
+      const amounts = [1000000000000000000];
+      const merkleProofs = [
+        [
+          "0xcbcbac4280cffcff7f0ab9fbee42c2bde89eb7152a992f8dfa7869ab731dddd1",
+          "0xe292aea4d359cc1769232f543ec72a01af30d6febc09444ee235930d4927e3cf"
+        ]
+      ];
+      const parameters = {
+        user,
+        treeIds,
+        amounts,
+        merkleProofs
+      };
+      await daoport.canClaim(parameters, function handle(error, result) {
         console.log("error result==txhash", error, result);
       });
     },

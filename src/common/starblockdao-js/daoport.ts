@@ -53,32 +53,6 @@ export class DaoPort {
     return txHash;
   }
 
-  public async isApprovedForAll({
-    owner,
-    operator,
-    wnftContract,
-    isApproveNFT
-  }: {
-    owner: string;
-    operator?: string;
-    wnftContract: string;
-    isApproveNFT: Boolean;
-  }): Promise<boolean> {
-    let REC721Address = wnftContract;
-    let isApproved = false;
-    operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
-    if (isApproveNFT) {
-      const WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-      const nftAddress = await WNFTContract.methods.nft().call();
-      if (nftAddress) {
-        REC721Address = nftAddress;
-      }
-    }
-    const REC721Contract = this._protocol.setERC721Addess(REC721Address);
-    isApproved = await REC721Contract.methods.isApprovedForAll(owner, operator).call();
-    return isApproved;
-  }
-
   public async setApprovalForAll({
     owner,
     nftContract,
@@ -293,5 +267,94 @@ export class DaoPort {
       isWNFTApproved,
       nft
     };
+  }
+
+  public async canClaim<T>(
+    {
+      user,
+      treeIds,
+      amounts,
+      merkleProofs
+    }: {
+      user: string;
+      treeIds: number[];
+      amounts: number[];
+      merkleProofs: string[][];
+    },
+    handle: Web3Callback<T>
+  ): Promise<void> {
+    try {
+      const {
+        statuses,
+        adjustedAmounts
+      } = await this._protocol.MerkletRootDistributorContract.methods
+        .canClaim(user, treeIds, amounts, merkleProofs)
+        .call();
+      const result: T[] = [statuses, adjustedAmounts];
+      handle(null, result);
+    } catch (error) {
+      handle(
+        new Error(
+          `Failed to canClaim transaction: "${
+            error instanceof Error && error.message ? error.message : "user denied"
+          }..."`
+        ),
+        null
+      );
+    }
+  }
+
+  public async updateTradingRewards({
+    treeIds,
+    merkleRoots,
+    maxAmountsPerUser,
+    merkleProofsSafeGuards
+  }: {
+    treeIds: number[];
+    merkleRoots: string[];
+    maxAmountsPerUser: number[];
+    merkleProofsSafeGuards: string[][];
+  }): Promise<string> {
+    let txHash;
+    try {
+      const txnData = { from: this._protocol.account };
+      txHash = await this._protocol.MerkletRootDistributorContract.methods
+        .updateTradingRewards(treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to updateTradingRewards transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
+  public async claim({
+    treeIds,
+    amounts,
+    merkleProofs
+  }: {
+    treeIds: number[];
+    amounts: number[];
+    merkleProofs: string[][];
+  }): Promise<string> {
+    let txHash;
+    try {
+      const txnData = { from: this._protocol.account };
+      txHash = await this._protocol.MerkletRootDistributorContract.methods
+        .claim(treeIds, amounts, merkleProofs)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to claim transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
   }
 }

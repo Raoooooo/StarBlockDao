@@ -11,6 +11,8 @@ export class Protocol {
   public web3: Web3;
   private NFTUtilsAddress: string;
   private NFTUtilsAbi: PartialReadonlyContractAbi;
+  public MerkletRootDistributorContractAddress: string;
+  public MerkletRootDistributorContract: Contract;
   private _networkName = Network.Main;
 
   constructor(provider: Web3, chainId: number) {
@@ -34,6 +36,15 @@ export class Protocol {
     this.NFTUtilsAbi = constants.NFTUtils_ABI;
 
     this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
+
+    this.MerkletRootDistributorContractAddress =
+      constants.DEPLOYED[this._networkName].NFTMasterChef;
+    const MerkletRootDistributorAbi: PartialReadonlyContractAbi =
+      constants.MerkletRootDistributor_ABI;
+    this.MerkletRootDistributorContract = new this.web3.eth.Contract(
+      MerkletRootDistributorAbi,
+      this.MerkletRootDistributorContractAddress
+    );
   }
 
   public setERC721Addess(address: string): Contract {
