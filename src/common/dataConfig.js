@@ -37,6 +37,7 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 1
     },
     {
 
@@ -73,6 +74,7 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: true,
+        sort: 2
     },
 
     {
@@ -110,6 +112,7 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 3
 
     },
 
@@ -149,6 +152,8 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 4
+
     },
 
     {
@@ -187,6 +192,8 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 5
+
     },
 
     {
@@ -225,6 +232,7 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 6
     },
 
     {
@@ -263,6 +271,7 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 7
     },
 
     {
@@ -301,6 +310,7 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 8
     },
 
     {
@@ -339,6 +349,86 @@ const poolDatas = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 9
+    },
+
+
+    {
+
+        poolInfo: {
+            pid: 11,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 99],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collection_girl.jpg"),
+            name: null,
+            showName: "Girl",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 10
+    },
+
+    {
+
+        poolInfo: {
+            pid: 12,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 99],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collection_girl.jpg"),
+            name: null,
+            showName: "Genesis Pass矿池",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 11
     },
 ]
 

@@ -7,7 +7,7 @@
         <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg" v-show="showImgLoading" />
       </button>
 
-      <button :class="isBtnActive ? 'unPledgeBtn' : 'pledgeBtn_unActive'" @click="unPledgeBtnAction()">
+      <button :class="isWNFTBtnActive ? 'unPledgeBtn' : 'pledgeBtn_unActive'" @click="unPledgeBtnAction()">
         <p class="pledgeBtn_text" v-show="!showImgLoading1">{{ getUnPledgeBtnStr }}</p>
         <img class="loadingImg" src="@/assets/img/common/requestLoading_yellow.svg" v-show="showImgLoading1" />
       </button>
@@ -87,14 +87,35 @@ export default {
       if (Number(this.item.endBlock) == 0) {
         return false;
       }
-      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber) {
+      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber && this.item.isNFTApproved) {
+        return false
+      } else {
         if (window.ethereum.selectedAddress) {
           return true;
         } else {
           return false;
         }
+      }
+    },
+
+    isWNFTBtnActive() {
+      if (!window.ethereum) {
+        return false;
+      }
+      if (!this.item.selectedAddress) {
+        return false;
+      }
+      if (Number(this.item.endBlock) == 0) {
+        return false;
+      }
+      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber && this.item.isWNFTApproved) {
+        return false
       } else {
-        return true;
+        if (window.ethereum.selectedAddress) {
+          return true;
+        } else {
+          return false;
+        }
       }
     },
     getPledgeBtnStr() {
@@ -284,7 +305,7 @@ export default {
       if (this.showImgLoading1) {
         return;
       }
-      if (!this.isBtnActive) {
+      if (!this.isWNFTBtnActive) {
         return;
       }
 

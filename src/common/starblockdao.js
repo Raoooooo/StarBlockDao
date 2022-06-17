@@ -70,7 +70,7 @@ export function initReadWeb3() {
     // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.61:8080"));
     var PROVIDER_URL = "";
     if (getProdcutMode() == 1) {
-        PROVIDER_URL = "https://mainnet.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280"
+        PROVIDER_URL = "https://mainnet.infura.io/v3/77d797bda3d74dc383299bb53c301e1e"
     } else {
         PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
     }
@@ -537,6 +537,8 @@ export async function getDaoPort(account) {
     daoport = new DaoPort(initWeb3(), chain_Id);
     daoport.setAccount(account);
     daoport.setOnlyReadWeb3Provider(initReadWeb3());
+    // daoport.setOnlyReadWeb3Provider(initWeb3());
+
 
 }
 

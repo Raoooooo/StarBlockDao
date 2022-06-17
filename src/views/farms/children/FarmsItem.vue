@@ -84,9 +84,11 @@
               {{ !item.isFree ? 'Mint on StarBlock' : "Free Mint" }}</p>
           </div>
           <!-- </a> -->
-          <div class="linkTopBox_right" @click="pushToUrl(item, 2)">
-            <img class="linkTopBox_left_img" src="@/assets/img/farms/linkIcon2.png" />
-            <p class="linkTopBox_left_text">Buy on Opensea</p>
+          <div :class="item.collection.name ? 'linkTopBox_right' : 'linkTopBox_right_unActive'"
+            @click="pushToUrl(item, 2)">
+            <img class="linkTopBox_left_img" :src="link2ImgUrl(item)" />
+            <p :class="item.collection.name ? 'linkTopBox_left_text' : 'linkTopBox_left_text_unActive'">Buy on
+              Opensea</p>
           </div>
         </div>
 
@@ -318,6 +320,9 @@ export default {
     link1ImgUrl(item) {
       return this.isShowStarBlockLink(item) ? require('@/assets/img/farms/linkIcon1.png') : require('@/assets/img/farms/linkIcon1_unActive.png')
     },
+    link2ImgUrl(item) {
+      return item.collection.name ? require('@/assets/img/farms/linkIcon2.png') : require('@/assets/img/farms/linkIcon2_unActive.png')
+    },
     isShowStarBlockLink(item) {
       if (item.poolInfo.pid <= 2 || item.poolInfo.pid == 10) {
         return true;
@@ -340,7 +345,10 @@ export default {
           window.open(this.linkOfType(item, type));
         }
       } else {
-        window.open(this.linkOfType(item, type));
+        if (item.collection.name) {
+          window.open(this.linkOfType(item, type));
+        }
+
       }
 
     },
@@ -777,7 +785,8 @@ export default {
   color: #111111;
   line-height: 1rem;
   z-index: 100;
-  /* width: 3rem;
+  /* width: 50%; */
+  /* /* width: 3rem; */
   white-space: nowrap;
   /* overflow: hidden; */
 }
@@ -826,6 +835,9 @@ export default {
 }
 
 .contantDetailSection1_rightBox_bottomText {
+  /* width: 70%; */
+  /* width: 50%; */
+  /* width: 100%; */
   font-size: 0.6rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -1027,6 +1039,22 @@ export default {
   margin-right: .25rem;
   border-radius: 4px;
   border: 1px solid #F7B500;
+  width: 46%;
+  height: 1.2rem;
+  margin-bottom: .5rem;
+}
+
+.linkTopBox_right_unActive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  margin-top: .25rem;
+  margin-right: .25rem;
+  border-radius: 4px;
+  border: 1px solid #8C9399;
+
   width: 46%;
   height: 1.2rem;
   margin-bottom: .5rem;
@@ -1291,6 +1319,21 @@ export default {
     margin-right: .25rem;
     border-radius: 4px;
     border: 1px solid #F7B500;
+    width: 46%;
+    height: .75rem;
+    margin-bottom: .25rem;
+  }
+
+  .linkTopBox_right_unActive {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    margin-top: .25rem;
+    margin-right: .25rem;
+    border-radius: 4px;
+    border: 1px solid #8C9399;
     width: 46%;
     height: .75rem;
     margin-bottom: .25rem;

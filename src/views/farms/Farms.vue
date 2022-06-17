@@ -492,6 +492,7 @@ export default {
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
     return {
+      loadPoolDataCount: 0,
       selectAll: false,
       actionAlertShowLoading: false,
       txHash: "",
@@ -556,19 +557,39 @@ export default {
     });
   },
   created() {
-
-
+    var prama = {
+      treeId: 0,
+      address: "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
+    }
+    var urlPath = "/tree/user";
+    this.$axios
+      .get(urlPath, {
+        params: prama
+      })
+      .then(res => {
+        console.log("tree/user*******", res.data);
+      });
     getBlockNumber(this.updateBlockData);
     onLogsChange();
     // onBlockNumberChange(this.updateBlockData);
     setTimeout(() => {
       this.$bus.$emit("updateTabIndex", 1);
     });
+
+
+    var list = [];
     if (getProdcutMode() == 1) {
-      this.poolItems = poolDatas_main;
+      list = poolDatas_main;
     } else {
-      this.poolItems = poolDatas;
+      list = poolDatas;
     }
+    list.sort(this.compare("sort"));
+    this.poolItems = list
+    // if (getProdcutMode() == 1) {
+    //   this.poolItems = arr;
+    // } else {
+    //   this.poolItems =arr;
+    // }
     setTimeout(() => {
       var isFirstLoad = true;
       this.getMasterChefInfo(isFirstLoad);
@@ -577,10 +598,14 @@ export default {
     // setTimeout(() => {
     //   this.getFloorPriceData();
     // }, 2000);
-
+    this.loadPoolDataCount = 0
     setInterval(() => {
+      if (this.loadPoolDataCount == 5) {
+        return;
+      }
       this.getMasterChefInfo(false);
       getBlockNumber(this.updateBlockData);
+      this.loadPoolDataCount = this.loadPoolDataCount + 1;
     }, 1000 * 60 * 2);
 
   },
@@ -645,6 +670,14 @@ export default {
   },
 
   methods: {
+
+    compare(p) { //这是比较函数
+      return function (m, n) {
+        var a = m[p];
+        var b = n[p];
+        return a - b; //升序
+      }
+    },
     setSelectIdsArr() {
       var selectTokenIdsArr = [];
       Object.keys(this.canSelectNftItems).forEach(key => {
@@ -674,7 +707,7 @@ export default {
     requestFloorPrice(item, handleFloorPrice, index) {
       // var urlPath = openseaApiBaseUrl() + "collection/" + item.collection.name + "/stats";
       var urlPath = "collection/" + item.collection.name + "/stats";
-
+      // this.axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
       this.$axios
         .get(urlPath, {
           params: {}

@@ -82,6 +82,11 @@ export default {
 
     },
 
+    lpFarms: {
+        topTitle: "Trading & Listing Rewarding",
+        topDes: "Earn crypto just by staking,trading and listing.STB Rewarding."
+    },
+
 
     common: {
         copySucceess: "复制成功",

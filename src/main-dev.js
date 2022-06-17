@@ -43,38 +43,44 @@ Vue.use(VueLazyLoad, {
 Vue.prototype.$axios = axios;
 // axios.defaults.baseURL = "/api";
 
-axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
+// axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
+// axios.defaults.baseURL = "http://192.168.1.48:3000/";
+axios.defaults.baseURL = "/api";
 
-// axios.interceptors.request.use(
+axios.interceptors.request.use(
 
-//   config => {
-//     if (config) {
-//       console.log('config************', config);
-//     }
-//     // if (config.url.match('user/updataIcon') || config.url.match("/nft/create/uploadImage")) {
-//     //   config["content-type"] = "multipart/form-data";
-//     //   config.headers["Accept"] = "application/json, text/plain,image/jpeg, */*";
-//     // }
-//     return config
-//   },
-//   error => {
-//     return Promise.reject(error)
-//   }
-// )
+  config => {
+    if (config) {
+      console.log('config************', config);
+    }
+    if (config.url.match('collection/')) {
+      axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
+    } else {
+      axios.defaults.baseURL = "http://192.168.1.48:3000/";
+    }
+    config.headers["Accept"] = "application/json, text/plain,image/jpeg, */*";
+    // config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 
 
-// axios.interceptors.response.use(
-//   res => {
-//     if (res.data.code == 401) {
+axios.interceptors.response.use(
+  res => {
+    if (res.data.code == 401) {
 
-//     }
-//     return res;
-//   },
-//   err => {
-//     // Toast.clear();
-//     return Promise.reject(err);
-//   }
-// );
+    }
+    return res;
+  },
+  err => {
+    // Toast.clear();
+    return Promise.reject(err);
+  }
+);
 new Vue({
 
   router,

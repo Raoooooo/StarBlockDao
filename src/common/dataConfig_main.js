@@ -3,7 +3,6 @@
 
 const poolDatas_main = [
     {
-
         poolInfo: {
             pid: 0,
             rangeTokenIds: [0, 10000],
@@ -37,6 +36,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 1
     },
 
 
@@ -69,12 +69,13 @@ const poolDatas_main = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon11.jpg"),
-            name: "Witchtown.wtf",
+            name: "witchtown-wtf-on-starblock",
             showName: "Witchtown.wtf",
             contractAddress: "",
         },
         selectedAddress: null,
         isFree: true,
+        sort: 3
     },
     {
 
@@ -111,6 +112,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: true,
+        sort: 4
     },
 
     {
@@ -148,6 +150,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 5
     },
 
     {
@@ -185,6 +188,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 12
     },
 
     {
@@ -223,6 +227,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 16
     },
 
     {
@@ -261,6 +266,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 15
     },
 
     {
@@ -294,11 +300,12 @@ const poolDatas_main = [
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon6.png"),
             name: "goblintownwtf",
-            showName: "goblintown",
+            showName: "goblintown.wtf",
             contractAddress: "",
         },
         selectedAddress: null,
         isFree: false,
+        sort: 6
     },
 
     {
@@ -337,6 +344,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 13
     },
 
 
@@ -377,6 +385,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 11
     },
 
     {
@@ -415,9 +424,211 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
+        sort: 14
     },
+
+    {
+
+        poolInfo: {
+            pid: 15,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 10000],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon16.png"),
+            name: null,
+            showName: "StarBlock Storefront",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 2
+    },
+
+
+    {
+
+        poolInfo: {
+            pid: 13,
+            fromTokenId: 0,
+            rangeTokenIds: [1, 5000],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon15.png"),
+            name: "goblin-grlz",
+            showName: "GOBLIN GRLZ",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 7
+    },
+
+    {
+
+        poolInfo: {
+            pid: 12,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 9999],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon14.png"),
+            name: "pieceofshit-wtf",
+            showName: "ill poop it nft",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 8
+    },
+
+    {
+
+        poolInfo: {
+            pid: 11,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 9998],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon13.png"),
+            name: "troll-townwtf",
+            showName: "troll-town.wtf",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 9
+    },
+
+    {
+
+        poolInfo: {
+            pid: 14,
+            fromTokenId: 0,
+            rangeTokenIds: [1, 8888],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon12.png"),
+            name: "goblinkids",
+            showName: "Goblin Kids",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 10
+    },
+
+
+
+
 
 ]
 
 
 export default poolDatas_main;
+
