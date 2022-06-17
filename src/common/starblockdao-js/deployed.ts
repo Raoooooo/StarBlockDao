@@ -7,6 +7,7 @@ export const deployed = {
   main: {
     NFTMasterChef: "0xbbf9cc5decdb8e1d9895b7d98793136798bd512e".toLowerCase(),
     NFTUtils: "0xcb8a0e48353b1382383fc4a2deaba5a684cb857b".toLowerCase(),
-    FACTORY: "0x6df4A699Ac7086Ee4a8d0602F2D00A0054a0930A".toLowerCase()
+    FACTORY: "0x6df4A699Ac7086Ee4a8d0602F2D00A0054a0930A".toLowerCase(),
+    MerkletRootDistributor: "0x16423ADeCCA8bf6C141AAD5FC4Ec7174A7F72DB6".toLowerCase()
   }
 };

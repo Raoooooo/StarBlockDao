@@ -8,6 +8,8 @@ export declare class Protocol {
     web3: Web3;
     private NFTUtilsAddress;
     private NFTUtilsAbi;
+    MerkletRootDistributorContractAddress: string;
+    MerkletRootDistributorContract: Contract;
     private _networkName;
     constructor(provider: Web3, chainId: number);
     setERC721Addess(address: string): Contract;

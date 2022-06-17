@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { Protocol } from "./protocol";
 import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import BigNumber from "bignumber.js";
 
 export class DaoPort {
   private _protocol: Protocol;
@@ -278,7 +279,7 @@ export class DaoPort {
     }: {
       user: string;
       treeIds: number[];
-      amounts: number[];
+      amounts: BigNumber[];
       merkleProofs: string[][];
     },
     handle: Web3Callback<T>
@@ -312,7 +313,7 @@ export class DaoPort {
   }: {
     treeIds: number[];
     merkleRoots: string[];
-    maxAmountsPerUser: number[];
+    maxAmountsPerUser: BigNumber[];
     merkleProofsSafeGuards: string[][];
   }): Promise<string> {
     let txHash;
@@ -338,7 +339,7 @@ export class DaoPort {
     merkleProofs
   }: {
     treeIds: number[];
-    amounts: number[];
+    amounts: BigNumber[];
     merkleProofs: string[][];
   }): Promise<string> {
     let txHash;

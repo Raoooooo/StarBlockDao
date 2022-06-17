@@ -56,6 +56,10 @@ var Protocol = /** @class */ (function () {
         this.NFTUtilsAddress = protocolConstants_1.constants.DEPLOYED[this._networkName].NFTUtils;
         this.NFTUtilsAbi = protocolConstants_1.constants.NFTUtils_ABI;
         this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
+        this.MerkletRootDistributorContractAddress =
+            protocolConstants_1.constants.DEPLOYED[this._networkName].MerkletRootDistributor;
+        var MerkletRootDistributorAbi = protocolConstants_1.constants.MerkletRootDistributor_ABI;
+        this.MerkletRootDistributorContract = new this.web3.eth.Contract(MerkletRootDistributorAbi, this.MerkletRootDistributorContractAddress);
     }
     Protocol.prototype.setERC721Addess = function (address) {
         return new this.web3.eth.Contract(protocolConstants_1.constants.REC721_ABI, address);

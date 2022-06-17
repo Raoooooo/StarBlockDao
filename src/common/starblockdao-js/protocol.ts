@@ -38,7 +38,7 @@ export class Protocol {
     this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
 
     this.MerkletRootDistributorContractAddress =
-      constants.DEPLOYED[this._networkName].NFTMasterChef;
+      constants.DEPLOYED[this._networkName].MerkletRootDistributor;
     const MerkletRootDistributorAbi: PartialReadonlyContractAbi =
       constants.MerkletRootDistributor_ABI;
     this.MerkletRootDistributorContract = new this.web3.eth.Contract(

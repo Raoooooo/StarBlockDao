@@ -96,35 +96,6 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.isApprovedForAll = function (_a) {
-        var owner = _a.owner, operator = _a.operator, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
-        return __awaiter(this, void 0, void 0, function () {
-            var REC721Address, isApproved, WNFTContract, nftAddress, REC721Contract;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        REC721Address = wnftContract;
-                        isApproved = false;
-                        operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
-                        if (!isApproveNFT) return [3 /*break*/, 2];
-                        WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-                        return [4 /*yield*/, WNFTContract.methods.nft().call()];
-                    case 1:
-                        nftAddress = _b.sent();
-                        if (nftAddress) {
-                            REC721Address = nftAddress;
-                        }
-                        _b.label = 2;
-                    case 2:
-                        REC721Contract = this._protocol.setERC721Addess(REC721Address);
-                        return [4 /*yield*/, REC721Contract.methods.isApprovedForAll(owner, operator).call()];
-                    case 3:
-                        isApproved = _b.sent();
-                        return [2 /*return*/, isApproved];
-                }
-            });
-        });
-    };
     DaoPort.prototype.setApprovalForAll = function (_a) {
         var owner = _a.owner, nftContract = _a.nftContract, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
         return __awaiter(this, void 0, void 0, function () {
@@ -314,6 +285,79 @@ var DaoPort = /** @class */ (function () {
                                 isWNFTApproved: isWNFTApproved,
                                 nft: nft
                             }];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.canClaim = function (_a, handle) {
+        var user = _a.user, treeIds = _a.treeIds, amounts = _a.amounts, merkleProofs = _a.merkleProofs;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, statuses, adjustedAmounts, result, error_8;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
+                                .canClaim(user, treeIds, amounts, merkleProofs)
+                                .call()];
+                    case 1:
+                        _b = _c.sent(), statuses = _b.statuses, adjustedAmounts = _b.adjustedAmounts;
+                        result = [statuses, adjustedAmounts];
+                        handle(null, result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_8 = _c.sent();
+                        handle(new Error("Failed to canClaim transaction: \"".concat(error_8 instanceof Error && error_8.message ? error_8.message : "user denied", "...\"")), null);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.updateTradingRewards = function (_a) {
+        var treeIds = _a.treeIds, merkleRoots = _a.merkleRoots, maxAmountsPerUser = _a.maxAmountsPerUser, merkleProofsSafeGuards = _a.merkleProofsSafeGuards;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_9;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
+                                .updateTradingRewards(treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_9 = _b.sent();
+                        console.error(error_9);
+                        throw new Error("Failed to updateTradingRewards transaction: \"".concat(error_9 instanceof Error && error_9.message ? error_9.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.claim = function (_a) {
+        var treeIds = _a.treeIds, amounts = _a.amounts, merkleProofs = _a.merkleProofs;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_10;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
+                                .claim(treeIds, amounts, merkleProofs)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_10 = _b.sent();
+                        console.error(error_10);
+                        throw new Error("Failed to claim transaction: \"".concat(error_10 instanceof Error && error_10.message ? error_10.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
                 }
             });
         });

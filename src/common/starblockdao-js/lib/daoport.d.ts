@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import { MasterChefPoolsInfo, Web3Callback } from "./types";
+import BigNumber from "bignumber.js";
 export declare class DaoPort {
     private _protocol;
     constructor(provider: Web3, chainId: number);
@@ -13,12 +14,6 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }): Promise<string>;
-    isApprovedForAll({ owner, operator, wnftContract, isApproveNFT }: {
-        owner: string;
-        operator?: string;
-        wnftContract: string;
-        isApproveNFT: Boolean;
-    }): Promise<boolean>;
     setApprovalForAll({ owner, nftContract, wnftContract, isApproveNFT }: {
         owner: string;
         nftContract?: string;
@@ -55,4 +50,21 @@ export declare class DaoPort {
         owner: string;
         rangeTokenIds: number[];
     }): Promise<MasterChefPoolsInfo>;
+    canClaim<T>({ user, treeIds, amounts, merkleProofs }: {
+        user: string;
+        treeIds: number[];
+        amounts: BigNumber[];
+        merkleProofs: string[][];
+    }, handle: Web3Callback<T>): Promise<void>;
+    updateTradingRewards({ treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards }: {
+        treeIds: number[];
+        merkleRoots: string[];
+        maxAmountsPerUser: BigNumber[];
+        merkleProofsSafeGuards: string[][];
+    }): Promise<string>;
+    claim({ treeIds, amounts, merkleProofs }: {
+        treeIds: number[];
+        amounts: BigNumber[];
+        merkleProofs: string[][];
+    }): Promise<string>;
 }

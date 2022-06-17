@@ -50,6 +50,7 @@ import { getLocalStorage, setLocalStorage, isLogin } from "@/common/utils";
 import AppVue from "../App.vue";
 import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
+import BigNumber from "bignumber.js";
 
 export var wyvernExchange;
 export var providerInstance;
@@ -1160,7 +1161,7 @@ export default {
         this.getDaoPort(accounts[0]);
       }
       const treeIds = [0, 1];
-      const amounts = [1000000000000000000];
+      const amounts = [new BigNumber("1000000000000000000")];
       const merkleProofs = [
         [
           "0xcbcbac4280cffcff7f0ab9fbee42c2bde89eb7152a992f8dfa7869ab731dddd1",
@@ -1191,7 +1192,10 @@ export default {
         "0x724fc33e3d1fa4521f25c4e7bbeadb2961478e44a3669bca2771ac4773524dd1",
         "0x2e199cb5c61a320d2aef610ede1658d0f13694285a9691e8f38b199ad781ebe2"
       ];
-      const maxAmountsPerUser = ["1000000000000000000", "1000000000000000000"];
+      const maxAmountsPerUser = [
+        new BigNumber("1000000000000000000"),
+        new BigNumber("1000000000000000000")
+      ];
       const merkleProofsSafeGuards = [
         ["0xffb9dbc4c97d5710413f25e9aea8c1237992364dadeef55b2cd3ba54a6a020ad"],
         ["0xffb9dbc4c97d5710413f25e9aea8c1237992364dadeef55b2cd3ba54a6a020ad"]
@@ -1217,12 +1221,13 @@ export default {
         this.getDaoPort(accounts[0]);
       }
       const user = accounts[0];
-      const treeIds = [0, 1];
-      const amounts = [1000000000000000000];
+      const treeIds = [0];
+      const amounts = [new BigNumber("5000000000000000000000000")];
       const merkleProofs = [
         [
-          "0xcbcbac4280cffcff7f0ab9fbee42c2bde89eb7152a992f8dfa7869ab731dddd1",
-          "0xe292aea4d359cc1769232f543ec72a01af30d6febc09444ee235930d4927e3cf"
+          "0xe224d7beceddeb3a73a2e3088e902c95af02ec4f5b2754b6f360d9f270f97285",
+          "0x0c118ef170f5675b5d72bfaa897505704b46110feff6a318e0b3d3f735ccccf7",
+          "0xf18d6f06b2c4770a55d6e8f13bb1349a3be13a2dbc75287b8737b17d6657b823"
         ]
       ];
       const parameters = {
@@ -1232,7 +1237,7 @@ export default {
         merkleProofs
       };
       await daoport.canClaim(parameters, function handle(error, result) {
-        console.log("error result==txhash", error, result);
+        console.log("canClaim==error result", error, result);
       });
     },
 
