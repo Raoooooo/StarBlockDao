@@ -184,4 +184,13 @@ export function checkChainIdError() {
   return isError;
 }
 
+export function formmatToToLocaleStringEnUS(number) {
+  if (Number(number) > 1) {
+    return Number(number).toLocaleString("en-US");
+  } else {
+    return number
+  }
+
+}
+
 

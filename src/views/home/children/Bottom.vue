@@ -109,15 +109,15 @@ export default {
           title: "navBar.starBlock",
           path: "https://www.starblock.io",
         },
-
+        {
+          title: "common.applyCollection_bottom",
+          path: "https://forms.gle/FZukoQmPMTYGDFQCA",
+        },
         {
           title: "navBar.github",
           path: "https://github.com/StarBlockDAO",
         },
-        {
-          title: "common.applyCollection",
-          path: "https://forms.gle/FZukoQmPMTYGDFQCA",
-        },
+
       ],
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       isShowBr: document.documentElement.clientWidth <= 1200 ? true : false,

@@ -40,13 +40,13 @@
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ totalTVL > 0 ? Number(totalTVL.toFixed(2)) + " ETH" : "-- ETH" }}
+                {{ totalTVL > 0 ? totalTVLStr : "-- ETH" }}
               </p>
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem1") }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">{{ totalNftQuantity + " NFT" }}</p>
+              <p class="itemDataBox_topText">{{ totalNftQuantityStr }}</p>
               <!-- <p class="itemDataBox_topText">{{ "--" }}</p> -->
               <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
             </div>
@@ -383,7 +383,8 @@ import {
   localAccount,
   localUserLoginObject,
   getETHPriceItemCell,
-  checkChainIdError
+  checkChainIdError,
+  formmatToToLocaleStringEnUS
 } from "@/common/utils";
 
 export default {
@@ -404,19 +405,25 @@ export default {
     },
     totalRewardStr() {
       if (this.totalReward * Math.pow(10, -18) > 10000) {
-        return (this.totalReward * Math.pow(10, -18)).toFixed(0) + " STB";
+        return formmatToToLocaleStringEnUS((this.totalReward * Math.pow(10, -18)).toFixed(0)) + " STB";
       } else {
         return this.totalReward > 0
-          ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " STB"
+          ? formmatToToLocaleStringEnUS((this.totalReward * Math.pow(10, -18)).toFixed(2)) + " STB"
           : "--" + " STB";
       }
+    },
+    totalNftQuantityStr() {
+      return formmatToToLocaleStringEnUS(this.totalNftQuantity) + " NFT"
+    },
+    totalTVLStr() {
+      return formmatToToLocaleStringEnUS(Number(this.totalTVL.toFixed(2))) + " ETH"
     },
 
     totalBonusStr() {
       if (this.totalBonus * Math.pow(10, -18) > 10000) {
-        return (this.totalBonus * Math.pow(10, -18)).toFixed(0) + " WETH";
+        return formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(0)) + " WETH";
       } else {
-        return (this.totalBonus * Math.pow(10, -18)).toFixed(2) + " WETH"
+        return formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(2)) + " WETH"
 
         // return this.totalBonus > 0
         //   ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " WETH"

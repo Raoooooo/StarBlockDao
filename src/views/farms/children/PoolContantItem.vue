@@ -43,7 +43,8 @@ import {
   localAccount,
   localUserLoginObject,
   getETHPriceItemCell,
-  checkChainIdError
+  checkChainIdError,
+  formmatToToLocaleStringEnUS
 } from "@/common/utils";
 export default {
   name: "Poolcontantitem",
@@ -235,13 +236,13 @@ export default {
     },
     awardAmountStr(item) {
       if (item.mining != "--") {
-        return (item.mining * Math.pow(10, -18)).toFixed(2) + " STB";
+        return formmatToToLocaleStringEnUS((item.mining * Math.pow(10, -18)).toFixed(2)) + " STB";
       }
       return item.mining;
     },
     bonusAmountStr(item) {
       if (item.dividend != "--") {
-        return (item.dividend * Math.pow(10, -18)).toFixed(2) + " WETH";
+        return formmatToToLocaleStringEnUS((item.dividend * Math.pow(10, -18)).toFixed(2)) + " WETH";
       }
       return item.dividend;
     },
@@ -446,6 +447,7 @@ export default {
   height: 1.75rem;
   background-color: #e5e5e5;
   border-radius: 0.1rem;
+  background-color: #f2f2f2;
   color: #8c9399;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -495,7 +497,7 @@ export default {
   margin-left: 2.5%;
   width: 95%;
   height: 1.75rem;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   border-radius: 0.1rem;
   color: #8c9399;
   font-size: 0.6rem;
@@ -513,7 +515,7 @@ export default {
   margin-left: 2.5%;
   width: 95%;
   height: 1.75rem;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   border-radius: 0.1rem;
   color: #8c9399;
   font-size: 0.6rem;
@@ -561,10 +563,10 @@ export default {
     border-style: none;
     width: 47%;
     height: 1rem;
-    background-color: #e5e5e5;
     border-radius: 0.1rem;
-    color: #8c9399;
+    background-color: #f2f2f2;
     font-size: 0.35rem;
+    color: #8c9399;
     font-family: PingFangSC-Medium, PingFang SC;
   }
 
@@ -603,7 +605,7 @@ export default {
     margin-left: 5%;
     width: 90%;
     height: 1rem;
-    background-color: #e5e5e5;
+    background-color: #f2f2f2;
     border-radius: 0.1rem;
     color: #8c9399;
     font-size: 0.35rem;
@@ -617,9 +619,8 @@ export default {
     margin-left: 5%;
     width: 90%;
     height: 1rem;
-    background-color: #e5e5e5;
     border-radius: 0.1rem;
-    color: #8c9399;
+    background-color: #f2f2f2;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
     margin-bottom: 0.5rem;

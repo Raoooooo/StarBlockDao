@@ -117,7 +117,7 @@ export default {
         course: "挖矿教程",
         courseMobile: "挖矿教程",
         applyCollection: "合集申请",
-
+        applyCollection_bottom: "Apply Collection"
 
     },
 

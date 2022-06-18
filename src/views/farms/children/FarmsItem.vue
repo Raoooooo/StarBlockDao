@@ -154,7 +154,8 @@ import {
   localAccount,
   localUserLoginObject,
   getETHPriceItemCell,
-  checkChainIdError
+  checkChainIdError,
+  formmatToToLocaleStringEnUS
 } from "@/common/utils";
 import poolDatas from "@/common/dataConfig";
 import { etherscanCountDownBase } from "@/common/starblockdao";
@@ -371,17 +372,14 @@ export default {
     },
     rewardPerNFTAmount(item) {
       if (Number(item.rewardPerNFTForEachBlock) > 0) {
-        return (
-          (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2) +
+        return formmatToToLocaleStringEnUS((Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2)) +
           " STB"
-        );
+          ;
       } else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
-        return (
-          (
-            (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
-            Number(item.poolInfo.amount)
-          ).toFixed(2) + " STB"
-        );
+        return formmatToToLocaleStringEnUS((
+          (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
+          Number(item.poolInfo.amount)
+        ).toFixed(2)) + " STB";
       } else {
         return "--" + " STB";
       }
@@ -500,9 +498,9 @@ export default {
       if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
         if (number >= 10000) {
-          return number.toFixed(0);
+          return formmatToToLocaleStringEnUS(number.toFixed(0));
         } else {
-          return Number(number.toFixed(2));
+          return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
         }
       }
       if (item.rewardForEachBlock == "--") {
@@ -513,12 +511,12 @@ export default {
           Number(item.rewardPerNFTForEachBlock) *
           6500 *
           30 *
-          Number(item.poolInfo.amount) *
-          Math.pow(10, -18);
+          formmatToToLocaleStringEnUS(Number(item.poolInfo.amount) *
+            Math.pow(10, -18));
         if (number >= 10000) {
-          return number.toFixed(0);
+          return formmatToToLocaleStringEnUS(number.toFixed(0));
         } else {
-          return Number(number.toFixed(2));
+          return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
         }
       } else if (Number(item.poolInfo.amount) == 0) {
         return "--";

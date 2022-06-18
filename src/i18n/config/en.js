@@ -50,7 +50,7 @@ export default {
         startBlock: "Blocks Start",
         startBlockDay: "D Start",
         awardNFT: "Reward per NFT",
-        pledgeAmount: "Total Staking Amount",
+        pledgeAmount: "Staking Amount",
         pledge: "Stake",
         unPledge: "Unstake",
         getAward: "Get Reward",
@@ -120,6 +120,7 @@ export default {
         course: "Staking Tutorials",
         courseMobile: "Tutorials",
         applyCollection: "Apply Collection",
+        applyCollection_bottom: "Apply Collection"
 
     },
 
