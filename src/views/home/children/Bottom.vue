@@ -22,14 +22,18 @@
       <div class="bottomBox">
         <p class="botttomTitle">© 2022 StarBlock DAO</p>
         <div class="tabBox">
-          <p
-            @click="changeTab(index, tabTitle)"
-            v-for="(tabTitle, index) in tabItems"
-            :class="index === tabItems.length - 1 ? 'tabTitle' : 'tabTitle1'"
-          >
-            {{ $t(tabTitle) }}
+          <p :class="index === tabItems.length - 1 ? 'tabTitle' : 'tabTitle1'" @click="changeTab(index, item)"
+            v-for="(item, index) in tabItems" v-if="index <= 1">
+            {{ $t(item.title) }}
           </p>
-          <!-- <div class="vSepLine" v-if="index < tabItems.length - 1"></div> -->
+
+          <a :href="item.path" target="_blank" class="tabBox" v-for="(item, index) in tabItems" v-if="index > 1">
+            <p :class="index === tabItems.length - 1 ? 'tabTitle' : 'tabTitle1'">
+              {{ $t(item.title) }}
+            </p>
+          </a>
+          <!-- <div class=" vSepLine" v-if="index < tabItems.length - 1">
+        </div> -->
         </div>
       </div>
     </div>
@@ -63,10 +67,12 @@ export default {
 
       this.active = index;
       if (index == 0) {
+        this.$bus.$emit("updateTabIndex", index)
         this.$router.push({ name: "home" });
       }
       if (index == 1) {
         this.$router.push({ name: "farms" });
+        this.$bus.$emit("updateTabIndex", index)
       }
       if (item == "navBar.github") {
         window.open("https://github.com/StarBlockDAO", "_blank");
@@ -91,14 +97,27 @@ export default {
   data() {
     return {
       tabItems: [
-        "navBar.homepage",
-        "navBar.section1",
-        "navBar.github"
-        // "navBar.section2",
-        // "navBar.section3",
-        // "navBar.section4",
-        // "navBar.section5",
-        // "navBar.test"
+        {
+          title: "navBar.homepage",
+          path: "",
+        },
+        {
+          title: "navBar.section1",
+          path: "",
+        },
+        {
+          title: "navBar.starBlock",
+          path: "https://www.starblock.io",
+        },
+
+        {
+          title: "navBar.github",
+          path: "https://github.com/StarBlockDAO",
+        },
+        {
+          title: "common.applyCollection",
+          path: "https://forms.gle/FZukoQmPMTYGDFQCA",
+        },
       ],
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       isShowBr: document.documentElement.clientWidth <= 1200 ? true : false,
@@ -135,6 +154,7 @@ export default {
 
   /* background-color: aqua; */
 }
+
 .contantBack {
   position: relative;
   width: 100%;
@@ -198,6 +218,7 @@ export default {
   display: flex;
   flex-direction: row;
 }
+
 .companyDes {
   margin-top: 0.2rem;
   /* margin-right: 5.25rem; */
@@ -256,11 +277,13 @@ export default {
   height: 0.5rem;
   background-color: white;
 }
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
   .back {
     width: 100%;
     height: 3.25rem;
   }
+
   .contantBack {
     position: relative;
     width: 100%;
@@ -269,6 +292,7 @@ export default {
     background-color: #242424;
     height: 3.25rem;
   }
+
   .topBox {
     margin-top: 0.5rem;
     display: flex;
@@ -318,6 +342,7 @@ export default {
     display: flex;
     flex-direction: row;
   }
+
   .companyDes {
     /* margin-right: 5.25rem; */
     display: flex;

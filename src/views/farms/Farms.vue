@@ -6,28 +6,36 @@
       <div class="topBackBox">
         <img :src="topBackImgUrl" class="topImg" />
         <div class="topBackContant">
-          <div class="topImgIconBox_super">
-            <div class="courseBox"></div>
-            <div class="topImgIconBox">
-              <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
-              <div class="topImgIconBox_contantBox">
-                <p class="topImgIconBox_contantBox_text">Stake NFT to Earn</p>
-              </div>
+          <div class="topImgIconBox">
+            <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
+            <div class="topImgIconBox_contantBox">
+              <p class="topImgIconBox_contantBox_text">Stake NFT to Earn</p>
             </div>
+          </div>
+          <p class="topTitle">{{ $t("navBar.section1") }}</p>
 
+          <div class="courseBox_super">
             <div class="courseBox">
               <a :href="$t('common.courseLinkUrl')" target="_blank">
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left.svg" />
-                  <p class="courseBox_contantBox_text">{{ isShowMobile ? $t("common.courseMobile") : $t("common.course")
-                  }}</p>
+                  <p class="courseBox_contantBox_text">{{ $t("common.course") }}</p>
+                  <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" />
+                </div>
+              </a>
+            </div>
+
+            <div class="courseBox">
+              <a href="https://forms.gle/FZukoQmPMTYGDFQCA" target="_blank">
+                <div class="courseBox_contantBox">
+                  <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left1.svg" />
+                  <p class="courseBox_contantBox_text">{{ $t("common.applyCollection") }}</p>
                   <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" />
                 </div>
               </a>
             </div>
           </div>
 
-          <p class="topTitle">{{ $t("navBar.section1") }}</p>
           <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
@@ -1106,7 +1114,7 @@ export default {
 
 .topImg {
   width: 100%;
-  height: 6.7rem;
+  height: 7.9rem;
 }
 
 .topBackContant {
@@ -1121,7 +1129,7 @@ export default {
 }
 
 .topTitle {
-  margin-top: -0.2rem;
+  margin-top: 0rem;
   font-size: 0.9rem;
   font-family: DINAlternate-Bold, DINAlternate;
   font-weight: bold;
@@ -1495,17 +1503,18 @@ export default {
   flex-direction: row;
 }
 
-.topImgIconBox_super {
+.courseBox_super {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  margin-bottom: .125rem;
 }
 
 .courseBox {
   display: flex;
   justify-content: right;
-  width: 33.33%;
+  /* width: 33.33%; */
   flex-direction: row-reverse;
 }
 
@@ -1539,7 +1548,7 @@ export default {
 
 .courseBox_contantBox_text {
   margin-left: .15rem;
-  font-size: .45rem;
+  font-size: .5rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #F7B500;
@@ -1777,7 +1786,7 @@ export default {
 
   .topImg {
     width: 100%;
-    height: 8.5rem;
+    height: 9.5rem;
   }
 
   .topBackContant {
@@ -2159,17 +2168,18 @@ export default {
   }
 
 
-  .topImgIconBox_super {
+  .courseBox_super {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    margin-bottom: 0.125rem;
   }
 
   .courseBox {
     display: flex;
     justify-content: right;
-    width: 33.33%;
+    /* width: 33.33%; */
     flex-direction: row-reverse;
   }
 
@@ -2203,7 +2213,7 @@ export default {
 
   .courseBox_contantBox_text {
     margin-left: .15rem;
-    font-size: .35rem;
+    font-size: .45rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #F7B500;

@@ -118,7 +118,8 @@ export default {
         transactionConfirm: "The transaction has been confirmed. Please wait for the completion of the transaction on the blockchain.",
         courseLinkUrl: "https://starblock.gitbook.io/main/v/english/starblock-dao/tutorials/nft-staking",
         course: "Staking Tutorials",
-        courseMobile: "Tutorials"
+        courseMobile: "Tutorials",
+        applyCollection: "Apply Collection",
 
     },
 

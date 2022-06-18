@@ -445,7 +445,7 @@ export default {
   width: 47%;
   height: 1.75rem;
   background-color: #e5e5e5;
-  border-radius: 0.875rem;
+  border-radius: 0.1rem;
   color: #8c9399;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -460,7 +460,7 @@ export default {
   width: 47%;
   height: 1.75rem;
   background-color: #fff;
-  border-radius: 0.875rem;
+  border-radius: .1rem;
   color: #f7b500;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -478,7 +478,7 @@ export default {
   width: 95%;
   height: 1.75rem;
   background-color: #f7b500;
-  border-radius: 0.875rem;
+  border-radius: 0.1rem;
   color: #fff;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -496,7 +496,7 @@ export default {
   width: 95%;
   height: 1.75rem;
   background-color: #e5e5e5;
-  border-radius: 0.875rem;
+  border-radius: 0.1rem;
   color: #8c9399;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -514,7 +514,7 @@ export default {
   width: 95%;
   height: 1.75rem;
   background-color: #e5e5e5;
-  border-radius: 0.875rem;
+  border-radius: 0.1rem;
   color: #8c9399;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -551,7 +551,7 @@ export default {
     width: 47%;
     height: 1rem;
     background-color: #f7b500;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     color: #fff;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -562,7 +562,7 @@ export default {
     width: 47%;
     height: 1rem;
     background-color: #e5e5e5;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     color: #8c9399;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -576,7 +576,7 @@ export default {
     width: 47%;
     height: 1rem;
     background-color: #fff;
-    border-radius: 0.5rem;
+    border-radius: .1rem;
     color: #f7b500;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -590,7 +590,7 @@ export default {
     width: 90%;
     height: 1rem;
     background-color: #f7b500;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     color: #fff;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -604,7 +604,7 @@ export default {
     width: 90%;
     height: 1rem;
     background-color: #e5e5e5;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     color: #8c9399;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -618,7 +618,7 @@ export default {
     width: 90%;
     height: 1rem;
     background-color: #e5e5e5;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     color: #8c9399;
     font-size: 0.35rem;
     font-family: PingFangSC-Medium, PingFang SC;

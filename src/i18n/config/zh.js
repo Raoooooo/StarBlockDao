@@ -115,7 +115,8 @@ export default {
         transactionConfirm: "交易已确认，请等待链上交易完成",
         courseLinkUrl: "https://starblock.gitbook.io/main/starblock-dao/tutorials/nft-staking",
         course: "挖矿教程",
-        courseMobile: "挖矿教程"
+        courseMobile: "挖矿教程",
+        applyCollection: "合集申请",
 
 
     },
