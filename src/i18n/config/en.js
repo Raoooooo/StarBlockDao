@@ -119,8 +119,8 @@ export default {
         courseLinkUrl: "https://starblock.gitbook.io/main/v/english/starblock-dao/tutorials/nft-staking",
         course: "Staking Tutorials",
         courseMobile: "Tutorials",
-        applyCollection: "Apply Collection",
-        applyCollection_bottom: "Apply Collection"
+        applyCollection: "Collection Listing",
+        applyCollection_bottom: "Collection Listing"
 
     },
 

@@ -27,7 +27,7 @@
             {{ $t(item.title) }}
           </p>
 
-          <a :href="item.path" target="_blank" class="tabBox" v-for="(item, index) in tabItems" v-if="index > 1">
+          <a :href="item.path" target="_blank" class="tabBox1" v-for="(item, index) in tabItems" v-if="index > 1">
             <p :class="index === tabItems.length - 1 ? 'tabTitle' : 'tabTitle1'">
               {{ $t(item.title) }}
             </p>
@@ -193,9 +193,9 @@ export default {
 }
 
 .botttomTitle {
-  margin-top: 0.25rem;
+  margin-top: 0.3rem;
   color: #ccc;
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   /* margin-left: 5.25rem; */
 }
 
@@ -246,7 +246,14 @@ export default {
 }
 
 .tabBox {
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tabBox1 {
+  margin-top: 0.1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -255,7 +262,7 @@ export default {
 .tabTitle {
   cursor: pointer;
   margin-right: 0rem;
-  font-size: 0.6rem;
+  font-size: .55rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -264,8 +271,8 @@ export default {
 
 .tabTitle1 {
   cursor: pointer;
-  margin-right: 1.25rem;
-  font-size: 0.6rem;
+  margin-right: .8rem;
+  font-size: 0.55rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -367,6 +374,13 @@ export default {
   }
 
   .tabBox {
+    margin-top: 0rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .tabBox1 {
     margin-top: 0rem;
     display: flex;
     flex-direction: row;

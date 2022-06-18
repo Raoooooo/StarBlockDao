@@ -20,7 +20,7 @@
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left.svg" />
                   <p class="courseBox_contantBox_text">{{ $t("common.course") }}</p>
-                  <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" />
+                  <!-- <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" /> -->
                 </div>
               </a>
             </div>
@@ -30,7 +30,7 @@
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left1.svg" />
                   <p class="courseBox_contantBox_text">{{ $t("common.applyCollection") }}</p>
-                  <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" />
+                  <!-- <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" /> -->
                 </div>
               </a>
             </div>
@@ -1555,6 +1555,7 @@ export default {
 
 .courseBox_contantBox_text {
   margin-left: .15rem;
+  margin-right: .2rem;
   font-size: .5rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -2220,6 +2221,7 @@ export default {
 
   .courseBox_contantBox_text {
     margin-left: .15rem;
+    margin-right: .2rem;
     font-size: .45rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
