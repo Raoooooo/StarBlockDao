@@ -292,21 +292,21 @@ var DaoPort = /** @class */ (function () {
     DaoPort.prototype.canClaim = function (_a, handle) {
         var user = _a.user, treeIds = _a.treeIds, amounts = _a.amounts, merkleProofs = _a.merkleProofs;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, statuses, adjustedAmounts, result, error_8;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var array, result, error_8;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
                                 .canClaim(user, treeIds, amounts, merkleProofs)
                                 .call()];
                     case 1:
-                        _b = _c.sent(), statuses = _b.statuses, adjustedAmounts = _b.adjustedAmounts;
-                        result = [statuses, adjustedAmounts];
+                        array = _b.sent();
+                        result = [array[0], array[1]];
                         handle(null, result);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_8 = _c.sent();
+                        error_8 = _b.sent();
                         handle(new Error("Failed to canClaim transaction: \"".concat(error_8 instanceof Error && error_8.message ? error_8.message : "user denied", "...\"")), null);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];

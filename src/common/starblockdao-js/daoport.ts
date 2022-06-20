@@ -285,13 +285,10 @@ export class DaoPort {
     handle: Web3Callback<T>
   ): Promise<void> {
     try {
-      const {
-        statuses,
-        adjustedAmounts
-      } = await this._protocol.MerkletRootDistributorContract.methods
+      const array = await this._protocol.MerkletRootDistributorContract.methods
         .canClaim(user, treeIds, amounts, merkleProofs)
         .call();
-      const result: T[] = [statuses, adjustedAmounts];
+      const result: T[] = [array[0], array[1]];
       handle(null, result);
     } catch (error) {
       handle(

@@ -1220,14 +1220,15 @@ export default {
       if (!daoport) {
         this.getDaoPort(accounts[0]);
       }
-      const user = accounts[0];
+      // const user = accounts[0];
+      const user = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
       const treeIds = [0];
-      const amounts = [new BigNumber("5000000000000000000000000")];
+      const amounts = [new BigNumber("2700000000000000000000")];
       const merkleProofs = [
         [
-          "0xe224d7beceddeb3a73a2e3088e902c95af02ec4f5b2754b6f360d9f270f97285",
-          "0x0c118ef170f5675b5d72bfaa897505704b46110feff6a318e0b3d3f735ccccf7",
-          "0xf18d6f06b2c4770a55d6e8f13bb1349a3be13a2dbc75287b8737b17d6657b823"
+          "0x00df9c20e308813437794e99780d07ffc85031f98834205d1eae80fb474742c4",
+          "0x6cc59680d52299e1b2da7489015860d4715b75afdc2a7a8a41f92c0868471240",
+          "0x4e1dff839d0d9254c2508f5258ef9c2e3b1b2d7f6cb2aa516a3edbf4bfbf2f67"
         ]
       ];
       const parameters = {
