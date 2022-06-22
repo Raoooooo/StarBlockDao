@@ -152,17 +152,20 @@ export default {
       margin-bottom: 0;
     } */
 }
+
 .el-col {
   margin-bottom: 0.5rem;
   border-radius: 4px;
   /* background-color: tomato; */
 }
+
 .bg-purple-dark {
   background: #99a9bf;
   border-color: lightgray;
   border-width: 0.05px;
   margin-bottom: 0.25rem;
 }
+
 .bg-purple {
   background: white;
   border-color: #99a9bf;
@@ -176,9 +179,11 @@ export default {
   margin-left: 2px;
   margin-right: 2px;
 }
+
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 .grid-content {
   border-radius: 10px;
   /* min-height: 80px; */
@@ -187,6 +192,7 @@ export default {
   flex-wrap: wrap;
   z-index: -1;
 }
+
 .row-bg {
   padding: 0 0.25rem;
   /* background-color: white; */
@@ -205,6 +211,7 @@ export default {
   height: 0;
   padding-top: 1.75rem;
 }
+
 .itemImg {
   /* margin-left: 0.25rem; */
   margin-top: 0.75rem;
@@ -254,17 +261,19 @@ export default {
   height: 2.5rem; */
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .el-row {
     margin-bottom: 0.75rem;
     /* &:last-child {
       margin-bottom: 0;
     } */
   }
+
   .el-col {
     margin-bottom: 0.75rem;
     border-radius: 4px;
   }
+
   .bg-purple-dark {
     background: #99a9bf;
     border-color: lightgray;
@@ -286,6 +295,7 @@ export default {
     /* background-color: white; */
     /* background-color: tomato; */
   }
+
   .itemTitleBack {
     margin-top: 0.35rem;
     display: flex;
@@ -295,6 +305,7 @@ export default {
     /* justify-content: space-between; */
     /* background-color: aquamarine; */
   }
+
   .itemTitle {
     margin-top: 0rem;
     font-size: 0.45rem;
@@ -309,6 +320,7 @@ export default {
     color: #666;
     margin-right: 0.45rem;
   }
+
   .descrip {
     margin-top: 0.375rem;
     font-size: 0.4rem;

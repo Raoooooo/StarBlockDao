@@ -375,12 +375,21 @@ export default {
         return formmatToToLocaleStringEnUS((Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2)) +
           " STB"
           ;
-      } else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
+      }
+      else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
         return formmatToToLocaleStringEnUS((
           (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
           Number(item.poolInfo.amount)
         ).toFixed(2)) + " STB";
-      } else {
+      }
+
+      // else if (Number(item.rewardForEachBlock) > 0) {
+      //   return formmatToToLocaleStringEnUS((
+      //     (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
+      //     Number(item.poolInfo.amount)
+      //   ).toFixed(2)) + " STB";
+      // }
+      else {
         return "--" + " STB";
       }
     },
@@ -489,12 +498,12 @@ export default {
       }
     },
     rewardAmount(item) {
-      if (
-        Number(item.poolInfo.startBlock) > 0 &&
-        Number(item.poolInfo.startBlock) > this.currentBlockNumber
-      ) {
-        return "--";
-      }
+      // if (
+      //   Number(item.poolInfo.startBlock) > 0 &&
+      //   Number(item.poolInfo.startBlock) > this.currentBlockNumber
+      // ) {
+      //   return "--";
+      // }
       if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
         if (number >= 10000) {
@@ -502,11 +511,7 @@ export default {
         } else {
           return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
         }
-      }
-      if (item.rewardForEachBlock == "--") {
-        return "--";
-      }
-      if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
+      } else if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
         var number =
           Number(item.rewardPerNFTForEachBlock) *
           6500 *
@@ -519,6 +524,8 @@ export default {
           return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
         }
       } else if (Number(item.poolInfo.amount) == 0) {
+        return "--";
+      } else if (item.rewardForEachBlock == "--") {
         return "--";
       }
     },
@@ -1111,7 +1118,7 @@ export default {
 }
 
 
-@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .el-col {
     /* margin-left: -0.25rem; */
     margin-bottom: 0.9rem;

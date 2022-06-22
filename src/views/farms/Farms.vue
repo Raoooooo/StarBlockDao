@@ -1752,7 +1752,7 @@ export default {
   cursor: pointer;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .back {
     display: flex;
     flex-direction: column;

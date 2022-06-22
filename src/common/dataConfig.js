@@ -430,6 +430,44 @@ const poolDatas = [
         isFree: false,
         sort: 11
     },
+    {
+
+        poolInfo: {
+            pid: 13,
+            fromTokenId: 0,
+            rangeTokenIds: [0, 99],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collection_girl.jpg"),
+            name: null,
+            showName: "Happiness",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 12
+    },
 ]
 
 
