@@ -43,9 +43,9 @@ Vue.use(VueLazyLoad, {
 Vue.prototype.$axios = axios;
 // axios.defaults.baseURL = "/api";
 
-// axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
+axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
 // axios.defaults.baseURL = "http://192.168.1.48:3000/";
-axios.defaults.baseURL = "/api";
+// axios.defaults.baseURL = "/api";
 
 axios.interceptors.request.use(
 
@@ -53,11 +53,11 @@ axios.interceptors.request.use(
     if (config) {
       console.log('config************', config);
     }
-    if (config.url.match('collection/')) {
-      axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
-    } else {
-      axios.defaults.baseURL = "http://192.168.1.48:3000/";
-    }
+    // if (config.url.match('collection/')) {
+    //   axios.defaults.baseURL = "https://api.opensea.io/api/v1/";
+    // } else {
+    //   axios.defaults.baseURL = "http://192.168.1.48:3000/";
+    // }
     config.headers["Accept"] = "application/json, text/plain,image/jpeg, */*";
     // config.headers["Content-Type"] = "application/x-www-form-urlencoded";
 

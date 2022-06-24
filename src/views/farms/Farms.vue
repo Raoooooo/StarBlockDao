@@ -9,7 +9,7 @@
           <div class="topImgIconBox">
             <img class="topImgIcon" src="@/assets/img/farms/topImgIcon.png" />
             <div class="topImgIconBox_contantBox">
-              <p class="topImgIconBox_contantBox_text">Stake NFT to Earn</p>
+              <p class="topImgIconBox_contantBox_text">Stake NFT to Earn $STB</p>
             </div>
           </div>
           <p class="topTitle">{{ $t("navBar.section1") }}</p>
@@ -572,18 +572,18 @@ export default {
     });
   },
   created() {
-    var prama = {
-      treeId: 0,
-      address: "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
-    }
-    var urlPath = "/tree/user";
-    this.$axios
-      .get(urlPath, {
-        params: prama
-      })
-      .then(res => {
-        console.log("tree/user*******", res.data);
-      });
+    // var prama = {
+    //   treeId: 0,
+    //   address: "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
+    // }
+    // var urlPath = "/tree/user";
+    // this.$axios
+    //   .get(urlPath, {
+    //     params: prama
+    //   })
+    //   .then(res => {
+    //     console.log("tree/user*******", res.data);
+    //   });
     getBlockNumber(this.updateBlockData);
     onLogsChange();
     // onBlockNumberChange(this.updateBlockData);
@@ -903,7 +903,10 @@ export default {
     async getFloorPriceData() {
       for (var i = 0; i < this.poolItems.length; i++) {
         var item = this.poolItems[i];
-        this.requestFloorPrice(item, this.handleFloorPrice, i);
+        if (item.collection.name) {
+          this.requestFloorPrice(item, this.handleFloorPrice, i);
+        }
+
       }
     },
 
@@ -931,7 +934,10 @@ export default {
       item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
       item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
       if (isFirstLoad) {
-        this.requestFloorPrice(item, this.handleFloorPrice, index);
+        if (item.collection.name) {
+          this.requestFloorPrice(item, this.handleFloorPrice, index);
+        }
+
       }
       // if (index == 0) {
       //   item.poolInfo.startBlock = 10776740;
@@ -1572,7 +1578,7 @@ export default {
 }
 
 .topImgIcon {
-  width: 7rem;
+  width: 10rem;
   height: 1.425rem;
 }
 
@@ -1590,11 +1596,12 @@ export default {
 
 .topImgIconBox_contantBox_text {
   margin-top: -0.3rem;
-  font-size: 0.6rem;
+  font-size: 0.53rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
   line-height: 0.825rem;
+  white-space: nowrap;
 }
 
 .emptyContantBox {
@@ -2238,7 +2245,7 @@ export default {
   }
 
   .topImgIcon {
-    width: 7rem;
+    width: 8rem;
     height: 1.425rem;
   }
 
