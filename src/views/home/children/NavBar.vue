@@ -695,7 +695,8 @@ export default {
   width: 4.25rem;
   height: 1rem;
   border-radius: 0.5rem;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   border-style: none;
   font-size: 0.4rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -709,7 +710,8 @@ export default {
   height: 1rem;
   display: flex;
   border-radius: 0.5rem;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   flex-direction: row;
   align-items: center;
 }
@@ -731,7 +733,7 @@ export default {
 
 .dropdownBox {
   width: 3.2rem;
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0.45rem;
   /* margin-top: 18px; */
   /* align-items: center; */
@@ -740,7 +742,7 @@ export default {
   flex-direction: row-reverse;
   z-index: 100;
 
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   /* height: 1.5rem; */
   /* align-items: center;s */
   /* width: 100%; */
@@ -769,7 +771,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   width: 100%;
   border-radius: 0.5rem;
 }
@@ -802,7 +804,8 @@ export default {
   height: 1rem;
   border-radius: 0.5rem;
   border-style: none;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   color: white;
   font-size: 0.4rem;
 }

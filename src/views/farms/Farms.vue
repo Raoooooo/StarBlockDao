@@ -420,6 +420,9 @@ export default {
     },
 
     totalBonusStr() {
+      if (Number(this.totalBonus) == 0) {
+        return "0 WETH"
+      }
       if (this.totalBonus * Math.pow(10, -18) > 10000) {
         return formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(0)) + " WETH";
       } else {
@@ -1308,7 +1311,8 @@ export default {
 }
 
 .switchBtn_on {
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   border-radius: 0.75rem;
   width: 50%;
   border-style: none;
@@ -1331,7 +1335,8 @@ export default {
   height: 1.5rem;
   border-radius: 0.75rem;
   border-style: none;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -1346,7 +1351,7 @@ export default {
   height: 1.5rem;
   border-radius: 0.75rem;
   border-style: none;
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -1397,7 +1402,7 @@ export default {
 }
 
 .alertSectionBox3_textBox2 {
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   display: flex;
   justify-content: center;
   width: 33.33%;
@@ -1632,7 +1637,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
 }
 
 .dialogTopImg {
@@ -1692,7 +1697,8 @@ export default {
   font-size: 0.375rem;
   font-weight: 400;
   color: white;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   height: 1rem;
   border-radius: 5px;
   border-style: none;
@@ -1707,7 +1713,8 @@ export default {
   font-size: 0.375rem;
   font-weight: 400;
   color: white;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   height: 1rem;
   border-radius: 0.5rem;
   border-style: none;
@@ -1981,7 +1988,8 @@ export default {
   }
 
   .switchBtn_on {
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     border-radius: 0.5rem;
     width: 50%;
     border-style: none;
@@ -1998,7 +2006,8 @@ export default {
     height: 1rem;
     border-radius: 0.5rem;
     border-style: none;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -2014,7 +2023,7 @@ export default {
     padding-right: 0.4rem;
     height: 1rem;
     border-radius: 0.5rem;
-    /* background-color: #f7b500; */
+    /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -2058,7 +2067,7 @@ export default {
   }
 
   .alertSectionBox3_textBox2 {
-    /* background-color: #f7b500; */
+    /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
     display: flex;
     justify-content: center;
     width: 33.33%;
@@ -2342,7 +2351,8 @@ export default {
     font-size: 0.375rem;
     font-weight: 400;
     color: white;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     height: 1rem;
     border-radius: 5px;
     border-style: none;
@@ -2356,7 +2366,8 @@ export default {
     font-size: 0.375rem;
     font-weight: 400;
     color: white;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     height: 1rem;
     border-radius: 0.5rem;
     border-style: none;

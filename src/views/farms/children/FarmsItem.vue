@@ -95,7 +95,7 @@
         <!-- <div class="linkBottomBox">
           <div class="linkBottomBox_sub">
             <img class="linkBottomBox_sub_img" src="@/assets/img/farms/linkIcon1.png" />
-            <p class="linkTopBox_left_text_unActive">Trading Wrapped BakerLion</p>
+            <p class="linkTopBox_left_text_unActive">{{"Trading Wrapped"+ }}</p>
           </div>
         </div> -->
 
@@ -109,9 +109,7 @@
             TVL
             <span class="contantDetailSection2_rightText1">
               {{
-                  item.floor_price > 0 && Number(item.poolInfo.amount) > 0
-                    ? Number((item.floor_price * Number(item.poolInfo.amount)).toFixed(2)) + " ETH"
-                    : "-- ETH"
+                  tvlStr(item)
               }}
             </span>
           </p>
@@ -370,6 +368,18 @@ export default {
         return getEtherscanOfCollection(item.poolInfo.wnft, item.tokenId);
       }
     },
+    tvlStr(item) {
+      if (item.floor_price > 0 && Number(item.poolInfo.amount) > 0) {
+        return Number((item.floor_price * Number(item.poolInfo.amount)).toFixed(2)) + " ETH";
+      } else if (Number(item.poolInfo.amount) == 0) {
+        return "0 ETH"
+      } else {
+        return "-- ETH";
+      }
+      // return item.floor_price > 0 && Number(item.poolInfo.amount) > 0
+      //   ? Number((item.floor_price * Number(item.poolInfo.amount)).toFixed(2)) + " ETH"
+      //   : "-- ETH"
+    },
     rewardPerNFTAmount(item) {
       if (Number(item.rewardPerNFTForEachBlock) > 0) {
         return formmatToToLocaleStringEnUS((Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2)) +
@@ -381,6 +391,8 @@ export default {
           (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
           Number(item.poolInfo.amount)
         ).toFixed(2)) + " STB";
+      } else if (Number(item.poolInfo.amount) == 0) {
+        return this.rewardAmount(item) + " STB"
       }
 
       // else if (Number(item.rewardForEachBlock) > 0) {
@@ -914,7 +926,7 @@ export default {
   border-style: none;
   width: 45%;
   height: 1.75rem;
-  background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);;
   border-radius: 0.875rem;
   color: #fff;
   font-size: 0.6rem;
@@ -962,7 +974,8 @@ export default {
   margin-left: 2.5%;
   width: 95%;
   height: 1.75rem;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   border-radius: 0.875rem;
   color: #fff;
   font-size: 0.6rem;
@@ -976,7 +989,8 @@ export default {
   margin-left: 2.5%;
   width: 95%;
   height: 1rem;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   border-radius: 0.875rem;
   color: #fff;
   font-size: 0.6rem;
@@ -1543,7 +1557,8 @@ export default {
     border-style: none;
     width: 45%;
     height: 1rem;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     border-radius: 0.5rem;
     color: #fff;
     font-size: 0.35rem;
@@ -1571,7 +1586,8 @@ export default {
     margin-left: 5%;
     width: 90%;
     height: 1rem;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     border-radius: 0.5rem;
     color: #fff;
     font-size: 0.35rem;
@@ -1585,7 +1601,8 @@ export default {
     margin-left: 5%;
     width: 90%;
     height: 1rem;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     border-radius: 0.5rem;
     color: #fff;
     font-size: 0.35rem;

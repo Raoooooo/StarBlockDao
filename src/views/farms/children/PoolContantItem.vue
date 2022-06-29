@@ -235,12 +235,18 @@ export default {
       }
     },
     awardAmountStr(item) {
+      if (Number(item.mining) == 0) {
+        return "0 STB";
+      }
       if (item.mining != "--") {
         return formmatToToLocaleStringEnUS((item.mining * Math.pow(10, -18)).toFixed(2)) + " STB";
       }
       return item.mining;
     },
     bonusAmountStr(item) {
+      if (Number(item.dividend) == 0) {
+        return "0 WETH";
+      }
       if (item.dividend != "--") {
         return formmatToToLocaleStringEnUS((item.dividend * Math.pow(10, -18)).toFixed(2)) + " WETH";
       }
@@ -393,6 +399,7 @@ export default {
 
 <style scoped>
 .contant {
+  margin-top: 0.1rem;
   /* border-radius: .25rem; */
   /* border-style: solid; */
   /* border-color: #ECECEC; */
@@ -419,7 +426,7 @@ export default {
   border-style: none;
   width: 45%;
   height: 1.75rem;
-  background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);;
   border-radius: 0.875rem;
   color: #fff;
   font-size: 0.6rem;
@@ -433,7 +440,8 @@ export default {
   border-style: none;
   width: 47%;
   height: 1.75rem;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   border-radius: 0.875rem;
   color: #fff;
   font-size: 0.6rem;
@@ -447,7 +455,7 @@ export default {
   height: 1.75rem;
   background-color: #e5e5e5;
   border-radius: 0.1rem;
-  background-color: #f2f2f2;
+  background: #f2f2f2;
   color: #8c9399;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -479,7 +487,8 @@ export default {
   margin-left: 2.5%;
   width: 95%;
   height: 1.75rem;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   border-radius: 0.1rem;
   color: #fff;
   font-size: 0.6rem;
@@ -535,7 +544,20 @@ export default {
   height: 1.75rem;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
+
+  .contant {
+    margin-top: -0.25rem;
+    /* border-radius: .25rem; */
+    /* border-style: solid; */
+    /* border-color: #ECECEC; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* overflow-y: scroll; */
+    /* border-width: .025rem; */
+  }
+
   .pledgeBtnBox {
     margin-top: 0.625rem;
     display: flex;
@@ -552,7 +574,8 @@ export default {
     border-style: none;
     width: 47%;
     height: 1rem;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     border-radius: 0.1rem;
     color: #fff;
     font-size: 0.35rem;
@@ -564,7 +587,7 @@ export default {
     width: 47%;
     height: 1rem;
     border-radius: 0.1rem;
-    background-color: #f2f2f2;
+    background: #f2f2f2;
     font-size: 0.35rem;
     color: #8c9399;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -591,7 +614,8 @@ export default {
     margin-left: 5%;
     width: 90%;
     height: 1rem;
-    background-color: #f7b500;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    ;
     border-radius: 0.1rem;
     color: #fff;
     font-size: 0.35rem;

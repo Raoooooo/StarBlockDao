@@ -769,7 +769,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #f7b500; */
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   width: 100%;
   border-radius: 0.5rem;
 }
@@ -803,7 +803,8 @@ export default {
   border-radius: 0.75rem;
   border-style: none;
   color: white;
-  background-color: #f7b500;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  ;
   font-size: 0.65rem;
 }
 </style>

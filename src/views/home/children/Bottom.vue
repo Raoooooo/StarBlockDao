@@ -14,6 +14,9 @@
           <a href="https://github.com/StarBlockDAO" target="_blank">
             <img v-for="(item, index) in itemBtns2" :src="item" class="itemBtnImg" />
           </a>
+          <a href="https://medium.com/@StarBlockNFT" target="_blank">
+            <img v-for="(item, index) in itemBtns3" :src="item" class="itemBtnImg" />
+          </a>
         </div>
       </div>
 
@@ -138,6 +141,12 @@ export default {
         // require("@/assets/img/common/bottom_tel.svg"),
         // require("@/assets/img/common/bottom_twwiter.svg"),
         require("@/assets/img/common/bottom_github.svg")
+      ],
+      itemBtns3: [
+        // require("@/assets/img/common/bottom_wx.svg"),
+        // require("@/assets/img/common/bottom_tel.svg"),
+        // require("@/assets/img/common/bottom_twwiter.svg"),
+        require("@/assets/img/common/bottom_medium.svg")
       ],
 
       property: "value"
@@ -285,7 +294,7 @@ export default {
   background-color: white;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .back {
     width: 100%;
     height: 3.25rem;
