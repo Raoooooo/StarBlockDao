@@ -91,13 +91,18 @@
               Opensea</p>
           </div>
         </div>
-
-        <!-- <div class="linkBottomBox">
-          <div class="linkBottomBox_sub">
-            <img class="linkBottomBox_sub_img" src="@/assets/img/farms/linkIcon1.png" />
-            <p class="linkTopBox_left_text_unActive">{{"Trading Wrapped"+ }}</p>
+        <!-- <a :href="linkOfType(item, 3)" target="_blank" class="linkBottomBox"> -->
+        <div class="linkBottomBox">
+          <div :class="item.poolInfo.wnft.length > 0 ? 'linkBottomBox_subActive' : 'linkBottomBox_sub'"
+            @click="linkBottomBoxClick(item)">
+            <img class="linkBottomBox_sub_img" :src="link3ImgUrl(item)" />
+            <p :class="item.poolInfo.wnft.length > 0 ? 'linkTopBox_left_text_active' : 'linkTopBox_left_text_unActive'">
+              {{
+                  "Trading Wrapped " + item.collection.showName
+              }}</p>
           </div>
-        </div> -->
+        </div>
+        <!-- </a> -->
 
         <!-- 抵押总量、TVL -->
         <div class="contantDetailSection2">
@@ -316,11 +321,20 @@ export default {
     };
   },
   methods: {
+    linkBottomBoxClick(item) {
+      if (item.poolInfo.wnft.length == 0) {
+        return;
+      }
+      window.open("https://www.starblock.io/collection/" + item.poolInfo.wnft)
+    },
     link1ImgUrl(item) {
       return this.isShowStarBlockLink(item) ? require('@/assets/img/farms/linkIcon1.png') : require('@/assets/img/farms/linkIcon1_unActive.png')
     },
     link2ImgUrl(item) {
       return item.collection.name ? require('@/assets/img/farms/linkIcon2.png') : require('@/assets/img/farms/linkIcon2_unActive.png')
+    },
+    link3ImgUrl(item) {
+      return item.poolInfo.wnft.length > 0 ? require('@/assets/img/farms/linkIcon1.png') : require('@/assets/img/farms/linkIcon1_unActive.png')
     },
     isShowStarBlockLink(item) {
       if (item.poolInfo.pid <= 2 || item.poolInfo.pid == 10) {
@@ -1080,13 +1094,22 @@ export default {
 }
 
 .linkBottomBox {
+  margin-top: 0rem;
+  background-color: #fff8e6;
+  /* border-radius: 0px 0px .15rem .15rem; */
+  margin-left: 2.5%;
+  width: 95%;
+}
+
+/* .linkBottomBox_sub {
   background-color: #fff8e6;
   border-radius: 0px 0px .15rem .15rem;
   margin-left: 5%;
-  width: 90%;
-}
+  width: 100%;
+} */
 
 .linkBottomBox_sub {
+  cursor: default;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1097,7 +1120,24 @@ export default {
   margin-right: .25rem;
   border-radius: 4px;
   border: 1px solid #8C9399;
-  height: .75rem;
+  height: 1.2rem;
+  margin-bottom: .5rem;
+
+}
+
+.linkBottomBox_subActive {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* cursor: pointer; */
+  margin-top: .25rem;
+  margin-left: .25rem;
+  margin-right: .25rem;
+  border-radius: 4px;
+  border: 1px solid #F7B500;
+  height: 1.2rem;
   margin-bottom: .5rem;
 
 }
@@ -1128,6 +1168,15 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #8C9399;
+  line-height: .425rem;
+}
+
+.linkTopBox_left_text_active {
+  margin-left: .125rem;
+  font-size: .5rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #F7B500;
   line-height: .425rem;
 }
 
@@ -1359,13 +1408,22 @@ export default {
   }
 
   .linkBottomBox {
+    margin-top: -0.25rem;
     background-color: #fff8e6;
-    border-radius: 0px 0px .15rem .15rem;
+    /* border-radius: 0px 0px .15rem .15rem; */
     margin-left: 5%;
     width: 90%;
   }
 
+  /* .linkBottomBox_sub {
+    background-color: #fff8e6;
+    border-radius: 0px 0px .15rem .15rem;
+    /* margin-left: 5%; */
+  /* width: 100%; */
+  /* }  */
+
   .linkBottomBox_sub {
+    cursor: default;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1376,6 +1434,23 @@ export default {
     margin-right: .25rem;
     border-radius: 4px;
     border: 1px solid #8C9399;
+    height: .75rem;
+    margin-bottom: .25rem;
+
+  }
+
+  .linkBottomBox_subActive {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* cursor: pointer; */
+    margin-top: .25rem;
+    margin-left: .25rem;
+    margin-right: .25rem;
+    border-radius: 4px;
+    border: 1px solid #F7B500;
     height: .75rem;
     margin-bottom: .25rem;
 
@@ -1409,6 +1484,16 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #8C9399;
+    line-height: .425rem;
+  }
+
+  .linkTopBox_left_text_active {
+    overflow: hidden;
+    margin-left: .125rem;
+    font-size: .3rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #F7B500;
     line-height: .425rem;
   }
 
