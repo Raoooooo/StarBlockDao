@@ -3,11 +3,13 @@ export declare const deployed: {
         NFTMasterChef: string;
         NFTUtils: string;
         MerkletRootDistributor: string;
+        NFTMasterChefBatch: string;
     };
     main: {
         NFTMasterChef: string;
         NFTUtils: string;
         FACTORY: string;
         MerkletRootDistributor: string;
+        NFTMasterChefBatch: string;
     };
 };

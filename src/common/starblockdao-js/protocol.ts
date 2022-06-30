@@ -13,6 +13,7 @@ export class Protocol {
   private NFTUtilsAbi: PartialReadonlyContractAbi;
   public MerkletRootDistributorContractAddress: string;
   public MerkletRootDistributorContract: Contract;
+  public NFTMasterChefBatchContract: Contract;
   private _networkName = Network.Main;
 
   constructor(provider: Web3, chainId: number) {
@@ -44,6 +45,11 @@ export class Protocol {
     this.MerkletRootDistributorContract = new this.web3.eth.Contract(
       MerkletRootDistributorAbi,
       this.MerkletRootDistributorContractAddress
+    );
+
+    this.NFTMasterChefBatchContract = new this.web3.eth.Contract(
+      constants.NFTMASTERCHEFBATCH_ABI,
+      constants.DEPLOYED[this._networkName].NFTMasterChefBatch
     );
   }
 

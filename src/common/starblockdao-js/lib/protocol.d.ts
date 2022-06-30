@@ -10,6 +10,7 @@ export declare class Protocol {
     private NFTUtilsAbi;
     MerkletRootDistributorContractAddress: string;
     MerkletRootDistributorContract: Contract;
+    NFTMasterChefBatchContract: Contract;
     private _networkName;
     constructor(provider: Web3, chainId: number);
     setERC721Addess(address: string): Contract;

@@ -4,6 +4,7 @@ import { NFTUtils } from "./abi/NFTUtils";
 import { REC721 } from "./abi/REC721";
 import { IWrappedNFT } from "./abi/IWrappedNFT";
 import { MerkletRootDistributor } from "./abi/MerkletRootDistributor";
+import { NFTMasterChefBatch } from "./abi/NFTMasterChefBatch";
 
 export const constants = {
   DEPLOYED: deployed,
@@ -11,5 +12,6 @@ export const constants = {
   NFTUtils_ABI: NFTUtils,
   REC721_ABI: REC721,
   IWrappedNFT_ABI: IWrappedNFT,
-  MerkletRootDistributor_ABI: MerkletRootDistributor
+  MerkletRootDistributor_ABI: MerkletRootDistributor,
+  NFTMASTERCHEFBATCH_ABI: NFTMasterChefBatch
 };
