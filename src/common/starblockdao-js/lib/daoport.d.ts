@@ -106,4 +106,12 @@ export declare class DaoPort {
         nft: string;
         user: string;
     }): Promise<[]>;
+    getPoolInfosUserCanDeposit({ user, withOwnedNFTTokenIds }: {
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<{}>;
+    getPoolInfosUserDeposited({ user, withOwnedNFTTokenIds }: {
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<{}>;
 }

@@ -597,6 +597,40 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
+    DaoPort.prototype.getPoolInfosUserCanDeposit = function (_a) {
+        var user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfos;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolInfosUserCanDeposit(user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfos = _b.sent();
+                        console.log("getPoolInfosUserCanDeposit:::", _wrappedPoolInfos);
+                        return [2 /*return*/, _wrappedPoolInfos];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getPoolInfosUserDeposited = function (_a) {
+        var user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfos;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolInfosUserDeposited(user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfos = _b.sent();
+                        console.log("getPoolInfosUserDeposited:::", _wrappedPoolInfos);
+                        return [2 /*return*/, _wrappedPoolInfos];
+                }
+            });
+        });
+    };
     return DaoPort;
 }());
 exports.DaoPort = DaoPort;

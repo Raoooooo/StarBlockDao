@@ -32,6 +32,8 @@
     <button id="button" @click="ownedWNFTsTokenIdsByPids">ownedWNFTsTokenIdsByPids</button>
     <button id="button" @click="ownedNFTsTokenIdsByNFTs">ownedNFTsTokenIdsByNFTs</button>
     <button id="button" @click="ownedNFTTokenIds">ownedNFTTokenIds</button>
+    <button id="button" @click="getPoolInfosUserCanDeposit">getPoolInfosUserCanDeposit</button>
+    <button id="button" @click="getPoolInfosUserDeposited">getPoolInfosUserDeposited</button>
   </div>
 </template>
 
@@ -655,6 +657,60 @@ export default {
       };
       const ownedTokenIds = await daoport.ownedNFTTokenIds(parameters);
       console.log("Document ownedNFTTokenIds:::", ownedTokenIds);
+    },
+
+    async ownedNFTTokenIds() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const nft = "0xe4895a9FEF7F186c848e9504b104C7ce3583f15a";
+      const user = accounts[0];
+      const parameters = {
+        nft,
+        user
+      };
+      const ownedTokenIds = await daoport.ownedNFTTokenIds(parameters);
+      console.log("Document ownedNFTTokenIds:::", ownedTokenIds);
+    },
+
+    async getPoolInfosUserCanDeposit() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfos = await daoport.getPoolInfosUserCanDeposit(parameters);
+      console.log("Document getPoolInfosUserCanDeposit:::", wrappedPoolInfos);
+    },
+
+    async getPoolInfosUserDeposited() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfos = await daoport.getPoolInfosUserDeposited(parameters);
+      console.log("Document getPoolInfosUserDeposited:::", wrappedPoolInfos);
     },
 
     toggleShow() {

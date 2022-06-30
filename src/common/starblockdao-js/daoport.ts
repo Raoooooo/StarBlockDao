@@ -551,4 +551,32 @@ export class DaoPort {
     console.log("ownedNFTTokenIds:::", _ownedTokenIds);
     return _ownedTokenIds;
   }
+
+  public async getPoolInfosUserCanDeposit({
+    user,
+    withOwnedNFTTokenIds
+  }: {
+    user: string;
+    withOwnedNFTTokenIds: boolean;
+  }): Promise<{}> {
+    const _wrappedPoolInfos = await this._protocol.NFTMasterChefBatchContract.methods
+      .getPoolInfosUserCanDeposit(user, withOwnedNFTTokenIds)
+      .call();
+    console.log("getPoolInfosUserCanDeposit:::", _wrappedPoolInfos);
+    return _wrappedPoolInfos;
+  }
+
+  public async getPoolInfosUserDeposited({
+    user,
+    withOwnedNFTTokenIds
+  }: {
+    user: string;
+    withOwnedNFTTokenIds: boolean;
+  }): Promise<{}> {
+    const _wrappedPoolInfos = await this._protocol.NFTMasterChefBatchContract.methods
+      .getPoolInfosUserDeposited(user, withOwnedNFTTokenIds)
+      .call();
+    console.log("getPoolInfosUserDeposited:::", _wrappedPoolInfos);
+    return _wrappedPoolInfos;
+  }
 }
