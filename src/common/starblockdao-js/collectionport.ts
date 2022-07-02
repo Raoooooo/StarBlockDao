@@ -1,0 +1,150 @@
+import Web3 from "web3";
+import { Protocol } from "./protocol";
+import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import BigNumber from "bignumber.js";
+
+export class CollectionPort {
+  private _protocol: Protocol;
+  constructor(provider: Web3, chainId: number) {
+    this._protocol = new Protocol(provider, chainId);
+  }
+
+  public setAccount(account: string) {
+    this._protocol.account = account;
+  }
+
+  public setOnlyReadWeb3Provider(provider: Web3) {
+    this._protocol.onlyReadNFTUtilsContract(provider);
+  }
+
+  public async publicSaleConfig(): Promise<{}> {
+    const publicSaleConfig = await this._protocol.StarblockCollectionContract.methods
+      .publicSaleConfig()
+      .call();
+    console.log("publicSaleConfig:::", publicSaleConfig);
+    return publicSaleConfig;
+  }
+
+  public async getInfo(user: string): Promise<{}> {
+    const {
+      _maxSupply,
+      _totalSupply,
+      _userCanMintAmount,
+      _whitelistSaleConfig,
+      _whitelistSaleStatus,
+      _whitelistAmount,
+      _publicSaleConfig,
+      _publicSaleStatus,
+      _inWhitelist,
+      _whitelistSaleuserCanMintAmount,
+      _publicSaleuserCanMintAmount
+    } = await this._protocol.StarblockCollectionContract.methods.getInfo(user).call();
+    const info = {
+      _maxSupply,
+      _totalSupply,
+      _userCanMintAmount,
+      _whitelistSaleConfig,
+      _whitelistSaleStatus,
+      _whitelistAmount,
+      _publicSaleConfig,
+      _publicSaleStatus,
+      _inWhitelist,
+      _whitelistSaleuserCanMintAmount,
+      _publicSaleuserCanMintAmount
+    };
+    console.log("getInfo:::", info);
+    return info;
+  }
+
+  public async userCanMint(user: string, amount: number): Promise<{}> {
+    const {
+      _whitelistSaleCanMint,
+      _whitelistSaleMessage,
+      _publicSaleCanMint,
+      _publicSaleMessage
+    } = await this._protocol.StarblockCollectionContract.methods.userCanMint(user, amount).call();
+    const info = {
+      _whitelistSaleCanMint,
+      _whitelistSaleMessage,
+      _publicSaleCanMint,
+      _publicSaleMessage
+    };
+    console.log("userCanMint:::", info);
+    return info;
+  }
+
+  public async setSaleConfig(whitelistSaleConfig: [], publicSaleConfig: []): Promise<string> {
+    let txHash;
+    try {
+      const txnData = { from: this._protocol.account };
+      txHash = await this._protocol.StarblockCollectionContract.methods
+        .setSaleConfig(whitelistSaleConfig, publicSaleConfig)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to setSaleConfig transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
+  public async addWhitelists(addresses: string[]): Promise<string> {
+    let txHash;
+    try {
+      const txnData = { from: this._protocol.account };
+      txHash = await this._protocol.StarblockCollectionContract.methods
+        .addWhitelists(addresses)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to addWhitelists transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
+  public async whitelistMint(amount: number, price: BigNumber): Promise<string> {
+    let txHash;
+    try {
+      const value = price.multipliedBy(amount);
+      const txnData = { from: this._protocol.account, value };
+
+      txHash = await this._protocol.StarblockCollectionContract.methods
+        .whitelistMint(amount)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to whitelistMint transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
+  public async publicMint(amount: number, price: BigNumber): Promise<string> {
+    let txHash;
+    try {
+      const value = price.multipliedBy(amount);
+      const txnData = { from: this._protocol.account, value };
+      txHash = await this._protocol.StarblockCollectionContract.methods
+        .publicMint(amount)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to publicMint transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+}

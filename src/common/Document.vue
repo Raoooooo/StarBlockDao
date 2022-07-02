@@ -34,6 +34,13 @@
     <button id="button" @click="ownedNFTTokenIds">ownedNFTTokenIds</button>
     <button id="button" @click="getPoolInfosUserCanDeposit">getPoolInfosUserCanDeposit</button>
     <button id="button" @click="getPoolInfosUserDeposited">getPoolInfosUserDeposited</button>
+
+    <button id="button" @click="getInfo">getInfo</button>
+    <button id="button" @click="userCanMint">userCanMint</button>
+    <button id="button" @click="setSaleConfig">setSaleConfig</button>
+    <button id="button" @click="addWhitelists">addWhitelists</button>
+    <button id="button" @click="whitelistMint">whitelistMint</button>
+    <button id="button" @click="publicMint">publicMint</button>
   </div>
 </template>
 
@@ -43,6 +50,7 @@ import * as Web3 from "web3";
 // var web3  = require('web3')
 
 import { DaoPort } from "./starblockdao-js/lib/daoport";
+import { CollectionPort } from "./starblockdao-js/lib/collectionport";
 import { Network, Web3Callback } from "./starblockdao-js/lib/types";
 
 var network_Name = Network.Rinkeby;
@@ -58,6 +66,7 @@ export var providerInstance;
 export var protocolInstance;
 var accounts;
 var daoport;
+var starblockport;
 
 export default {
   created() {
@@ -92,6 +101,15 @@ export default {
         web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
       }
       return web3;
+    },
+
+    async getStarBlockPort(account) {
+      //主网 1： 测试：4
+      starblockport = new CollectionPort(this.initWeb3(), 4);
+      starblockport.setAccount(account);
+      const PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
+      const onlyReadWeb3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+      starblockport.setOnlyReadWeb3Provider(onlyReadWeb3);
     },
 
     async getDaoPort(account) {
@@ -711,6 +729,105 @@ export default {
       };
       const wrappedPoolInfos = await daoport.getPoolInfosUserDeposited(parameters);
       console.log("Document getPoolInfosUserDeposited:::", wrappedPoolInfos);
+    },
+
+    async getInfo() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const info = await starblockport.getInfo(user);
+      console.log("Document getInfo:::", info, info._whitelistSaleConfig, info._publicSaleConfig);
+      setLocalStorage("whitelistSaleConfig", info._whitelistSaleConfig);
+      setLocalStorage("publicSaleConfig", info._publicSaleConfig);
+    },
+
+    async userCanMint() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const amount = 3;
+      const info = await starblockport.userCanMint(user, amount);
+      console.log("Document userCanMint:::", info);
+    },
+
+    async setSaleConfig() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const forUser = accounts[0];
+      const whitelistSaleConfig = [1656676159, 1656754200, "20000000000000000", 100];
+      const publicSaleConfig = [1656676159, 1656757800, "10000000000000000", 100];
+      try {
+        const txHash = await starblockport.setSaleConfig(whitelistSaleConfig, publicSaleConfig);
+        console.log("setSaleConfig==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async addWhitelists() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const addresses = ["0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa"];
+      try {
+        const txHash = await starblockport.addWhitelists(addresses);
+        console.log("addWhitelists==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async whitelistMint() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const whitelistSaleConfig = JSON.parse(getLocalStorage("whitelistSaleConfig"));
+      if (!whitelistSaleConfig) return;
+
+      try {
+        const amount = 3;
+        const price = new BigNumber(whitelistSaleConfig[2]);
+        const txHash = await starblockport.whitelistMint(amount, price);
+        console.log("whitelistMint==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async publicMint() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const publicSaleConfig = JSON.parse(getLocalStorage("publicSaleConfig"));
+      if (!publicSaleConfig) return;
+
+      try {
+        const amount = 3;
+        const price = new BigNumber(publicSaleConfig[2]);
+        const txHash = await starblockport.publicMint(amount, price);
+        console.log("publicMint==txhash", txHash);
+      } catch (error) {}
     },
 
     toggleShow() {

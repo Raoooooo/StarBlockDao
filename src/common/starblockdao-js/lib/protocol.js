@@ -61,6 +61,7 @@ var Protocol = /** @class */ (function () {
         var MerkletRootDistributorAbi = protocolConstants_1.constants.MerkletRootDistributor_ABI;
         this.MerkletRootDistributorContract = new this.web3.eth.Contract(MerkletRootDistributorAbi, this.MerkletRootDistributorContractAddress);
         this.NFTMasterChefBatchContract = new this.web3.eth.Contract(protocolConstants_1.constants.NFTMASTERCHEFBATCH_ABI, protocolConstants_1.constants.DEPLOYED[this._networkName].NFTMasterChefBatch);
+        this.StarblockCollectionContract = new this.web3.eth.Contract(protocolConstants_1.constants.STARBLOCKCOLLECTION_ABI, protocolConstants_1.constants.DEPLOYED[this._networkName].StarBlockCollection);
     }
     Protocol.prototype.setERC721Addess = function (address) {
         return new this.web3.eth.Contract(protocolConstants_1.constants.REC721_ABI, address);

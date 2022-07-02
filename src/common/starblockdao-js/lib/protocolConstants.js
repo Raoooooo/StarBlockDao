@@ -8,6 +8,7 @@ var REC721_1 = require("./abi/REC721");
 var IWrappedNFT_1 = require("./abi/IWrappedNFT");
 var MerkletRootDistributor_1 = require("./abi/MerkletRootDistributor");
 var NFTMasterChefBatch_1 = require("./abi/NFTMasterChefBatch");
+var StarBlockCollection_1 = require("./abi/StarBlockCollection");
 exports.constants = {
     DEPLOYED: deployed_1.deployed,
     NFTMASTERCHEF_ABI: NFTMasterChef_1.NFTMasterChef,
@@ -15,5 +16,6 @@ exports.constants = {
     REC721_ABI: REC721_1.REC721,
     IWrappedNFT_ABI: IWrappedNFT_1.IWrappedNFT,
     MerkletRootDistributor_ABI: MerkletRootDistributor_1.MerkletRootDistributor,
-    NFTMASTERCHEFBATCH_ABI: NFTMasterChefBatch_1.NFTMasterChefBatch
+    NFTMASTERCHEFBATCH_ABI: NFTMasterChefBatch_1.NFTMasterChefBatch,
+    STARBLOCKCOLLECTION_ABI: StarBlockCollection_1.StarBlockCollectionAbi
 };

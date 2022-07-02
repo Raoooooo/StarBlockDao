@@ -14,6 +14,7 @@ export class Protocol {
   public MerkletRootDistributorContractAddress: string;
   public MerkletRootDistributorContract: Contract;
   public NFTMasterChefBatchContract: Contract;
+  public StarblockCollectionContract: Contract;
   private _networkName = Network.Main;
 
   constructor(provider: Web3, chainId: number) {
@@ -50,6 +51,11 @@ export class Protocol {
     this.NFTMasterChefBatchContract = new this.web3.eth.Contract(
       constants.NFTMASTERCHEFBATCH_ABI,
       constants.DEPLOYED[this._networkName].NFTMasterChefBatch
+    );
+
+    this.StarblockCollectionContract = new this.web3.eth.Contract(
+      constants.STARBLOCKCOLLECTION_ABI,
+      constants.DEPLOYED[this._networkName].StarBlockCollection
     );
   }
 
