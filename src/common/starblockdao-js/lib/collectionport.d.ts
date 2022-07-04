@@ -4,6 +4,8 @@ export declare class CollectionPort {
     private _protocol;
     constructor(provider: Web3, chainId: number);
     setAccount(account: string): void;
+    setStarblockCollectionAddress(contractAddress: string): void;
+    getStarBlockByteCodeAbi(): {};
     setOnlyReadWeb3Provider(provider: Web3): void;
     publicSaleConfig(): Promise<{}>;
     getInfo(user: string): Promise<{}>;
@@ -12,4 +14,5 @@ export declare class CollectionPort {
     addWhitelists(addresses: string[]): Promise<string>;
     whitelistMint(amount: number, price: BigNumber): Promise<string>;
     publicMint(amount: number, price: BigNumber): Promise<string>;
+    getCollectionInfo(starBlockCollectionAddress: string, user: string): Promise<{}>;
 }

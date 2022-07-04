@@ -4,7 +4,7 @@ export declare const deployed: {
         NFTUtils: string;
         MerkletRootDistributor: string;
         NFTMasterChefBatch: string;
-        StarBlockCollection: string;
+        StarBlockCollectionUtils: string;
     };
     main: {
         NFTMasterChef: string;
@@ -12,6 +12,6 @@ export declare const deployed: {
         FACTORY: string;
         MerkletRootDistributor: string;
         NFTMasterChefBatch: string;
-        StarBlockCollection: string;
+        StarBlockCollectionUtils: string;
     };
 };

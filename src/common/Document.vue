@@ -35,12 +35,14 @@
     <button id="button" @click="getPoolInfosUserCanDeposit">getPoolInfosUserCanDeposit</button>
     <button id="button" @click="getPoolInfosUserDeposited">getPoolInfosUserDeposited</button>
 
+    <button id="button" @click="deploy">部署合约</button>
     <button id="button" @click="getInfo">getInfo</button>
     <button id="button" @click="userCanMint">userCanMint</button>
     <button id="button" @click="setSaleConfig">setSaleConfig</button>
     <button id="button" @click="addWhitelists">addWhitelists</button>
     <button id="button" @click="whitelistMint">whitelistMint</button>
     <button id="button" @click="publicMint">publicMint</button>
+    <button id="button" @click="getCollectionInfo">getCollectionInfo</button>
   </div>
 </template>
 
@@ -107,9 +109,15 @@ export default {
       //主网 1： 测试：4
       starblockport = new CollectionPort(this.initWeb3(), 4);
       starblockport.setAccount(account);
-      const PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
-      const onlyReadWeb3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
-      starblockport.setOnlyReadWeb3Provider(onlyReadWeb3);
+
+      const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
+      const address = starblockCollection.address;
+      if (!address || address.length === 0) {
+        console.log("没有starblockCollection合约地址");
+        return;
+      }
+
+      starblockport.setStarblockCollectionAddress(address);
     },
 
     async getDaoPort(account) {
@@ -828,6 +836,82 @@ export default {
         const txHash = await starblockport.publicMint(amount, price);
         console.log("publicMint==txhash", txHash);
       } catch (error) {}
+    },
+
+    async deploy() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+
+      const account = accounts[0];
+      if (!starblockport) {
+        this.getStarBlockPort(account);
+      }
+      const web3 = this.initWeb3();
+
+      const byteCodeAbi = starblockport.getStarBlockByteCodeAbi();
+      const contract = new web3.eth.Contract(byteCodeAbi.abi);
+
+      const data = byteCodeAbi.byteCode;
+      const name = "DemoTest0704";
+      const symbol = "DemoTest0704";
+      const maxSupply = 10000;
+      const chargeToken = "0x0000000000000000000000000000000000000000";
+      const baseTokenURI = "https://meta.rebelkidsparade.com/meta/";
+      const maxAmountForArtist = 1000;
+      const protocolFeeReceiver = "0xbF44214fB2C31cfBFBd2Ba0496a11772c7BE47cb";
+      const protocolFeeNumerator = 2000;
+      const royaltyReceiver = account;
+      const royaltyFeeNumerator = 1000;
+
+      const options = {
+        data,
+        arguments: [
+          name,
+          symbol,
+          maxSupply,
+          chargeToken,
+          baseTokenURI,
+          maxAmountForArtist,
+          protocolFeeReceiver,
+          protocolFeeNumerator,
+          royaltyReceiver,
+          royaltyFeeNumerator
+        ]
+      };
+      const txnData = { from: account };
+      await contract
+        .deploy(options)
+        .send(txnData)
+        .on("transactionHash", tH => console.log("on--transactionHash:==>", tH))
+        .then(function(res) {
+          console.log("then--", res.options.address.toLowerCase());
+          const address = res.options.address.toLowerCase();
+          setLocalStorage("starblockCollection", { address });
+        })
+        .catch(function(err) {
+          console.log("catch--", err);
+        });
+    },
+
+    async getCollectionInfo() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
+      const address = starblockCollection.address;
+      if (!address || address.length === 0) {
+        console.log("没有starblockCollection合约地址");
+        return;
+      }
+      const starBlockCollectionAddress = address;
+      const user = accounts[0];
+      const info = await starblockport.getCollectionInfo(starBlockCollectionAddress, user);
+      console.log("Document getCollectionInfo:::", info);
     },
 
     toggleShow() {

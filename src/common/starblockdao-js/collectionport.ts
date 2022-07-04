@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { Protocol } from "./protocol";
 import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
 import BigNumber from "bignumber.js";
+import { constants } from "./protocolConstants";
 
 export class CollectionPort {
   private _protocol: Protocol;
@@ -11,6 +12,19 @@ export class CollectionPort {
 
   public setAccount(account: string) {
     this._protocol.account = account;
+  }
+
+  public setStarblockCollectionAddress(contractAddress: string) {
+    this._protocol.setStarblockCollectionAddress(contractAddress);
+  }
+
+  public getStarBlockByteCodeAbi(): {} {
+    const byteCode = constants.STARBLOCKCOLLECTION_BYTECODE;
+    const abi = constants.STARBLOCKCOLLECTION_ABI;
+    return {
+      byteCode,
+      abi
+    };
   }
 
   public setOnlyReadWeb3Provider(provider: Web3) {
@@ -146,5 +160,20 @@ export class CollectionPort {
       );
     }
     return txHash;
+  }
+
+  public async getCollectionInfo(starBlockCollectionAddress: string, user: string): Promise<{}> {
+    const {
+      _collectionInfo,
+      _userInfo
+    } = await this._protocol.StarblockCollectionUtilsContract.methods
+      .getCollectionInfo(starBlockCollectionAddress, user)
+      .call();
+    const info = {
+      _collectionInfo,
+      _userInfo
+    };
+    console.log("getCollectionInfo:::", info);
+    return info;
   }
 }

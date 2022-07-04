@@ -5,7 +5,7 @@ export declare const constants: {
             NFTUtils: string;
             MerkletRootDistributor: string;
             NFTMasterChefBatch: string;
-            StarBlockCollection: string;
+            StarBlockCollectionUtils: string;
         };
         main: {
             NFTMasterChef: string;
@@ -13,7 +13,7 @@ export declare const constants: {
             FACTORY: string;
             MerkletRootDistributor: string;
             NFTMasterChefBatch: string;
-            StarBlockCollection: string;
+            StarBlockCollectionUtils: string;
         };
     };
     NFTMASTERCHEF_ABI: import("./types").PartialReadonlyContractAbi;
@@ -23,4 +23,6 @@ export declare const constants: {
     MerkletRootDistributor_ABI: import("./types").PartialReadonlyContractAbi;
     NFTMASTERCHEFBATCH_ABI: import("./types").PartialReadonlyContractAbi;
     STARBLOCKCOLLECTION_ABI: import("./types").PartialReadonlyContractAbi;
+    STARBLOCKCOLLECTION_BYTECODE: string;
+    STARBLOCKCOLLECTIONUTILS_ABI: import("./types").PartialReadonlyContractAbi;
 };

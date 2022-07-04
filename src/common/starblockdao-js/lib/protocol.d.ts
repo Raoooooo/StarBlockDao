@@ -12,8 +12,10 @@ export declare class Protocol {
     MerkletRootDistributorContract: Contract;
     NFTMasterChefBatchContract: Contract;
     StarblockCollectionContract: Contract;
+    StarblockCollectionUtilsContract: Contract;
     private _networkName;
     constructor(provider: Web3, chainId: number);
+    setStarblockCollectionAddress(contractAddress: string): void;
     setERC721Addess(address: string): Contract;
     setIWrappedNFTAddress(address: string): Contract;
     onlyReadNFTUtilsContract(provider: Web3): void;

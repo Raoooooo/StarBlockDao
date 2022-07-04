@@ -38,12 +38,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CollectionPort = void 0;
 var protocol_1 = require("./protocol");
+var protocolConstants_1 = require("./protocolConstants");
 var CollectionPort = /** @class */ (function () {
     function CollectionPort(provider, chainId) {
         this._protocol = new protocol_1.Protocol(provider, chainId);
     }
     CollectionPort.prototype.setAccount = function (account) {
         this._protocol.account = account;
+    };
+    CollectionPort.prototype.setStarblockCollectionAddress = function (contractAddress) {
+        this._protocol.setStarblockCollectionAddress(contractAddress);
+    };
+    CollectionPort.prototype.getStarBlockByteCodeAbi = function () {
+        var byteCode = protocolConstants_1.constants.STARBLOCKCOLLECTION_BYTECODE;
+        var abi = protocolConstants_1.constants.STARBLOCKCOLLECTION_ABI;
+        return {
+            byteCode: byteCode,
+            abi: abi
+        };
     };
     CollectionPort.prototype.setOnlyReadWeb3Provider = function (provider) {
         this._protocol.onlyReadNFTUtilsContract(provider);
@@ -201,6 +213,26 @@ var CollectionPort = /** @class */ (function () {
                         console.error(error_4);
                         throw new Error("Failed to publicMint transaction: \"".concat(error_4 instanceof Error && error_4.message ? error_4.message : "user denied", "...\""));
                     case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    CollectionPort.prototype.getCollectionInfo = function (starBlockCollectionAddress, user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, _collectionInfo, _userInfo, info;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.StarblockCollectionUtilsContract.methods
+                            .getCollectionInfo(starBlockCollectionAddress, user)
+                            .call()];
+                    case 1:
+                        _a = _b.sent(), _collectionInfo = _a._collectionInfo, _userInfo = _a._userInfo;
+                        info = {
+                            _collectionInfo: _collectionInfo,
+                            _userInfo: _userInfo
+                        };
+                        console.log("getCollectionInfo:::", info);
+                        return [2 /*return*/, info];
                 }
             });
         });
