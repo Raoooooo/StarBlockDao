@@ -123,7 +123,7 @@ var CollectionPort = /** @class */ (function () {
             });
         });
     };
-    CollectionPort.prototype.setSaleConfig = function (whitelistSaleConfig, publicSaleConfig) {
+    CollectionPort.prototype.updateWhitelistSaleConfig = function (whitelistSaleConfig) {
         return __awaiter(this, void 0, void 0, function () {
             var txHash, txnData, error_1;
             return __generator(this, function (_a) {
@@ -132,7 +132,7 @@ var CollectionPort = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods
-                                .setSaleConfig(whitelistSaleConfig, publicSaleConfig)
+                                .updateWhitelistSaleConfig(whitelistSaleConfig)
                                 .send(txnData)];
                     case 1:
                         txHash = _a.sent();
@@ -140,7 +140,30 @@ var CollectionPort = /** @class */ (function () {
                     case 2:
                         error_1 = _a.sent();
                         console.error(error_1);
-                        throw new Error("Failed to setSaleConfig transaction: \"".concat(error_1 instanceof Error && error_1.message ? error_1.message : "user denied", "...\""));
+                        throw new Error("Failed to updateWhitelistSaleConfig transaction: \"".concat(error_1 instanceof Error && error_1.message ? error_1.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    CollectionPort.prototype.updatePublicSaleConfig = function (publicSaleConfig) {
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods
+                                .updatePublicSaleConfig(publicSaleConfig)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error(error_2);
+                        throw new Error("Failed to updatePublicSaleConfig transaction: \"".concat(error_2 instanceof Error && error_2.message ? error_2.message : "user denied", "...\""));
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -148,7 +171,7 @@ var CollectionPort = /** @class */ (function () {
     };
     CollectionPort.prototype.addWhitelists = function (addresses) {
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, txnData, error_2;
+            var txHash, txnData, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -161,58 +184,112 @@ var CollectionPort = /** @class */ (function () {
                         txHash = _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        error_2 = _a.sent();
-                        console.error(error_2);
-                        throw new Error("Failed to addWhitelists transaction: \"".concat(error_2 instanceof Error && error_2.message ? error_2.message : "user denied", "...\""));
-                    case 3: return [2 /*return*/, txHash];
-                }
-            });
-        });
-    };
-    CollectionPort.prototype.whitelistMint = function (amount, price) {
-        return __awaiter(this, void 0, void 0, function () {
-            var txHash, value, txnData, error_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        value = price.multipliedBy(amount);
-                        txnData = { from: this._protocol.account, value: value };
-                        return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods
-                                .whitelistMint(amount)
-                                .send(txnData)];
-                    case 1:
-                        txHash = _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
                         error_3 = _a.sent();
                         console.error(error_3);
-                        throw new Error("Failed to whitelistMint transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
+                        throw new Error("Failed to addWhitelists transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
                     case 3: return [2 /*return*/, txHash];
                 }
             });
         });
     };
-    CollectionPort.prototype.publicMint = function (amount, price) {
+    CollectionPort.prototype.whitelistMint = function (amount, price, callCallback, resultCallback, errorCallback) {
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, value, txnData, error_4;
+            var value, txnData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
                         value = price.multipliedBy(amount);
                         txnData = { from: this._protocol.account, value: value };
+                        //   txHash = await this._protocol.StarblockCollectionContract.methods
+                        //     .whitelistMint(amount)
+                        //     .send(txnData);
+                        // } catch (error) {
+                        //   console.error(error);
+                        //   throw new Error(
+                        //     `Failed to whitelistMint transaction: "${
+                        //       error instanceof Error && error.message ? error.message : "user denied"
+                        //     }..."`
+                        //   );
+                        // }
+                        // return txHash;
+                        return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods
+                                .whitelistMint(amount)
+                                .send(txnData)
+                                .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                                .then(function (res) {
+                                resultCallback(res);
+                            })
+                                .catch(function (error) {
+                                errorCallback(new Error("Failed to whitelistMint transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                            })];
+                    case 1:
+                        //   txHash = await this._protocol.StarblockCollectionContract.methods
+                        //     .whitelistMint(amount)
+                        //     .send(txnData);
+                        // } catch (error) {
+                        //   console.error(error);
+                        //   throw new Error(
+                        //     `Failed to whitelistMint transaction: "${
+                        //       error instanceof Error && error.message ? error.message : "user denied"
+                        //     }..."`
+                        //   );
+                        // }
+                        // return txHash;
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CollectionPort.prototype.publicMint = function (amount, price, callCallback, resultCallback, errorCallback) {
+        return __awaiter(this, void 0, void 0, function () {
+            var value, txnData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        value = price.multipliedBy(amount);
+                        txnData = { from: this._protocol.account, value: value };
+                        //   txHash = await this._protocol.StarblockCollectionContract.methods
+                        //     .publicMint(amount)
+                        //     .send(txnData);
+                        // } catch (error) {
+                        //   console.error(error);
+                        //   throw new Error(
+                        //     `Failed to publicMint transaction: "${
+                        //       error instanceof Error && error.message ? error.message : "user denied"
+                        //     }..."`
+                        //   );
+                        // }
+                        // return txHash;
                         return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods
                                 .publicMint(amount)
-                                .send(txnData)];
+                                .send(txnData)
+                                .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                                .then(function (res) {
+                                resultCallback(res);
+                            })
+                                .catch(function (error) {
+                                errorCallback(new Error("Failed to publicMint transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                            })];
                     case 1:
-                        txHash = _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_4 = _a.sent();
-                        console.error(error_4);
-                        throw new Error("Failed to publicMint transaction: \"".concat(error_4 instanceof Error && error_4.message ? error_4.message : "user denied", "...\""));
-                    case 3: return [2 /*return*/, txHash];
+                        //   txHash = await this._protocol.StarblockCollectionContract.methods
+                        //     .publicMint(amount)
+                        //     .send(txnData);
+                        // } catch (error) {
+                        //   console.error(error);
+                        //   throw new Error(
+                        //     `Failed to publicMint transaction: "${
+                        //       error instanceof Error && error.message ? error.message : "user denied"
+                        //     }..."`
+                        //   );
+                        // }
+                        // return txHash;
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });

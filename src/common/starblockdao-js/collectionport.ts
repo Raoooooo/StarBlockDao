@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { Protocol } from "./protocol";
-import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import { ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
 import BigNumber from "bignumber.js";
 import { constants } from "./protocolConstants";
 
@@ -87,17 +87,35 @@ export class CollectionPort {
     return info;
   }
 
-  public async setSaleConfig(whitelistSaleConfig: [], publicSaleConfig: []): Promise<string> {
+  public async updateWhitelistSaleConfig(whitelistSaleConfig: []): Promise<string> {
     let txHash;
     try {
       const txnData = { from: this._protocol.account };
       txHash = await this._protocol.StarblockCollectionContract.methods
-        .setSaleConfig(whitelistSaleConfig, publicSaleConfig)
+        .updateWhitelistSaleConfig(whitelistSaleConfig)
         .send(txnData);
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to setSaleConfig transaction: "${
+        `Failed to updateWhitelistSaleConfig transaction: "${
+          error instanceof Error && error.message ? error.message : "user denied"
+        }..."`
+      );
+    }
+    return txHash;
+  }
+
+  public async updatePublicSaleConfig(publicSaleConfig: []): Promise<string> {
+    let txHash;
+    try {
+      const txnData = { from: this._protocol.account };
+      txHash = await this._protocol.StarblockCollectionContract.methods
+        .updatePublicSaleConfig(publicSaleConfig)
+        .send(txnData);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to updatePublicSaleConfig transaction: "${
           error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
@@ -123,43 +141,93 @@ export class CollectionPort {
     return txHash;
   }
 
-  public async whitelistMint(amount: number, price: BigNumber): Promise<string> {
-    let txHash;
-    try {
-      const value = price.multipliedBy(amount);
-      const txnData = { from: this._protocol.account, value };
+  public async whitelistMint(
+    amount: number,
+    price: BigNumber,
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
+    // let txHash;
+    // try {
+    const value = price.multipliedBy(amount);
+    const txnData = { from: this._protocol.account, value };
 
-      txHash = await this._protocol.StarblockCollectionContract.methods
-        .whitelistMint(amount)
-        .send(txnData);
-    } catch (error) {
-      console.error(error);
-      throw new Error(
-        `Failed to whitelistMint transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+    //   txHash = await this._protocol.StarblockCollectionContract.methods
+    //     .whitelistMint(amount)
+    //     .send(txnData);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw new Error(
+    //     `Failed to whitelistMint transaction: "${
+    //       error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
+
+    await this._protocol.StarblockCollectionContract.methods
+      .whitelistMint(amount)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to whitelistMint transaction: "${
+              error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
   }
 
-  public async publicMint(amount: number, price: BigNumber): Promise<string> {
-    let txHash;
-    try {
-      const value = price.multipliedBy(amount);
-      const txnData = { from: this._protocol.account, value };
-      txHash = await this._protocol.StarblockCollectionContract.methods
-        .publicMint(amount)
-        .send(txnData);
-    } catch (error) {
-      console.error(error);
-      throw new Error(
-        `Failed to publicMint transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+  public async publicMint(
+    amount: number,
+    price: BigNumber,
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
+    // let txHash;
+    // try {
+    const value = price.multipliedBy(amount);
+    const txnData = { from: this._protocol.account, value };
+    //   txHash = await this._protocol.StarblockCollectionContract.methods
+    //     .publicMint(amount)
+    //     .send(txnData);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw new Error(
+    //     `Failed to publicMint transaction: "${
+    //       error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
+
+    await this._protocol.StarblockCollectionContract.methods
+      .publicMint(amount)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to publicMint transaction: "${
+              error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
   }
 
   public async getCollectionInfo(starBlockCollectionAddress: string, user: string): Promise<{}> {

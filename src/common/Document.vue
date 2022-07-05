@@ -38,7 +38,8 @@
     <button id="button" @click="deploy">部署合约</button>
     <button id="button" @click="getInfo">getInfo</button>
     <button id="button" @click="userCanMint">userCanMint</button>
-    <button id="button" @click="setSaleConfig">setSaleConfig</button>
+    <button id="button" @click="updateWhitelistSaleConfig">updateWhitelistSaleConfig</button>
+    <button id="button" @click="updatePublicSaleConfig">updatePublicSaleConfig</button>
     <button id="button" @click="addWhitelists">addWhitelists</button>
     <button id="button" @click="whitelistMint">whitelistMint</button>
     <button id="button" @click="publicMint">publicMint</button>
@@ -768,7 +769,7 @@ export default {
       console.log("Document userCanMint:::", info);
     },
 
-    async setSaleConfig() {
+    async updateWhitelistSaleConfig() {
       if (!accounts) {
         await this.getAccounts();
       }
@@ -776,12 +777,25 @@ export default {
         this.getStarBlockPort(accounts[0]);
       }
 
-      const forUser = accounts[0];
-      const whitelistSaleConfig = [1656676159, 1656754200, "20000000000000000", 100];
-      const publicSaleConfig = [1656676159, 1656757800, "10000000000000000", 100];
+      const whitelistSaleConfig = [1657004392, 1657866875, "20000000000000000", 100];
       try {
-        const txHash = await starblockport.setSaleConfig(whitelistSaleConfig, publicSaleConfig);
-        console.log("setSaleConfig==txhash", txHash);
+        const txHash = await starblockport.updateWhitelistSaleConfig(whitelistSaleConfig);
+        console.log("updateWhitelistSaleConfig==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async updatePublicSaleConfig() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const publicSaleConfig = [1657004392, 1657866875, "10000000000000000", 2000];
+      try {
+        const txHash = await starblockport.updatePublicSaleConfig(publicSaleConfig);
+        console.log("updatePublicSaleConfig==txhash", txHash);
       } catch (error) {}
     },
 
@@ -793,7 +807,10 @@ export default {
         this.getStarBlockPort(accounts[0]);
       }
 
-      const addresses = ["0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa"];
+      const addresses = [
+        "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
+        "0x7Be5f25c78B9823c90dB8AaEe5d9bf8d72217B0a"
+      ];
       try {
         const txHash = await starblockport.addWhitelists(addresses);
         console.log("addWhitelists==txhash", txHash);
@@ -811,12 +828,22 @@ export default {
       const whitelistSaleConfig = JSON.parse(getLocalStorage("whitelistSaleConfig"));
       if (!whitelistSaleConfig) return;
 
-      try {
-        const amount = 3;
-        const price = new BigNumber(whitelistSaleConfig[2]);
-        const txHash = await starblockport.whitelistMint(amount, price);
-        console.log("whitelistMint==txhash", txHash);
-      } catch (error) {}
+      const amount = 3;
+      const price = new BigNumber(whitelistSaleConfig[2]);
+
+      await starblockport.whitelistMint(
+        amount,
+        price,
+        txHash => {
+          console.log("whitelistMint on:::", txHash);
+        },
+        res => {
+          console.log("whitelistMint then:::", res);
+        },
+        err => {
+          console.log("whitelistMint catch:::", err);
+        }
+      );
     },
 
     async publicMint() {
@@ -830,12 +857,22 @@ export default {
       const publicSaleConfig = JSON.parse(getLocalStorage("publicSaleConfig"));
       if (!publicSaleConfig) return;
 
-      try {
-        const amount = 3;
-        const price = new BigNumber(publicSaleConfig[2]);
-        const txHash = await starblockport.publicMint(amount, price);
-        console.log("publicMint==txhash", txHash);
-      } catch (error) {}
+      const amount = 1;
+      const price = new BigNumber(publicSaleConfig[2]);
+
+      await starblockport.publicMint(
+        amount,
+        price,
+        txHash => {
+          console.log("publicMint on:::", txHash);
+        },
+        res => {
+          console.log("publicMint then:::", res);
+        },
+        err => {
+          console.log("publicMint catch:::", err);
+        }
+      );
     },
 
     async deploy() {
@@ -853,8 +890,8 @@ export default {
       const contract = new web3.eth.Contract(byteCodeAbi.abi);
 
       const data = byteCodeAbi.byteCode;
-      const name = "DemoTest0704";
-      const symbol = "DemoTest0704";
+      const name = "DemoTest0705";
+      const symbol = "DemoTest0705";
       const maxSupply = 10000;
       const chargeToken = "0x0000000000000000000000000000000000000000";
       const baseTokenURI = "https://meta.rebelkidsparade.com/meta/";
@@ -888,6 +925,7 @@ export default {
           console.log("then--", res.options.address.toLowerCase());
           const address = res.options.address.toLowerCase();
           setLocalStorage("starblockCollection", { address });
+          starblockport.setStarblockCollectionAddress(address);
         })
         .catch(function(err) {
           console.log("catch--", err);
@@ -912,6 +950,8 @@ export default {
       const user = accounts[0];
       const info = await starblockport.getCollectionInfo(starBlockCollectionAddress, user);
       console.log("Document getCollectionInfo:::", info);
+      setLocalStorage("whitelistSaleConfig", info._collectionInfo.whitelistSaleConfig);
+      setLocalStorage("publicSaleConfig", info._collectionInfo.publicSaleConfig);
     },
 
     toggleShow() {

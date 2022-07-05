@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import { ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
 import BigNumber from "bignumber.js";
 export declare class CollectionPort {
     private _protocol;
@@ -10,9 +11,10 @@ export declare class CollectionPort {
     publicSaleConfig(): Promise<{}>;
     getInfo(user: string): Promise<{}>;
     userCanMint(user: string, amount: number): Promise<{}>;
-    setSaleConfig(whitelistSaleConfig: [], publicSaleConfig: []): Promise<string>;
+    updateWhitelistSaleConfig(whitelistSaleConfig: []): Promise<string>;
+    updatePublicSaleConfig(publicSaleConfig: []): Promise<string>;
     addWhitelists(addresses: string[]): Promise<string>;
-    whitelistMint(amount: number, price: BigNumber): Promise<string>;
-    publicMint(amount: number, price: BigNumber): Promise<string>;
+    whitelistMint(amount: number, price: BigNumber, callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
+    publicMint(amount: number, price: BigNumber, callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
     getCollectionInfo(starBlockCollectionAddress: string, user: string): Promise<{}>;
 }

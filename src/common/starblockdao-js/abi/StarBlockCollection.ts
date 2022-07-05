@@ -182,6 +182,127 @@ export const StarBlockCollectionAbi: PartialReadonlyContractAbi = [
     type: "event"
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "contract IERC20",
+        name: "_chargeToken",
+        type: "address"
+      }
+    ],
+    name: "UpdateChargeToken",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "startTime",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "endTime",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "maxAmountPerAddress",
+            type: "uint256"
+          }
+        ],
+        indexed: false,
+        internalType: "struct IStarBlockCollection.SaleConfig",
+        name: "_publicSaleConfig",
+        type: "tuple"
+      }
+    ],
+    name: "UpdatePublicSaleConfig",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_oldEndTime",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_newEndTime",
+        type: "uint256"
+      }
+    ],
+    name: "UpdatePublicSaleEndTime",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "startTime",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "endTime",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "maxAmountPerAddress",
+            type: "uint256"
+          }
+        ],
+        indexed: false,
+        internalType: "struct IStarBlockCollection.SaleConfig",
+        name: "_whitelistSaleConfig",
+        type: "tuple"
+      }
+    ],
+    name: "UpdateWhitelistSaleConfig",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_oldEndTime",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_newEndTime",
+        type: "uint256"
+      }
+    ],
+    name: "UpdateWhitelistSaleEndTime",
+    type: "event"
+  },
+  {
     inputs: [
       {
         internalType: "address[]",
@@ -712,19 +833,6 @@ export const StarBlockCollectionAbi: PartialReadonlyContractAbi = [
   {
     inputs: [
       {
-        internalType: "contract IERC20",
-        name: "_chargeToken",
-        type: "address"
-      }
-    ],
-    name: "setChargeToken",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "_receiver",
         type: "address"
@@ -736,19 +844,6 @@ export const StarBlockCollectionAbi: PartialReadonlyContractAbi = [
       }
     ],
     name: "setDefaultRoyalty",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
-  },
-  {
-    inputs: [
-      {
-        internalType: "address payable",
-        name: "_protocolFeeReceiver",
-        type: "address"
-      }
-    ],
-    name: "setProtocolFeeReceiver",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
@@ -904,6 +999,37 @@ export const StarBlockCollectionAbi: PartialReadonlyContractAbi = [
   {
     inputs: [
       {
+        internalType: "contract IERC20",
+        name: "_chargeToken",
+        type: "address"
+      }
+    ],
+    name: "updateChargeToken",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address payable",
+        name: "_protocolFeeReceiver",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "_protocolFeeNumerator",
+        type: "uint256"
+      }
+    ],
+    name: "updateProtocolFeeReceiverAndNumerator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -939,6 +1065,19 @@ export const StarBlockCollectionAbi: PartialReadonlyContractAbi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_newEndTime",
+        type: "uint256"
+      }
+    ],
+    name: "updatePublicSaleEndTime",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint256",
@@ -967,6 +1106,19 @@ export const StarBlockCollectionAbi: PartialReadonlyContractAbi = [
       }
     ],
     name: "updateWhitelistSaleConfig",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_newEndTime",
+        type: "uint256"
+      }
+    ],
+    name: "updateWhitelistSaleEndTime",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
