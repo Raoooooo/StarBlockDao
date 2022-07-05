@@ -10,25 +10,40 @@
 
     <button id="button" @click="getHashAction">获取hash</button>
     <button id="button" @click="loginOutAction">退出登录</button>
-
-    <button id="button" @click="webContrantAction1">web部署合约1</button>
-    <button id="button" @click="exchangeAction">交易合约</button>
-    <button id="button" @click="createSellOrderAction">生成sell订单</button>
-    <button id="button" @click="createWallet">初始化钱包</button>
-    <button id="button" @click="ethSignButtonAction(true)">盲盒/白名单签名</button>
-    <button id="button" @click="recipientButtonAction">指定领取签名</button>
-    <button id="button" @click="cancelOrderAction">取消订单</button>
-    <button id="button" @click="batchCancleOrderAction">批量取消订单</button>
-    <button id="button" @click="getFromTokenIdAction">获取FromTokenId</button>
-    <button id="button" @click="validateOrder">验证订单</button>
-    <button id="button" @click="ethSignMarket(true)">二级市场签名</button>
-    <button id="button" @click="approveHandle">授权操作</button>
-    <button id="button" @click="approveERC20Handle">授权ERC20</button>
     <button id="button" @click="daoportAction">dao获取 pool数据</button>
     <button id="button" @click="daoporApprovedtAction">dao授权</button>
-    <button id="button" @click="daoporDeposit">dao deposit</button>
-    <button id="button" @click="daoporWithdraw">dao withdraw</button>
-    <button id="button" @click="daoporHarvest">dao 领取奖励分红</button>
+    <button id="button" @click="daoporDeposit">deposit</button>
+    <button id="button" @click="daoporWithdraw">withdraw</button>
+    <button id="button" @click="daoporHarvest">领取奖励分红</button>
+    <button id="button" @click="daoportPending">pending</button>
+    <button id="button" @click="daoporClaim">claim</button>
+    <button id="button" @click="daoportUpdateTradingRewards">updateTradingRewards</button>
+    <button id="button" @click="daoportCanClaim">canClaim</button>
+    <button id="button" @click="getTokenPrice">getTokenPrice</button>
+    <button id="button" @click="getPoolInfo">getPoolInfo</button>
+    <button id="button" @click="getAllPoolInfos">getAllPoolInfos</button>
+    <button id="button" @click="getPoolInfosByNFTorWNFTs">getPoolInfosByNFTorWNFTs</button>
+    <button id="button" @click="pendingAll">pendingAll</button>
+    <button id="button" @click="harvestAll">harvestAll</button>
+    <button id="button" @click="pendingByNFTorWNFT">pendingByNFTorWNFT</button>
+    <button id="button" @click="pendingAllByWNFTTokenIds">pendingAllByWNFTTokenIds</button>
+    <button id="button" @click="harvestAllByWNFTTokenIds">harvestAllByWNFTTokenIds</button>
+    <button id="button" @click="ownedNFTsTokenIdsByPids">ownedNFTsTokenIdsByPids</button>
+    <button id="button" @click="ownedWNFTsTokenIdsByPids">ownedWNFTsTokenIdsByPids</button>
+    <button id="button" @click="ownedNFTsTokenIdsByNFTs">ownedNFTsTokenIdsByNFTs</button>
+    <button id="button" @click="ownedNFTTokenIds">ownedNFTTokenIds</button>
+    <button id="button" @click="getPoolInfosUserCanDeposit">getPoolInfosUserCanDeposit</button>
+    <button id="button" @click="getPoolInfosUserDeposited">getPoolInfosUserDeposited</button>
+
+    <button id="button" @click="deploy">部署合约</button>
+    <button id="button" @click="getInfo">getInfo</button>
+    <button id="button" @click="userCanMint">userCanMint</button>
+    <button id="button" @click="updateWhitelistSaleConfig">updateWhitelistSaleConfig</button>
+    <button id="button" @click="updatePublicSaleConfig">updatePublicSaleConfig</button>
+    <button id="button" @click="addWhitelists">addWhitelists</button>
+    <button id="button" @click="whitelistMint">whitelistMint</button>
+    <button id="button" @click="publicMint">publicMint</button>
+    <button id="button" @click="getCollectionInfo">getCollectionInfo</button>
   </div>
 </template>
 
@@ -38,6 +53,7 @@ import * as Web3 from "web3";
 // var web3  = require('web3')
 
 import { DaoPort } from "./starblockdao-js/lib/daoport";
+import { CollectionPort } from "./starblockdao-js/lib/collectionport";
 import { Network, Web3Callback } from "./starblockdao-js/lib/types";
 
 var network_Name = Network.Rinkeby;
@@ -46,12 +62,14 @@ import { getLocalStorage, setLocalStorage, isLogin } from "@/common/utils";
 import AppVue from "../App.vue";
 import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
+import BigNumber from "bignumber.js";
 
 export var wyvernExchange;
 export var providerInstance;
 export var protocolInstance;
 var accounts;
 var daoport;
+var starblockport;
 
 export default {
   created() {
@@ -88,6 +106,21 @@ export default {
       return web3;
     },
 
+    async getStarBlockPort(account) {
+      //主网 1： 测试：4
+      starblockport = new CollectionPort(this.initWeb3(), 4);
+      starblockport.setAccount(account);
+
+      const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
+      const address = starblockCollection.address;
+      if (!address || address.length === 0) {
+        console.log("没有starblockCollection合约地址");
+        return;
+      }
+
+      starblockport.setStarblockCollectionAddress(address);
+    },
+
     async getDaoPort(account) {
       //主网 1： 测试：4
       daoport = new DaoPort(this.initWeb3(), 4);
@@ -113,189 +146,6 @@ export default {
       accounts = await web3.eth.getAccounts();
     },
 
-    async exchangeAction() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var accountAddress = web3.eth.defaultAccount;
-
-      if (!providerInstance) {
-        providerInstance = new Web3.providers.HttpProvider(
-          "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-        );
-      }
-
-      if (!protocolInstance) {
-        protocolInstance = new WyvernProtocol(providerInstance, {
-          network: network_Name
-        });
-      }
-
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      //版权费用接收地址，一级市场没有版权费
-      //seaport.feeRecipientAddress = NULL_ADDRESS
-      seaport.feeRecipientAddress = "0x594676b9d1E84e986d161849082afCFB3718e439".toLowerCase();
-
-      //获取order
-      var order;
-      //获取签名order
-      var signOrder = JSON.parse(getLocalStorage("orderSignature"));
-      //指定购买签名order
-      var buyAddressSignOrder = JSON.parse(getLocalStorage("buyerAddressOrderSignature"));
-
-      //二级市场
-      var signMarket = JSON.parse(getLocalStorage("signMarket"));
-      signMarket = null;
-
-      //erc20授权
-      if (!isEther) {
-        const erc20Approve = await this.approveERC20Handle();
-        if (!erc20Approve) {
-          console.log("erc20 token 授权失败！！！");
-          return;
-        }
-      }
-
-      if (RecipientCollectionAddress != NULL_ADDRESS && OrderSaleKind == 0) {
-        await this.createBuyAddressSellOrderAction();
-        order = JSON.parse(getLocalStorage("BuyAddressSellOrder"));
-        order = {
-          ...order,
-          r: buyAddressSignOrder.r,
-          s: buyAddressSignOrder.s,
-          v: buyAddressSignOrder.v
-        };
-      } else if (signMarket && OrderSaleKind == 0) {
-        //二级市场
-
-        await this.ethSignMarket(false);
-        order = JSON.parse(getLocalStorage("noSignMarketOrder"));
-        order = {
-          ...order,
-          r: signMarket.r,
-          s: signMarket.s,
-          v: signMarket.v
-        };
-      } else {
-        // 随机购买
-
-        await this.ethSignButtonAction(false);
-        order = JSON.parse(getLocalStorage("noOrderSignature"));
-        order = {
-          ...order,
-          r: signOrder.r,
-          s: signOrder.s,
-          v: signOrder.v
-        };
-      }
-
-      var recipientAddress = accountAddress;
-
-      const matchingOrder = await seaport._makeMatchingOrder({
-        order,
-        accountAddress,
-        recipientAddress
-      });
-      const { buy, sell } = assignOrdersToSides(order, matchingOrder);
-      console.log("buy/sell **********", buy, sell);
-
-      const metadata = await seaport._getMetadata(order);
-      const args = await seaport._atomicMatch({ buy, sell, accountAddress, metadata });
-
-      if (args == null) {
-        console.log("StarBlock交易失败");
-        return;
-      }
-
-      var uintsArr = args[1].map(function(elem) {
-        let e;
-        if (typeof elem === "string" || elem instanceof String) {
-          e = new BigNumber(elem);
-          elem = e;
-        }
-        return elem.toFixed();
-      });
-
-      var len = args.length - 1;
-      if (args[len].hasOwnProperty("value")) {
-        // if (typeof args[len]["value"] != undefined) {
-        //  let value = args[len]["value"]
-        //   args[len]["value"] = value.toFixed()
-        // }
-        // args[len]["value"] = "0x0"
-      }
-
-      if (args[len].hasOwnProperty("gasPrice")) {
-        let gasPrice = args[len]["gasPrice"];
-        args[len]["gasPrice"] = gasPrice.toFixed();
-      }
-      console.log("arges/uintsArr**********", args, uintsArr);
-
-      const web3ContractInstance = protocolInstance.wyvernExchange.web3ContractInstance;
-      var MyContract = new initWeb3.eth.Contract(
-        web3ContractInstance.abi,
-        web3ContractInstance.address
-      );
-
-      // const estimatedGas = await MyContract.methods
-      //   .atomicMatch_(
-      //     args[0],
-      //     uintsArr,
-      //     args[2],
-      //     args[3],
-      //     args[4],
-      //     args[5],
-      //     args[6],
-      //     args[7],
-      //     args[8],
-      //     args[9],
-      //     args[10]
-      //   )
-      //   .estimateGas(args[len]);
-
-      // var number = new BigNumber(3);
-      // number = number.toFixed();
-      // const meanGas = await getCurrentGasPrice(initWeb3);
-      // const weiToAdd = initWeb3.utils.toWei(number, "gwei");
-
-      // const gasPrice = parseInt(meanGas) + parseInt(weiToAdd);
-      // const gas = Math.ceil(estimatedGas * DEFAULT_GAS_INCREASE_FACTOR);
-
-      var txnData = args[len];
-      // txnData = {
-      //   ...txnData,
-      //   gas,
-      //   gasPrice
-      // };
-
-      MyContract.methods
-        .atomicMatch_(
-          args[0],
-          uintsArr,
-          args[2],
-          args[3],
-          args[4],
-          args[5],
-          args[6],
-          args[7],
-          args[8],
-          args[9],
-          args[10]
-        )
-        .send(txnData)
-        .then(function(receipt) {
-          console.log("transactionHash*********", receipt);
-          const recipient = { isRecipient: false };
-          setLocalStorage("recipient", recipient);
-        });
-    },
-
     getInfura() {
       let infura;
       if (network_Name === Network.Main) {
@@ -305,654 +155,6 @@ export default {
       }
       infura += "v3/c1b0dbb2fcf445278b966cc102873180";
       return infura;
-    },
-
-    async createWallet() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var accountAddress = web3.eth.defaultAccount;
-
-      if (!providerInstance) {
-        providerInstance = new Web3.providers.HttpProvider(this.getInfura());
-      }
-
-      if (!protocolInstance) {
-        protocolInstance = new WyvernProtocol(providerInstance, {
-          network: network_Name
-        });
-      }
-
-      const provider = new Web3.providers.HttpProvider(this.getInfura());
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      const web3ContractInstance = protocolInstance.wyvernProxyRegistry.web3ContractInstance;
-      var MyContract = new initWeb3.eth.Contract(
-        web3ContractInstance.abi,
-        web3ContractInstance.address
-      );
-
-      ///取链上钱包地址
-      const proxyAddress = await seaport._getProxy(accountAddress);
-
-      if (!proxyAddress) {
-        ///初始化钱包
-        var txnData = { from: accountAddress };
-        // const estimatedGas = await MyContract.methods.registerProxy().estimateGas(txnData);
-
-        // var number = new BigNumber(3);
-        // number = number.toFixed();
-        // const meanGas = await getCurrentGasPrice(initWeb3);
-        // const weiToAdd = initWeb3.utils.toWei(number, "gwei");
-
-        // const gasPrice = parseInt(meanGas) + parseInt(weiToAdd);
-        // const gas = Math.ceil(estimatedGas * DEFAULT_GAS_INCREASE_FACTOR);
-        // console.log("*****gasprice*****", gasPrice, gas);
-
-        // txnData = {
-        //   ...txnData,
-        //   gas: gas,
-        //   gasPrice: gasPrice
-        // };
-
-        MyContract.methods
-          .registerProxy()
-          .send(txnData)
-          .on("error", function(error) {
-            console.log("error*********", error);
-          })
-          .then(function(receipt) {
-            console.log("transactionHash*********", receipt);
-          });
-      } else {
-        console.log("已有钱包地址");
-      }
-    },
-
-    async createBuyAddressSellOrderAction() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      //版权费用接收地址，一级市场没有版权费
-      //seaport.feeRecipientAddress = NULL_ADDRESS
-      seaport.feeRecipientAddress = "0x594676b9d1E84e986d161849082afCFB3718e439".toLowerCase();
-
-      const startAmount = 0.002;
-      const accountAddress = CreaterCollectionAddress;
-      const listingTime = buyAddressListingTime;
-      const expirationTime = 0;
-      const orderSaleKind = OrderSaleKind;
-      const salt = makeBigNumber("984331428158744064");
-      const orderNoSignature = true;
-      const buyerAddress = RecipientCollectionAddress.toLowerCase();
-
-      const asset = {
-        quantity: 1,
-        tokenAddress: CollectionAddress,
-        defaultColletion: DefaultColletion,
-        tokenId: FromTokenId,
-        saleQuantity: SaleQuantity,
-        maxPerAddressDuringMint: MaxPerAddressDuringMint,
-        callFunctionName: CallFunctionName
-      };
-
-      var parameters = {
-        asset,
-        accountAddress,
-        startAmount,
-        listingTime,
-        expirationTime,
-        orderSaleKind,
-        salt,
-        orderNoSignature,
-        buyerAddress
-      };
-
-      const order = await seaport.createSellOrder(parameters);
-      console.log("BuyAddressSellOrder**********", order);
-      setLocalStorage("BuyAddressSellOrder", order);
-    },
-
-    async recipientButtonAction() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      //版权费用接收地址，一级市场没有版权费
-      //seaport.feeRecipientAddress = NULL_ADDRESS
-      seaport.feeRecipientAddress = "0x594676b9d1E84e986d161849082afCFB3718e439".toLowerCase();
-
-      const startAmount = 0.002;
-      const accountAddress = CreaterCollectionAddress;
-      const listingTime = buyAddressListingTime;
-      const expirationTime = 0;
-      const orderSaleKind = OrderSaleKind;
-      const salt = makeBigNumber("984331428158744064");
-      const orderNoSignature = false;
-      const buyerAddress = RecipientCollectionAddress.toLowerCase();
-
-      const asset = {
-        quantity: 1,
-        tokenAddress: CollectionAddress,
-        defaultColletion: DefaultColletion,
-        tokenId: FromTokenId,
-        saleQuantity: SaleQuantity,
-        maxPerAddressDuringMint: MaxPerAddressDuringMint,
-        callFunctionName: CallFunctionName
-      };
-
-      if (DefaultColletion) {
-        asset = {
-          ...asset,
-          collectionId: 1239030300
-        };
-      }
-
-      var parameters = {
-        asset,
-        accountAddress,
-        startAmount,
-        listingTime,
-        expirationTime,
-        orderSaleKind,
-        salt,
-        orderNoSignature,
-        buyerAddress
-      };
-
-      if (!isEther) {
-        parameters = {
-          ...parameters,
-          paymentTokenAddress
-        };
-      }
-
-      const order = await seaport.createSellOrder(parameters);
-
-      console.log("buyerAddressOrderSignature**********", order);
-      setLocalStorage("buyerAddressOrderSignature", order);
-    },
-
-    //一级市场签名 参数：isSign（是否签名）
-    async ethSignButtonAction(isSign) {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(this.getInfura());
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      //版权费用接收地址，一级市场没有版权费
-      seaport.feeRecipientAddress = "0x594676b9d1E84e986d161849082afCFB3718e439".toLowerCase();
-      seaport.feeRecipientfee = 0;
-      seaport.makerProtocolFee = 0;
-
-      let asset = {
-        quantity: Quantity,
-        tokenAddress: CollectionAddress,
-        defaultColletion: DefaultColletion,
-        tokenId: FromTokenId,
-        saleQuantity: SaleQuantity,
-        maxPerAddressDuringMint: MaxPerAddressDuringMint,
-        callFunctionName: CallFunctionName
-      };
-
-      //统一collection
-      if (DefaultColletion) {
-        asset = {
-          ...asset,
-          collectionId: 1239030300
-        };
-      }
-
-      var startAmount = 0.001;
-      if (!isEther) {
-        startAmount = 30;
-      }
-
-      const accountAddress = CreaterCollectionAddress;
-      const listingTime = 1641950350;
-      const expirationTime = 0;
-      const orderSaleKind = OrderSaleKind;
-      const salt = makeBigNumber("554331428158744064");
-      const orderNoSignature = !isSign;
-
-      let parameters = {
-        asset,
-        accountAddress,
-        startAmount,
-        listingTime,
-        expirationTime,
-        orderSaleKind,
-        salt,
-        orderNoSignature
-      };
-
-      if (isWhiteList) {
-        parameters = {
-          ...parameters,
-          buyerAddress: WhiteListAddress
-        };
-      }
-
-      if (!isEther) {
-        parameters = {
-          ...parameters,
-          paymentTokenAddress
-        };
-      }
-
-      const order = await seaport.createSellOrder(parameters);
-
-      if (!order) {
-        console.log("签名失败");
-        return;
-      }
-
-      if (isSign) {
-        setLocalStorage("orderSignature", order);
-      } else {
-        setLocalStorage("noOrderSignature", order);
-      }
-      console.log("signOrder**********", order);
-    },
-
-    //二级市场签名 参数：isSign（是否签名）
-    async ethSignMarket(isSign) {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(this.getInfura());
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      seaport.feeRecipientAddress = "0x594676b9d1E84e986d161849082afCFB3718e439".toLowerCase();
-      //版权费*10000 （如果版权费是10%，则10%*10000 = 1000）
-      seaport.feeRecipientfee = 1000;
-      seaport.makerProtocolFee = 2000;
-      seaport.isMarket = true;
-      const startAmount = 0.01;
-      const accountAddress = CreaterCollectionAddress;
-      const listingTime = ethSignMarketListingTime;
-      const expirationTime = 1651161600;
-      const orderSaleKind = OrderSaleKind;
-      const salt = makeBigNumber("930658657940496516");
-      const orderNoSignature = !isSign;
-
-      const asset = {
-        tokenAddress: CollectionAddress,
-        tokenId: FromTokenId,
-        callFunctionName: "transferFrom"
-      };
-
-      var parameters = {
-        asset,
-        accountAddress,
-        startAmount,
-        listingTime,
-        expirationTime,
-        orderSaleKind,
-        salt,
-        orderNoSignature
-      };
-
-      if (!isEther) {
-        parameters = {
-          ...parameters,
-          paymentTokenAddress
-        };
-      }
-
-      if (isSign) {
-        const order = await seaport.createSellOrder(parameters);
-        console.log("signMarket**********", order);
-        setLocalStorage("signMarket", order);
-      } else {
-        const order = await seaport.createSellOrder(parameters);
-        console.log("noSignMarketOrder**********", order);
-        setLocalStorage("noSignMarketOrder", order);
-      }
-    },
-
-    //验证Sell订单
-    async validateOrder() {
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      var signMarket = JSON.parse(getLocalStorage("signMarket"));
-      await this.ethSignMarket(false);
-      var order = JSON.parse(getLocalStorage("noSignMarketOrder"));
-      order = {
-        ...order,
-        r: signMarket.r,
-        s: signMarket.s,
-        v: signMarket.v
-      };
-
-      const validate = await seaport._validateOrder(order);
-      console.log("validate**********", validate);
-
-      if (validate) {
-        //订单验证成功
-      } else {
-        //订单验证失败
-      }
-    },
-
-    //授权
-    async approveHandle() {
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      const asset = {
-        tokenAddress: CollectionAddress,
-        tokenId: FromTokenId,
-        callFunctionName: "transferFrom"
-      };
-
-      const accountAddress = CreaterCollectionAddress;
-
-      //获取
-
-      //取链上钱包地址
-      const proxyAddress = await seaport._getProxy(accountAddress);
-
-      if (!proxyAddress) {
-        console.log("请初始化钱包");
-        return;
-      }
-
-      //查看链上资产
-      const wyAsset = getWyvernAsset(seaport._getSchema(asset.schemaName), asset);
-      const schemaName = "ERC721";
-      const chainOptions = {
-        accountAddress,
-        proxyAddress,
-        wyAsset,
-        schemaName
-      };
-
-      let isCheckAsset = false;
-      try {
-        const checkAsset = await seaport._ownsAssetOnChain(chainOptions);
-        console.log("checkAsset callback ==", checkAsset);
-        isCheckAsset = checkAsset;
-      } catch (err) {
-        // 捕获异常错误，返回错误
-
-        console.log("try--catch-checkAsset-", err);
-      }
-
-      if (!isCheckAsset) {
-        console.log("-----checkAsset is false---");
-        return;
-      }
-
-      console.log("-----checkAsset is true---");
-
-      const contractsWithApproveAll = new Set();
-      const options = {
-        tokenId: asset.tokenId.toString(),
-        tokenAddress: asset.tokenAddress,
-        accountAddress,
-        proxyAddress,
-        schemaName,
-        skipApproveAllIfTokenAddressIn: contractsWithApproveAll
-      };
-      seaport.checkApproved = true;
-      const isApprove = await seaport.approveSemiOrNonFungibleToken(options);
-
-      console.log("isApprove = ", isApprove);
-      if (isApprove) {
-        // 已授权
-      } else {
-        // 未已授权
-
-        try {
-          seaport.checkApproved = false;
-          const txHash = await seaport.approveSemiOrNonFungibleToken(options);
-          console.log("txHash = ", txHash);
-        } catch (err) {
-          // 授权失败，捕获到错误，返回错误
-
-          console.log("try--catch--", err);
-        }
-      }
-    },
-
-    async approveERC20Handle() {
-      if (paymentTokenAddress === NULL_ADDRESS) return;
-
-      var initWeb3 = this.initWeb3();
-      var myAccount = web3.eth.defaultAccount;
-
-      let startAmount = 30;
-      startAmount = Number(initWeb3.utils.toWei(startAmount.toFixed(), "ether"));
-
-      var wyvernTokenTransferProxy = WyvernProtocol.getTokenTransferProxyAddress(network_Name);
-      //是否授权
-      let approvedAmount = await contract.methods
-        .allowance(myAccount, wyvernTokenTransferProxy)
-        .call();
-      approvedAmount = Number(approvedAmount);
-
-      if (approvedAmount >= startAmount) {
-        console.log("账户已授权");
-        return true;
-      }
-
-      //
-      var txnData = { from: myAccount };
-      return await contract.methods
-        .approve(wyvernTokenTransferProxy, WyvernProtocol.MAX_UINT_256.toString())
-        .send(txnData);
-    },
-
-    async webContrantAction1() {
-      // web部署
-      const { web3 } = window;
-      var from = web3.eth.accounts[0];
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-      console.log(initWeb3);
-      console.log(from);
-
-      const contractABI = BytecodeJson.abi;
-      const bytecode = "0x" + BytecodeJson.object;
-      console.log("byteCode*****", bytecode, contractABI);
-      // let gasEstimate = web3.eth.estimateGas({data: bytecode});
-      // console.log("gasEstimate*****", gasEstimate);
-      // return;
-      //2.3 异步方式，部署合约
-
-      let infura;
-      if (network_Name === Network.Main) {
-        infura = "https://mainnet.infura.io/";
-      } else if (network_Name === Network.Rinkeby) {
-        infura = "https://rinkeby.infura.io/";
-      }
-      infura += "v3/c1b0dbb2fcf445278b966cc102873180";
-
-      if (!providerInstance) {
-        providerInstance = new Web3.providers.HttpProvider(infura);
-      }
-
-      if (!protocolInstance) {
-        protocolInstance = new WyvernProtocol(providerInstance, {
-          network: network_Name
-        });
-      }
-      const web3ContractInstance = protocolInstance.wyvernProxyRegistry.web3ContractInstance;
-
-      const contract = new initWeb3.eth.Contract(contractABI);
-
-      let options = {
-        data: bytecode,
-        arguments: [
-          "Demo10100",
-          "Demo10100",
-          web3ContractInstance.address,
-          100,
-          10000,
-          "https://meta.rebelkidsparade.com/meta/"
-        ]
-      };
-
-      const provider = new Web3.providers.HttpProvider(infura);
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      const estimatedGas = await contract.deploy(options).estimateGas();
-
-      // var number = new BigNumber(3);
-      // number = number.toFixed();
-      // const meanGas = await getCurrentGasPrice(initWeb3);
-      // const weiToAdd = initWeb3.utils.toWei(number, "gwei");
-
-      // const gasPrice = parseInt(meanGas) + parseInt(weiToAdd);
-      // const gas = Math.ceil(estimatedGas * DEFAULT_GAS_INCREASE_FACTOR * 1.1);
-      // console.log("*****gasprice*****", gasPrice, gas);
-
-      const gas = seaport._correctGasAmount(estimatedGas);
-
-      var txnData = { from: from };
-      // txnData = {
-      //   ...txnData,
-      //   gas
-      //   // gasPrice
-      // };
-
-      const deploy = async () => {
-        // Get access to all accounts linked to mnemonic
-        // Make sure you have metamask installed.
-        // const accounts = await web3.eth.getAccounts();
-        // console.log("Attempting to deploy from account", accounts[0]);
-
-        // Pass initial gas and account to use in the send function
-        const result = await contract
-          .deploy(options)
-          .send(txnData)
-          .on("transactionHash", tH => console.log("on--transactionHash:==>", tH))
-          .then(function(res) {
-            console.log("then--", res.options.address.toLowerCase());
-          })
-          .catch(function(err) {
-            console.log("catch--", err);
-          });
-      };
-      deploy();
-    },
-
-    async cancelOrderAction() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      //获取签名order
-      var order = JSON.parse(getLocalStorage("signMarket"));
-      var accountAddress = from;
-
-      try {
-        const cancelOrder = await seaport.cancelOrder({ order, accountAddress });
-
-        if (cancelOrder) {
-          console.log("cancelOrder--", cancelOrder);
-        }
-      } catch (err) {
-        //捕获到错误，返回错误，该订单若已取消过，重复取消，会报异常
-
-        console.log("try--catch--", err);
-      }
-    },
-
-    async batchCancleOrderAction() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      const provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c1b0dbb2fcf445278b966cc102873180"
-      );
-      const seaport = new OpenSeaPort(provider, {
-        networkName: network_Name
-      });
-
-      var accountAddress = from;
-
-      try {
-        const bulkCancel = await seaport.bulkCancelExistingOrders({ accountAddress });
-
-        if (bulkCancel) {
-          console.log("bulkCancel--", bulkCancel);
-        }
-      } catch (err) {
-        // 捕获到错误，返回错误，该订单若已取消过，重复取消，会报异常
-
-        console.log("try--catch--", err);
-      }
-    },
-
-    async getFromTokenIdAction() {
-      const { web3 } = window;
-      var initWeb3 = this.initWeb3();
-      var from = web3.eth.defaultAccount;
-
-      var MyContract = new initWeb3.eth.Contract(BytecodeJson.abi, CollectionAddress);
-      MyContract.methods
-        .totalSupply()
-        .call()
-        .then(function(res) {
-          console.log("Contract result", res);
-          //FromTokenId值在res基础上加1
-          var FromTokenId = res + 1;
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-
-      // MyContract.methods.numberMinted("0x31f8838f91617091Ec2d8303AA08f88967613bb1").call().then(function(res){
-      //    console.log("numberMinted", res);
-      //  }).catch(function(err) {
-      //     console.log(err);
-      //  });
     },
 
     async daoportAction() {
@@ -1057,14 +259,6 @@ export default {
         isApproveNFT
       };
 
-      // const isApprove = await daoport.isApprovedForAll(parameters);
-      // console.log("daoporApprovedtAction==", isApprove);
-
-      // if (isApprove) {
-      //   console.log("已授权wnft合约");
-      //   return true;
-      // }
-
       try {
         const txHash = await daoport.setApprovalForAll(parameters);
         console.log("daoporApprovedtAction --txHash", txHash);
@@ -1134,6 +328,630 @@ export default {
         const txHash = await daoport.harvest(parameters);
         console.log("daoporHarvest==txhash", txHash);
       } catch (error) {}
+    },
+
+    async daoportPending() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const owner = accounts[0];
+      const pid = 1;
+      const tokenIds = [0];
+      const parameters = {
+        pid,
+        tokenIds
+      };
+
+      await daoport.pending(parameters, function handle(error, result) {
+        console.log("error result==txhash", error, result);
+      });
+    },
+
+    async daoporClaim() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      const treeIds = [0, 1];
+      const amounts = [new BigNumber("1000000000000000000")];
+      const merkleProofs = [
+        [
+          "0xcbcbac4280cffcff7f0ab9fbee42c2bde89eb7152a992f8dfa7869ab731dddd1",
+          "0xe292aea4d359cc1769232f543ec72a01af30d6febc09444ee235930d4927e3cf"
+        ]
+      ];
+      const parameters = {
+        treeIds,
+        amounts,
+        merkleProofs
+      };
+      try {
+        const txHash = await daoport.claim(parameters);
+        console.log("daoporWithdraw==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async daoportUpdateTradingRewards() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const treeIds = [0, 1];
+      const merkleRoots = [
+        "0x724fc33e3d1fa4521f25c4e7bbeadb2961478e44a3669bca2771ac4773524dd1",
+        "0x2e199cb5c61a320d2aef610ede1658d0f13694285a9691e8f38b199ad781ebe2"
+      ];
+      const maxAmountsPerUser = [
+        new BigNumber("1000000000000000000"),
+        new BigNumber("1000000000000000000")
+      ];
+      const merkleProofsSafeGuards = [
+        ["0xffb9dbc4c97d5710413f25e9aea8c1237992364dadeef55b2cd3ba54a6a020ad"],
+        ["0xffb9dbc4c97d5710413f25e9aea8c1237992364dadeef55b2cd3ba54a6a020ad"]
+      ];
+      const parameters = {
+        treeIds,
+        merkleRoots,
+        maxAmountsPerUser,
+        merkleProofsSafeGuards
+      };
+
+      try {
+        const txHash = await daoport.withdraw(parameters);
+        console.log("daoporWithdraw==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async daoportCanClaim() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+      // const user = accounts[0];
+      const user = "0xC2C304a0aA108428bA15BD5357EE069ea055e6F5";
+      const treeIds = [0];
+      const amounts = [new BigNumber("2700000000000000000000")];
+      const merkleProofs = [
+        [
+          "0x00df9c20e308813437794e99780d07ffc85031f98834205d1eae80fb474742c4",
+          "0x6cc59680d52299e1b2da7489015860d4715b75afdc2a7a8a41f92c0868471240",
+          "0xb71738afbba4a5ed17d0684a72ba7539a14196e6a4e93e3c764b62e1c1dc0820"
+        ]
+      ];
+      const parameters = {
+        user,
+        treeIds,
+        amounts,
+        merkleProofs
+      };
+      await daoport.canClaim(parameters, function handle(error, result) {
+        console.log("canClaim==error result", error, result);
+      });
+    },
+
+    async getTokenPrice() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const tokenPrice = await daoport.getTokenPrice();
+      console.log("Document getTokenPrice:::", tokenPrice);
+    },
+
+    async getPoolInfo() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const pid = 0;
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        pid,
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfo = await daoport.getPoolInfo(parameters);
+      console.log("Document getPoolInfo:::", wrappedPoolInfo);
+    },
+
+    async getAllPoolInfos() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const fromPid = 0;
+      const toPid = 4;
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        fromPid,
+        toPid,
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfos = await daoport.getAllPoolInfos(parameters);
+      console.log("Document getAllPoolInfos:::", wrappedPoolInfos);
+    },
+
+    async getPoolInfosByNFTorWNFTs() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const poolNFTorWNFTs = [
+        "0x5668f2A3b8C0790868d8615594Bb12cF8C3f2305",
+        "0x6aFE699a9188BBb98b78BA45Ae3608f98D9F7041"
+      ];
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        poolNFTorWNFTs,
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfos = await daoport.getPoolInfosByNFTorWNFTs(parameters);
+      console.log("Document getPoolInfosByNFTorWNFTs:::", wrappedPoolInfos);
+    },
+
+    async pendingAll() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const forUser = accounts[0];
+      const userInfo = await daoport.pendingAll(forUser);
+      console.log("pendingAll==userInfo", userInfo);
+    },
+
+    async harvestAll() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const forUser = accounts[0];
+      try {
+        const txHash = await daoport.harvestAll(forUser);
+        console.log("harvestAll==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async pendingByNFTorWNFT() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const poolNFTorWNFT = "0x5668f2A3b8C0790868d8615594Bb12cF8C3f2305";
+      const poolWNFTTokenIds = [4, 5, 8, 9];
+      const parameters = {
+        poolNFTorWNFT,
+        poolWNFTTokenIds
+      };
+      const { _poolExists, _pid, _mining, _dividend } = await daoport.pendingByNFTorWNFT(
+        parameters
+      );
+      console.log("Document pendingByNFTorWNFT:::", _poolExists, _pid, _mining, _dividend);
+    },
+
+    async pendingAllByWNFTTokenIds() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const pids = [0, 1];
+      const poolWNFTTokenIds = [
+        [4, 5, 8, 9],
+        [0, 11, 10, 8, 1, 2, 3, 6]
+      ];
+      const parameters = {
+        pids,
+        poolWNFTTokenIds
+      };
+      const { _mining, _dividend } = await daoport.pendingAllByWNFTTokenIds(parameters);
+      console.log("Document pendingAllByWNFTTokenIds:::", _mining, _dividend);
+    },
+
+    async harvestAllByWNFTTokenIds() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const forUser = accounts[0];
+      const pids = [0, 1];
+      const poolWNFTTokenIds = [
+        [4, 5, 8, 9],
+        [0, 11, 10, 8, 1, 2, 3, 6]
+      ];
+      const parameters = {
+        forUser,
+        pids,
+        poolWNFTTokenIds
+      };
+
+      try {
+        const txHash = await daoport.harvestAllByWNFTTokenIds(parameters);
+        console.log("harvestAllByWNFTTokenIds==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async ownedNFTsTokenIdsByPids() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const pids = [0, 1];
+      const user = accounts[0];
+      const parameters = {
+        pids,
+        user
+      };
+      const ownedTokenIds = await daoport.ownedNFTsTokenIdsByPids(parameters);
+      console.log("Document ownedNFTsTokenIdsByPids:::", ownedTokenIds);
+    },
+
+    async ownedWNFTsTokenIdsByPids() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const pids = [0, 1];
+      const user = accounts[0];
+      const parameters = {
+        pids,
+        user
+      };
+      const ownedTokenIds = await daoport.ownedWNFTsTokenIdsByPids(parameters);
+      console.log("Document ownedWNFTsTokenIdsByPids:::", ownedTokenIds);
+    },
+
+    async ownedNFTsTokenIdsByNFTs() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const nfts = [
+        "0xe4895a9FEF7F186c848e9504b104C7ce3583f15a",
+        "0x5d7181aEDAF8A900Cb8631F58CDeeD0CD7Bc936b"
+      ];
+      const user = accounts[0];
+      const parameters = {
+        nfts,
+        user
+      };
+      const ownedTokenIds = await daoport.ownedNFTsTokenIdsByNFTs(parameters);
+      console.log("Document ownedNFTsTokenIdsByNFTs:::", ownedTokenIds);
+    },
+
+    async ownedNFTTokenIds() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const nft = "0xe4895a9FEF7F186c848e9504b104C7ce3583f15a";
+      const user = accounts[0];
+      const parameters = {
+        nft,
+        user
+      };
+      const ownedTokenIds = await daoport.ownedNFTTokenIds(parameters);
+      console.log("Document ownedNFTTokenIds:::", ownedTokenIds);
+    },
+
+    async ownedNFTTokenIds() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const nft = "0xe4895a9FEF7F186c848e9504b104C7ce3583f15a";
+      const user = accounts[0];
+      const parameters = {
+        nft,
+        user
+      };
+      const ownedTokenIds = await daoport.ownedNFTTokenIds(parameters);
+      console.log("Document ownedNFTTokenIds:::", ownedTokenIds);
+    },
+
+    async getPoolInfosUserCanDeposit() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfos = await daoport.getPoolInfosUserCanDeposit(parameters);
+      console.log("Document getPoolInfosUserCanDeposit:::", wrappedPoolInfos);
+    },
+
+    async getPoolInfosUserDeposited() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = false;
+      const parameters = {
+        user,
+        withOwnedNFTTokenIds
+      };
+      const wrappedPoolInfos = await daoport.getPoolInfosUserDeposited(parameters);
+      console.log("Document getPoolInfosUserDeposited:::", wrappedPoolInfos);
+    },
+
+    async getInfo() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const info = await starblockport.getInfo(user);
+      console.log("Document getInfo:::", info, info._whitelistSaleConfig, info._publicSaleConfig);
+      setLocalStorage("whitelistSaleConfig", info._whitelistSaleConfig);
+      setLocalStorage("publicSaleConfig", info._publicSaleConfig);
+    },
+
+    async userCanMint() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const amount = 3;
+      const info = await starblockport.userCanMint(user, amount);
+      console.log("Document userCanMint:::", info);
+    },
+
+    async updateWhitelistSaleConfig() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const whitelistSaleConfig = [1657004392, 1657866875, "20000000000000000", 100];
+      try {
+        const txHash = await starblockport.updateWhitelistSaleConfig(whitelistSaleConfig);
+        console.log("updateWhitelistSaleConfig==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async updatePublicSaleConfig() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const publicSaleConfig = [1657004392, 1657866875, "10000000000000000", 2000];
+      try {
+        const txHash = await starblockport.updatePublicSaleConfig(publicSaleConfig);
+        console.log("updatePublicSaleConfig==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async addWhitelists() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const addresses = [
+        "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
+        "0x7Be5f25c78B9823c90dB8AaEe5d9bf8d72217B0a"
+      ];
+      try {
+        const txHash = await starblockport.addWhitelists(addresses);
+        console.log("addWhitelists==txhash", txHash);
+      } catch (error) {}
+    },
+
+    async whitelistMint() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const whitelistSaleConfig = JSON.parse(getLocalStorage("whitelistSaleConfig"));
+      if (!whitelistSaleConfig) return;
+
+      const amount = 3;
+      const price = new BigNumber(whitelistSaleConfig[2]);
+
+      await starblockport.whitelistMint(
+        amount,
+        price,
+        txHash => {
+          console.log("whitelistMint on:::", txHash);
+        },
+        res => {
+          console.log("whitelistMint then:::", res);
+        },
+        err => {
+          console.log("whitelistMint catch:::", err);
+        }
+      );
+    },
+
+    async publicMint() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const publicSaleConfig = JSON.parse(getLocalStorage("publicSaleConfig"));
+      if (!publicSaleConfig) return;
+
+      const amount = 1;
+      const price = new BigNumber(publicSaleConfig[2]);
+
+      await starblockport.publicMint(
+        amount,
+        price,
+        txHash => {
+          console.log("publicMint on:::", txHash);
+        },
+        res => {
+          console.log("publicMint then:::", res);
+        },
+        err => {
+          console.log("publicMint catch:::", err);
+        }
+      );
+    },
+
+    async deploy() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+
+      const account = accounts[0];
+      if (!starblockport) {
+        this.getStarBlockPort(account);
+      }
+      const web3 = this.initWeb3();
+
+      const byteCodeAbi = starblockport.getStarBlockByteCodeAbi();
+      const contract = new web3.eth.Contract(byteCodeAbi.abi);
+
+      const data = byteCodeAbi.byteCode;
+      const name = "DemoTest0705";
+      const symbol = "DemoTest0705";
+      const maxSupply = 10000;
+      const chargeToken = "0x0000000000000000000000000000000000000000";
+      const baseTokenURI = "https://meta.rebelkidsparade.com/meta/";
+      const maxAmountForArtist = 1000;
+      const protocolFeeReceiver = "0xbF44214fB2C31cfBFBd2Ba0496a11772c7BE47cb";
+      const protocolFeeNumerator = 2000;
+      const royaltyReceiver = account;
+      const royaltyFeeNumerator = 1000;
+
+      const options = {
+        data,
+        arguments: [
+          name,
+          symbol,
+          maxSupply,
+          chargeToken,
+          baseTokenURI,
+          maxAmountForArtist,
+          protocolFeeReceiver,
+          protocolFeeNumerator,
+          royaltyReceiver,
+          royaltyFeeNumerator
+        ]
+      };
+      const txnData = { from: account };
+      await contract
+        .deploy(options)
+        .send(txnData)
+        .on("transactionHash", tH => console.log("on--transactionHash:==>", tH))
+        .then(function(res) {
+          console.log("then--", res.options.address.toLowerCase());
+          const address = res.options.address.toLowerCase();
+          setLocalStorage("starblockCollection", { address });
+          starblockport.setStarblockCollectionAddress(address);
+        })
+        .catch(function(err) {
+          console.log("catch--", err);
+        });
+    },
+
+    async getCollectionInfo() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!starblockport) {
+        this.getStarBlockPort(accounts[0]);
+      }
+
+      const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
+      const address = starblockCollection.address;
+      if (!address || address.length === 0) {
+        console.log("没有starblockCollection合约地址");
+        return;
+      }
+      const starBlockCollectionAddress = address;
+      const user = accounts[0];
+      const info = await starblockport.getCollectionInfo(starBlockCollectionAddress, user);
+      console.log("Document getCollectionInfo:::", info);
+      setLocalStorage("whitelistSaleConfig", info._collectionInfo.whitelistSaleConfig);
+      setLocalStorage("publicSaleConfig", info._collectionInfo.publicSaleConfig);
     },
 
     toggleShow() {

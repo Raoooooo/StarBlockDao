@@ -96,35 +96,6 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.isApprovedForAll = function (_a) {
-        var owner = _a.owner, operator = _a.operator, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
-        return __awaiter(this, void 0, void 0, function () {
-            var REC721Address, isApproved, WNFTContract, nftAddress, REC721Contract;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        REC721Address = wnftContract;
-                        isApproved = false;
-                        operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
-                        if (!isApproveNFT) return [3 /*break*/, 2];
-                        WNFTContract = this._protocol.setIWrappedNFTAddress(wnftContract);
-                        return [4 /*yield*/, WNFTContract.methods.nft().call()];
-                    case 1:
-                        nftAddress = _b.sent();
-                        if (nftAddress) {
-                            REC721Address = nftAddress;
-                        }
-                        _b.label = 2;
-                    case 2:
-                        REC721Contract = this._protocol.setERC721Addess(REC721Address);
-                        return [4 /*yield*/, REC721Contract.methods.isApprovedForAll(owner, operator).call()];
-                    case 3:
-                        isApproved = _b.sent();
-                        return [2 /*return*/, isApproved];
-                }
-            });
-        });
-    };
     DaoPort.prototype.setApprovalForAll = function (_a) {
         var owner = _a.owner, nftContract = _a.nftContract, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
         return __awaiter(this, void 0, void 0, function () {
@@ -178,31 +149,32 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.harvestAll = function (_a) {
-        var owner = _a.owner, pid = _a.pid, tokenIdRange = _a.tokenIdRange;
-        return __awaiter(this, void 0, void 0, function () {
-            var txHash, txnData, nftMasterchef, error_5;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        txnData = { from: this._protocol.account };
-                        nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-                        return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                                .harvestAll(nftMasterchef, owner, pid, tokenIdRange)
-                                .send(txnData)];
-                    case 1:
-                        txHash = _b.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_5 = _b.sent();
-                        console.error(error_5);
-                        throw new Error("Failed to harvest transaction: \"".concat(error_5 instanceof Error && error_5.message ? error_5.message : "user denied", "...\""));
-                    case 3: return [2 /*return*/, txHash];
-                }
-            });
-        });
-    };
+    /*  public async harvestAll({
+      owner,
+      pid,
+      tokenIdRange
+    }: {
+      owner: string;
+      pid: number;
+      tokenIdRange: number[][];
+    }): Promise<string> {
+      let txHash;
+      try {
+        const txnData = { from: this._protocol.account };
+        const nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+        txHash = await this._protocol.NFTMasterChefContract.methods
+          .harvestAll(nftMasterchef, owner, pid, tokenIdRange)
+          .send(txnData);
+      } catch (error) {
+        console.error(error);
+        throw new Error(
+          `Failed to harvest transaction: "${
+            error instanceof Error && error.message ? error.message : "user denied"
+          }..."`
+        );
+      }
+      return txHash;
+    } */
     DaoPort.prototype.ownedNFTTokens = function (_a) {
         var contractAddress = _a.contractAddress, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
         return __awaiter(this, void 0, void 0, function () {
@@ -226,7 +198,7 @@ var DaoPort = /** @class */ (function () {
     DaoPort.prototype.pending = function (_a, handle) {
         var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, mining, dividend, result, error_6;
+            var _b, _mining, _dividend, result, error_5;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -235,45 +207,49 @@ var DaoPort = /** @class */ (function () {
                                 .pending(pid, tokenIds)
                                 .call()];
                     case 1:
-                        _b = _c.sent(), mining = _b.mining, dividend = _b.dividend;
-                        result = [mining, dividend];
+                        _b = _c.sent(), _mining = _b._mining, _dividend = _b._dividend;
+                        result = [_mining, _dividend];
                         handle(null, result);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_6 = _c.sent();
-                        handle(new Error("Failed to pending transaction: \"".concat(error_6 instanceof Error && error_6.message ? error_6.message : "user denied", "...\"")), null);
+                        error_5 = _c.sent();
+                        handle(new Error("Failed to pending transaction: \"".concat(error_5 instanceof Error && error_5.message ? error_5.message : "user denied", "...\"")), null);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    DaoPort.prototype.pendingAll = function (_a, handle) {
-        var owner = _a.owner, pid = _a.pid, tokenIdRange = _a.tokenIdRange;
-        return __awaiter(this, void 0, void 0, function () {
-            var nftMasterchef, _b, mining, dividend, result, error_7;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _c.trys.push([0, 2, , 3]);
-                        nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .pendingAll(nftMasterchef, owner, pid, tokenIdRange)
-                                .call()];
-                    case 1:
-                        _b = _c.sent(), mining = _b.mining, dividend = _b.dividend;
-                        result = [mining, dividend];
-                        handle(null, result);
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_7 = _c.sent();
-                        handle(new Error("Failed to pending transaction: \"".concat(error_7 instanceof Error && error_7.message ? error_7.message : "user denied", "...\"")), null);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
+    /*   public async pendingAll<T>(
+      {
+        owner,
+        pid,
+        tokenIdRange
+      }: {
+        owner: string;
+        pid: number;
+        tokenIdRange: number[][];
+      },
+      handle: Web3Callback<T>
+    ): Promise<void> {
+      try {
+        const nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+        const { mining, dividend } = await this._protocol.NFTUtilsContract.methods
+          .pendingAll(nftMasterchef, owner, pid, tokenIdRange)
+          .call();
+        const result: T[] = [mining, dividend];
+        handle(null, result);
+      } catch (error) {
+        handle(
+          new Error(
+            `Failed to pending transaction: "${
+              error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          ),
+          null
+        );
+      }
+    } */
     DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
         var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
         return __awaiter(this, void 0, void 0, function () {
@@ -314,6 +290,343 @@ var DaoPort = /** @class */ (function () {
                                 isWNFTApproved: isWNFTApproved,
                                 nft: nft
                             }];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.canClaim = function (_a, handle) {
+        var user = _a.user, treeIds = _a.treeIds, amounts = _a.amounts, merkleProofs = _a.merkleProofs;
+        return __awaiter(this, void 0, void 0, function () {
+            var array, result, error_6;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
+                                .canClaim(user, treeIds, amounts, merkleProofs)
+                                .call()];
+                    case 1:
+                        array = _b.sent();
+                        result = [array[0], array[1]];
+                        handle(null, result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_6 = _b.sent();
+                        handle(new Error("Failed to canClaim transaction: \"".concat(error_6 instanceof Error && error_6.message ? error_6.message : "user denied", "...\"")), null);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.updateTradingRewards = function (_a) {
+        var treeIds = _a.treeIds, merkleRoots = _a.merkleRoots, maxAmountsPerUser = _a.maxAmountsPerUser, merkleProofsSafeGuards = _a.merkleProofsSafeGuards;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_7;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
+                                .updateTradingRewards(treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_7 = _b.sent();
+                        console.error(error_7);
+                        throw new Error("Failed to updateTradingRewards transaction: \"".concat(error_7 instanceof Error && error_7.message ? error_7.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.claim = function (_a) {
+        var treeIds = _a.treeIds, amounts = _a.amounts, merkleProofs = _a.merkleProofs;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_8;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
+                                .claim(treeIds, amounts, merkleProofs)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_8 = _b.sent();
+                        console.error(error_8);
+                        throw new Error("Failed to claim transaction: \"".concat(error_8 instanceof Error && error_8.message ? error_8.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getTokenPrice = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenPrice;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getTokenPrice()
+                            .call()];
+                    case 1:
+                        tokenPrice = _a.sent();
+                        return [2 /*return*/, tokenPrice];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getPoolInfo = function (_a) {
+        var pid = _a.pid, user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfo;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolInfo(pid, user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfo = _b.sent();
+                        console.log("getPoolInfo _wrappedPoolInfo:::", _wrappedPoolInfo);
+                        return [2 /*return*/, _wrappedPoolInfo];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getAllPoolInfos = function (_a) {
+        var fromPid = _a.fromPid, toPid = _a.toPid, user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfos;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getAllPoolInfos(fromPid, toPid, user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfos = _b.sent();
+                        console.log("getPoolInfo _wrappedPoolInfos:::", _wrappedPoolInfos);
+                        return [2 /*return*/, _wrappedPoolInfos];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getPoolInfosByNFTorWNFTs = function (_a) {
+        var poolNFTorWNFTs = _a.poolNFTorWNFTs, user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfos;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolInfosByNFTorWNFTs(poolNFTorWNFTs, user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfos = _b.sent();
+                        console.log("getPoolInfo _wrappedPoolInfos:::", _wrappedPoolInfos);
+                        return [2 /*return*/, _wrappedPoolInfos];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.pendingAll = function (forUser) {
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, _userInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .pendingAll(forUser)
+                            .call()];
+                    case 1:
+                        _userInfo = _a.sent();
+                        return [2 /*return*/, _userInfo];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.harvestAll = function (forUser) {
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                                .harvestAll(forUser)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_9 = _a.sent();
+                        console.error(error_9);
+                        throw new Error("Failed to harvestAll transaction: \"".concat(error_9 instanceof Error && error_9.message ? error_9.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.pendingByNFTorWNFT = function (_a) {
+        var poolNFTorWNFT = _a.poolNFTorWNFT, poolWNFTTokenIds = _a.poolWNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, _poolExists, _pid, _mining, _dividend;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .pendingByNFTorWNFT(poolNFTorWNFT, poolWNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _b = _c.sent(), _poolExists = _b._poolExists, _pid = _b._pid, _mining = _b._mining, _dividend = _b._dividend;
+                        console.log("pendingByNFTorWNFT:::", _poolExists, _pid, _mining, _dividend);
+                        return [2 /*return*/, { _poolExists: _poolExists, _pid: _pid, _mining: _mining, _dividend: _dividend }];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.pendingAllByWNFTTokenIds = function (_a) {
+        var pids = _a.pids, poolWNFTTokenIds = _a.poolWNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, _mining, _dividend;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .pendingAllByWNFTTokenIds(pids, poolWNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _b = _c.sent(), _mining = _b._mining, _dividend = _b._dividend;
+                        console.log("pendingAllByWNFTTokenIds:::", _mining, _dividend);
+                        return [2 /*return*/, { _mining: _mining, _dividend: _dividend }];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.harvestAllByWNFTTokenIds = function (_a) {
+        var forUser = _a.forUser, pids = _a.pids, poolWNFTTokenIds = _a.poolWNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var txHash, txnData, error_10;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                                .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
+                                .send(txnData)];
+                    case 1:
+                        txHash = _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_10 = _b.sent();
+                        console.error(error_10);
+                        throw new Error("Failed to harvestAllByWNFTTokenIds transaction: \"".concat(error_10 instanceof Error && error_10.message ? error_10.message : "user denied", "...\""));
+                    case 3: return [2 /*return*/, txHash];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.ownedNFTsTokenIdsByPids = function (_a) {
+        var pids = _a.pids, user = _a.user;
+        return __awaiter(this, void 0, void 0, function () {
+            var _ownedTokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .ownedNFTsTokenIdsByPids(pids, user)
+                            .call()];
+                    case 1:
+                        _ownedTokenIds = _b.sent();
+                        console.log("ownedNFTsTokenIdsByPids:::", _ownedTokenIds);
+                        return [2 /*return*/, _ownedTokenIds];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.ownedWNFTsTokenIdsByPids = function (_a) {
+        var pids = _a.pids, user = _a.user;
+        return __awaiter(this, void 0, void 0, function () {
+            var _ownedTokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .ownedWNFTsTokenIdsByPids(pids, user)
+                            .call()];
+                    case 1:
+                        _ownedTokenIds = _b.sent();
+                        console.log("ownedWNFTsTokenIdsByPids:::", _ownedTokenIds);
+                        return [2 /*return*/, _ownedTokenIds];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.ownedNFTsTokenIdsByNFTs = function (_a) {
+        var nfts = _a.nfts, user = _a.user;
+        return __awaiter(this, void 0, void 0, function () {
+            var _ownedTokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .ownedNFTsTokenIdsByNFTs(nfts, user)
+                            .call()];
+                    case 1:
+                        _ownedTokenIds = _b.sent();
+                        console.log("ownedNFTsTokenIdsByNFTs:::", _ownedTokenIds);
+                        return [2 /*return*/, _ownedTokenIds];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.ownedNFTTokenIds = function (_a) {
+        var nft = _a.nft, user = _a.user;
+        return __awaiter(this, void 0, void 0, function () {
+            var _ownedTokenIds;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .ownedNFTTokenIds(nft, user)
+                            .call()];
+                    case 1:
+                        _ownedTokenIds = _b.sent();
+                        console.log("ownedNFTTokenIds:::", _ownedTokenIds);
+                        return [2 /*return*/, _ownedTokenIds];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getPoolInfosUserCanDeposit = function (_a) {
+        var user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfos;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolInfosUserCanDeposit(user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfos = _b.sent();
+                        console.log("getPoolInfosUserCanDeposit:::", _wrappedPoolInfos);
+                        return [2 /*return*/, _wrappedPoolInfos];
+                }
+            });
+        });
+    };
+    DaoPort.prototype.getPoolInfosUserDeposited = function (_a) {
+        var user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _wrappedPoolInfos;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolInfosUserDeposited(user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _wrappedPoolInfos = _b.sent();
+                        console.log("getPoolInfosUserDeposited:::", _wrappedPoolInfos);
+                        return [2 /*return*/, _wrappedPoolInfos];
                 }
             });
         });

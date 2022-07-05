@@ -11,6 +11,11 @@ export class Protocol {
   public web3: Web3;
   private NFTUtilsAddress: string;
   private NFTUtilsAbi: PartialReadonlyContractAbi;
+  public MerkletRootDistributorContractAddress: string;
+  public MerkletRootDistributorContract: Contract;
+  public NFTMasterChefBatchContract: Contract;
+  public StarblockCollectionContract: Contract;
+  public StarblockCollectionUtilsContract: Contract;
   private _networkName = Network.Main;
 
   constructor(provider: Web3, chainId: number) {
@@ -34,6 +39,37 @@ export class Protocol {
     this.NFTUtilsAbi = constants.NFTUtils_ABI;
 
     this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
+
+    this.MerkletRootDistributorContractAddress =
+      constants.DEPLOYED[this._networkName].MerkletRootDistributor;
+    const MerkletRootDistributorAbi: PartialReadonlyContractAbi =
+      constants.MerkletRootDistributor_ABI;
+    this.MerkletRootDistributorContract = new this.web3.eth.Contract(
+      MerkletRootDistributorAbi,
+      this.MerkletRootDistributorContractAddress
+    );
+
+    this.NFTMasterChefBatchContract = new this.web3.eth.Contract(
+      constants.NFTMASTERCHEFBATCH_ABI,
+      constants.DEPLOYED[this._networkName].NFTMasterChefBatch
+    );
+
+    this.StarblockCollectionContract = new this.web3.eth.Contract(
+      constants.STARBLOCKCOLLECTION_ABI,
+      ""
+    );
+
+    this.StarblockCollectionUtilsContract = new this.web3.eth.Contract(
+      constants.STARBLOCKCOLLECTIONUTILS_ABI,
+      constants.DEPLOYED[this._networkName].StarBlockCollectionUtils
+    );
+  }
+
+  public setStarblockCollectionAddress(contractAddress: string) {
+    this.StarblockCollectionContract = new this.web3.eth.Contract(
+      constants.STARBLOCKCOLLECTION_ABI,
+      contractAddress
+    );
   }
 
   public setERC721Addess(address: string): Contract {

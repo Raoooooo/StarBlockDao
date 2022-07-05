@@ -11,6 +11,10 @@ export interface CallbackHandle {
 
 export type Web3Callback<T> = (err: Error | null, result: T | null | T[]) => void;
 
+export type ContractCallCallback = (txHash: string) => void;
+export type ContractResultCallback = (res: {}) => void;
+export type ContractErrorCallback = (err: Error) => void;
+
 export type PartialReadonlyContractAbi = AbiItem[];
 
 export interface MasterChefPoolsInfo {

@@ -7,6 +7,9 @@ export interface CallbackHandle {
     (arg1: any, arg2: any): void;
 }
 export declare type Web3Callback<T> = (err: Error | null, result: T | null | T[]) => void;
+export declare type ContractCallCallback = (txHash: string) => void;
+export declare type ContractResultCallback = (res: {}) => void;
+export declare type ContractErrorCallback = (err: Error) => void;
 export declare type PartialReadonlyContractAbi = AbiItem[];
 export interface MasterChefPoolsInfo {
     poolInfo: {};

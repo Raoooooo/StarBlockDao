@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import { MasterChefPoolsInfo, Web3Callback } from "./types";
+import BigNumber from "bignumber.js";
 export declare class DaoPort {
     private _protocol;
     constructor(provider: Web3, chainId: number);
@@ -13,12 +14,6 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }): Promise<string>;
-    isApprovedForAll({ owner, operator, wnftContract, isApproveNFT }: {
-        owner: string;
-        operator?: string;
-        wnftContract: string;
-        isApproveNFT: Boolean;
-    }): Promise<boolean>;
     setApprovalForAll({ owner, nftContract, wnftContract, isApproveNFT }: {
         owner: string;
         nftContract?: string;
@@ -30,11 +25,6 @@ export declare class DaoPort {
         to: string;
         wnftTokenIds: number[];
     }): Promise<string>;
-    harvestAll({ owner, pid, tokenIdRange }: {
-        owner: string;
-        pid: number;
-        tokenIdRange: number[][];
-    }): Promise<string>;
     ownedNFTTokens({ contractAddress, owner, rangeTokenIds }: {
         contractAddress: string;
         owner: string;
@@ -44,15 +34,84 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }, handle: Web3Callback<T>): Promise<void>;
-    pendingAll<T>({ owner, pid, tokenIdRange }: {
-        owner: string;
-        pid: number;
-        tokenIdRange: number[][];
-    }, handle: Web3Callback<T>): Promise<void>;
     getNFTMasterChefInfos({ nftMasterchef, pid, owner, rangeTokenIds }: {
         nftMasterchef?: string;
         pid: number;
         owner: string;
         rangeTokenIds: number[];
     }): Promise<MasterChefPoolsInfo>;
+    canClaim<T>({ user, treeIds, amounts, merkleProofs }: {
+        user: string;
+        treeIds: number[];
+        amounts: BigNumber[];
+        merkleProofs: string[][];
+    }, handle: Web3Callback<T>): Promise<void>;
+    updateTradingRewards({ treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards }: {
+        treeIds: number[];
+        merkleRoots: string[];
+        maxAmountsPerUser: BigNumber[];
+        merkleProofsSafeGuards: string[][];
+    }): Promise<string>;
+    claim({ treeIds, amounts, merkleProofs }: {
+        treeIds: number[];
+        amounts: BigNumber[];
+        merkleProofs: string[][];
+    }): Promise<string>;
+    getTokenPrice(): Promise<number>;
+    getPoolInfo({ pid, user, withOwnedNFTTokenIds }: {
+        pid: number;
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<{}>;
+    getAllPoolInfos({ fromPid, toPid, user, withOwnedNFTTokenIds }: {
+        fromPid: number;
+        toPid: number;
+        pid: number;
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<[]>;
+    getPoolInfosByNFTorWNFTs({ poolNFTorWNFTs, user, withOwnedNFTTokenIds }: {
+        poolNFTorWNFTs: string[];
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<[]>;
+    pendingAll(forUser: string): Promise<{}>;
+    harvestAll(forUser: string): Promise<string>;
+    pendingByNFTorWNFT({ poolNFTorWNFT, poolWNFTTokenIds }: {
+        poolNFTorWNFT: string;
+        poolWNFTTokenIds: number[];
+    }): Promise<{}>;
+    pendingAllByWNFTTokenIds({ pids, poolWNFTTokenIds }: {
+        pids: number[];
+        poolWNFTTokenIds: number[][];
+    }): Promise<{}>;
+    harvestAllByWNFTTokenIds({ forUser, pids, poolWNFTTokenIds }: {
+        forUser: string;
+        pids: number[];
+        poolWNFTTokenIds: number[][];
+    }): Promise<string>;
+    ownedNFTsTokenIdsByPids({ pids, user }: {
+        pids: number[];
+        user: string;
+    }): Promise<[][]>;
+    ownedWNFTsTokenIdsByPids({ pids, user }: {
+        pids: number[];
+        user: string;
+    }): Promise<[][]>;
+    ownedNFTsTokenIdsByNFTs({ nfts, user }: {
+        nfts: string[];
+        user: string;
+    }): Promise<[][]>;
+    ownedNFTTokenIds({ nft, user }: {
+        nft: string;
+        user: string;
+    }): Promise<[]>;
+    getPoolInfosUserCanDeposit({ user, withOwnedNFTTokenIds }: {
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<{}>;
+    getPoolInfosUserDeposited({ user, withOwnedNFTTokenIds }: {
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<{}>;
 }
