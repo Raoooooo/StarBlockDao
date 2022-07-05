@@ -19,6 +19,7 @@ export declare class Protocol {
     setERC721Addess(address: string): Contract;
     setIWrappedNFTAddress(address: string): Contract;
     onlyReadNFTUtilsContract(provider: Web3): void;
+    onlyReadCollectionUtilsContract(provider: Web3): void;
     deposit(pid: number, tokenIds: number[]): Promise<string>;
     withdraw(pid: number, tokenIds: number[]): Promise<string>;
     harvestToken(pid: number, tokenIds: number[]): Promise<string>;

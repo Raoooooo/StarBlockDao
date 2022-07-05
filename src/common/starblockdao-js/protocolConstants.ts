@@ -21,3 +21,5 @@ export const constants = {
   STARBLOCKCOLLECTION_BYTECODE: "0x" + StarBlockCollectionByteCode.object,
   STARBLOCKCOLLECTIONUTILS_ABI: StarBlockCollectionUtilsAbi
 };
+
+export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";

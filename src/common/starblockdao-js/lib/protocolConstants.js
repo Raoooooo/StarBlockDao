@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.constants = void 0;
+exports.NULL_ADDRESS = exports.constants = void 0;
 var deployed_1 = require("./deployed");
 var NFTMasterChef_1 = require("./abi/NFTMasterChef");
 var NFTUtils_1 = require("./abi/NFTUtils");
@@ -26,3 +26,4 @@ exports.constants = {
     STARBLOCKCOLLECTION_BYTECODE: "0x" + StarBlockCollectionByteCode_json_1.default.object,
     STARBLOCKCOLLECTIONUTILS_ABI: StarBlockCollectionUtils_1.StarBlockCollectionUtilsAbi
 };
+exports.NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
