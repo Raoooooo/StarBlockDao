@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { Protocol } from "./protocol";
 import { ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
 import BigNumber from "bignumber.js";
-import { constants } from "./protocolConstants";
+import { constants, NULL_ADDRESS } from "./protocolConstants";
 
 export class CollectionPort {
   private _protocol: Protocol;
@@ -28,7 +28,7 @@ export class CollectionPort {
   }
 
   public setOnlyReadWeb3Provider(provider: Web3) {
-    this._protocol.onlyReadNFTUtilsContract(provider);
+    this._protocol.onlyReadCollectionUtilsContract(provider);
   }
 
   public async publicSaleConfig(): Promise<{}> {
@@ -150,8 +150,15 @@ export class CollectionPort {
   ): Promise<void> {
     // let txHash;
     // try {
-    const value = price.multipliedBy(amount);
-    const txnData = { from: this._protocol.account, value };
+    let txnData: {} = { from: this._protocol.account };
+    const IERC20 = await this._protocol.StarblockCollectionContract.methods.chargeToken().call();
+    if (IERC20 == NULL_ADDRESS) {
+      const value = price.multipliedBy(amount);
+      txnData = {
+        ...txnData,
+        value
+      };
+    }
 
     //   txHash = await this._protocol.StarblockCollectionContract.methods
     //     .whitelistMint(amount)
@@ -195,8 +202,8 @@ export class CollectionPort {
   ): Promise<void> {
     // let txHash;
     // try {
-    const value = price.multipliedBy(amount);
-    const txnData = { from: this._protocol.account, value };
+    // const value = price.multipliedBy(amount);
+    // const txnData = { from: this._protocol.account, value };
     //   txHash = await this._protocol.StarblockCollectionContract.methods
     //     .publicMint(amount)
     //     .send(txnData);
@@ -209,7 +216,15 @@ export class CollectionPort {
     //   );
     // }
     // return txHash;
-
+    let txnData: {} = { from: this._protocol.account };
+    const IERC20 = await this._protocol.StarblockCollectionContract.methods.chargeToken().call();
+    if (IERC20 == NULL_ADDRESS) {
+      const value = price.multipliedBy(amount);
+      txnData = {
+        ...txnData,
+        value
+      };
+    }
     await this._protocol.StarblockCollectionContract.methods
       .publicMint(amount)
       .send(txnData)

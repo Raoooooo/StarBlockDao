@@ -76,6 +76,9 @@ var Protocol = /** @class */ (function () {
     Protocol.prototype.onlyReadNFTUtilsContract = function (provider) {
         this.NFTUtilsContract = new provider.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
     };
+    Protocol.prototype.onlyReadCollectionUtilsContract = function (provider) {
+        this.StarblockCollectionUtilsContract = new provider.eth.Contract(protocolConstants_1.constants.STARBLOCKCOLLECTIONUTILS_ABI, protocolConstants_1.constants.DEPLOYED[this._networkName].StarBlockCollectionUtils);
+    };
     Protocol.prototype.deposit = function (pid, tokenIds) {
         return __awaiter(this, void 0, void 0, function () {
             var txHash, txnData, error_1;

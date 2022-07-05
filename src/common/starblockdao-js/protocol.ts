@@ -84,6 +84,13 @@ export class Protocol {
     this.NFTUtilsContract = new provider.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
   }
 
+  public onlyReadCollectionUtilsContract(provider: Web3) {
+    this.StarblockCollectionUtilsContract = new provider.eth.Contract(
+      constants.STARBLOCKCOLLECTIONUTILS_ABI,
+      constants.DEPLOYED[this._networkName].StarBlockCollectionUtils
+    );
+  }
+
   public async deposit(pid: number, tokenIds: number[]): Promise<string> {
     let txHash;
     try {

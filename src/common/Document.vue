@@ -44,6 +44,7 @@
     <button id="button" @click="whitelistMint">whitelistMint</button>
     <button id="button" @click="publicMint">publicMint</button>
     <button id="button" @click="getCollectionInfo">getCollectionInfo</button>
+    <button id="button" @click="approveERC20">授权ERC20</button>
   </div>
 </template>
 
@@ -55,6 +56,7 @@ import * as Web3 from "web3";
 import { DaoPort } from "./starblockdao-js/lib/daoport";
 import { CollectionPort } from "./starblockdao-js/lib/collectionport";
 import { Network, Web3Callback } from "./starblockdao-js/lib/types";
+import erc20Abi from "./starblockdao-js/lib/abi/ERC20";
 
 var network_Name = Network.Rinkeby;
 
@@ -111,14 +113,21 @@ export default {
       starblockport = new CollectionPort(this.initWeb3(), 4);
       starblockport.setAccount(account);
 
-      const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
-      const address = starblockCollection.address;
+      // const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
+      // let address = starblockCollection.address;
+      // 0x87308025B0026798EcD584e65eF80CD9Aac76806 (通过Factory部署合约，获取地址)
+      let address = "0x87308025B0026798EcD584e65eF80CD9Aac76806";
+
       if (!address || address.length === 0) {
         console.log("没有starblockCollection合约地址");
         return;
       }
 
       starblockport.setStarblockCollectionAddress(address);
+
+      const PROVIDER_URL = "https://rinkeby.infura.io/v3/7581b5aab9b4489ba1517a3e06e84280";
+      const onlyReadWeb3 = new Web3(new Web3.providers.HttpProvider(PROVIDER_URL));
+      starblockport.setOnlyReadWeb3Provider(onlyReadWeb3);
     },
 
     async getDaoPort(account) {
@@ -777,7 +786,7 @@ export default {
         this.getStarBlockPort(accounts[0]);
       }
 
-      const whitelistSaleConfig = [1657004392, 1657866875, "20000000000000000", 100];
+      const whitelistSaleConfig = [0, 1657866875, "20000000000000000", 2000];
       try {
         const txHash = await starblockport.updateWhitelistSaleConfig(whitelistSaleConfig);
         console.log("updateWhitelistSaleConfig==txhash", txHash);
@@ -792,7 +801,7 @@ export default {
         this.getStarBlockPort(accounts[0]);
       }
 
-      const publicSaleConfig = [1657004392, 1657866875, "10000000000000000", 2000];
+      const publicSaleConfig = [0, 1657866875, "10000000000000000", 4000];
       try {
         const txHash = await starblockport.updatePublicSaleConfig(publicSaleConfig);
         console.log("updatePublicSaleConfig==txhash", txHash);
@@ -808,7 +817,7 @@ export default {
       }
 
       const addresses = [
-        "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
+        "0x31f8838f91617091Ec2d8303AA08f88967613bb1",
         "0x7Be5f25c78B9823c90dB8AaEe5d9bf8d72217B0a"
       ];
       try {
@@ -828,7 +837,7 @@ export default {
       const whitelistSaleConfig = JSON.parse(getLocalStorage("whitelistSaleConfig"));
       if (!whitelistSaleConfig) return;
 
-      const amount = 3;
+      const amount = 1000;
       const price = new BigNumber(whitelistSaleConfig[2]);
 
       await starblockport.whitelistMint(
@@ -940,18 +949,45 @@ export default {
         this.getStarBlockPort(accounts[0]);
       }
 
-      const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
-      const address = starblockCollection.address;
+      // const starblockCollection = JSON.parse(getLocalStorage("starblockCollection"));
+      // let address = starblockCollection.address;
+      let address = "0x87308025B0026798EcD584e65eF80CD9Aac76806";
       if (!address || address.length === 0) {
         console.log("没有starblockCollection合约地址");
         return;
       }
+
       const starBlockCollectionAddress = address;
       const user = accounts[0];
       const info = await starblockport.getCollectionInfo(starBlockCollectionAddress, user);
       console.log("Document getCollectionInfo:::", info);
       setLocalStorage("whitelistSaleConfig", info._collectionInfo.whitelistSaleConfig);
       setLocalStorage("publicSaleConfig", info._collectionInfo.publicSaleConfig);
+    },
+
+    async approveERC20() {
+      var web3 = this.initWeb3();
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      const account = accounts[0];
+
+      var contract = new web3.eth.Contract(erc20Abi, "0x38781bd54b74bF1B7692C16E9362587c13fa3986");
+      //是否授权
+      // let approvedAmount = await contract.methods
+      //   .allowance(account, wyvernTokenTransferProxy)
+      //   .call();
+      // approvedAmount = Number(approvedAmount);
+
+      // if (approvedAmount >= startAmount) {
+      //   console.log("账户已授权");
+      //   return true;
+      // }
+
+      var txnData = { from: account };
+      await contract.methods
+        .approve("0xc72c1265cb59e821c6399998796a1dde4ec27276", "100000000000000000000000")
+        .send(txnData);
     },
 
     toggleShow() {

@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -58,7 +69,7 @@ var CollectionPort = /** @class */ (function () {
         };
     };
     CollectionPort.prototype.setOnlyReadWeb3Provider = function (provider) {
-        this._protocol.onlyReadNFTUtilsContract(provider);
+        this._protocol.onlyReadCollectionUtilsContract(provider);
     };
     CollectionPort.prototype.publicSaleConfig = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -194,12 +205,18 @@ var CollectionPort = /** @class */ (function () {
     };
     CollectionPort.prototype.whitelistMint = function (amount, price, callCallback, resultCallback, errorCallback) {
         return __awaiter(this, void 0, void 0, function () {
-            var value, txnData;
+            var txnData, IERC20, value;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        value = price.multipliedBy(amount);
-                        txnData = { from: this._protocol.account, value: value };
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods.chargeToken().call()];
+                    case 1:
+                        IERC20 = _a.sent();
+                        if (IERC20 == protocolConstants_1.NULL_ADDRESS) {
+                            value = price.multipliedBy(amount);
+                            txnData = __assign(__assign({}, txnData), { value: value });
+                        }
                         //   txHash = await this._protocol.StarblockCollectionContract.methods
                         //     .whitelistMint(amount)
                         //     .send(txnData);
@@ -224,7 +241,7 @@ var CollectionPort = /** @class */ (function () {
                                 .catch(function (error) {
                                 errorCallback(new Error("Failed to whitelistMint transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
-                    case 1:
+                    case 2:
                         //   txHash = await this._protocol.StarblockCollectionContract.methods
                         //     .whitelistMint(amount)
                         //     .send(txnData);
@@ -245,24 +262,18 @@ var CollectionPort = /** @class */ (function () {
     };
     CollectionPort.prototype.publicMint = function (amount, price, callCallback, resultCallback, errorCallback) {
         return __awaiter(this, void 0, void 0, function () {
-            var value, txnData;
+            var txnData, IERC20, value;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        value = price.multipliedBy(amount);
-                        txnData = { from: this._protocol.account, value: value };
-                        //   txHash = await this._protocol.StarblockCollectionContract.methods
-                        //     .publicMint(amount)
-                        //     .send(txnData);
-                        // } catch (error) {
-                        //   console.error(error);
-                        //   throw new Error(
-                        //     `Failed to publicMint transaction: "${
-                        //       error instanceof Error && error.message ? error.message : "user denied"
-                        //     }..."`
-                        //   );
-                        // }
-                        // return txHash;
+                        txnData = { from: this._protocol.account };
+                        return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods.chargeToken().call()];
+                    case 1:
+                        IERC20 = _a.sent();
+                        if (IERC20 == protocolConstants_1.NULL_ADDRESS) {
+                            value = price.multipliedBy(amount);
+                            txnData = __assign(__assign({}, txnData), { value: value });
+                        }
                         return [4 /*yield*/, this._protocol.StarblockCollectionContract.methods
                                 .publicMint(amount)
                                 .send(txnData)
@@ -275,19 +286,7 @@ var CollectionPort = /** @class */ (function () {
                                 .catch(function (error) {
                                 errorCallback(new Error("Failed to publicMint transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
-                    case 1:
-                        //   txHash = await this._protocol.StarblockCollectionContract.methods
-                        //     .publicMint(amount)
-                        //     .send(txnData);
-                        // } catch (error) {
-                        //   console.error(error);
-                        //   throw new Error(
-                        //     `Failed to publicMint transaction: "${
-                        //       error instanceof Error && error.message ? error.message : "user denied"
-                        //     }..."`
-                        //   );
-                        // }
-                        // return txHash;
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
