@@ -130,6 +130,7 @@ export default {
         "navBar.homepage",
         "navBar.section1",
         "navBar.starBlock",
+        "navBar.document",
         "navBar.github"
 
         // "navBar.section2",
@@ -476,6 +477,10 @@ export default {
       //   // window.open("https://www.baidu.com/", "_blank");
       //   return;
       // }
+      if (item == "navBar.document") {
+        window.open(this.$t("navBar.documentUrl"), "_blank");
+        return;
+      }
       if (item == "navBar.github") {
         window.open("https://github.com/StarBlockDAO", "_blank");
         return;
@@ -600,7 +605,7 @@ export default {
 }
 
 .tabBox {
-  margin-left: 15.5rem;
+  margin-left: 13.5rem;
   margin-right: 2.65rem;
   display: flex;
   flex-direction: row;

@@ -10,9 +10,11 @@ export default {
         twwiter: "Docs",
         English: "English",
         chinese: "简体中文",
+        document: "Document",
         github: "GitHub",
         login: "Connect Wallet",
         starBlock: "StarBlock",
+        documentUrl: "https://starblock.gitbook.io/main/v/english/",
 
     },
 

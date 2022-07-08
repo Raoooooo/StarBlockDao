@@ -150,7 +150,8 @@ export default {
         { title: "navBar.homepage", path: "" },
 
         { title: "navBar.section1", path: "" },
-        { title: "navBar.starBlock", path: "https://github.com/StarBlockDAO" },
+        { title: "navBar.starBlock", path: "https://github.com/StarBlockDAO", },
+        { title: "navBar.document", path: this.$t("navBar.documentUrl") },
         { title: "navBar.github", path: "https://www.starblock.io" },
         // { title: "navBar.section2", path: "" },
         // { title: "navBar.section3", path: "" },
@@ -445,6 +446,9 @@ export default {
       }
       if (item.title == "navBar.starBlock") {
         window.open("https://www.starblock.io", "_blank");
+      }
+      if (item.title == "navBar.document") {
+        window.open(this.$t("navBar.documentUrl"), "_blank");
       }
       if (index == this.tabItems.length - 1) {
         if (this.$i18n.locale == "en") {
