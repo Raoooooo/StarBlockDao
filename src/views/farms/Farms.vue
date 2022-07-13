@@ -93,6 +93,8 @@
           <span>{{ "· " }}</span>
           <span>{{ $t("farms.tip2") }}</span>
           <br />
+          <span>{{ "· " + $t("farms.rewardsDes") }}</span>
+          <br />
           <span>{{ "· " + $t("farms.tip3") }}</span>
           <br />
           <span>{{ "· " + $t("farms.tip4") }}</span>
@@ -611,7 +613,7 @@ export default {
     setTimeout(() => {
       var isFirstLoad = true;
       this.getMasterChefInfo(isFirstLoad);
-    }, 1500);
+    }, 2000);
 
     // setTimeout(() => {
     //   this.getFloorPriceData();

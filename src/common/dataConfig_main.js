@@ -75,7 +75,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: true,
-        sort: 3
+        sort: 18
     },
     {
 
@@ -112,7 +112,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: true,
-        sort: 4
+        sort: 19
     },
 
     {
@@ -150,7 +150,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 5
+        sort: 6
     },
 
     {
@@ -188,7 +188,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 12
+        sort: 9
     },
 
     {
@@ -227,7 +227,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 16
+        sort: 20
     },
 
     {
@@ -266,7 +266,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 15
+        sort: 17
     },
 
     {
@@ -305,7 +305,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 6
+        sort: 5
     },
 
     {
@@ -344,7 +344,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 13
+        sort: 7
     },
 
 
@@ -385,7 +385,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 11
+        sort: 8
     },
 
     {
@@ -424,7 +424,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 14
+        sort: 13
     },
 
     {
@@ -503,7 +503,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 7
+        sort: 4
     },
 
     {
@@ -542,7 +542,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 8
+        sort: 15
     },
 
     {
@@ -581,7 +581,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 9
+        sort: 14
     },
 
     {
@@ -620,7 +620,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 10
+        sort: 6
     },
 
 
@@ -658,7 +658,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 17
+        sort: 10
     },
 
     {
@@ -695,7 +695,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 18
+        sort: 11
     },
 
     {
@@ -732,7 +732,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 19
+        sort: 12
     },
 
     {
@@ -769,7 +769,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 20
+        sort: 23
     },
 
     {
@@ -806,7 +806,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 21
+        sort: 22
     },
 
     {
@@ -843,7 +843,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 22
+        sort: 24
     },
 
     {
@@ -880,7 +880,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 23
+        sort: 21
     },
 
     {
@@ -911,18 +911,52 @@ const poolDatas_main = [
         WNFTItems: [],
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon24.png"),
-            name: "mutantaiyachtclub",
+            name: "mutantaiyachtclub-nft",
             showName: "MutantAIYachtClub",
             contractAddress: "",
         },
         selectedAddress: null,
         isFree: false,
-        sort: 24
+        sort: 16
     },
 
 
+    {
+        poolInfo: {
+            pid: 24,
+            rangeTokenIds: [0, 9999],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
 
-
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon25.png"),
+            name: "0xlady",
+            showName: "0xLady",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 3
+    },
 
 ]
 

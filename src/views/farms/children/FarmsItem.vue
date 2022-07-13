@@ -337,7 +337,7 @@ export default {
       return item.poolInfo.wnft.length > 0 ? require('@/assets/img/farms/linkIcon1.png') : require('@/assets/img/farms/linkIcon1_unActive.png')
     },
     isShowStarBlockLink(item) {
-      if (item.poolInfo.pid <= 2 || item.poolInfo.pid == 10) {
+      if (item.poolInfo.pid <= 2 || item.poolInfo.pid == 10 || item.poolInfo.pid == 24) {
         return true;
       } else {
         return false;

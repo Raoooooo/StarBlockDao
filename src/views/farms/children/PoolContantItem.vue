@@ -442,7 +442,7 @@ export default {
   height: 1.75rem;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
-  border-radius: 0.875rem;
+  border-radius: 0.1rem;
   color: #fff;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;

@@ -81,6 +81,7 @@ export default {
         getRewardSuccess: "Get Reward Success",
         depositSuccess: "Stake NFT Success",
         withdrawSuccess: "Unstake NFT Success",
+        rewardsDes: "Pools have 4 phases: 30D, 90D, 240D and 360D to cut $STB reward in half",
 
     },
 

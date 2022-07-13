@@ -126,8 +126,8 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
         wnftContract,
         isApproveNFT
     };
-    const isApprove = await daoport.isApprovedForAll(parameters);
-    console.log("daoporApprovedtAction==", isApprove);
+    // const isApprove = await daoport.isApprovedForAll(parameters);
+    // console.log("daoporApprovedtAction==", isApprove);
     if (isOnlyGetApprove) {
         if (getIsApproveNFT) {
             getIsApproveNFT(isApprove, item, index);
@@ -178,8 +178,8 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
     };
 
 
-    const isApprove = await daoport.isApprovedForAll(parameters);
-    console.log("daoporApprovedtAction==", isApprove);
+    // const isApprove = await daoport.isApprovedForAll(parameters);
+    // console.log("daoporApprovedtAction==", isApprove);
 
     if (isOnlyGetApprove) {
         if (getIsApproveNFT) {

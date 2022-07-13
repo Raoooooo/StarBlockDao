@@ -80,6 +80,7 @@ export default {
         getRewardSuccess: "领取奖励成功",
         depositSuccess: "抵押NFT成功",
         withdrawSuccess: "解抵押NFT成功",
+        rewardsDes: "池子奖励有四个减半周期：30、90、240和360天",
 
 
 
