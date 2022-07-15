@@ -117,7 +117,7 @@ export default {
       // 通过 `vm` 访问组件实例,将值传入fromPath
     });
   },
-  beforeUpdate() {},
+  beforeUpdate() { },
   beforeRouteEnter(to, from, next) {
     undefined;
     next(vm => {
@@ -244,6 +244,7 @@ export default {
   width: 100%;
   height: 17.7rem;
 }
+
 .topBackContant {
   top: 0%;
   left: 0%;
@@ -263,11 +264,13 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .contantDetailBox_img {
   margin-top: 1rem;
   height: 0.9rem;
   width: 7.875rem;
 }
+
 .contantDetailBox_title {
   margin-top: 0.75rem;
   font-size: 0.75rem;
@@ -288,6 +291,7 @@ export default {
   text-align: center;
   /* margin-right: 24.85rem; */
 }
+
 .sectionBox1 {
   margin-top: 0.75rem;
   width: 95%;
@@ -298,6 +302,7 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .sectionBox1_title {
   margin-top: 0.75rem;
   font-size: 0.95rem;
@@ -317,6 +322,7 @@ export default {
   color: #666666;
   line-height: 0.95rem;
 }
+
 .featureitem {
   width: 95%;
   margin-top: 0.75rem;
@@ -388,12 +394,14 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .countDownBack_topBox {
   margin-top: 0.375rem;
   width: 100%;
   display: flex;
   flex-direction: row;
 }
+
 .countDownContantBox {
   margin-left: 0.375rem;
   /* width: 8.725rem; */
@@ -405,6 +413,7 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
+
 .countDownJumpBox {
   margin-left: 0.55rem;
   width: 2.9rem;
@@ -416,6 +425,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .itemCountBox {
   display: flex;
   align-items: center;
@@ -425,6 +435,7 @@ export default {
   background: #ffffff;
   border-radius: 0.175rem;
 }
+
 .itemCountBox_text {
   font-size: 0.85rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -432,6 +443,7 @@ export default {
   color: #f7b500;
   line-height: 1.2rem;
 }
+
 .countDownBack_bottomBox {
   margin-top: 0.25rem;
   position: relative;
@@ -444,10 +456,12 @@ export default {
   justify-content: center;
   align-items: center; */
 }
+
 .countDownBack_bottomBox_img {
   width: 11.25rem;
   height: 0.9rem;
 }
+
 .countDownBack_bottomBox_text {
   margin-top: -0.15rem;
   font-size: 0.55rem;
@@ -457,6 +471,7 @@ export default {
   line-height: 0.75rem;
   /* letter-spacing: 1px; */
 }
+
 .countDownJumpBox_text {
   font-size: 0.65rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -464,6 +479,7 @@ export default {
   color: #f7b500;
   line-height: 0.925rem;
 }
+
 .countDownJumpBox_icon {
   margin-left: 0.2rem;
   width: 0.55rem;
@@ -481,7 +497,8 @@ export default {
   align-items: center;
   justify-content: center;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1000px) {
+
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .back {
     display: flex;
     flex-direction: column;
@@ -510,6 +527,7 @@ export default {
     width: 100%;
     height: 26.5rem;
   }
+
   .topBackContant {
     top: 0%;
     left: 0%;
@@ -529,11 +547,13 @@ export default {
     flex-direction: column;
     align-items: unset;
   }
+
   .contantDetailBox_img {
     margin-top: 0rem;
     height: 1.8rem;
     width: 15.8rem;
   }
+
   .contantDetailBox_title {
     margin-top: 0rem;
     font-size: 1.25rem;
@@ -554,6 +574,7 @@ export default {
     margin-right: 24.85rem;
     text-align: unset;
   }
+
   .sectionBox1 {
     margin-top: 2.5rem;
     width: 80%;
@@ -564,6 +585,7 @@ export default {
     flex-direction: column;
     align-items: center;
   }
+
   .sectionBox1_title {
     margin-top: 1.125rem;
     font-size: 0.75rem;
@@ -583,6 +605,7 @@ export default {
     color: #666666;
     line-height: 0.7rem;
   }
+
   .featureitem {
     margin-top: 1.25rem;
   }
@@ -650,12 +673,14 @@ export default {
     flex-direction: column;
     align-items: center;
   }
+
   .countDownBack_topBox {
     margin-top: 0.375rem;
     width: 100%;
     display: flex;
     flex-direction: row;
   }
+
   .countDownContantBox {
     margin-left: 0.375rem;
     /* width: 8.725rem; */
@@ -667,6 +692,7 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+
   .countDownJumpBox {
     margin-left: 0.55rem;
     width: 2.9rem;
@@ -678,6 +704,7 @@ export default {
     align-items: center;
     justify-content: center;
   }
+
   .itemCountBox {
     display: flex;
     align-items: center;
@@ -687,6 +714,7 @@ export default {
     background: #ffffff;
     border-radius: 0.175rem;
   }
+
   .itemCountBox_text {
     font-size: 0.85rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -694,6 +722,7 @@ export default {
     color: #f7b500;
     line-height: 1.2rem;
   }
+
   .countDownBack_bottomBox {
     position: relative;
     margin-top: 0.25rem;
@@ -706,10 +735,12 @@ export default {
     justify-content: center;
     align-items: center; */
   }
+
   .countDownBack_bottomBox_img {
     width: 11.25rem;
     height: 0.9rem;
   }
+
   .countDownBack_bottomBox_text {
     font-size: 0.55rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -718,6 +749,7 @@ export default {
     line-height: 0.75rem;
     /* letter-spacing: 1px; */
   }
+
   .countDownJumpBox_text {
     font-size: 0.65rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -725,11 +757,13 @@ export default {
     color: #f7b500;
     line-height: 0.925rem;
   }
+
   .countDownJumpBox_icon {
     margin-left: 0.2rem;
     width: 0.55rem;
     height: 0.55rem;
   }
+
   .countDownBack_bottomBox_contantBox {
     top: 0%;
     left: 0%;

@@ -1436,6 +1436,7 @@ export default {
       item.nft = masterChefInfo.nft;
       item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
       item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
+      item.poolInfo.currentRewardIndex = masterChefInfo.poolInfo.currentRewardIndex;
       if (isFirstLoad) {
         if (item.collection.name) {
           this.requestFloorPrice(item, this.handleFloorPrice, index);
@@ -1453,10 +1454,14 @@ export default {
           const item = this.poolItems[i];
           this.totalNftQuantity += Number(item.poolInfo.amount);
           var reward = 0;
+
           if (this.currentBlockNumber > Number(item.poolInfo.startBlock)) {
             reward =
               (this.currentBlockNumber - Number(item.poolInfo.startBlock)) *
               Number(item.rewardForEachBlock);
+          }
+          if (Number(item.poolInfo.currentRewardIndex) == 1) {
+            reward = Number(item.rewardForEachBlock) * 6500 * 30 + reward
           }
           this.totalReward += reward;
           this.totalBonus += item.dividend;
