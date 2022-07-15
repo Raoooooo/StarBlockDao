@@ -123,7 +123,46 @@ export default {
         course: "Staking Tutorials",
         courseMobile: "Tutorials",
         applyCollection: "Collection Listing",
-        applyCollection_bottom: "Collection Listing"
+        applyCollection_bottom: "Collection Listing",
+
+        defaultStakeAlertTitle: "Complete Stake",
+        defaultUnstakeAlertTitle: "Complete Unstake",
+        defaultStakeAlertDes: "Staking NFT will give you the staking certificate: WNFT，WNFT is theonlycertificate for unstaking NFT, don't lose it",
+        defaultUnstakeAlertDes: "Staking NFT will give you the staking certificate: WNFT，WNFT is theonlycertificate for unstaking NFT, don't lose it",
+        stakeApprove: "Stake Approve",
+        unstakeApprove: "Unstake Approve",
+        stakeApproveNFTDes: "You'll be asked to approve NFT from your wallet.",
+        stakeApproveWNFTDes: "You'll be asked to approve WNFT from your wallet.",
+        confirmStake: "Confirm Stake",
+        confirmUnstake: "Confirm Unstake",
+
+        confirmStakeDesSub1: "Your transaction of",
+        confirmStakeDesSub2: "stake is processing",
+        confirmUnStake: "Confirm Unstake",
+        confirmUnstakeDesSub1: "Your transaction of",
+        confirmUnstakeDesSub2: "unstake is processing",
+        approveIngStatus: "Waiting for approval…",
+        haveComplete: "Completed",
+        deployDefaultStatus: "Waiting for transaction",
+        deployingStatus: "Waiting for transaction",
+        btnCompleteStatus: "Complete",
+        reStart: "Continue",
+        unStart: "Unstart",
+        start: "Start",
+        haveComplete: "Completed",
+
+        stakeSuccessTitle: "Your Stake is complete!",
+        stakeSuccessDesSub1: "You have completed the stake of ",
+        stakeSuccessDesSub2: " NFTs from the",
+        stakeSuccessDesSub3: "collection",
+
+        unstakeSuccessTitle: "Your Unstake is complete!",
+        unstakeSuccessDesSub1: "You have completed the unstake of ",
+        unstakeSuccessDesSub2: " WNFTs from the",
+        unstakeSuccessDesSub3: "collection",
+
+
+
 
     },
 

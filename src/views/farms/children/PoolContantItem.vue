@@ -88,7 +88,17 @@ export default {
       if (Number(this.item.endBlock) == 0) {
         return false;
       }
-      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber && this.item.isNFTApproved) {
+      // if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber && this.item.isNFTApproved) {
+      //   return false
+      // } else {
+      //   if (window.ethereum.selectedAddress) {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      // }
+
+      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber) {
         return false
       } else {
         if (window.ethereum.selectedAddress) {
@@ -109,7 +119,17 @@ export default {
       if (Number(this.item.endBlock) == 0) {
         return false;
       }
-      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber && this.item.isWNFTApproved) {
+      // if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber && this.item.isWNFTApproved) {
+      //   return false
+      // } else {
+      //   if (window.ethereum.selectedAddress) {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      // }
+
+      if (Number(this.item.poolInfo.startBlock) > this.currentBlockNumber) {
         return false
       } else {
         if (window.ethereum.selectedAddress) {
@@ -129,7 +149,6 @@ export default {
       }
       if (this.item && !this.item.isNFTApproved) {
         this.pledgeBtnStr = this.$t("common.stakeApprove") + "(" + this.item.nftQuantity + ")";
-        // return "抵押授权";
       } else {
         this.pledgeBtnStr = this.$t("farms.pledge") + "(" + this.item.nftQuantity + ")";
       }
@@ -268,24 +287,21 @@ export default {
       getAccounts()
         .then(accounts => {
           if (accounts) {
-            if (!this.item.isNFTApproved) {
-              if (this.showImgLoading) {
-                return;
-              }
-              approveNFTAction(
-                this.item,
-                this.handleNftApprove,
-                0,
-                false,
-                this.faildHandleApproveNFT
-              );
-              this.showImgLoading = true;
-              return;
-            }
+            // if (!this.item.isNFTApproved) {
+            //   if (this.showImgLoading) {
+            //     return;
+            //   }
+            //   approveNFTAction(
+            //     this.item,
+            //     this.handleNftApprove,
+            //     0,
+            //     false,
+            //     this.faildHandleApproveNFT
+            //   );
             //   this.showImgLoading = true;
-            //   this.$bus.$emit("daoporDepositNotiAction", this.item);
+            //   return;
+            // }
             this.pledgeBtnStr = "";
-            //   this.item.showImgLoading = true;
             this.$bus.$emit("pledgeBtnNotiAction", {
               item: this.item,
               isNFTSell: true,
@@ -297,12 +313,6 @@ export default {
           }
         })
         .catch(error => this.$message.error(this.$t("common.connectWalletMsg")));
-      // if (getAccounts()) {
-      //   alert(getAccounts());
-      // } else {
-      //   this.$message.error("请先链接钱包");
-      //   return;
-      // }
     },
     faildHandleApproveNFT(item) {
       this.showImgLoading = false;
@@ -323,20 +333,20 @@ export default {
       getAccounts()
         .then(accounts => {
           if (accounts) {
-            if (!this.item.isWNFTApproved) {
-              if (this.showImgLoading1) {
-                return;
-              }
-              approveWNFTAction(
-                this.item,
-                this.handleWNftApprove,
-                0,
-                false,
-                this.faildHandleApproveWNFT
-              );
-              this.showImgLoading1 = true;
-              return;
-            }
+            // if (!this.item.isWNFTApproved) {
+            //   if (this.showImgLoading1) {
+            //     return;
+            //   }
+            //   approveWNFTAction(
+            //     this.item,
+            //     this.handleWNftApprove,
+            //     0,
+            //     false,
+            //     this.faildHandleApproveWNFT
+            //   );
+            //   this.showImgLoading1 = true;
+            //   return;
+            // }
             this.$bus.$emit("pledgeBtnNotiAction", {
               item: this.item,
               isNFTSell: false,

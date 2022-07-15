@@ -340,6 +340,198 @@
         </div>
       </div>
     </el-dialog>
+
+
+
+    <el-dialog title="" :visible.sync="defaultAlertShow" :width="elDialogWidth1" :show-close="false" center top="200px"
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+      <div class="dialogBack">
+        <div class="dialogTopBack">
+          <div></div>
+          <p class="dialogTopBack_title">
+            {{ defaultAlertTitle }}
+          </p>
+          <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="stakeAlertCloseAction" />
+        </div>
+
+        <div class="dialogContantBox">
+
+          <div class="dialogContantBox_topBox">
+            <div class="dialogContantBox_topBox_leftBox">
+              <img class="collectionImg" :src="selectPollItem.collection.imagePath" v-if="selectPollItem.collection" />
+              <p class="collectionName" v-if="selectPollItem.collection">{{ selectPollItem.collection.showName }}</p>
+            </div>
+
+            <div class="dialogContantBox_topBox_rightBox">
+              <div class="rewardBox">
+                <p class="rewardBox_text">{{ selectPollItemReward }}</p>
+                <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" />
+              </div>
+              <!-- <p class="priceText">$124.98</p> -->
+              <p class="rewardDes">{{ $t("farms.awardNFT") + "/" + $t("farms.month") }}</p>
+            </div>
+          </div>
+          <div class="dialogContantBox_sepLine"></div>
+
+          <div class="quantityBox">
+            <p class="quantityBox_leftText">Quantity</p>
+            <p class="quantityBox_rightText">{{ selectCount }}</p>
+          </div>
+
+          <p class="stakeDes">{{ defaltAlertStakeDes }}</p>
+
+          <button class="stakeBtn" @click="defalutStakeBtnAction">{{ defaultStakeAlertBtnStr }}</button>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="" :visible.sync="stakeProcessAlertShow" :width="elDialogWidth1" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+      <div class="dialogBack">
+        <div class="dialogTopBack">
+          <div></div>
+          <p class="dialogTopBack_title">
+            {{ defaultAlertTitle }}
+          </p>
+          <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="stakeProcessAlertCloseAction" />
+        </div>
+
+        <div class="dialogContantBox">
+
+          <div class="dialogContantBox_topBox">
+            <div class="dialogContantBox_topBox_leftBox">
+              <img class="collectionImg" :src="selectPollItem.collection.imagePath" v-if="selectPollItem.collection" />
+              <div class="selectTextBox">
+                <p class="collectionName" v-if="selectPollItem.collection">{{ selectPollItem.collection.showName }}</p>
+                <p class="selectTextBox_count">{{ "Quantity:" + selectCount }}</p>
+              </div>
+            </div>
+
+            <div class="dialogContantBox_topBox_rightBox">
+              <div class="rewardBox">
+                <p class="rewardBox_text">{{ selectPollItemReward }}</p>
+                <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" />
+              </div>
+              <p class="priceText">$124.98</p>
+              <p class="rewardDes">{{ $t("farms.awardNFT") + "/" + $t("farms.month") }}</p>
+            </div>
+          </div>
+          <div class="dialogContantBox_sepLine"></div>
+
+
+          <div class="stepBox">
+            <!-- 授权 -->
+            <div class="stepBoxSub">
+              <img :class="approveProcessImgClass" :src="approveStatusImgUrl" />
+              <div class="stepBoxSub_contantBox">
+                <p class="processDesTopTitle">{{ approveStepTitle }}</p>
+                <p class="processDesBottomTitle">{{ approveStepDes }}</p>
+
+                <div class="processStepBtnBox">
+                  <button class="processStepOffBtn" v-if="isApprove">
+                    {{ $t("common.haveComplete") }}
+                  </button>
+                  <button class="processStepOnBtn" v-if="!isApprove" @click="startApprove">
+                    {{ $t("common.start") }}
+                  </button>
+                  <button class="processStepOnBtn" v-if="isStartedApprove">
+                    {{ $t("common.approveIngStatus") }}
+                  </button>
+
+                  <button class="processStepOnBtn" v-if="isApproveFaild" @click="startApprove">
+                    {{ $t("common.reStart") }}
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 抵押/解抵押 -->
+            <div class="stepBoxSub1">
+              <img :class="deployProcessImgClass" :src="delyContractStatusImgUrl" />
+              <div class="stepBoxSub_contantBox">
+                <p class="processDesTopTitle">{{ deployStepTitle }}</p>
+                <p class="processDesBottomTitle">
+                  <span>
+                    {{ deployStepDesSub1 }}
+                  </span>
+                  <span class="processDesBottomTitle_active">
+                    {{ deployStepDesSub2 }}
+                  </span>
+                  {{ deployStepDesSub3 }}
+                </p>
+
+                <div class="processStepBtnBox">
+                  <button class="processStepOffBtn" v-if="!isApprove">
+                    {{ $t("common.unStart") }}
+                  </button>
+                  <button class="processStepOnBtn" v-if="isApprove && !isDelyFailed && !isDelySuccess"
+                    @click="startDelyContractBtnAction()">
+                    {{ $t("common.start") }}
+                  </button>
+                  <button class="processStepOnBtn" v-if="isStartedDelyContract">
+                    {{ $t("common.deployingStatus") }}
+                  </button>
+                  <button class="processStepOffBtn" v-if="isDelySuccess">
+                    {{ $t("common.haveComplete") }}
+                  </button>
+                  <button class="processStepOnBtn" v-if="isDelyFailed" @click="startDelyContractBtnAction()">
+                    {{ $t("common.reStart") }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+
+
+
+    <el-dialog title="" :visible.sync="processSuccessAlertShow" :width="elDialogWidth1" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+      <div class="dialogBack">
+        <div class="dialogTopBack">
+          <div></div>
+          <p class="dialogTopBack_title">
+            {{ processSuccessAlertTitle }}
+          </p>
+          <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="stakeSuccessAlertCloseAction" />
+        </div>
+
+        <div class="dialogSuccessContantBox">
+          <div class="collectionImgBox_success">
+            <img class="collectionImg_success" :src="selectPollItem.collection.imagePath"
+              v-if="selectPollItem.collection" />
+          </div>
+
+          <p class="stakeSuccessDes">
+            <span>{{ processSuccessDesSub1 }}</span>
+            <span class="stakeSuccessDes_active">{{ selectCount }}</span>
+            <span>{{ processSuccessDesSub2 }}</span>
+            <span>{{ " " }}</span>
+            <span class="stakeSuccessDes_active">{{ selectPollItem.collection.showName }}</span>
+            <span>{{ " " }}</span>
+            <span>{{ processSuccessDesSub3 }}</span>
+          </p>
+          <div class="txHashBox_process">
+            <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+            <a :href="getChainWebUrl(txHashOringion)" target="_blank">
+              <p class="txHash">{{ txHash }}</p>
+            </a>
+            <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
+          </div>
+
+          <button class="stakeBtn" @click="continueStakeBtnAction">Continue Stake</button>
+        </div>
+      </div>
+    </el-dialog>
+
+
   </div>
 </template>
 
@@ -400,6 +592,124 @@ export default {
     Bottom
   },
   computed: {
+    defaultAlertTitle() {
+      if (this.isSwitch1) {
+        return this.$t("common.defaultStakeAlertTitle");
+      } else {
+        return this.$t("common.defaultUnstakeAlertTitle");
+      }
+    },
+
+    defaltAlertStakeDes() {
+      if (this.isSwitch1) {
+        return this.$t("common.defaultStakeAlertDes");
+      } else {
+        return this.$t("farms.tip3");
+      }
+    },
+    defaultStakeAlertBtnStr() {
+      if (this.isSwitch1) {
+        return this.$t("farms.pledge");
+      } else {
+        return this.$t("farms.unPledge");
+      }
+    },
+
+
+    processSuccessDesSub1() {
+      if (this.isSwitch1) {
+        return this.$t("common.stakeSuccessDesSub1")
+      } else {
+        return this.$t("common.unstakeSuccessDesSub1")
+      }
+    },
+    processSuccessDesSub2() {
+      if (this.isSwitch1) {
+        return this.$t("common.stakeSuccessDesSub2")
+      } else {
+        return this.$t("common.unstakeSuccessDesSub2")
+      }
+
+    },
+    processSuccessDesSub3() {
+      if (this.isSwitch1) {
+        return this.$t("common.stakeSuccessDesSub3")
+      } else {
+        return this.$t("common.unstakeSuccessDesSub3")
+      }
+    },
+
+    processSuccessAlertTitle() {
+      if (this.isSwitch1) {
+        return this.$t("common.stakeSuccessTitle");
+      } else {
+        return this.$t("common.unstakeSuccessTitle");
+      }
+    },
+    isApprove() {
+      if (this.isSwitch1) {
+        return this.selectPollItem.isNFTApproved;
+      } else {
+        return this.selectPollItem.isWNFTApproved;
+      }
+    },
+    approveStepTitle() {
+      if (this.isSwitch1) {
+        return this.$t("common.stakeApprove");
+      } else {
+        return this.$t("common.unstakeApprove");
+      }
+    },
+    approveStepDes() {
+      if (this.isSwitch1) {
+        return this.$t("common.stakeApproveNFTDes");
+      } else {
+        return this.$t("common.stakeApproveWNFTDes");
+      }
+    },
+    deployStepTitle() {
+      if (this.isSwitch1) {
+        return this.$t("common.confirmStake");
+      } else {
+        return this.$t("common.confirmUnStake");
+      }
+    },
+    deployStepDesSub1() {
+      if (this.isSwitch1) {
+        return this.$t("common.confirmStakeDesSub1");
+      } else {
+        return this.$t("common.confirmUnstakeDesSub1");
+      }
+
+    },
+    deployStepDesSub2() {
+      if (this.isSwitch1) {
+        return this.selectPollItem.collection.showName;
+      } else {
+        return "Wrapped" + this.selectPollItem.collection.showName;
+      }
+
+    },
+    deployStepDesSub3() {
+      if (this.isSwitch1) {
+        return this.$t("common.confirmStakeDesSub2");
+      } else {
+        return this.$t("common.confirmUnstakeDesSub2");
+      }
+
+    },
+    selectPollItemReward() {
+      if (Number(this.selectPollItem.rewardPerNFTForEachBlock) > 0) {
+        return formmatToToLocaleStringEnUS((Number(this.selectPollItem.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2));
+      } else if (Number(this.selectPollItem.rewardForEachBlock) > 0 && Number(this.selectPollItem.poolInfo.amount) != 0) {
+        return formmatToToLocaleStringEnUS((
+          (Number(this.selectPollItem.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
+          Number(this.selectPollItem.poolInfo.amount)
+        ).toFixed(2))
+      } else if (Number(this.selectPollItem.poolInfo.amount) == 0) {
+        return this.rewardAmount(this.selectPollItem)
+      }
+    },
     selectIconUrl() {
       return this.selectAll
         ? require("@/assets/img/farms/nft_select_y.svg")
@@ -511,7 +821,28 @@ export default {
     var topImgHeight = 0;
     topImgHeight = document.documentElement.clientWidth > 750 ? "7rem" : "6rem";
 
+    var elDialogWidth1 = "450px";
+    if (document.documentElement.clientWidth <= 1200) {
+      elDialogWidth1 = "350px";
+    } else if (document.documentElement.clientWidth > 1200 && document.documentElement.clientWidth < 1500) {
+      elDialogWidth1 = "400px";
+    } else {
+      elDialogWidth1 = "480px";
+    }
+
     return {
+      deployProcessImgClass: "processImg",
+      approveProcessImgClass: "processImg",
+      processSuccessAlertShow: false,
+      isDelyFailed: false,
+      isDelySuccess: false,
+      isStartedDelyContract: false,
+      isStartedApprove: false,
+      isApproveFaild: false,
+      approveStatusImgUrl: require("@/assets/img/common/step1.svg"),
+      delyContractStatusImgUrl: require("@/assets/img/common/step2.svg"),
+      stakeProcessAlertShow: false,
+      defaultAlertShow: false,
       loadPoolDataCount: 0,
       selectAll: false,
       actionAlertShowLoading: false,
@@ -521,8 +852,9 @@ export default {
       successVisible1: false,
       successVisible2: false,
 
-      selectPollItem: {},
+      selectPollItem: { collection: {}, poolInfo: {} },
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
+      elDialogWidth1: elDialogWidth1,
       warningDefaultVisible: false,
       warningDefaultVisible1: false,
       warningDefaultVisible2: false,
@@ -690,6 +1022,158 @@ export default {
   },
 
   methods: {
+    rewardAmount(item) {
+      if (Number(item.rewardForEachBlock) > 0) {
+        var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
+        if (number >= 10000) {
+          return formmatToToLocaleStringEnUS(number.toFixed(0));
+        } else {
+          return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
+        }
+      } else if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
+        var number =
+          Number(item.rewardPerNFTForEachBlock) *
+          6500 *
+          30 *
+          formmatToToLocaleStringEnUS(Number(item.poolInfo.amount) *
+            Math.pow(10, -18));
+        if (number >= 10000) {
+          return formmatToToLocaleStringEnUS(number.toFixed(0));
+        } else {
+          return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
+        }
+      } else if (Number(item.poolInfo.amount) == 0) {
+        return "--";
+      } else if (item.rewardForEachBlock == "--") {
+        return "--";
+      }
+    },
+    stakeSuccessAlertCloseAction() {
+      this.processSuccessAlertShow = false;
+    },
+    continueStakeBtnAction() {
+      this.processSuccessAlertShow = false;
+    },
+    startDelyContractBtnAction() {
+      this.isDelyFailed = false;
+      this.deployProcessImgClass = "processImg_loading"
+      this.delyContractStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
+
+      this.isStartedDelyContract = true;
+      if (this.isSwitch1) {
+        daoporDeposit(
+          this.selectPollItem,
+          this.handleDeposit,
+          this.selectTokenIdsArr,
+          this.faildHandleDaoporDeposit
+        );
+      } else {
+        daoporWithdraw(
+          this.selectPollItem,
+          this.handleWithdraw,
+          this.selectTokenIdsArr,
+          this.faildHandleDaoporWithdraw
+        );
+      }
+    },
+    startApprove() {
+      this.isApproveFaild = false;
+      this.approveStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
+      this.approveProcessImgClass = "processImg_loading"
+      this.isStartedApprove = true;
+      if (this.isSwitch1) {
+        approveNFTAction(
+          this.selectPollItem,
+          this.handleNftApprove,
+          0,
+          false,
+          this.faildHandleApproveNFT
+        );
+      } else {
+        approveWNFTAction(
+          this.selectPollItem,
+          this.handleNftApprove,
+          0,
+          false,
+          this.faildHandleApproveNFT
+        );
+      }
+    },
+    stakeProcessAlertCloseAction() {
+      this.stakeProcessAlertShow = false;
+    },
+    stakeAlertCloseAction() {
+      this.defaultAlertShow = false;
+    },
+    defalutStakeBtnAction() {
+      this.defaultAlertShow = false;
+      this.stakeProcessAlertShow = true;
+      if (this.isSwitch1) {
+        if (!this.selectPollItem.isNFTApproved) {
+          this.approveStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
+          this.approveProcessImgClass = "processImg_loading"
+          this.isStartedApprove = true;
+          approveNFTAction(
+            this.selectPollItem,
+            this.handleNftApprove,
+            0,
+            false,
+            this.faildHandleApproveNFT
+          );
+        } else {
+          this.startDelyContractBtnAction();
+          this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
+          this.approveProcessImgClass = "processImg"
+
+        }
+      } else {
+        if (!this.selectPollItem.isWNFTApproved) {
+          this.approveStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
+          this.approveProcessImgClass = "processImg_loading"
+          this.isStartedApprove = true;
+          daoporWithdraw(
+            this.selectPollItem,
+            this.handleWithdraw,
+            this.selectTokenIdsArr,
+            this.faildHandleDaoporWithdraw
+          );
+        } else {
+          this.startDelyContractBtnAction();
+          this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
+          this.approveProcessImgClass = "processImg"
+        }
+      }
+
+
+    },
+
+    handleNftApprove(isApprove, item, index) {
+      this.selectPollItem.isNFTApproved = isApprove;
+      this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
+      this.approveProcessImgClass = "processImg"
+
+      this.isStartedApprove = false;
+      this.startDelyContractBtnAction();
+    },
+    faildHandleApproveNFT(item) {
+      this.isApproveFaild = true;
+      this.approveStatusImgUrl = require("@/assets/img/common/step1.svg");
+      this.approveProcessImgClass = "processImg"
+      this.$message.error(this.$t("common.transactionCancle"))
+    },
+    handleWNftApprove(isApprove, item, index) {
+      this.selectPollItem.isWNFTApproved = isApprove;
+      this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
+      this.approveProcessImgClass = "processImg"
+      this.isStartedApprove = false;
+      this.startDelyContractBtnAction();
+    },
+    faildHandleApproveWNFT() {
+      this.isApproveFaild = true;
+      this.approveStatusImgUrl = require("@/assets/img/common/step1.svg");
+      this.approveProcessImgClass = "processImg"
+      this.$message.error(this.$t("common.transactionCancle"))
+    },
 
     compare(p) { //这是比较函数
       return function (m, n) {
@@ -795,14 +1279,16 @@ export default {
       this.successVisible2 = false;
     },
     alertBeforeAction() {
-      if (this.selectTokenIdsArr.length == 0) {
-        return;
-      }
+      // if (this.selectTokenIdsArr.length == 0) {
+      //   return;
+      // }
       if (checkChainIdError()) {
         this.$bus.$emit("checkChainIdError", "1");
         return;
       }
-      this.warningDefaultVisible = true;
+      this.actionAlertShow = false;
+      this.defaultAlertShow = true;
+      // this.warningDefaultVisible = true;
     },
     defaultBtnAction() {
 
@@ -850,10 +1336,18 @@ export default {
       }
     },
     faildHandleDaoporDeposit(item) {
+      this.deployProcessImgClass = "processImg"
+      this.delyContractStatusImgUrl = require("@/assets/img/common/step2.svg");
+      this.isDelyFailed = true;
+      this.isStartedDelyContract = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
       this.$message.error(this.$t("common.transactionCancle"))
     },
     faildHandleDaoporWithdraw(item) {
+      this.deployProcessImgClass = "processImg"
+      this.delyContractStatusImgUrl = require("@/assets/img/common/step2.svg");
+      this.isDelyFailed = true;
+      this.isStartedDelyContract = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
       this.$message.error(this.$t("common.transactionCancle"))
     },
@@ -873,14 +1367,18 @@ export default {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
-      this.successVisible = true;
+      this.processSuccessAlertShow = true;
+      this.actionAlertShow = false;
+      this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
     },
     handleWithdraw(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
-      this.successVisible1 = true;
+      this.processSuccessAlertShow = true;
+      this.actionAlertShow = false;
+      this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
     },
     handleHarvest(txHash, item) {
@@ -965,15 +1463,6 @@ export default {
         }
       }
     },
-
-    handleNftApprove(isApprove, item, index) {
-      item.isNFTApproved = isApprove;
-    },
-    faildHandleApproveNFT(item) { },
-    handleWNftApprove(isApprove, item, index) {
-      item.isWNFTApprove = isApprove;
-    },
-    faildHandleApproveWNFT(item) { },
     handleGetNFTTokenIDs(NFTTokenIDs, item, index) {
       var emptyArr = [];
       for (var i = 0; i < NFTTokenIDs.length; i++) {
@@ -1366,7 +1855,7 @@ export default {
 }
 
 .selectAllBtnBox_text {
-  font-size: .4rem;
+  font-size: .6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
@@ -1375,8 +1864,8 @@ export default {
 
 .selectAllBtnBox_img {
   margin-left: 0.25rem;
-  width: .5rem;
-  height: .5rem;
+  width: .75rem;
+  height: .75rem;
 }
 
 .itemsSuperBox {
@@ -1741,7 +2230,7 @@ export default {
 
 .emptyImgBox_des {
   color: #666;
-  font-size: 0.35rem;
+  font-size: 0.5rem;
 }
 
 .txHashBox {
@@ -1750,6 +2239,7 @@ export default {
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+  justify-content: center;
 }
 
 .txHash_pre {
@@ -1766,6 +2256,372 @@ export default {
   width: 0.5rem;
   height: 0.5rem;
   cursor: pointer;
+}
+
+.dialogTopBack {
+  margin-top: -.75rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialogTopBack_title {
+  margin-right: -0rem;
+  font-size: .75rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #212121;
+  line-height: .725rem;
+}
+
+.dialogTopBack_img {
+  margin-right: 0rem;
+  width: .6rem;
+  height: .6rem;
+  cursor: pointer;
+}
+
+.dialogContantBox {
+  margin-top: .8rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* background-color: aqua; */
+}
+
+.dialogSuccessContantBox {
+  margin-top: .55rem;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  width: 105%;
+}
+
+.dialogContantBox_topBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  /* background-color: #F7B500; */
+  justify-content: space-between;
+}
+
+.dialogContantBox_topBox_leftBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.collectionImgBox_success {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.collectionImg_success {
+  border-radius: .1rem;
+  width: 4.475rem;
+  height: 4.475rem;
+}
+
+
+.collectionImg {
+  border-radius: .1rem;
+  width: 3rem;
+  height: 3rem;
+  margin-left: 0rem;
+}
+
+.collectionName {
+  margin-left: .25rem;
+  font-size: .7rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #212121;
+  line-height: .65rem;
+}
+
+.dialogContantBox_topBox_rightBox {
+  margin-right: 0rem;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-around;
+  height: 100%;
+}
+
+.rewardBox {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.rewardBox_text {
+  font-size: .7rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #111111;
+  line-height: .7rem;
+}
+
+.rewardBox_img {
+  margin-right: .1rem;
+  width: .325rem;
+  height: .325rem;
+}
+
+.priceText {
+  margin-top: .1rem;
+  text-align: right;
+  font-size: .75rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #5C5E67;
+  line-height: .75rem;
+}
+
+.rewardDes {
+  margin-top: .1rem;
+  font-size: .6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #9A999A;
+  line-height: .45rem;
+}
+
+.dialogContantBox_sepLine {
+  margin-top: .75rem;
+  margin-left: 0rem;
+  margin-right: 0rem;
+  height: .025rem;
+  background-color: #E5E5E5;
+}
+
+.quantityBox {
+  margin-top: .75rem;
+  display: flex;
+  flex-direction: row;
+  margin-left: 0rem;
+  margin-right: 0rem;
+  justify-content: space-between;
+}
+
+.quantityBox_leftText {
+  font-size: .7rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #212121;
+  line-height: .65rem;
+}
+
+.quantityBox_rightText {
+  font-size: .7rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #5C5E67;
+  line-height: .45rem;
+}
+
+.stakeDes {
+
+  margin-top: .675rem;
+  margin-left: 0rem;
+  margin-right: 0rem;
+  font-size: .6rem;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #5C5E67;
+  line-height: 1rem;
+}
+
+.stakeBtn {
+  cursor: pointer;
+  margin-top: .75rem;
+  margin-left: 0rem;
+  margin-right: 0rem;
+  height: 1.5rem;
+  background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+  border-radius: 4px;
+  border-style: none;
+  font-size: .6rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: .65rem;
+  margin-bottom: -0.1rem;
+}
+
+.selectTextBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.selectTextBox_count {
+  margin-top: .375rem;
+  margin-left: .25rem;
+  font-size: .6rem;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #5C5E67;
+  line-height: .625rem;
+}
+
+.stepBox {
+  margin-left: 0rem;
+  margin-right: 0rem;
+  margin-top: .55rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: left;
+}
+
+.stepBoxSub {
+  margin-top: 0rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.stepBoxSub1 {
+  margin-top: .875rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.stepBoxSub_contantBox {
+  margin-left: .25rem;
+  margin-top: 0rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepName {
+  margin-top: 0.5rem;
+  font-size: 0.35rem;
+  color: #111111;
+}
+
+.processImg {
+  /* margin-left: 0.25rem; */
+  margin-left: 0rem;
+  margin-top: 0rem;
+  width: .875rem;
+  height: 0.875rem;
+}
+
+.processImg_loading {
+  margin-left: -0.5rem;
+  margin-top: 0rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.processDesTopTitle {
+  font-size: .7rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #212121;
+  line-height: .7rem;
+
+}
+
+.processDesBottomTitle {
+  width: 100%;
+  margin-top: .375rem;
+  font-size: .6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #5C5E67;
+  line-height: .6rem;
+  margin-right: 0rem;
+}
+
+.processDesBottomTitle_active {
+  margin-top: .05rem;
+  font-size: .6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #F7B500;
+  line-height: .6rem;
+}
+
+.processStepBtnBox {
+  position: relative;
+  margin-top: 0.4rem;
+  width: 8.25rem;
+  height: 1.5rem;
+}
+
+.processStepOffBtn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.1rem;
+  border-style: none;
+  background-color: #eee;
+  color: #999;
+  font-size: 0.6rem;
+}
+
+.processStepOnBtn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  border-radius: 0.1rem;
+  border-style: none;
+  background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+  color: white;
+  font-size: 0.6rem;
+}
+
+.processCloseBtn {
+  margin-top: 0.375rem;
+  width: 5rem;
+  height: 0.8rem;
+  border-radius: 0.4rem;
+  border-style: none;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  color: white;
+  font-size: 0.4rem;
+}
+
+.stakeSuccessDes {
+  margin-left: .5rem;
+  margin-right: .5rem;
+  margin-top: .6rem;
+  font-size: .375rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #212121;
+  line-height: .625rem;
+}
+
+.stakeSuccessDes_active {
+  margin-top: .6rem;
+  font-size: .375rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #F7B500;
+  line-height: .625rem;
+}
+
+.txHashBox_process {
+  margin-top: 0.125rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  margin-bottom: -0.25rem;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -2042,6 +2898,12 @@ export default {
     font-weight: 500;
     color: #111111;
     line-height: .4rem;
+  }
+
+  .selectAllBtnBox_img {
+    margin-left: 0.25rem;
+    width: .5rem;
+    height: .5rem;
   }
 
   .itemsSuperBox {
@@ -2419,5 +3281,372 @@ export default {
     height: 0.5rem;
     cursor: pointer;
   }
+
+
+  .dialogTopBack {
+    margin-top: -1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dialogTopBack_title {
+    margin-right: -0px;
+    font-size: .45rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #212121;
+    line-height: .725rem;
+  }
+
+  .dialogTopBack_img {
+    margin-right: 0px;
+    width: .4rem;
+    height: .4rem;
+    cursor: pointer;
+  }
+
+  .dialogContantBox {
+    margin-top: .8rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* background-color: aqua; */
+  }
+
+  .dialogSuccessContantBox {
+    margin-top: .55rem;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    width: 100%;
+  }
+
+  .dialogContantBox_topBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    /* background-color: #F7B500; */
+    justify-content: space-between;
+  }
+
+  .dialogContantBox_topBox_leftBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .collectionImgBox_success {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .collectionImg_success {
+    border-radius: .1rem;
+    width: 4.475rem;
+    height: 4.475rem;
+  }
+
+
+  .collectionImg {
+    border-radius: .1rem;
+    width: 2rem;
+    height: 2rem;
+    margin-left: 0px;
+  }
+
+  .collectionName {
+    margin-left: .25rem;
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #212121;
+    line-height: .65rem;
+  }
+
+  .dialogContantBox_topBox_rightBox {
+    margin-right: 0px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: space-around;
+    height: 100%;
+  }
+
+  .rewardBox {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+
+  .rewardBox_text {
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #111111;
+    line-height: .45rem;
+  }
+
+  .rewardBox_img {
+    margin-right: .1rem;
+    width: .325rem;
+    height: .325rem;
+  }
+
+  .priceText {
+    margin-top: .1rem;
+    text-align: right;
+    font-size: .375rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #5C5E67;
+    line-height: .45rem;
+  }
+
+  .rewardDes {
+    margin-top: .1rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #9A999A;
+    line-height: .45rem;
+  }
+
+  .dialogContantBox_sepLine {
+    margin-top: .5rem;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: .025rem;
+    background-color: #E5E5E5;
+  }
+
+  .quantityBox {
+    margin-top: .25rem;
+    display: flex;
+    flex-direction: row;
+    margin-left: 0px;
+    margin-right: 0px;
+    justify-content: space-between;
+  }
+
+  .quantityBox_leftText {
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #212121;
+    line-height: .65rem;
+  }
+
+  .quantityBox_rightText {
+    font-size: .45rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #5C5E67;
+    line-height: .45rem;
+  }
+
+  .stakeDes {
+
+    margin-top: .675rem;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: .35rem;
+    font-family: Poppins-Regular, Poppins;
+    font-weight: 400;
+    color: #5C5E67;
+    line-height: .575rem;
+  }
+
+  .stakeBtn {
+    cursor: pointer;
+    margin-top: .825rem;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 1.25rem;
+    background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+    border-radius: 4px;
+    border-style: none;
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: .65rem;
+    margin-bottom: -0.25rem;
+
+  }
+
+  .selectTextBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .selectTextBox_count {
+    margin-left: .25rem;
+    font-size: .375rem;
+    font-family: Poppins-Regular, Poppins;
+    font-weight: 400;
+    color: #5C5E67;
+    line-height: .625rem;
+  }
+
+  .stepBox {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: .55rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: left;
+  }
+
+  .stepBoxSub {
+    margin-top: 0rem;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .stepBoxSub1 {
+    margin-top: .875rem;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .stepBoxSub_contantBox {
+    margin-left: .25rem;
+    margin-top: 0rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stepName {
+    margin-top: 0.5rem;
+    font-size: 0.35rem;
+    color: #111111;
+  }
+
+  .processImg {
+    /* margin-left: 0.25rem; */
+    margin-top: 0rem;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .processImg_loading {
+    margin-left: -.35rem;
+    /* margin-left: 0.25rem; */
+    margin-top: 0rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .processDesTopTitle {
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #212121;
+    line-height: .65rem;
+  }
+
+  .processDesBottomTitle {
+    width: 100%;
+    margin-top: .05rem;
+    font-size: .375rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #5C5E67;
+    line-height: .525rem;
+    margin-right: .5rem;
+  }
+
+  .processDesBottomTitle_active {
+    margin-top: .05rem;
+    font-size: .375rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #F7B500;
+    line-height: .525rem;
+  }
+
+  .processStepBtnBox {
+    position: relative;
+    margin-top: 0.35rem;
+    width: 5.5rem;
+    height: 1rem;
+  }
+
+  .processStepOffBtn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0%;
+    top: 0%;
+    width: 5.5rem;
+    height: 1rem;
+    border-radius: 0.1rem;
+    border-style: none;
+    background-color: #eee;
+    color: #999;
+    font-size: 0.35rem;
+  }
+
+  .processStepOnBtn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0%;
+    top: 0%;
+    border-radius: 0.1rem;
+    border-style: none;
+    background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+    color: white;
+    font-size: 0.35rem;
+  }
+
+  .processCloseBtn {
+    margin-top: 0.375rem;
+    width: 5rem;
+    height: 0.8rem;
+    border-radius: 0.4rem;
+    border-style: none;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    color: white;
+    font-size: 0.4rem;
+  }
+
+  .stakeSuccessDes {
+    margin-left: .5rem;
+    margin-right: .5rem;
+    margin-top: .6rem;
+    font-size: .375rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #212121;
+    line-height: .625rem;
+  }
+
+  .stakeSuccessDes_active {
+    margin-top: .6rem;
+    font-size: .375rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #F7B500;
+    line-height: .625rem;
+  }
+
+  .txHashBox_process {
+    margin-top: 0.125rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    margin-bottom: -0.25rem;
+  }
+
 }
 </style>
