@@ -366,7 +366,7 @@
             <div class="dialogContantBox_topBox_rightBox">
               <div class="rewardBox">
                 <p class="rewardBox_text">{{ selectPollItemReward }}</p>
-                <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" />
+                <!-- <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" /> -->
               </div>
               <!-- <p class="priceText">$124.98</p> -->
               <p class="rewardDes">{{ $t("farms.awardNFT") + "/" + $t("farms.month") }}</p>
@@ -413,9 +413,9 @@
             <div class="dialogContantBox_topBox_rightBox">
               <div class="rewardBox">
                 <p class="rewardBox_text">{{ selectPollItemReward }}</p>
-                <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" />
+                <!-- <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" /> -->
               </div>
-              <p class="priceText">$124.98</p>
+              <!-- <p class="priceText">$124.98</p> -->
               <p class="rewardDes">{{ $t("farms.awardNFT") + "/" + $t("farms.month") }}</p>
             </div>
           </div>
@@ -700,14 +700,14 @@ export default {
     },
     selectPollItemReward() {
       if (Number(this.selectPollItem.rewardPerNFTForEachBlock) > 0) {
-        return formmatToToLocaleStringEnUS((Number(this.selectPollItem.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2));
+        return formmatToToLocaleStringEnUS((Number(this.selectPollItem.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2)) + " STB";
       } else if (Number(this.selectPollItem.rewardForEachBlock) > 0 && Number(this.selectPollItem.poolInfo.amount) != 0) {
         return formmatToToLocaleStringEnUS((
           (Number(this.selectPollItem.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
           Number(this.selectPollItem.poolInfo.amount)
-        ).toFixed(2))
+        ).toFixed(2)) + " STB"
       } else if (Number(this.selectPollItem.poolInfo.amount) == 0) {
-        return this.rewardAmount(this.selectPollItem)
+        return this.rewardAmount(this.selectPollItem) + " STB"
       }
     },
     selectIconUrl() {
@@ -1049,9 +1049,11 @@ export default {
       }
     },
     stakeSuccessAlertCloseAction() {
+      this.resetSelectNFT();
       this.processSuccessAlertShow = false;
     },
     continueStakeBtnAction() {
+      this.resetSelectNFT();
       this.processSuccessAlertShow = false;
     },
     startDelyContractBtnAction() {
@@ -1100,9 +1102,11 @@ export default {
       }
     },
     stakeProcessAlertCloseAction() {
+      this.resetSelectNFT();
       this.stakeProcessAlertShow = false;
     },
     stakeAlertCloseAction() {
+      this.resetSelectNFT();
       this.defaultAlertShow = false;
     },
     defalutStakeBtnAction() {
@@ -1131,11 +1135,12 @@ export default {
           this.approveStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
           this.approveProcessImgClass = "processImg_loading"
           this.isStartedApprove = true;
-          daoporWithdraw(
+          approveWNFTAction(
             this.selectPollItem,
-            this.handleWithdraw,
-            this.selectTokenIdsArr,
-            this.faildHandleDaoporWithdraw
+            this.handleNftApprove,
+            0,
+            false,
+            this.faildHandleApproveNFT
           );
         } else {
           this.startDelyContractBtnAction();
@@ -1279,9 +1284,9 @@ export default {
       this.successVisible2 = false;
     },
     alertBeforeAction() {
-      // if (this.selectTokenIdsArr.length == 0) {
-      //   return;
-      // }
+      if (this.selectTokenIdsArr.length == 0) {
+        return;
+      }
       if (checkChainIdError()) {
         this.$bus.$emit("checkChainIdError", "1");
         return;
@@ -1364,6 +1369,7 @@ export default {
     },
 
     handleDeposit(txHash, item) {
+      this.resetSelectNFT();
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
@@ -1373,6 +1379,7 @@ export default {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
     },
     handleWithdraw(txHash, item) {
+      this.resetSelectNFT();
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
@@ -1787,7 +1794,7 @@ export default {
   border-width: 0.035rem;
   border-color: #f7b500;
   width: 6rem;
-  border-radius: 0.75rem;
+  border-radius: .12rem;
   height: 1.5rem;
   display: flex;
   flex-direction: row;
@@ -1796,7 +1803,7 @@ export default {
 
 .switchBtn_off {
   background-color: #fff8e6;
-  border-radius: 0.75rem;
+  border-radius: 0.1rem;
   width: 50%;
   border-style: none;
   font-size: 0.6rem;
@@ -1809,7 +1816,7 @@ export default {
 .switchBtn_on {
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
-  border-radius: 0.75rem;
+  border-radius: 0.1rem;
   width: 50%;
   border-style: none;
   font-size: 0.6rem;
@@ -1829,7 +1836,7 @@ export default {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
   height: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 0.1rem;
   border-style: none;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
@@ -1845,7 +1852,7 @@ export default {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
   height: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 0.1rem;
   border-style: none;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   font-size: 0.6rem;
@@ -2461,7 +2468,7 @@ export default {
 .selectTextBox {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .selectTextBox_count {
@@ -2608,6 +2615,7 @@ export default {
   font-weight: 500;
   color: #212121;
   line-height: .625rem;
+  text-align: center;
 }
 
 .stakeSuccessDes_active {
@@ -2831,7 +2839,7 @@ export default {
     border-width: 0.025rem;
     border-color: #f7b500;
     width: 4rem;
-    border-radius: 0.5rem;
+    border-radius: 0.12rem;
     height: 1rem;
     display: flex;
     flex-direction: row;
@@ -2840,7 +2848,7 @@ export default {
 
   .switchBtn_off {
     background-color: #fff8e6;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     width: 50%;
     border-style: none;
     font-size: 0.4rem;
@@ -2853,7 +2861,7 @@ export default {
   .switchBtn_on {
     background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
     ;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     width: 50%;
     border-style: none;
     font-size: 0.4rem;
@@ -2867,7 +2875,7 @@ export default {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
     height: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     border-style: none;
     background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
     ;
@@ -2885,7 +2893,7 @@ export default {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
     height: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0.1rem;
     /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -3272,18 +3280,24 @@ export default {
   }
 
   .txHash_pre {
+    /* font-size: .6rem; */
+    font-family: Poppins-Regular, Poppins;
+    font-weight: 400;
+    color: #5C5E67;
+    line-height: .6rem;
     font-size: 0.375rem;
-    color: #666;
+    /* color: #666; */
   }
 
   .txHash {
+    font-family: Poppins-Regular, Poppins;
     font-size: 0.375rem;
     color: #2c6ff8;
   }
 
   .txHash_copy {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.4rem;
+    height: 0.4rem;
     cursor: pointer;
   }
 
@@ -3487,7 +3501,7 @@ export default {
   .selectTextBox {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
   }
 
   .selectTextBox_count {
@@ -3550,6 +3564,7 @@ export default {
   }
 
   .processDesTopTitle {
+    margin-top: -0.075rem;
     font-size: .4rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
@@ -3644,7 +3659,7 @@ export default {
   }
 
   .txHashBox_process {
-    margin-top: 0.125rem;
+    margin-top: 0.25rem;
     display: flex;
     flex-direction: row;
     align-items: center;

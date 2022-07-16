@@ -699,7 +699,7 @@ export default {
   cursor: pointer;
   width: 4.25rem;
   height: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.1rem;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
   border-style: none;
@@ -714,7 +714,7 @@ export default {
   width: 4.25rem;
   height: 1rem;
   display: flex;
-  border-radius: 0.5rem;
+  border-radius: 0.1rem;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
   flex-direction: row;
@@ -755,6 +755,7 @@ export default {
 }
 
 .changeLangeBtn {
+  margin-top: -0.125rem;
   height: 1rem;
   width: 3rem;
   font-size: 0.4rem;
@@ -765,7 +766,7 @@ export default {
   border-color: #f7b500;
   border-style: solid;
   background-color: white;
-  border-radius: 0.625rem;
+  border-radius: 0.1rem;
   cursor: pointer;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;

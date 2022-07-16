@@ -147,11 +147,11 @@ export default {
       if (this.showImgLoading) {
         this.pledgeBtnStr = "";
       }
-      if (this.item && !this.item.isNFTApproved) {
-        this.pledgeBtnStr = this.$t("common.stakeApprove") + "(" + this.item.nftQuantity + ")";
-      } else {
-        this.pledgeBtnStr = this.$t("farms.pledge") + "(" + this.item.nftQuantity + ")";
-      }
+      // if (this.item && !this.item.isNFTApproved) {
+      //   this.pledgeBtnStr = this.$t("common.stakeApprove") + "(" + this.item.nftQuantity + ")";
+      // } else {
+      this.pledgeBtnStr = this.$t("farms.pledge") + "(" + this.item.nftQuantity + ")";
+      // }
       return this.pledgeBtnStr;
     },
 
@@ -159,11 +159,11 @@ export default {
       if (this.showImgLoading1) {
         this.pledgeBtnStr = "";
       }
-      if (this.item && !this.item.isWNFTApproved) {
-        this.unPledgeBtnStr = this.$t("common.unstakeApprove") + "(" + this.item.wnftQuantity + ")";
-      } else {
-        this.unPledgeBtnStr = this.$t("farms.unPledge") + "(" + this.item.wnftQuantity + ")";
-      }
+      // if (this.item && !this.item.isWNFTApproved) {
+      //   this.unPledgeBtnStr = this.$t("common.unstakeApprove") + "(" + this.item.wnftQuantity + ")";
+      // } else {
+      this.unPledgeBtnStr = this.$t("farms.unPledge") + "(" + this.item.wnftQuantity + ")";
+      // }
 
       return this.unPledgeBtnStr;
     }
