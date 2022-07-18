@@ -161,6 +161,10 @@ export default {
         unstakeSuccessDesSub2: " WNFTs from the",
         unstakeSuccessDesSub3: "collection",
 
+        continueStake: "Continue Stake",
+        continueunstake: "Continue Unstake"
+
+
 
 
 

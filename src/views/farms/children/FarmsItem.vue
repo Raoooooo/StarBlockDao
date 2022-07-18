@@ -874,6 +874,7 @@ export default {
   font-weight: 400;
   color: #f7b500;
   line-height: 0.825rem;
+  /* white-space: nowrap; */
 }
 
 .contantDetailSection2 {

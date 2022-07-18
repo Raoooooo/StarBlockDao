@@ -425,7 +425,9 @@
           <div class="stepBox">
             <!-- 授权 -->
             <div class="stepBoxSub">
-              <img :class="approveProcessImgClass" :src="approveStatusImgUrl" />
+              <div class="statusImgBox">
+                <img :class="approveProcessImgClass" :src="approveStatusImgUrl" />
+              </div>
               <div class="stepBoxSub_contantBox">
                 <p class="processDesTopTitle">{{ approveStepTitle }}</p>
                 <p class="processDesBottomTitle">{{ approveStepDes }}</p>
@@ -451,7 +453,9 @@
 
             <!-- 抵押/解抵押 -->
             <div class="stepBoxSub1">
-              <img :class="deployProcessImgClass" :src="delyContractStatusImgUrl" />
+              <div class="statusImgBox">
+                <img :class="deployProcessImgClass" :src="delyContractStatusImgUrl" />
+              </div>
               <div class="stepBoxSub_contantBox">
                 <p class="processDesTopTitle">{{ deployStepTitle }}</p>
                 <p class="processDesBottomTitle">
@@ -505,18 +509,18 @@
 
         <div class="dialogSuccessContantBox">
           <div class="collectionImgBox_success">
-            <img class="collectionImg_success" :src="selectPollItem.collection.imagePath"
+            <img class="collectionImg_success" src="@/assets/img/common/alertProcessSuccess.png"
               v-if="selectPollItem.collection" />
           </div>
 
           <p class="stakeSuccessDes">
-            <span>{{ processSuccessDesSub1 }}</span>
-            <span class="stakeSuccessDes_active">{{ selectCount }}</span>
+            <span class="stakeSuccessDes">{{ stakeProcessSuccessDes }}</span>
+            <!-- <span class="stakeSuccessDes_active">{{ selectCount }}</span>
             <span>{{ processSuccessDesSub2 }}</span>
             <span>{{ " " }}</span>
             <span class="stakeSuccessDes_active">{{ selectPollItem.collection.showName }}</span>
             <span>{{ " " }}</span>
-            <span>{{ processSuccessDesSub3 }}</span>
+            <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
           <div class="txHashBox_process">
             <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
@@ -526,7 +530,48 @@
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
           </div>
 
-          <button class="stakeBtn" @click="continueStakeBtnAction">Continue Stake</button>
+          <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="" :visible.sync="processSuccessAlertShow1" :width="elDialogWidth1" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+      <div class="dialogBack">
+        <div class="dialogTopBack">
+          <div></div>
+          <p class="dialogTopBack_title">
+            {{ stakeProcessSuccessDes }}
+          </p>
+          <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="unstakeSuccessAlertCloseAction" />
+        </div>
+
+        <div class="dialogSuccessContantBox">
+          <div class="collectionImgBox_success">
+            <img class="collectionImg_success" src="@/assets/img/common/alertProcessSuccess.png"
+              v-if="selectPollItem.collection" />
+          </div>
+
+          <p class="stakeSuccessDes">
+            <span class="stakeSuccessDes">{{ unstakeProcessSuccessDes }}</span>
+            <!-- <span class="stakeSuccessDes_active">{{ selectCount }}</span>
+            <span>{{ processSuccessDesSub2 }}</span>
+            <span>{{ " " }}</span>
+            <span class="stakeSuccessDes_active">{{ selectPollItem.collection.showName }}</span>
+            <span>{{ " " }}</span>
+            <span>{{ processSuccessDesSub3 }}</span> -->
+          </p>
+          <div class="txHashBox_process">
+            <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+            <a :href="getChainWebUrl(txHashOringion)" target="_blank">
+              <p class="txHash">{{ txHash }}</p>
+            </a>
+            <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
+          </div>
+
+          <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueunstake") }}</button>
         </div>
       </div>
     </el-dialog>
@@ -614,7 +659,12 @@ export default {
         return this.$t("farms.unPledge");
       }
     },
-
+    stakeProcessSuccessDes() {
+      return this.$t("common.stakeSuccessDesSub1")
+    },
+    unstakeProcessSuccessDes() {
+      return this.$t("common.unstakeSuccessDesSub1")
+    },
 
     processSuccessDesSub1() {
       if (this.isSwitch1) {
@@ -640,19 +690,20 @@ export default {
     },
 
     processSuccessAlertTitle() {
-      if (this.isSwitch1) {
-        return this.$t("common.stakeSuccessTitle");
-      } else {
-        return this.$t("common.unstakeSuccessTitle");
-      }
+      return this.$t("common.stakeSuccessTitle");
     },
-    isApprove() {
-      if (this.isSwitch1) {
-        return this.selectPollItem.isNFTApproved;
-      } else {
-        return this.selectPollItem.isWNFTApproved;
-      }
+
+    processSuccessAlertTitle1() {
+      return this.$t("common.unstakeSuccessTitle");
     },
+    // isApprove() {
+    // return this.isSwitch1 ? this.selectPollItem.isNFTApproved : this.selectPollItem.isWNFTApproved
+    // if (this.isSwitch1) {
+    //   return this.selectPollItem.isNFTApproved;
+    // } else {
+    //   return this.selectPollItem.isWNFTApproved;
+    // }
+    // },
     approveStepTitle() {
       if (this.isSwitch1) {
         return this.$t("common.stakeApprove");
@@ -683,11 +734,12 @@ export default {
 
     },
     deployStepDesSub2() {
-      if (this.isSwitch1) {
-        return this.selectPollItem.collection.showName;
-      } else {
-        return "Wrapped" + this.selectPollItem.collection.showName;
-      }
+      return this.isSwitch1 ? this.selectPollItem.collection.showName : "Wrapped" + this.selectPollItem.collection.showName;
+      // if (this.isSwitch1) {
+      //   return this.selectPollItem.collection.showName;
+      // } else {
+      //   return "Wrapped" + this.selectPollItem.collection.showName;
+      // }
 
     },
     deployStepDesSub3() {
@@ -834,10 +886,12 @@ export default {
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
       processSuccessAlertShow: false,
+      processSuccessAlertShow1: false,
       isDelyFailed: false,
       isDelySuccess: false,
       isStartedDelyContract: false,
       isStartedApprove: false,
+      isApprove: false,
       isApproveFaild: false,
       approveStatusImgUrl: require("@/assets/img/common/step1.svg"),
       delyContractStatusImgUrl: require("@/assets/img/common/step2.svg"),
@@ -1006,6 +1060,7 @@ export default {
             this.isSwitch1 = false;
           }
           this.$bus.$emit("switchBtnAction", this.isSwitch1);
+          this.resetSelectNFT();
           this.actionAlertShow = true;
         }
       });
@@ -1049,12 +1104,16 @@ export default {
       }
     },
     stakeSuccessAlertCloseAction() {
-      this.resetSelectNFT();
       this.processSuccessAlertShow = false;
     },
     continueStakeBtnAction() {
-      this.resetSelectNFT();
       this.processSuccessAlertShow = false;
+    },
+    unstakeSuccessAlertCloseAction() {
+      this.processSuccessAlertShow1 = false;
+    },
+    continueUnstakeBtnAction() {
+      this.processSuccessAlertShow1 = false;
     },
     startDelyContractBtnAction() {
       this.isDelyFailed = false;
@@ -1094,19 +1153,17 @@ export default {
       } else {
         approveWNFTAction(
           this.selectPollItem,
-          this.handleNftApprove,
+          this.handleWNftApprove,
           0,
           false,
-          this.faildHandleApproveNFT
+          this.faildHandleApproveWNFT
         );
       }
     },
     stakeProcessAlertCloseAction() {
-      this.resetSelectNFT();
       this.stakeProcessAlertShow = false;
     },
     stakeAlertCloseAction() {
-      this.resetSelectNFT();
       this.defaultAlertShow = false;
     },
     defalutStakeBtnAction() {
@@ -1117,6 +1174,7 @@ export default {
           this.approveStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
           this.approveProcessImgClass = "processImg_loading"
           this.isStartedApprove = true;
+          this.isApprove = false;
           approveNFTAction(
             this.selectPollItem,
             this.handleNftApprove,
@@ -1128,6 +1186,7 @@ export default {
           this.startDelyContractBtnAction();
           this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
           this.approveProcessImgClass = "processImg"
+          this.isApprove = true;
 
         }
       } else {
@@ -1135,14 +1194,16 @@ export default {
           this.approveStatusImgUrl = require("@/assets/img/common/requestLoading_yellow.svg");
           this.approveProcessImgClass = "processImg_loading"
           this.isStartedApprove = true;
+          this.isApprove = false;
           approveWNFTAction(
             this.selectPollItem,
-            this.handleNftApprove,
+            this.handleWNftApprove,
             0,
             false,
-            this.faildHandleApproveNFT
+            this.faildHandleApproveWNFT
           );
         } else {
+          this.isApprove = true;
           this.startDelyContractBtnAction();
           this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
           this.approveProcessImgClass = "processImg"
@@ -1156,7 +1217,7 @@ export default {
       this.selectPollItem.isNFTApproved = isApprove;
       this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
       this.approveProcessImgClass = "processImg"
-
+      this.isApprove = true;
       this.isStartedApprove = false;
       this.startDelyContractBtnAction();
     },
@@ -1171,6 +1232,7 @@ export default {
       this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
       this.approveProcessImgClass = "processImg"
       this.isStartedApprove = false;
+      this.isApprove = true;
       this.startDelyContractBtnAction();
     },
     faildHandleApproveWNFT() {
@@ -1369,7 +1431,6 @@ export default {
     },
 
     handleDeposit(txHash, item) {
-      this.resetSelectNFT();
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
@@ -1379,11 +1440,10 @@ export default {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
     },
     handleWithdraw(txHash, item) {
-      this.resetSelectNFT();
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
-      this.processSuccessAlertShow = true;
+      this.processSuccessAlertShow1 = true;
       this.actionAlertShow = false;
       this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
@@ -1559,7 +1619,18 @@ export default {
     },
 
     resetSelectNFT() {
-      this.selectTokenIdsArr = [];
+      this.isStartedApprove = false;
+      this.isApprove = false;
+      this.isApproveFaild = false;
+      this.isDelyFailed = false;
+      this.isDelySuccess = false;
+      this.isStartedDelyContract = false;
+
+      this.approveStatusImgUrl = require("@/assets/img/common/step1.svg");
+      this.delyContractStatusImgUrl = require("@/assets/img/common/step2.svg");
+      this.deployProcessImgClass = "processImg",
+        this.approveProcessImgClass = "processImg",
+        this.selectTokenIdsArr = [];
       this.selectCount = 0;
       this.canSelectNftItems = [];
       this.isShowEmptyImg = this.canSelectNftItems.length > 0 ? false : true;
@@ -2075,6 +2146,7 @@ export default {
   font-weight: 500;
   color: #F7B500;
   line-height: .7rem;
+  white-space: nowrap;
 }
 
 .topImgIconBox {
@@ -2255,12 +2327,12 @@ export default {
 }
 
 .txHash_pre {
-  font-size: 0.375rem;
+  font-size: 0.5rem;
   color: #666;
 }
 
 .txHash {
-  font-size: 0.375rem;
+  font-size: 0.5rem;
   color: #2c6ff8;
 }
 
@@ -2333,9 +2405,9 @@ export default {
 }
 
 .collectionImg_success {
-  border-radius: .1rem;
-  width: 4.475rem;
-  height: 4.475rem;
+  /* border-radius: .1rem; */
+  width: 5.625rem;
+  height: 2.75rem;
 }
 
 
@@ -2504,7 +2576,7 @@ export default {
 }
 
 .stepBoxSub_contantBox {
-  margin-left: .25rem;
+  margin-left: .0rem;
   margin-top: 0rem;
   display: flex;
   flex-direction: column;
@@ -2520,18 +2592,21 @@ export default {
   /* margin-left: 0.25rem; */
   margin-left: 0rem;
   margin-top: 0rem;
-  width: .875rem;
-  height: 0.875rem;
+  width: .75rem;
+  height: 0.75rem;
 }
 
 .processImg_loading {
-  margin-left: -0.5rem;
-  margin-top: 0rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  margin-left: -0.25rem;
+  margin-top: -0.25rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  /* width: .875rem; */
+  /* height: 0.875rem; */
 }
 
 .processDesTopTitle {
+  margin-top: 0.02rem;
   font-size: .7rem;
   font-family: Poppins-Medium, Poppins;
   font-weight: 500;
@@ -2610,7 +2685,7 @@ export default {
   margin-left: .5rem;
   margin-right: .5rem;
   margin-top: .6rem;
-  font-size: .375rem;
+  font-size: .6rem;
   font-family: Poppins-Medium, Poppins;
   font-weight: 500;
   color: #212121;
@@ -2620,7 +2695,7 @@ export default {
 
 .stakeSuccessDes_active {
   margin-top: .6rem;
-  font-size: .375rem;
+  font-size: .6rem;
   font-family: Poppins-Medium, Poppins;
   font-weight: 500;
   color: #F7B500;
@@ -2628,13 +2703,22 @@ export default {
 }
 
 .txHashBox_process {
-  margin-top: 0.125rem;
+  margin-top: 0.25rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
   justify-content: center;
   margin-bottom: -0.25rem;
+}
+
+.statusImgBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  width: 1rem;
+  height: 1rem;
+  /* background-color: aqua; */
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -3365,9 +3449,9 @@ export default {
   }
 
   .collectionImg_success {
-    border-radius: .1rem;
-    width: 4.475rem;
-    height: 4.475rem;
+    /* border-radius: .1rem; */
+    width: 5.625rem;
+    height: 2.75rem;
   }
 
 
@@ -3536,7 +3620,7 @@ export default {
   }
 
   .stepBoxSub_contantBox {
-    margin-left: .25rem;
+    margin-left: .0rem;
     margin-top: 0rem;
     display: flex;
     flex-direction: column;
@@ -3556,11 +3640,14 @@ export default {
   }
 
   .processImg_loading {
-    margin-left: -.35rem;
+    margin-left: -.25rem;
+    margin-top: -.25rem;
     /* margin-left: 0.25rem; */
-    margin-top: 0rem;
     width: 1rem;
     height: 1rem;
+
+    /* width: 0.5rem; */
+    /* height: 0.5rem; */
   }
 
   .processDesTopTitle {
@@ -3642,7 +3729,7 @@ export default {
     margin-left: .5rem;
     margin-right: .5rem;
     margin-top: .6rem;
-    font-size: .375rem;
+    font-size: .4rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
     color: #212121;
@@ -3666,6 +3753,15 @@ export default {
     cursor: pointer;
     justify-content: center;
     margin-bottom: -0.25rem;
+  }
+
+  .statusImgBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width: .75rem;
+    height: .75rem;
+    /* background-color: aqua; */
   }
 
 }
