@@ -1030,7 +1030,7 @@ const poolDatas_main = [
         },
         selectedAddress: null,
         isFree: false,
-        sort: 5.6
+        sort: 5.4
     },
 
 ]
