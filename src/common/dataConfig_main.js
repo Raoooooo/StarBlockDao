@@ -995,6 +995,44 @@ const poolDatas_main = [
         sort: 5.5
     },
 
+
+    {
+        poolInfo: {
+            pid: 26,
+            rangeTokenIds: [0, 7776],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon27.png"),
+            name: "soulda16club",
+            showName: "Soulda16Club",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 5.6
+    },
+
 ]
 
 
