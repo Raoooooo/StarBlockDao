@@ -25,6 +25,24 @@
               </dropdown-menu>
             </dropdown>
           </div>
+
+          <div class="messageDropdownBox">
+
+            <el-dropdown trigger="click" class="el-dropdown" @command="messageDropdownClick">
+              <div class="messageBox">
+                <img class="messageBox_icon" />
+                <p class="messageBox_text">交易确认中</p>
+                <img class="messageBox_rightIcon" />
+              </div>
+              <el-dropdown-menu slot="dropdown" class="menuWidth">
+                <el-dropdown-item class="el-dropdown-item" :command="item" v-for="(item, index) in messageList">
+                  {{ item }}
+                </el-dropdown-item>
+
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+
         </div>
       </div>
     </div>
@@ -109,6 +127,7 @@ export default {
     //   currentLangrage = "navBar.English";
     // }
     return {
+      messageList: ["qwwqw", "wqww", "qwqw"],
       elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
       loginErrorDialog: false,
       isShowCloseLoginErrorBtn: true,
@@ -329,6 +348,9 @@ export default {
       return getSurpportChainId() == 4
         ? this.$t("common.checkChainId4Des")
         : this.$t("common.checkChainId1Des");
+    },
+    messageDropdownClick(value) {
+
     },
     changeLangeDropdownClick(value) {
       this.$bus.$emit("changeDescripHeight", value);
@@ -605,7 +627,7 @@ export default {
 }
 
 .tabBox {
-  margin-left: 13.5rem;
+  margin-left: 7.5rem;
   margin-right: 2.65rem;
   display: flex;
   flex-direction: row;
@@ -627,8 +649,6 @@ export default {
   vertical-align: middle;
   overflow: hidden;
   cursor: pointer;
-
-  /* display: table-cell; */
 }
 
 .tabActiveTitle {
@@ -737,6 +757,7 @@ export default {
 }
 
 .dropdownBox {
+  margin-right: 1.25rem;
   width: 3.2rem;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0.45rem;
@@ -753,6 +774,8 @@ export default {
   /* width: 100%; */
   /* background-color: aqua; */
 }
+
+
 
 .changeLangeBtn {
   margin-top: -0.125rem;
@@ -814,5 +837,57 @@ export default {
   ;
   color: white;
   font-size: 0.4rem;
+}
+
+
+.messageDropdownBox {
+  width: 3.2rem;
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
+  margin-top: -0rem;
+  /* margin-top: 18px; */
+  /* align-items: center; */
+  /* flex: 1; */
+  display: flex;
+  flex-direction: row-reverse;
+  z-index: 100;
+
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
+  /* height: 1.5rem; */
+  /* align-items: center;s */
+  /* width: 100%; */
+  /* background-color: aqua; */
+}
+
+.messageBox {
+  justify-content: center;
+  margin-left: 1.5rem;
+  width: 4.35rem;
+  height: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: .1rem;
+  border: 1px solid #E5E5E5;
+}
+
+.messageBox_icon {
+  /* margin-left: .25rem; */
+  width: .54rem;
+  height: .65rem;
+}
+
+.messageBox_text {
+  margin-left: .125rem;
+  font-size: .45rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #111111;
+  line-height: .625rem;
+}
+
+.messageBox_rightIcon {
+  margin-left: .125rem;
+  width: .25rem;
+  height: .15rem;
 }
 </style>
