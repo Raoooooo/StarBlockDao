@@ -108,7 +108,7 @@ export async function daoportAction(item, handleMasterChefInfo, index, isFirstLo
     }
 }
 
-export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove, faildHandle) {
+export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove, faildHandle, requesUploadHash) {
     if (!accounts) {
         await getAccounts();
     }
@@ -135,22 +135,59 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
         return;
     }
 
-    try {
-        const txHash = await daoport.setApprovalForAll(parameters);
-        console.log("daoporApprovedtAction --txHash", txHash);
-        if (getIsApproveNFT) {
-            getIsApproveNFT(true, item, index);
-        }
-    } catch (error) {
-        var reg = RegExp(/Transaction was not mined within/);
-        if (error.message.match(reg)) {
-
-        } else {
-            if (faildHandle) {
-                faildHandle(item)
+    await daoport.setApprovalForAll(
+        owner,
+        nftContract,
+        wnftContract,
+        isApproveNFT,
+        txHash => {
+            if (requesUploadHash) {
+                requesUploadHash(txHash)
             }
+            console.log("daoporApprovedtAction on:::", txHash);
+        },
+        res => {
+            // if (successHandle) {
+            //     successHandle(res);
+            // }
+            if (getIsApproveNFT) {
+                getIsApproveNFT(true, item, index, res);
+            }
+            console.log("daoporApprovedtAction then:::", res);
+        },
+        err => {
+
+            var reg = RegExp(/Transaction was not mined within/);
+            if (err.message.match(reg)) {
+
+            } else {
+                if (faildHandle) {
+                    faildHandle(item)
+                }
+            }
+            // if (faildHandle) {
+            //     faildHandle(err);
+            // }
+            console.log("daoporApprovedtAction catch:::", err);
         }
-    }
+    );
+
+    // try {
+    //     const txHash = await daoport.setApprovalForAll(parameters);
+    //     console.log("daoporApprovedtAction --txHash", txHash);
+    //     if (getIsApproveNFT) {
+    //         getIsApproveNFT(true, item, index);
+    //     }
+    // } catch (error) {
+    //     var reg = RegExp(/Transaction was not mined within/);
+    //     if (error.message.match(reg)) {
+
+    //     } else {
+    //         if (faildHandle) {
+    //             faildHandle(item)
+    //         }
+    //     }
+    // }
 }
 
 
@@ -171,39 +208,71 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
     // nftMasterchef 合约
     // operator = "0x5B78867B0ecC41170e6A1A8A418B8dC1890b0F18";
     // }
-    let parameters = {
-        owner,
-        wnftContract,
-        isApproveNFT
-    };
+    // let parameters = {
+    //     owner,
+    //     wnftContract,
+    //     isApproveNFT
+    // };
 
 
     // const isApprove = await daoport.isApprovedForAll(parameters);
     // console.log("daoporApprovedtAction==", isApprove);
 
-    if (isOnlyGetApprove) {
-        if (getIsApproveNFT) {
-            getIsApproveNFT(isApprove, item, index);
-        }
-        return;
-    }
+    // if (isOnlyGetApprove) {
+    //     if (getIsApproveNFT) {
+    //         getIsApproveNFT(isApprove, item, index);
+    //     }
+    //     return;
+    // }
 
-    try {
-        const txHash = await daoport.setApprovalForAll(parameters);
-        console.log("daoporApprovedtAction --txHash", txHash);
-        if (getIsApproveNFT) {
-            getIsApproveNFT(true, item, index);
-        }
-    } catch (error) {
-        var reg = RegExp(/Transaction was not mined within/);
-        if (error.message.match(reg)) {
 
-        } else {
-            if (faildHandle) {
-                faildHandle(item)
+    await daoport.setApprovalForAll(
+        owner,
+        nftContract,
+        wnftContract,
+        isApproveNFT,
+        txHash => {
+            if (requesUploadHash) {
+                requesUploadHash(txHash)
             }
+            console.log("daoporApprovedtAction on:::", txHash);
+        },
+        res => {
+
+            if (getIsApproveNFT) {
+                getIsApproveNFT(true, item, index, res);
+            }
+
+            console.log("daoporApprovedtAction then:::", res);
+        },
+        err => {
+            var reg = RegExp(/Transaction was not mined within/);
+            if (err.message.match(reg)) {
+            } else {
+                if (faildHandle) {
+                    faildHandle(item)
+                }
+            }
+            console.log("daoporApprovedtAction catch:::", err);
         }
-    }
+    );
+
+    // try {
+    //     const txHash = await daoport.setApprovalForAll(parameters);
+    //     console.log("daoporApprovedtAction --txHash", txHash);
+    //     if (getIsApproveNFT) {
+    //         getIsApproveNFT(true, item, index);
+    //     }
+    // } catch (error) {
+    //     var reg = RegExp(/Transaction was not mined within/);
+    //     if (error.message.match(reg)) {
+
+    //     } else {
+    //         if (faildHandle) {
+    //             faildHandle(item)
+    //         }
+    //     }
+    // }
 }
 
 export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
@@ -278,7 +347,7 @@ export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
 }
 
 
-export async function daoporDeposit(item, handleDeposit, tokenIds, faildHandle) {
+export async function daoporDeposit(item, handleDeposit, tokenIds, faildHandle, requesUploadHash) {
     if (!accounts) {
         await getAccounts();
     }
@@ -292,25 +361,54 @@ export async function daoporDeposit(item, handleDeposit, tokenIds, faildHandle) 
         tokenIds
     };
 
-    try {
-        const txHash = await daoport.deposit(parameters);
-        console.log("daoporDeposit==txhash", txHash);
-        if (handleDeposit) {
-            handleDeposit(txHash, item);
-        }
-    } catch (error) {
-        var reg = RegExp(/Transaction was not mined within/);
-        if (error.message.match(reg)) {
-
-        } else {
-            if (faildHandle) {
-                faildHandle(item)
+    await daoport.deposit(
+        pid,
+        tokenIds,
+        txHash => {
+            if (requesUploadHash) {
+                requesUploadHash(txHash)
             }
+            console.log("deposit on:::", txHash);
+        },
+        res => {
+            if (handleDeposit) {
+                handleDeposit(res, item);
+            }
+            console.log("deposit then:::", res);
+        },
+        err => {
+
+            var reg = RegExp(/Transaction was not mined within/);
+            if (err.message.match(reg)) {
+
+            } else {
+                if (faildHandle) {
+                    faildHandle(item)
+                }
+            }
+            console.log("deposit catch:::", err);
         }
-    }
+    );
+
+    // try {
+    //     const txHash = await daoport.deposit(parameters);
+    //     console.log("daoporDeposit==txhash", txHash);
+    //     if (handleDeposit) {
+    //         handleDeposit(txHash, item);
+    //     }
+    // } catch (error) {
+    //     var reg = RegExp(/Transaction was not mined within/);
+    //     if (error.message.match(reg)) {
+
+    //     } else {
+    //         if (faildHandle) {
+    //             faildHandle(item)
+    //         }
+    //     }
+    // }
 }
 
-export async function daoporWithdraw(item, handleWithdraw, tokenIds, faildHandle) {
+export async function daoporWithdraw(item, handleWithdraw, tokenIds, faildHandle, requesUploadHash) {
     if (!accounts) {
         await getAccounts();
     }
@@ -325,24 +423,53 @@ export async function daoporWithdraw(item, handleWithdraw, tokenIds, faildHandle
         tokenIds
     };
 
-    try {
-        const txHash = await daoport.withdraw(parameters);
-        console.log("daoporDeposit==txhash", txHash);
-        if (handleWithdraw) {
-            handleWithdraw(txHash, item);
-        }
-    } catch (error) {
-        var reg = RegExp(/Transaction was not mined within/);
-        if (error.message.match(reg)) {
-
-        } else {
-            if (faildHandle) {
-                faildHandle(item)
+    await daoport.withdraw(
+        pid,
+        tokenIds,
+        txHash => {
+            if (requesUploadHash) {
+                requesUploadHash(txHash)
             }
+            console.log("withdraw on:::", txHash);
+        },
+        res => {
+            if (handleWithdraw) {
+                handleWithdraw(res, item);
+            }
+            console.log("withdraw then:::", res);
+        },
+        err => {
+
+            var reg = RegExp(/Transaction was not mined within/);
+            if (err.message.match(reg)) {
+
+            } else {
+                if (faildHandle) {
+                    faildHandle(item)
+                }
+            }
+            console.log("withdraw catch:::", err);
         }
-    }
+    );
+
+    // try {
+    //     const txHash = await daoport.withdraw(parameters);
+    //     console.log("daoporDeposit==txhash", txHash);
+    //     if (handleWithdraw) {
+    //         handleWithdraw(txHash, item);
+    //     }
+    // } catch (error) {
+    //     var reg = RegExp(/Transaction was not mined within/);
+    //     if (error.message.match(reg)) {
+
+    //     } else {
+    //         if (faildHandle) {
+    //             faildHandle(item)
+    //         }
+    //     }
+    // }
 }
-export async function daoporHarvest(item, handleHarvest, tokenIds, faildHandle) {
+export async function daoporHarvest(item, handleHarvest, tokenIds, faildHandle, requesUploadHash) {
     if (!accounts) {
         await getAccounts();
     }
@@ -360,24 +487,55 @@ export async function daoporHarvest(item, handleHarvest, tokenIds, faildHandle) 
         wnftTokenIds
     };
 
-    try {
-        const txHash = await daoport.harvest(parameters);
-        console.log("daoporHarvest==txhash", txHash);
-        if (handleHarvest) {
-            handleHarvest(txHash, item)
-        }
-    } catch (error) {
 
-        var reg = RegExp(/Transaction was not mined within/);
-        if (error.message.match(reg)) {
-
-        } else {
-            if (faildHandle) {
-                faildHandle(item)
+    await daoport.harvest(
+        pid,
+        to,
+        wnftTokenIds,
+        txHash => {
+            if (requesUploadHash) {
+                requesUploadHash(txHash)
             }
-        }
+            console.log("harvest on:::", txHash);
+        },
+        res => {
+            if (handleHarvest) {
+                handleHarvest(res, item);
+            }
+            console.log("harvest then:::", res);
+        },
+        err => {
 
-    }
+            var reg = RegExp(/Transaction was not mined within/);
+            if (err.message.match(reg)) {
+
+            } else {
+                if (faildHandle) {
+                    faildHandle(item)
+                }
+            }
+            console.log("harvest catch:::", err);
+        }
+    );
+
+    // try {
+    //     const txHash = await daoport.harvest(parameters);
+    //     console.log("daoporHarvest==txhash", txHash);
+    //     if (handleHarvest) {
+    //         handleHarvest(txHash, item)
+    //     }
+    // } catch (error) {
+
+    //     var reg = RegExp(/Transaction was not mined within/);
+    //     if (error.message.match(reg)) {
+
+    //     } else {
+    //         if (faildHandle) {
+    //             faildHandle(item)
+    //         }
+    //     }
+
+    // }
 }
 
 

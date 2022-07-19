@@ -1126,14 +1126,16 @@ export default {
           this.selectPollItem,
           this.handleDeposit,
           this.selectTokenIdsArr,
-          this.faildHandleDaoporDeposit
+          this.faildHandleDaoporDeposit,
+          this.getDepositTxHash
         );
       } else {
         daoporWithdraw(
           this.selectPollItem,
           this.handleWithdraw,
           this.selectTokenIdsArr,
-          this.faildHandleDaoporWithdraw
+          this.faildHandleDaoporWithdraw.apply,
+          this.getWithdrawTxHash
         );
       }
     },
@@ -1148,7 +1150,8 @@ export default {
           this.handleNftApprove,
           0,
           false,
-          this.faildHandleApproveNFT
+          this.faildHandleApproveNFT,
+          this.getApproveNFTTxHash
         );
       } else {
         approveWNFTAction(
@@ -1156,9 +1159,25 @@ export default {
           this.handleWNftApprove,
           0,
           false,
-          this.faildHandleApproveWNFT
+          this.faildHandleApproveWNFT,
+          this.getApproveWNFTTxHash
         );
       }
+    },
+    getApproveNFTTxHash(txHash) {
+
+    },
+    getApproveWNFTTxHash(txHash) {
+
+    },
+    getWithdrawTxHash(txHash) {
+
+    },
+    getDepositTxHash(txHash) {
+
+    },
+    getHarvestTxHash(txHash) {
+
     },
     stakeProcessAlertCloseAction() {
       this.stakeProcessAlertShow = false;
@@ -1180,7 +1199,8 @@ export default {
             this.handleNftApprove,
             0,
             false,
-            this.faildHandleApproveNFT
+            this.faildHandleApproveNFT,
+            this.getApproveNFTTxHash
           );
         } else {
           this.startDelyContractBtnAction();
@@ -1200,7 +1220,9 @@ export default {
             this.handleWNftApprove,
             0,
             false,
-            this.faildHandleApproveWNFT
+            this.faildHandleApproveWNFT,
+            this.getApproveWNFTTxHash
+
           );
         } else {
           this.isApprove = true;
@@ -1213,7 +1235,7 @@ export default {
 
     },
 
-    handleNftApprove(isApprove, item, index) {
+    handleNftApprove(isApprove, item, index, res) {
       this.selectPollItem.isNFTApproved = isApprove;
       this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
       this.approveProcessImgClass = "processImg"
@@ -1227,7 +1249,7 @@ export default {
       this.approveProcessImgClass = "processImg"
       this.$message.error(this.$t("common.transactionCancle"))
     },
-    handleWNftApprove(isApprove, item, index) {
+    handleWNftApprove(isApprove, item, index, res) {
       this.selectPollItem.isWNFTApproved = isApprove;
       this.approveStatusImgUrl = require("@/assets/img/common/requestSuccess.svg");
       this.approveProcessImgClass = "processImg"
@@ -1346,9 +1368,9 @@ export default {
       this.successVisible2 = false;
     },
     alertBeforeAction() {
-      if (this.selectTokenIdsArr.length == 0) {
-        return;
-      }
+      // if (this.selectTokenIdsArr.length == 0) {
+      //   return;
+      // }
       if (checkChainIdError()) {
         this.$bus.$emit("checkChainIdError", "1");
         return;
@@ -1386,14 +1408,16 @@ export default {
             this.selectPollItem,
             this.handleDeposit,
             this.selectTokenIdsArr,
-            this.faildHandleDaoporDeposit
+            this.faildHandleDaoporDeposit,
+            this.getDepositTxHash
           );
         } else {
           daoporWithdraw(
             this.selectPollItem,
             this.handleWithdraw,
             this.selectTokenIdsArr,
-            this.faildHandleDaoporWithdraw
+            this.faildHandleDaoporWithdraw,
+            this.getWithdrawTxHash
           );
           this.$bus.$emit("defaultBtnNotiAction", {
             selectItem: this.selectPollItem,
@@ -1589,7 +1613,8 @@ export default {
           this.selectPollItem,
           this.handleHarvest,
           emptyArr,
-          this.faildHandleDaoporHarvest
+          this.faildHandleDaoporHarvest,
+          this.getHarvestTxHash
         );
       }
     },

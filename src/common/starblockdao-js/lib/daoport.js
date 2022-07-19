@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -48,8 +48,8 @@ var DaoPort = /** @class */ (function () {
     DaoPort.prototype.setOnlyReadWeb3Provider = function (provider) {
         this._protocol.onlyReadNFTUtilsContract(provider);
     };
-    DaoPort.prototype.deposit = function (_a) {
-        var pid = _a.pid, tokenIds = _a.tokenIds;
+    DaoPort.prototype.deposit = function (pid, tokenIds, callCallback, resultCallback, errorCallback) {
+        // var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
             var txHash, txnData, error_1;
             return __generator(this, function (_b) {
@@ -58,8 +58,20 @@ var DaoPort = /** @class */ (function () {
                         _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                                .deposit(pid, tokenIds)
-                                .send(txnData)];
+                            .deposit(pid, tokenIds)
+                            .send(txnData)
+                            .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                            .then(function (res) {
+                                resultCallback(res);
+                            })
+                            .catch(function (error) {
+                                errorCallback(new Error("Failed to deposit transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                            })];
+                    // return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
+                    //     .deposit(pid, tokenIds)
+                    //     .send(txnData)];
                     case 1:
                         txHash = _b.sent();
                         return [3 /*break*/, 3];
@@ -72,18 +84,27 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.withdraw = function (_a) {
-        var pid = _a.pid, tokenIds = _a.tokenIds;
+    DaoPort.prototype.withdraw = function (pid, tokenIds, callCallback, resultCallback, errorCallback) {
+        // var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
             var txHash, txnData, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        // _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                                .withdraw(pid, tokenIds)
-                                .send(txnData)];
+                            .withdraw(pid, tokenIds)
+                            .send(txnData)
+                            .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                            .then(function (res) {
+                                resultCallback(res);
+                            })
+                            .catch(function (error) {
+                                errorCallback(new Error("Failed to withdraw transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                            })];
                     case 1:
                         txHash = _b.sent();
                         return [3 /*break*/, 3];
@@ -96,8 +117,8 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.setApprovalForAll = function (_a) {
-        var owner = _a.owner, nftContract = _a.nftContract, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
+    DaoPort.prototype.setApprovalForAll = function (owner, nftContract, wnftContract, isApproveNFT, callCallback, resultCallback, errorCallback) {
+        // var owner = _a.owner, nftContract = _a.nftContract, wnftContract = _a.wnftContract, isApproveNFT = _a.isApproveNFT;
         return __awaiter(this, void 0, void 0, function () {
             var txHash, REC721Address, operator, txnData, REC721Contract, error_3;
             return __generator(this, function (_b) {
@@ -110,10 +131,20 @@ var DaoPort = /** @class */ (function () {
                         operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
                         _b.label = 1;
                     case 1:
-                        _b.trys.push([1, 3, , 4]);
+                        // _b.trys.push([1, 3, , 4]);
                         txnData = { from: owner };
                         REC721Contract = this._protocol.setERC721Addess(REC721Address);
-                        return [4 /*yield*/, REC721Contract.methods.setApprovalForAll(operator, true).send(txnData)];
+                        return [4 /*yield*/, REC721Contract.methods.setApprovalForAll(operator, true).send(txnData)
+                            .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                            .then(function (res) {
+                                resultCallback(res);
+                            })
+                            .catch(function (error) {
+                                errorCallback(new Error("Failed to setApprovalForAll transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                            })];
+                    // return [4 /*yield*/, REC721Contract.methods.setApprovalForAll(operator, true).send(txnData)];
                     case 2:
                         txHash = _b.sent();
                         return [3 /*break*/, 4];
@@ -125,18 +156,30 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.harvest = function (_a) {
-        var pid = _a.pid, to = _a.to, wnftTokenIds = _a.wnftTokenIds;
+    DaoPort.prototype.harvest = function (pid, to, wnftTokenIds, callCallback, resultCallback, errorCallback) {
+        // var pid = _a.pid, to = _a.to, wnftTokenIds = _a.wnftTokenIds;
         return __awaiter(this, void 0, void 0, function () {
             var txHash, txnData, error_4;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        // _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                                .harvest(pid, to, wnftTokenIds)
-                                .send(txnData)];
+                            .harvest(pid, to, wnftTokenIds)
+                            .send(txnData)
+                            .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                            .then(function (res) {
+                                resultCallback(res);
+                            })
+                            .catch(function (error) {
+                                errorCallback(new Error("Failed to harvest transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                            })];
+                    // return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
+                    //     .harvest(pid, to, wnftTokenIds)
+                    //     .send(txnData)];
                     case 1:
                         txHash = _b.sent();
                         return [3 /*break*/, 3];
@@ -186,8 +229,8 @@ var DaoPort = /** @class */ (function () {
                             throw new Error("beyend token range...\"");
                         }
                         return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
-                                .call()];
+                            .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
+                            .call()];
                     case 1:
                         tokenIds = _b.sent();
                         return [2 /*return*/, tokenIds];
@@ -204,8 +247,8 @@ var DaoPort = /** @class */ (function () {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                                .pending(pid, tokenIds)
-                                .call()];
+                            .pending(pid, tokenIds)
+                            .call()];
                     case 1:
                         _b = _c.sent(), _mining = _b._mining, _dividend = _b._dividend;
                         result = [_mining, _dividend];
@@ -262,8 +305,8 @@ var DaoPort = /** @class */ (function () {
                         }
                         nftMasterchef = this._protocol.NFTMasterChefContractAddress;
                         return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
-                                .call()];
+                            .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
+                            .call()];
                     case 1:
                         _b = _c.sent(), _poolInfo = _b._poolInfo, _rewardInfo = _b._rewardInfo, _userInfo = _b._userInfo, _currentRewardIndex = _b._currentRewardIndex, _endBlock = _b._endBlock, _nft = _b._nft;
                         rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
@@ -278,18 +321,18 @@ var DaoPort = /** @class */ (function () {
                         endBlock = _endBlock;
                         nft = _nft;
                         return [2 /*return*/, {
-                                poolInfo: poolInfo,
-                                rewardForEachBlock: rewardForEachBlock,
-                                rewardPerNFTForEachBlock: rewardPerNFTForEachBlock,
-                                endBlock: endBlock,
-                                mining: mining,
-                                dividend: dividend,
-                                nftQuantity: nftQuantity,
-                                wnftQuantity: wnftQuantity,
-                                isNFTApproved: isNFTApproved,
-                                isWNFTApproved: isWNFTApproved,
-                                nft: nft
-                            }];
+                            poolInfo: poolInfo,
+                            rewardForEachBlock: rewardForEachBlock,
+                            rewardPerNFTForEachBlock: rewardPerNFTForEachBlock,
+                            endBlock: endBlock,
+                            mining: mining,
+                            dividend: dividend,
+                            nftQuantity: nftQuantity,
+                            wnftQuantity: wnftQuantity,
+                            isNFTApproved: isNFTApproved,
+                            isWNFTApproved: isWNFTApproved,
+                            nft: nft
+                        }];
                 }
             });
         });
@@ -303,8 +346,8 @@ var DaoPort = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
-                                .canClaim(user, treeIds, amounts, merkleProofs)
-                                .call()];
+                            .canClaim(user, treeIds, amounts, merkleProofs)
+                            .call()];
                     case 1:
                         array = _b.sent();
                         result = [array[0], array[1]];
@@ -329,8 +372,8 @@ var DaoPort = /** @class */ (function () {
                         _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
-                                .updateTradingRewards(treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards)
-                                .send(txnData)];
+                            .updateTradingRewards(treeIds, merkleRoots, maxAmountsPerUser, merkleProofsSafeGuards)
+                            .send(txnData)];
                     case 1:
                         txHash = _b.sent();
                         return [3 /*break*/, 3];
@@ -353,8 +396,8 @@ var DaoPort = /** @class */ (function () {
                         _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.MerkletRootDistributorContract.methods
-                                .claim(treeIds, amounts, merkleProofs)
-                                .send(txnData)];
+                            .claim(treeIds, amounts, merkleProofs)
+                            .send(txnData)];
                     case 1:
                         txHash = _b.sent();
                         return [3 /*break*/, 3];
@@ -373,8 +416,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getTokenPrice()
-                            .call()];
+                        .getTokenPrice()
+                        .call()];
                     case 1:
                         tokenPrice = _a.sent();
                         return [2 /*return*/, tokenPrice];
@@ -389,8 +432,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getPoolInfo(pid, user, withOwnedNFTTokenIds)
-                            .call()];
+                        .getPoolInfo(pid, user, withOwnedNFTTokenIds)
+                        .call()];
                     case 1:
                         _wrappedPoolInfo = _b.sent();
                         console.log("getPoolInfo _wrappedPoolInfo:::", _wrappedPoolInfo);
@@ -406,8 +449,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getAllPoolInfos(fromPid, toPid, user, withOwnedNFTTokenIds)
-                            .call()];
+                        .getAllPoolInfos(fromPid, toPid, user, withOwnedNFTTokenIds)
+                        .call()];
                     case 1:
                         _wrappedPoolInfos = _b.sent();
                         console.log("getPoolInfo _wrappedPoolInfos:::", _wrappedPoolInfos);
@@ -423,8 +466,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getPoolInfosByNFTorWNFTs(poolNFTorWNFTs, user, withOwnedNFTTokenIds)
-                            .call()];
+                        .getPoolInfosByNFTorWNFTs(poolNFTorWNFTs, user, withOwnedNFTTokenIds)
+                        .call()];
                     case 1:
                         _wrappedPoolInfos = _b.sent();
                         console.log("getPoolInfo _wrappedPoolInfos:::", _wrappedPoolInfos);
@@ -439,8 +482,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .pendingAll(forUser)
-                            .call()];
+                        .pendingAll(forUser)
+                        .call()];
                     case 1:
                         _userInfo = _a.sent();
                         return [2 /*return*/, _userInfo];
@@ -457,8 +500,8 @@ var DaoPort = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                                .harvestAll(forUser)
-                                .send(txnData)];
+                            .harvestAll(forUser)
+                            .send(txnData)];
                     case 1:
                         txHash = _a.sent();
                         return [3 /*break*/, 3];
@@ -478,8 +521,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .pendingByNFTorWNFT(poolNFTorWNFT, poolWNFTTokenIds)
-                            .call()];
+                        .pendingByNFTorWNFT(poolNFTorWNFT, poolWNFTTokenIds)
+                        .call()];
                     case 1:
                         _b = _c.sent(), _poolExists = _b._poolExists, _pid = _b._pid, _mining = _b._mining, _dividend = _b._dividend;
                         console.log("pendingByNFTorWNFT:::", _poolExists, _pid, _mining, _dividend);
@@ -495,8 +538,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .pendingAllByWNFTTokenIds(pids, poolWNFTTokenIds)
-                            .call()];
+                        .pendingAllByWNFTTokenIds(pids, poolWNFTTokenIds)
+                        .call()];
                     case 1:
                         _b = _c.sent(), _mining = _b._mining, _dividend = _b._dividend;
                         console.log("pendingAllByWNFTTokenIds:::", _mining, _dividend);
@@ -515,8 +558,8 @@ var DaoPort = /** @class */ (function () {
                         _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                                .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
-                                .send(txnData)];
+                            .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
+                            .send(txnData)];
                     case 1:
                         txHash = _b.sent();
                         return [3 /*break*/, 3];
@@ -536,8 +579,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .ownedNFTsTokenIdsByPids(pids, user)
-                            .call()];
+                        .ownedNFTsTokenIdsByPids(pids, user)
+                        .call()];
                     case 1:
                         _ownedTokenIds = _b.sent();
                         console.log("ownedNFTsTokenIdsByPids:::", _ownedTokenIds);
@@ -553,8 +596,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .ownedWNFTsTokenIdsByPids(pids, user)
-                            .call()];
+                        .ownedWNFTsTokenIdsByPids(pids, user)
+                        .call()];
                     case 1:
                         _ownedTokenIds = _b.sent();
                         console.log("ownedWNFTsTokenIdsByPids:::", _ownedTokenIds);
@@ -570,8 +613,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .ownedNFTsTokenIdsByNFTs(nfts, user)
-                            .call()];
+                        .ownedNFTsTokenIdsByNFTs(nfts, user)
+                        .call()];
                     case 1:
                         _ownedTokenIds = _b.sent();
                         console.log("ownedNFTsTokenIdsByNFTs:::", _ownedTokenIds);
@@ -587,8 +630,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .ownedNFTTokenIds(nft, user)
-                            .call()];
+                        .ownedNFTTokenIds(nft, user)
+                        .call()];
                     case 1:
                         _ownedTokenIds = _b.sent();
                         console.log("ownedNFTTokenIds:::", _ownedTokenIds);
@@ -604,8 +647,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getPoolInfosUserCanDeposit(user, withOwnedNFTTokenIds)
-                            .call()];
+                        .getPoolInfosUserCanDeposit(user, withOwnedNFTTokenIds)
+                        .call()];
                     case 1:
                         _wrappedPoolInfos = _b.sent();
                         console.log("getPoolInfosUserCanDeposit:::", _wrappedPoolInfos);
@@ -621,8 +664,8 @@ var DaoPort = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getPoolInfosUserDeposited(user, withOwnedNFTTokenIds)
-                            .call()];
+                        .getPoolInfosUserDeposited(user, withOwnedNFTTokenIds)
+                        .call()];
                     case 1:
                         _wrappedPoolInfos = _b.sent();
                         console.log("getPoolInfosUserDeposited:::", _wrappedPoolInfos);

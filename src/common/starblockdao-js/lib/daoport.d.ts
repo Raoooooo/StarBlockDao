@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { MasterChefPoolsInfo, Web3Callback } from "./types";
+import { MasterChefPoolsInfo, Web3Callback, ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
 import BigNumber from "bignumber.js";
 export declare class DaoPort {
     private _protocol;
@@ -7,24 +7,30 @@ export declare class DaoPort {
     setAccount(account: string): void;
     setOnlyReadWeb3Provider(provider: Web3): void;
     deposit({ pid, tokenIds }: {
-        pid: number;
-        tokenIds: number[];
-    }): Promise<string>;
+        pid: number,
+        tokenIds: number[],
+        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
+
+    }): Promise<void>;
     withdraw({ pid, tokenIds }: {
-        pid: number;
-        tokenIds: number[];
-    }): Promise<string>;
+        pid: number,
+        tokenIds: number[],
+        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
+    }): Promise<void>;
     setApprovalForAll({ owner, nftContract, wnftContract, isApproveNFT }: {
-        owner: string;
-        nftContract?: string;
-        wnftContract: string;
-        isApproveNFT: Boolean;
-    }): Promise<string>;
+        owner: string,
+        nftContract?: string,
+        wnftContract: string,
+        isApproveNFT: Boolean,
+        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
+
+    }): Promise<void>;
     harvest({ pid, to, wnftTokenIds }: {
-        pid: number;
-        to: string;
-        wnftTokenIds: number[];
-    }): Promise<string>;
+        pid: number,
+        to: string,
+        wnftTokenIds: number[],
+        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
+    }): Promise<void>;
     ownedNFTTokens({ contractAddress, owner, rangeTokenIds }: {
         contractAddress: string;
         owner: string;

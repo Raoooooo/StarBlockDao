@@ -1,7 +1,7 @@
 
 // 是否是生产环境 0否 1是(需手动修改)
 export function getProdcutMode() {
-    return 1;
+    return 0;
 }
 
 export function getRequestBaseUrl() {
