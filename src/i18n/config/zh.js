@@ -125,7 +125,7 @@ export default {
 
         defaultStakeAlertTitle: "完成抵押",
         defaultUnstakeAlertTitle: "完成解抵押",
-        defaultStakeAlertDes: "· 抵押NFT以后将给您抵押凭证：WNFT；WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
+        defaultStakeAlertDes: "抵押NFT以后将给您抵押凭证：WNFT；WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
         defaultUnstakeAlertDes: "抵押NFT以后将给您抵押凭证：WNFT；WNFT是解抵押NFT的唯一凭证，千万不要丢失。",
         stakeApprove: "抵押授权",
         unstakeApprove: "解抵押授权",
@@ -150,16 +150,14 @@ export default {
         haveComplete: "已完成",
 
         stakeSuccessTitle: "抵押已完成!",
-        stakeSuccessDesSub1: "您已经完成抵押",
-        stakeSuccessDesSub2: " NFT从",
-        stakeSuccessDesSub3: "合集中",
+        stakeSuccessDes: "您已经完成抵押NFT",
 
         unstakeSuccessTitle: "解抵押已完成!",
-        unstakeSuccessDesSub1: "您已经完成解抵押",
-        unstakeSuccessDesSub2: " WNFT从",
-        unstakeSuccessDesSub3: "合集中",
+        unstakeSuccessDes: "您已经完成解抵押WNFT",
+
         continueStake: "继续抵押",
-        continueunstake: "继续解抵押"
+        continueunstake: "继续解抵押",
+        quantity: "数量"
     },
 
 

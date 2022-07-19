@@ -245,13 +245,13 @@
           {{ requestSuccessStr2 }}
         </p>
 
-        <div class="txHashBox">
+        <!-- <div class="txHashBox">
           <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
           <a :href="getChainWebUrl(txHashOringion)" target="_blank">
             <p class="txHash">{{ txHash }}</p>
           </a>
           <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-        </div>
+        </div> -->
         <div class="bottomBtnBox1">
           <button class="alertCloseBtn" @click="alertCloseBtnAction">
             {{ $t("common.alertClose") }}
@@ -375,7 +375,7 @@
           <div class="dialogContantBox_sepLine"></div>
 
           <div class="quantityBox">
-            <p class="quantityBox_leftText">Quantity</p>
+            <p class="quantityBox_leftText">{{ $t("common.quantity") }}</p>
             <p class="quantityBox_rightText">{{ selectCount }}</p>
           </div>
 
@@ -406,7 +406,7 @@
               <img class="collectionImg" :src="selectPollItem.collection.imagePath" v-if="selectPollItem.collection" />
               <div class="selectTextBox">
                 <p class="collectionName" v-if="selectPollItem.collection">{{ selectPollItem.collection.showName }}</p>
-                <p class="selectTextBox_count">{{ "Quantity:" + selectCount }}</p>
+                <p class="selectTextBox_count">{{ $t("common.quantity") + ": " + selectCount }}</p>
               </div>
             </div>
 
@@ -522,13 +522,13 @@
             <span>{{ " " }}</span>
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
-          <div class="txHashBox_process">
+          <!-- <div class="txHashBox_process">
             <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
               <p class="txHash">{{ txHash }}</p>
             </a>
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-          </div>
+          </div> -->
 
           <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
         </div>
@@ -543,7 +543,7 @@
         <div class="dialogTopBack">
           <div></div>
           <p class="dialogTopBack_title">
-            {{ stakeProcessSuccessDes }}
+            {{ processSuccessAlertTitle1 }}
           </p>
           <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="unstakeSuccessAlertCloseAction" />
         </div>
@@ -563,13 +563,13 @@
             <span>{{ " " }}</span>
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
-          <div class="txHashBox_process">
+          <!-- <div class="txHashBox_process">
             <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
               <p class="txHash">{{ txHash }}</p>
             </a>
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-          </div>
+          </div> -->
 
           <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueunstake") }}</button>
         </div>
@@ -660,10 +660,10 @@ export default {
       }
     },
     stakeProcessSuccessDes() {
-      return this.$t("common.stakeSuccessDesSub1")
+      return this.$t("common.stakeSuccessDes")
     },
     unstakeProcessSuccessDes() {
-      return this.$t("common.unstakeSuccessDesSub1")
+      return this.$t("common.unstakeSuccessDes")
     },
 
     processSuccessDesSub1() {
@@ -1904,8 +1904,9 @@ export default {
 }
 
 .unPledgeAction {
-  padding-left: 0.4rem;
-  padding-right: 0.4rem;
+  width: 3.25rem;
+  /* padding-left: 0.4rem; */
+  /* padding-right: 0.4rem; */
   height: 1.5rem;
   border-radius: 0.1rem;
   border-style: none;
@@ -1913,6 +1914,7 @@ export default {
   ;
   font-size: 0.6rem;
   font-family: PingFangSC-Medium, PingFang SC;
+  /* font-family: monospace; */
   font-weight: 500;
   color: #ffffff;
   line-height: 0.4rem;
@@ -2544,7 +2546,7 @@ export default {
 }
 
 .selectTextBox_count {
-  margin-top: .375rem;
+  /* margin-top: .375rem; */
   margin-left: .25rem;
   font-size: .6rem;
   font-family: Poppins-Regular, Poppins;
@@ -2956,8 +2958,9 @@ export default {
   }
 
   .unPledgeAction {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
+    width: 2.5rem;
+    /* padding-left: 0.4rem; */
+    /* padding-right: 0.4rem; */
     height: 1rem;
     border-radius: 0.1rem;
     border-style: none;
@@ -2965,9 +2968,11 @@ export default {
     ;
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
+    /* font-family: monospace; */
     font-weight: 500;
     color: #ffffff;
     line-height: 0.4rem;
+    white-space: nowrap;
   }
 
   .selectAllBtnBox {
@@ -3512,11 +3517,11 @@ export default {
 
   .rewardDes {
     margin-top: .1rem;
-    font-size: .35rem;
+    font-size: .375rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #9A999A;
-    line-height: .45rem;
+    line-height: .625rem;
   }
 
   .dialogContantBox_sepLine {
@@ -3698,7 +3703,7 @@ export default {
     border-style: none;
     background-color: #eee;
     color: #999;
-    font-size: 0.35rem;
+    font-size: 0.4rem;
   }
 
   .processStepOnBtn {
@@ -3711,7 +3716,7 @@ export default {
     border-style: none;
     background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
     color: white;
-    font-size: 0.35rem;
+    font-size: 0.4rem;
   }
 
   .processCloseBtn {

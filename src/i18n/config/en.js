@@ -14,7 +14,7 @@ export default {
         github: "GitHub",
         login: "Connect Wallet",
         starBlock: "StarBlock",
-        documentUrl: "https://starblock.gitbook.io/main/v/english/",
+        documentUrl: "https://docs.starblock.io/main/v/english/",
 
     },
 
@@ -119,7 +119,7 @@ export default {
         sellectAll: "Sellect All",
         transactionCancle: "You have canceled the transaction",
         transactionConfirm: "The transaction has been confirmed. Please wait for the completion of the transaction on the blockchain.",
-        courseLinkUrl: "https://starblock.gitbook.io/main/v/english/starblock-dao/tutorials/nft-staking",
+        courseLinkUrl: "https://docs.starblock.io/main/v/english/starblock-dao/tutorials/nft-staking",
         course: "Staking Tutorials",
         courseMobile: "Tutorials",
         applyCollection: "Collection Listing",
@@ -127,43 +127,39 @@ export default {
 
         defaultStakeAlertTitle: "Complete Stake",
         defaultUnstakeAlertTitle: "Complete Unstake",
-        defaultStakeAlertDes: "Staking NFT will give you the staking certificate: WNFT，WNFT is theonlycertificate for unstaking NFT, don't lose it",
-        defaultUnstakeAlertDes: "Staking NFT will give you the staking certificate: WNFT，WNFT is theonlycertificate for unstaking NFT, don't lose it",
-        stakeApprove: "Stake Approve",
-        unstakeApprove: "Unstake Approve",
+        defaultStakeAlertDes: "Staking NFT will give you the staking certificate: WNFT, WNFT is the only certificate for unstaking NFT, don't lose it",
+        defaultUnstakeAlertDes: "Staking NFT will give you the staking certificate: WNFT, WNFT is the only certificate for unstaking NFT, don't lose it",
+        stakeApprove: "Approve to Stake",
+        unstakeApprove: "Approve to Unstake",
         stakeApproveNFTDes: "You'll be asked to approve NFT from your wallet.",
         stakeApproveWNFTDes: "You'll be asked to approve WNFT from your wallet.",
-        confirmStake: "Confirm Stake",
-        confirmUnstake: "Confirm Unstake",
+        confirmStake: "Confirm to Stake",
+        confirmUnstake: "Confirm to Unstake",
 
         confirmStakeDesSub1: "Your transaction of",
-        confirmStakeDesSub2: "stake is processing",
-        confirmUnStake: "Confirm Unstake",
+        confirmStakeDesSub2: "Stake is processing",
+        confirmUnStake: "Confirm to Unstake",
         confirmUnstakeDesSub1: "Your transaction of",
-        confirmUnstakeDesSub2: "unstake is processing",
+        confirmUnstakeDesSub2: "Unstake is processing",
         approveIngStatus: "Waiting for approval…",
         haveComplete: "Completed",
         deployDefaultStatus: "Waiting for transaction",
         deployingStatus: "Waiting for transaction",
         btnCompleteStatus: "Complete",
         reStart: "Continue",
-        unStart: "Unstart",
-        start: "Start",
+        unStart: "Unstarted",
+        start: "Started",
         haveComplete: "Completed",
 
-        stakeSuccessTitle: "Your Stake is complete!",
-        stakeSuccessDesSub1: "You have completed the stake of ",
-        stakeSuccessDesSub2: " NFTs from the",
-        stakeSuccessDesSub3: "collection",
+        stakeSuccessTitle: "Stake complete!",
+        stakeSuccessDes: "You have staked your NFT",
 
-        unstakeSuccessTitle: "Your Unstake is complete!",
-        unstakeSuccessDesSub1: "You have completed the unstake of ",
-        unstakeSuccessDesSub2: " WNFTs from the",
-        unstakeSuccessDesSub3: "collection",
+        unstakeSuccessTitle: "Unstake complete!",
+        unstakeSuccessDes: "You have unstaked your NFT",
 
-        continueStake: "Continue Stake",
-        continueunstake: "Continue Unstake"
-
+        continueStake: "Continue to Stake",
+        continueunstake: "Continue to Unstake",
+        quantity: "Quantity"
 
 
 

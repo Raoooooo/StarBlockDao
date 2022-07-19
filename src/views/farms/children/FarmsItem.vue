@@ -45,10 +45,19 @@
         <div class="contantDetailSection1">
           <div class="contantDetailSection1_leftBox">
             <img class="contantDetailSection1_leftBox_img" v-lazy="item.collection.imagePath" />
+
+          </div>
+
+          <div class="contantDetailSection1_rightBox">
             <div class="contantDetailSection1_leftBox_subBox">
-              <p class="contantDetailSection1_leftBox_subBox_topText">
+              <p class="collectionNameText">
                 {{ item.collection.showName }}
               </p>
+              <p class="rewardPerNFTAmountText">
+                {{ rewardPerNFTAmount(item) }}
+              </p>
+            </div>
+            <div class="contantDetailSection1_rightBox_subBox">
               <div class="linkIconBox">
                 <!-- <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl" v-show="isShowStarBlockLink(item)">
                   <img class="linkIcon" src="@/assets/img/farms/linkIcon1.png" />
@@ -63,16 +72,12 @@
                   <img class="linkIcon1" src="@/assets/img/farms/linkIcon4.png" />
                 </a>
               </div>
+              <p class="awardNFTDes">
+                {{ $t("farms.awardNFT") + "/" + $t("farms.month") }}
+              </p>
             </div>
           </div>
-          <div class="contantDetailSection1_rightBox">
-            <p class="contantDetailSection1_rightBox_topText">
-              {{ rewardPerNFTAmount(item) }}
-            </p>
-            <p class="contantDetailSection1_rightBox_bottomText">
-              {{ $t("farms.awardNFT") + "/" + $t("farms.month") }}
-            </p>
-          </div>
+
         </div>
 
         <div class="linkTopBox">
@@ -802,14 +807,16 @@ export default {
 }
 
 .contantDetailSection1_leftBox_subBox {
-  margin-left: 0.5rem;
+  width: 100%;
+  /* margin-left: 0.5rem; */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 2.25rem;
+  /* margin-right: .25rem; */
   /* justify-content: space-between; */
 }
 
-.contantDetailSection1_leftBox_subBox_topText {
+.collectionNameText {
   font-size: 0.7rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -819,10 +826,12 @@ export default {
   /* width: 50%; */
   /* /* width: 3rem; */
   white-space: nowrap;
+  margin-left: .25rem;
   /* overflow: hidden; */
 }
 
 .linkIconBox {
+  margin-left: .25rem;
   margin-top: 0.25rem;
   display: flex;
   flex-direction: row;
@@ -847,6 +856,7 @@ export default {
 }
 
 .contantDetailSection1_rightBox {
+  flex: 1;
   height: 2.25rem;
   display: flex;
   flex-direction: column;
@@ -855,7 +865,16 @@ export default {
   justify-content: space-between;
 }
 
-.contantDetailSection1_rightBox_topText {
+.contantDetailSection1_rightBox_subBox {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 0rem;
+  justify-content: space-between;
+}
+
+.rewardPerNFTAmountText {
   width: 100%;
   text-align: right;
   font-size: 0.6rem;
@@ -865,7 +884,7 @@ export default {
   line-height: 0.825rem;
 }
 
-.contantDetailSection1_rightBox_bottomText {
+.awardNFTDes {
   /* width: 70%; */
   /* width: 50%; */
   /* width: 100%; */
@@ -1513,14 +1532,15 @@ export default {
   }
 
   .contantDetailSection1_leftBox_subBox {
-    margin-left: 0.25rem;
+    /* margin-left: 0.25rem; */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 1.25rem;
+    align-items: center;
     /* justify-content: space-between; */
   }
 
-  .contantDetailSection1_leftBox_subBox_topText {
+  .collectionNameText {
     font-size: 0.4rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -1554,6 +1574,7 @@ export default {
   }
 
   .contantDetailSection1_rightBox {
+    flex: 1;
     height: 1.25rem;
     display: flex;
     flex-direction: column;
@@ -1562,7 +1583,15 @@ export default {
     justify-content: space-between;
   }
 
-  .contantDetailSection1_rightBox_topText {
+  .contantDetailSection1_rightBox_subBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 0rem;
+    justify-content: space-between;
+  }
+
+  .rewardPerNFTAmountText {
     width: 100%;
     text-align: right;
     font-size: 0.4rem;
@@ -1572,7 +1601,7 @@ export default {
     line-height: 0.4rem;
   }
 
-  .contantDetailSection1_rightBox_bottomText {
+  .awardNFTDes {
     font-size: 0.35rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
