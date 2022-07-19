@@ -28,15 +28,34 @@
 
           <div class="messageDropdownBox">
 
-            <el-dropdown trigger="click" class="el-dropdown" @command="messageDropdownClick">
+            <el-dropdown trigger="click" class="el-dropdown" @command="messageDropdownClick"
+              @visible-change="dropdownHiddenClick">
               <div class="messageBox">
-                <img class="messageBox_icon" />
-                <p class="messageBox_text">交易确认中</p>
-                <img class="messageBox_rightIcon" />
+                <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
+
+                <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? "交易确认中" : "暂无交易信息" }}</p>
+                <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0"
+                  :src="drow_upDownImgUrl" />
               </div>
               <el-dropdown-menu slot="dropdown" class="menuWidth">
-                <el-dropdown-item class="el-dropdown-item" :command="item" v-for="(item, index) in messageList">
-                  {{ item }}
+                <el-dropdown-item class="el-dropdown-item" :command="item"
+                  v-for="(item, index) in $store.getters.messageList">
+                  <div class="el-dropdown-itemBox">
+                    <div class="el-dropdown-itemBox_sub">
+                      <p class="el-dropdown-itemBox_hash">{{ getFrommatAccount(item.txHash) }}</p>
+                      <img class="el-dropdown-itemBox_copy" src="@/assets/img/common/copy.svg"
+                        @click.stop="copyTxHashAction(item.txHash)" />
+
+                      <p class="el-dropdown-itemBox_time">{{ "1m ago" }}</p>
+
+                      <div class="el-dropdown-itemBox_optionBox">
+                        <p class="el-dropdown-itemBox_option">{{ item.optionName }}</p>
+                      </div>
+
+                    </div>
+                    <div class="el-dropdown-itemBox_sepLine"></div>
+                  </div>
+
                 </el-dropdown-item>
 
               </el-dropdown-menu>
@@ -127,7 +146,7 @@ export default {
     //   currentLangrage = "navBar.English";
     // }
     return {
-      messageList: ["qwwqw", "wqww", "qwqw"],
+      drow_upDownImgUrl: require("@/assets/img/common/drow_down.svg"),
       elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
       loginErrorDialog: false,
       isShowCloseLoginErrorBtn: true,
@@ -215,6 +234,10 @@ export default {
   },
 
   mounted() {
+    this.$bus.$on("messageChange", val => {
+      this.messageList = val;
+    });
+
     this.$bus.$on("updateTabIndex", val => {
       // if (val == 7) {
       //   return;
@@ -256,7 +279,34 @@ export default {
     });
   },
   methods: {
-
+    copyTxHashAction(txHash) {
+      // alert(txHash);
+      var that = this;
+      var clipBoardContent = txHash;
+      this.$copyText(clipBoardContent).then(
+        function (e) {
+          that.$message.success(that.$t("common.copySucceess"));
+          console.log(e);
+        },
+        function (e) {
+          that.$message.error("复制失败");
+          console.log(e);
+        }
+      );
+    },
+    getFrommatAccount(account) {
+      if (account) {
+        var str1 = account.substr(0, 5);
+        var str2 = "...";
+        var str3 = account.substr(-4, 4);
+        return str1 + str2 + str3;
+      } else {
+        return "";
+      }
+    },
+    dropdownHiddenClick(value) {
+      this.drow_upDownImgUrl = value == true ? require("@/assets/img/common/drow_up.svg") : require("@/assets/img/common/drow_down.svg");
+    },
     getAccountError() {
       setLocalStorage("isLogin", "");
       this.account = "";
@@ -350,6 +400,7 @@ export default {
         : this.$t("common.checkChainId1Des");
     },
     messageDropdownClick(value) {
+      this.drow_upDownImgUrl = require("@/assets/img/common/drow_down.svg");
 
     },
     changeLangeDropdownClick(value) {
@@ -887,7 +938,71 @@ export default {
 
 .messageBox_rightIcon {
   margin-left: .125rem;
-  width: .25rem;
-  height: .15rem;
+  width: .5rem;
+  height: .45rem;
+}
+
+.el-dropdown-itemBox {
+  height: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: left; */
+}
+
+.el-dropdown-itemBox_sub {
+  height: 1.15rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.el-dropdown-itemBox_hash {
+  font-size: .4rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #0091FF;
+  line-height: .55rem;
+}
+
+.el-dropdown-itemBox_copy {
+  margin-left: .125rem;
+  width: .4rem;
+  height: .4rem;
+}
+
+.el-dropdown-itemBox_time {
+  margin-left: .5rem;
+  margin-right: .5rem;
+  font-size: .4rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8C9399;
+  line-height: .55rem;
+
+}
+
+.el-dropdown-itemBox_optionBox {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+}
+
+.el-dropdown-itemBox_option {
+  font-size: .4rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8C9399;
+  line-height: .55rem;
+  text-align: right;
+}
+
+.el-dropdown-itemBox_sepLine {
+  width: 100%;
+  height: .025rem;
+  background-color: #E5E5E5;
 }
 </style>

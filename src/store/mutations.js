@@ -4,11 +4,16 @@ import {
   CLEAR_CART_LIST,
   SET_CART_LIST,
   SET_LOADING,
-  SET_TABBAR_SHOW
+  SET_TABBAR_SHOW,
+  CHANGE_MESSAGE_LIST
 } from "./types";
 import { Toast } from "vant";
 
 export default {
+
+  [CHANGE_MESSAGE_LIST](state, messageList) {
+    state.messageList = messageList;
+  },
   // 设置tabBar显示和隐藏
   [SET_TABBAR_SHOW](state, bol) {
     state.tabBarShow = bol;
@@ -60,5 +65,5 @@ export default {
     state.cartList = data;
   }
 
-  
+
 };

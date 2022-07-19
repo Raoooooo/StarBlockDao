@@ -1165,19 +1165,54 @@ export default {
       }
     },
     getApproveNFTTxHash(txHash) {
-
+      var messageList = this.$store.getters.messageList;
+      var messageObj = {
+        type: 1,
+        optionName: "抵押授权",
+        txHash: txHash,
+      };
+      messageList.push(messageObj);
+      $this.$store.commit('changeMessageList', messageList);
     },
     getApproveWNFTTxHash(txHash) {
-
-    },
-    getWithdrawTxHash(txHash) {
-
+      var messageList = this.$store.getters.messageList;
+      var messageObj = {
+        type: 2,
+        optionName: "解抵押授权",
+        txHash: txHash,
+      };
+      messageList.push(messageObj);
+      this.$store.commit('changeMessageList', messageList);
     },
     getDepositTxHash(txHash) {
-
+      var messageList = this.$store.getters.messageList;
+      var messageObj = {
+        type: 3,
+        optionName: "抵押NFT",
+        txHash: txHash,
+      };
+      messageList.push(messageObj);
+      this.$store.commit('changeMessageList', messageList);
+    },
+    getWithdrawTxHash(txHash) {
+      var messageList = this.$store.getters.messageList;
+      var messageObj = {
+        type: 4,
+        optionName: "解抵押NFT",
+        txHash: txHash,
+      };
+      messageList.push(messageObj);
+      this.$store.commit('changeMessageList', messageList);
     },
     getHarvestTxHash(txHash) {
-
+      var messageList = this.$store.getters.messageList;
+      var messageObj = {
+        type: 5,
+        optionName: "挖矿奖励",
+        txHash: txHash,
+      };
+      messageList.push(messageObj);
+      this.$store.commit('changeMessageList', messageList);
     },
     stakeProcessAlertCloseAction() {
       this.stakeProcessAlertShow = false;
@@ -1242,6 +1277,10 @@ export default {
       this.isApprove = true;
       this.isStartedApprove = false;
       this.startDelyContractBtnAction();
+
+      var messageList = this.$store.getters.messageList;
+      messageList.splice(messageList.findIndex(item => item.txHash === res.blockHash), 1)
+      this.$store.commit('changeMessageList', messageList);
     },
     faildHandleApproveNFT(item) {
       this.isApproveFaild = true;
@@ -1256,6 +1295,10 @@ export default {
       this.isStartedApprove = false;
       this.isApprove = true;
       this.startDelyContractBtnAction();
+
+      var messageList = this.$store.getters.messageList;
+      messageList.splice(messageList.findIndex(item => item.txHash === res.blockHash), 1)
+      this.$store.commit('changeMessageList', messageList);
     },
     faildHandleApproveWNFT() {
       this.isApproveFaild = true;
@@ -1455,6 +1498,7 @@ export default {
     },
 
     handleDeposit(txHash, item) {
+
       this.txHash = this.getFrommatAccount(txHash.blockHash);
       this.txHashOringion = txHash.blockHash;
       this.getMasterChefInfo(false);
@@ -1462,6 +1506,10 @@ export default {
       this.actionAlertShow = false;
       this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
+
+      var messageList = this.$store.getters.messageList;
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.blockHash), 1)
+      this.$store.commit('changeMessageList', messageList);
     },
     handleWithdraw(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
@@ -1471,6 +1519,10 @@ export default {
       this.actionAlertShow = false;
       this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
+
+      var messageList = this.$store.getters.messageList;
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.blockHash), 1)
+      this.$store.commit('changeMessageList', messageList);
     },
     handleHarvest(txHash, item) {
       this.txHash = this.getFrommatAccount(txHash.blockHash);
@@ -1478,6 +1530,10 @@ export default {
       this.getMasterChefInfo(false);
       this.successVisible2 = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
+
+      var messageList = this.$store.getters.messageList;
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.blockHash), 1)
+      this.$store.commit('changeMessageList', messageList);
     },
     updateBlockData(number, web3) {
       this.currentBlockNumber = number;

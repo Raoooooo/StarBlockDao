@@ -1,4 +1,5 @@
 export default {
+  messageList: state => state.messageList,
   tabBarShow: state => state.tabBarShow,
   cartList: state => state.cartList,
   // 把getters传给自己,getters默认在第二个参数

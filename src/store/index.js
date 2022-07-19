@@ -12,7 +12,9 @@ const state = {
   // 购物车数据
   cartList: [],
   // 是否开启请求加载
-  isLoading: true
+  isLoading: true,
+  messageList: [{ txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT" },
+  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "解抵押授权" }],
 };
 
 export default new Vuex.Store({
