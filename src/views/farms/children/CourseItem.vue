@@ -237,6 +237,7 @@ export default {
     color: #111111;
     line-height: .45rem;
     margin-bottom: .5rem;
+    height: 1rem;
     /* background-color: aqua; */
 
 }
@@ -300,6 +301,7 @@ export default {
         color: #111111;
         line-height: .55rem;
         margin-bottom: .525rem;
+        height: auto;
     }
 
     .itemImg-box_text {

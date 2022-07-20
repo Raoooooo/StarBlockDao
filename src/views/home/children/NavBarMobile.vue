@@ -26,13 +26,15 @@
       <div class="moreOptionSubViewBox">
         <div class="messageCloseView" @click="disMissMessageView">
           <div class=""></div>
-          <p class="messageTitle">交易确认中</p>
+          <p class="messageTitle">{{ $t("common.transationDoing") }}</p>
           <img class="closeImg" src="@/assets/img/home/mobile/optionViewClose.svg" />
         </div>
         <div class="el-dropdown-itemBox" v-for="(item, index) in $store.getters.messageList">
           <div class="el-dropdown-itemBox_sub">
             <div class="hashBox">
-              <p class="el-dropdown-itemBox_hash">{{ getFrommatAccount(item.txHash) }}</p>
+              <a :href="getChainWebUrl(item.txHash)" target="_blank">
+                <p class="el-dropdown-itemBox_hash">{{ getFrommatAccount(item.txHash) }}</p>
+              </a>
               <img class="el-dropdown-itemBox_copy" src="@/assets/img/common/copy.svg"
                 @click.stop="copyTxHashAction(item.txHash)" />
             </div>
@@ -275,6 +277,13 @@ export default {
     });
   },
   methods: {
+    getChainWebUrl(subStr) {
+      if (getProdcutMode() == 1) {
+        return "https://etherscan.io/tx/" + subStr;
+      } else {
+        return "https://rinkeby.etherscan.io/tx/" + subStr;
+      }
+    },
     disMissMessageView() {
       this.messageViewShow = false;
     },

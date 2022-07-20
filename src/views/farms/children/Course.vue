@@ -3,7 +3,7 @@
         <div class="contantBox">
             <div class="topSuperBox">
                 <div class="topBox">
-                    <img class="topImg" src="@/assets/img/common/courseTop.png" />
+                    <img class="topImg" :src="topImgUrl" />
                     <div class="topItemBox" v-for="(item, index) in topItemList">
                         <p class="topItemIndex">{{ index + 1 }}</p>
                         <p class="topItemText">{{ $t(item) }}</p>
@@ -52,6 +52,11 @@ export default {
     name: "Course",
     components: {
         Courseitem
+    },
+    computed: {
+        topImgUrl() {
+            return this.$t("course.topImg")
+        }
     },
     methods: {
         isShowText(index, arr, type) {
@@ -152,7 +157,8 @@ export default {
 .topImg {
     margin-top: .75rem;
     margin-left: 0rem;
-    width: 3.225rem;
+    /* width: 3.225rem; */
+    height: .75rem;
     margin-right: .5rem;
     margin-bottom: .325rem;
 }
@@ -176,7 +182,7 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #FFFFFF;
-    line-height: .75rem;
+    line-height: .5rem;
     text-align: center;
 }
 
@@ -299,8 +305,9 @@ export default {
     .topImg {
         margin-top: 0rem;
         margin-left: .8rem;
-        width: 2.45rem;
-        margin-right: -.25rem;
+        /* width: 2.45rem; */
+        height: .575rem;
+        /* margin-right: -.25rem; */
         margin-bottom: 0rem;
     }
 

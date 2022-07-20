@@ -29,7 +29,9 @@
             <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
             <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
               {{ $store.getters.messageList.length }}</p>
-            <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? "交易确认中" : "暂无交易信息" }}</p>
+            <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? $t("common.transationDoing") :
+                $t("common.noTransation")
+            }}</p>
             <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0" :src="drow_upDownImgUrl" />
           </div>
           <div class="messageDropdownBox" v-if="$store.getters.messageList.length > 0">
@@ -39,7 +41,9 @@
                 <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
                 <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
                   {{ $store.getters.messageList.length }}</p>
-                <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? "交易确认中" : "暂无交易信息" }}</p>
+                <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? $t("common.transationDoing") :
+                    $t("common.noTransation")
+                }}</p>
                 <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0"
                   :src="drow_upDownImgUrl" />
               </div>
@@ -48,7 +52,9 @@
                   v-for="(item, index) in $store.getters.messageList">
                   <div class="el-dropdown-itemBox">
                     <div class="el-dropdown-itemBox_sub">
-                      <p class="el-dropdown-itemBox_hash">{{ getFrommatAccount(item.txHash) }}</p>
+                      <a :href="getChainWebUrl(item.txHash)" target="_blank">
+                        <p class="el-dropdown-itemBox_hash">{{ getFrommatAccount(item.txHash) }}</p>
+                      </a>
                       <img class="el-dropdown-itemBox_copy" src="@/assets/img/common/copy.svg"
                         @click.stop="copyTxHashAction(item.txHash)" />
 
@@ -285,18 +291,25 @@ export default {
     });
   },
   methods: {
+    getChainWebUrl(subStr) {
+      if (getProdcutMode() == 1) {
+        return "https://etherscan.io/tx/" + subStr;
+      } else {
+        return "https://rinkeby.etherscan.io/tx/" + subStr;
+      }
+    },
     getFormmatTimeStr(timeSp) {
-      var ago = " ago"
+      var ago = " " + this.$t("common.timeBefore")
       var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
 
       if (cutSp > 0 && cutSp < 60) {
-        return cutSp + "s" + ago
+        return cutSp + this.$t("common.time_s") + ago
       }
       if (cutSp > 60 && cutSp < 60 * 60) {
-        return (cutSp / 60).toFixed(0) + "m" + ago
+        return (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
       }
       if (cutSp > 60 * 60) {
-        return cutSp / (60 * 60).toFixed(2) + "h" + ago
+        return cutSp / (60 * 60).toFixed(2) + this.$t("common.time_h") + ago
       }
 
     },
