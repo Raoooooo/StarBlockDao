@@ -1033,6 +1033,43 @@ const poolDatas_main = [
         sort: 5.4
     },
 
+    {
+        poolInfo: {
+            pid: 27,
+            rangeTokenIds: [0, 2194],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon28.png"),
+            name: "cryptotoysclubnft",
+            showName: "CryptoToysClubNFT",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 4.5
+    },
+
 ]
 
 
