@@ -1174,7 +1174,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 1,
-        optionName: "抵押授权",
+        optionName: this.$t("common.optionName1"),
         txHash: txHash,
       };
       messageList.push(messageObj);
@@ -1184,7 +1184,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 2,
-        optionName: "解抵押授权",
+        optionName: this.$t("common.optionName2"),
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1195,7 +1195,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 3,
-        optionName: "抵押NFT",
+        optionName: this.$t("common.optionName3"),
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1206,7 +1206,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 4,
-        optionName: "解抵押NFT",
+        optionName: this.$t("common.optionName4"),
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1217,7 +1217,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 5,
-        optionName: "挖矿奖励",
+        optionName: this.$t("common.optionName5"),
         txHash: txHash,
         optionTime: new Date().getTime()
       };

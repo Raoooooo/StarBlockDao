@@ -11,7 +11,7 @@
 
                     </div>
                     <!-- <div class="itemTitleBack"> -->
-                    <p class="itemTitle">{{ $t(item.des) }}</p>
+                    <p :class="titleClass">{{ $t(item.des) }}</p>
                     <!-- </div> -->
                 </div>
             </a>
@@ -34,6 +34,7 @@ export default {
             descripHeight = "270px";
         }
         return {
+            titleClass: "itemTitle_en",
             descripHeight: descripHeight,
             windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
             rowNum: document.documentElement.clientWidth > 1200 ? 6 : 12,
@@ -99,6 +100,15 @@ export default {
                 that.windowWidth = window.fullWidth; // 宽
             })();
         };
+
+        this.$bus.$on("changeDescripHeight", val => {
+            if (val == "navBar.chinese") {
+                this.titleClass = "itemTitle"
+
+            } else if (val == "navBar.English") {
+                this.titleClass = "itemTitle_en"
+            }
+        });
     },
     methods: {
         itemImgClick(item) {
@@ -237,6 +247,21 @@ export default {
     color: #111111;
     line-height: .45rem;
     margin-bottom: .5rem;
+    height: auto;
+    /* background-color: aqua; */
+
+}
+
+.itemTitle_en {
+    width: 100%;
+    text-align: center;
+    margin-top: .5rem;
+    font-size: .45rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #111111;
+    line-height: .45rem;
+    margin-bottom: .5rem;
     height: 1rem;
     /* background-color: aqua; */
 
@@ -293,6 +318,18 @@ export default {
     }
 
     .itemTitle {
+        text-align: center;
+        margin-top: .45rem;
+        font-size: .4rem;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #111111;
+        line-height: .55rem;
+        margin-bottom: .525rem;
+        height: auto;
+    }
+
+    .itemTitle_en {
         text-align: center;
         margin-top: .45rem;
         font-size: .4rem;

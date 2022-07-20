@@ -164,8 +164,15 @@ export default {
         time_m: "m",
         time_h: "h",
         timeBefore: "ago",
-        transationDoing: "交易确认中",
-        noTransation: "暂无交易信息"
+        transationDoing: "On transaction",
+        noTransation: "No transaction",
+
+        optionName1: "Stake Approve",
+        optionName2: "Unstake Approve",
+        optionName3: "Stake NFT",
+        optionName4: "Unstake NFT",
+        optionName5: "Stake Rewards",
+        optionName6: "Dividend Rewards",
 
     },
 

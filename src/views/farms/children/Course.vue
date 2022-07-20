@@ -23,7 +23,6 @@
                 <div class="FAQItemBox" v-for="(item, index) in FAQItemList">
                     <p class="FAQItemBox_title">{{ $t(item.title) }}</p>
                     <p class="FAQItemBox_des" v-if="isShowText(index, FAQItemList, 1)">{{ $t(item.descrip) }}</p>
-
                     <p class="FAQItemBox_des" v-if="isShowText(index, FAQItemList, 2)">
                         {{ $t(item.desSub1) }}
                         <a :href="$t(item.desSub2)" target="_blank">
@@ -182,7 +181,7 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #FFFFFF;
-    line-height: .5rem;
+    line-height: .75rem;
     text-align: center;
 }
 
@@ -402,7 +401,7 @@ export default {
     }
 
     .FAQItemBox_des {
-        margin-top: .55rem;
+        margin-top: .275rem;
         font-size: .4rem;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;

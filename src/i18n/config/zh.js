@@ -163,8 +163,14 @@ export default {
         time_h: "小时",
         timeBefore: "前",
         transationDoing: "交易确认中",
-        noTransation: "暂无交易信息"
+        noTransation: "暂无交易信息",
 
+        optionName1: "抵押授权",
+        optionName2: "解抵押授权",
+        optionName3: "抵押NFT",
+        optionName4: "解抵押NFT",
+        optionName5: "挖矿奖励",
+        optionName6: "分红奖励",
 
     },
 

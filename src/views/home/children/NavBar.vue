@@ -17,14 +17,7 @@
             <p class="account_text">{{ account }}</p>
           </div>
 
-          <div class="dropdownBox">
-            <dropdown class="dropdownStyle" trigger="click" @on-click="changeLangeDropdownClick">
-              <button class="changeLangeBtn">{{ $t(currentLangrage) }}</button>
-              <dropdown-menu slot="list" class="menuWidth" v-for="(item, index) in langrageList">
-                <dropdown-item class="menuItem" :name="item">{{ $t(item) }}</dropdown-item>
-              </dropdown-menu>
-            </dropdown>
-          </div>
+
           <div class="messageBox" v-if="$store.getters.messageList.length == 0">
             <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
             <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
@@ -47,6 +40,7 @@
                 <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0"
                   :src="drow_upDownImgUrl" />
               </div>
+
               <el-dropdown-menu slot="dropdown" class="menuWidth">
                 <el-dropdown-item class="el-dropdown-item" :command="item"
                   v-for="(item, index) in $store.getters.messageList">
@@ -61,7 +55,7 @@
                       <p class="el-dropdown-itemBox_time">{{ getFormmatTimeStr(item.optionTime) }}</p>
 
                       <div class="el-dropdown-itemBox_optionBox">
-                        <p class="el-dropdown-itemBox_option">{{ item.optionName }}</p>
+                        <p class="el-dropdown-itemBox_option">{{ $t(item.optionName) }}</p>
                       </div>
 
                     </div>
@@ -72,6 +66,16 @@
 
               </el-dropdown-menu>
             </el-dropdown>
+          </div>
+
+
+          <div class="dropdownBox">
+            <dropdown class="dropdownStyle" trigger="click" @on-click="changeLangeDropdownClick">
+              <button class="changeLangeBtn">{{ $t(currentLangrage) }}</button>
+              <dropdown-menu slot="list" class="menuWidth" v-for="(item, index) in langrageList">
+                <dropdown-item class="menuItem" :name="item">{{ $t(item) }}</dropdown-item>
+              </dropdown-menu>
+            </dropdown>
           </div>
 
         </div>
@@ -309,7 +313,7 @@ export default {
         return (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
       }
       if (cutSp > 60 * 60) {
-        return cutSp / (60 * 60).toFixed(2) + this.$t("common.time_h") + ago
+        return (cutSp / (60 * 60)).toFixed(0) + this.$t("common.time_h") + ago
       }
 
     },
@@ -849,7 +853,7 @@ export default {
 }
 
 .dropdownBox {
-  margin-right: 1.25rem;
+  margin-right: 0rem;
   width: 3.2rem;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0.45rem;
@@ -933,7 +937,7 @@ export default {
 
 
 .messageDropdownBox {
-  width: 3.3rem;
+  width: 5.2rem;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0rem;
   /* margin-top: 18px; */
@@ -952,33 +956,35 @@ export default {
 
 .messageBox {
   justify-content: center;
-  margin-left: -1rem;
-  width: 4.35rem;
+  margin-left: 0.125rem;
+  width: 4.75rem;
   height: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-radius: .1rem;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #f7b500;
+  ;
 }
 
 .messageBox_active {
   cursor: pointer;
   justify-content: center;
-  margin-left: 1.5rem;
-  width: 4.35rem;
+  margin-left: 2.5rem;
+  width: 5rem;
   height: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-radius: .1rem;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #f7b500;
+  ;
 }
 
 .messageBox_icon {
   /* margin-left: .25rem; */
-  width: .54rem;
-  height: .65rem;
+  width: .45rem;
+  /* height: .65rem; */
 }
 
 .messageBox_count {
@@ -989,26 +995,27 @@ export default {
   padding-top: .12rem;
   /* padding-bottom: .12rem; */
   padding-top: .15rem;
-  width: .5rem;
-  height: .5rem;
-  font-size: .3rem;
+  width: .45rem;
+  height: .45rem;
+  font-size: .25rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
   line-height: .225rem;
   background-color: #FF0F23;
-  border-radius: .4rem;
+  border-radius: .225rem;
   text-align: center;
   /* align-content: center; */
 }
 
 .messageBox_text {
   margin-left: .125rem;
-  font-size: .45rem;
+  font-size: .4rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #111111;
-  line-height: .625rem;
+  color: #f7b500;
+  /* line-height: .625rem; */
+  white-space: nowrap;
 }
 
 .messageBox_rightIcon {
@@ -1048,8 +1055,8 @@ export default {
 }
 
 .el-dropdown-itemBox_time {
-  margin-left: .5rem;
-  margin-right: .5rem;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
   font-size: .4rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
