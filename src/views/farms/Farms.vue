@@ -83,7 +83,7 @@
       </div> -->
     </list>
 
-    <div class="bottomDesBox">
+    <!-- <div class="bottomDesBox">
       <img src="@/assets/img/farms/farmsDes.png" class="farmsDesImg" />
       <div class="farmsDesTextBox">
         <p class="farmsDesText">
@@ -104,7 +104,11 @@
           <span>{{ "· " + $t("farms.tip6") }}</span>
         </p>
       </div>
+    </div> -->
+    <div class="courseSectionBox">
+      <course></course>
     </div>
+
 
     <bottom></bottom>
 
@@ -522,13 +526,13 @@
             <span>{{ " " }}</span>
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
-          <!-- <div class="txHashBox_process">
+          <div class="txHashBox_process">
             <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
               <p class="txHash">{{ txHash }}</p>
             </a>
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-          </div> -->
+          </div>
 
           <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
         </div>
@@ -563,13 +567,13 @@
             <span>{{ " " }}</span>
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
-          <!-- <div class="txHashBox_process">
+          <div class="txHashBox_process">
             <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
               <p class="txHash">{{ txHash }}</p>
             </a>
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-          </div> -->
+          </div>
 
           <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueunstake") }}</button>
         </div>
@@ -590,6 +594,7 @@ import poolDatas_main from "@/common/dataConfig_main";
 import Countdown from "../home/children/CountDown.vue";
 import { List } from "vant";
 import Bottom from "../home/children/Bottom.vue";
+import Course from '../farms/children/Course.vue'
 import {
   web3ProviderUrl,
   getProdcutMode,
@@ -634,7 +639,8 @@ export default {
     List,
     Farmitem,
     Selectnft,
-    Bottom
+    Bottom,
+    Course
   },
   computed: {
     defaultAlertTitle() {
@@ -1180,6 +1186,7 @@ export default {
         type: 2,
         optionName: "解抵押授权",
         txHash: txHash,
+        optionTime: new Date().getTime()
       };
       messageList.push(messageObj);
       this.$store.commit('changeMessageList', messageList);
@@ -1190,6 +1197,7 @@ export default {
         type: 3,
         optionName: "抵押NFT",
         txHash: txHash,
+        optionTime: new Date().getTime()
       };
       messageList.push(messageObj);
       this.$store.commit('changeMessageList', messageList);
@@ -1200,6 +1208,7 @@ export default {
         type: 4,
         optionName: "解抵押NFT",
         txHash: txHash,
+        optionTime: new Date().getTime()
       };
       messageList.push(messageObj);
       this.$store.commit('changeMessageList', messageList);
@@ -1210,6 +1219,7 @@ export default {
         type: 5,
         optionName: "挖矿奖励",
         txHash: txHash,
+        optionTime: new Date().getTime()
       };
       messageList.push(messageObj);
       this.$store.commit('changeMessageList', messageList);
@@ -1279,7 +1289,7 @@ export default {
       this.startDelyContractBtnAction();
 
       var messageList = this.$store.getters.messageList;
-      messageList.splice(messageList.findIndex(item => item.txHash === res.blockHash), 1)
+      messageList.splice(messageList.findIndex(item => item.txHash === res.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
     faildHandleApproveNFT(item) {
@@ -1297,7 +1307,7 @@ export default {
       this.startDelyContractBtnAction();
 
       var messageList = this.$store.getters.messageList;
-      messageList.splice(messageList.findIndex(item => item.txHash === res.blockHash), 1)
+      messageList.splice(messageList.findIndex(item => item.txHash === res.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
     faildHandleApproveWNFT() {
@@ -1499,8 +1509,8 @@ export default {
 
     handleDeposit(txHash, item) {
 
-      this.txHash = this.getFrommatAccount(txHash.blockHash);
-      this.txHashOringion = txHash.blockHash;
+      this.txHash = this.getFrommatAccount(txHash.transactionHash);
+      this.txHashOringion = txHash.transactionHash;
       this.getMasterChefInfo(false);
       this.processSuccessAlertShow = true;
       this.actionAlertShow = false;
@@ -1508,12 +1518,12 @@ export default {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
 
       var messageList = this.$store.getters.messageList;
-      messageList.splice(messageList.findIndex(item => item.txHash === txHash.blockHash), 1)
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
     handleWithdraw(txHash, item) {
-      this.txHash = this.getFrommatAccount(txHash.blockHash);
-      this.txHashOringion = txHash.blockHash;
+      this.txHash = this.getFrommatAccount(txHash.transactionHash);
+      this.txHashOringion = txHash.transactionHash;
       this.getMasterChefInfo(false);
       this.processSuccessAlertShow1 = true;
       this.actionAlertShow = false;
@@ -1521,18 +1531,18 @@ export default {
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
 
       var messageList = this.$store.getters.messageList;
-      messageList.splice(messageList.findIndex(item => item.txHash === txHash.blockHash), 1)
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
     handleHarvest(txHash, item) {
-      this.txHash = this.getFrommatAccount(txHash.blockHash);
-      this.txHashOringion = txHash.blockHash;
+      this.txHash = this.getFrommatAccount(txHash.transactionHash);
+      this.txHashOringion = txHash.transactionHash;
       this.getMasterChefInfo(false);
       this.successVisible2 = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
 
       var messageList = this.$store.getters.messageList;
-      messageList.splice(messageList.findIndex(item => item.txHash === txHash.blockHash), 1)
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
     updateBlockData(number, web3) {
@@ -2804,6 +2814,14 @@ export default {
   /* background-color: aqua; */
 }
 
+
+.courseSectionBox {
+  border-radius: 0.25rem;
+  background-color: white;
+  margin-left: 3.5%;
+  width: 93%;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .back {
     display: flex;
@@ -3848,6 +3866,14 @@ export default {
     width: .75rem;
     height: .75rem;
     /* background-color: aqua; */
+  }
+
+
+  .courseSectionBox {
+    border-radius: 0.25rem;
+    background-color: white;
+    margin-left: 5%;
+    width: 90%;
   }
 
 }

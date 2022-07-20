@@ -13,8 +13,18 @@ const state = {
   cartList: [],
   // 是否开启请求加载
   isLoading: true,
-  messageList: [{ txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT" },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "解抵押授权" }],
+  messageList: [],
+  // messageList: [{ txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+
+  // ],
 };
 
 export default new Vuex.Store({

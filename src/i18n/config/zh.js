@@ -161,4 +161,59 @@ export default {
     },
 
 
+    course: {
+        guide1: "参与抵押NFT即可获得WNFT凭证",
+        guide2: "持有WNFT时可获得STB与WETH奖励",
+        guide3: "1 WNFT = 1 NFT",
+        guide4: "只有持有WNFT才能通过解抵押取回原NFT",
+
+        item1Title: "什么是抵押挖矿？",
+        item1Des: "1 WNFT = 1 NFT",
+        item1Link: "https://docs.starblock.io/main/rewards/nft-farming",
+        item2Title: "WNFT是什么？",
+        item2Des: "快速了解WNFT的概念",
+        item2Link: "https://medium.com/@StarBlockNFT/%E4%BB%80%E4%B9%88%E6%98%AFwnft-857ce0aba0dc",
+        item3Title: "抵押流程是什么？",
+        item3Des: "手把手教你抵押如何抵押挖矿",
+        item3Link: "https://docs.starblock.io/main/tutorials/nft-staking",
+        item4Title: "提交合集挖矿申请",
+        item4Des: "将你想要添加的矿池告诉我们",
+        item4Link: "https://forms.gle/83sgDR1NjMMfXBvKA",
+    },
+    FAQ: {
+        title1: "什么是NFT Farming？",
+        descrip1: "StarBlock的NFT抵押奖励可以让NFT的持有者通过在平台上抵押规定的NFT来获得STB代币和版权税WETH分红。\n抵押者抵押NFT后，会获得与抵押NFT相同的Wrapped NFT，简称WNFT。WNFT可以在任意NFT交易平台进行交易，交易产生版权费的，将作为分红奖励给WNFT持有者。",
+        title2: "奖励规则是什么？",
+        descrip2: "StarBlock DAO官方会推出可供抵押的NFT合集。将合集中的NFT抵押后，会获得凭证NFT-WNFT。根据您持有WNFT的时间，可获得STB奖励池子奖励有四个减半周期：30、90、240和360天，这是为了让StarBlock DAO可以稳定并可持续发展而设计的经济模型中重要的一环。奖励的完整规则在这里：https://docs.starblock.io/main/rewards/nft-farming#list",
+        descrip2Sub1: "StarBlock DAO官方会推出可供抵押的NFT合集。将合集中的NFT抵押后，会获得凭证NFT-WNFT。根据您持有WNFT的时间，可获得STB奖励池子奖励有四个减半周期：30、90、240和360天，这是为了让StarBlock DAO可以稳定并可持续发展而设计的经济模型中重要的一环。奖励的完整规则在这里：",
+        descrip2Sub2: "https://docs.starblock.io/main/rewards/nft-farming#list",
+        title3: "什么是WNFT？",
+        descrip3: "WNFT全称Wrapped NFT，是StarBlock DAO部署在以太坊上的符合ERC721标准的合约，是原始NFT合集的包装，与原始NFT具有等价性，1 WNFT = 1 原始NFT。WNFT和NFT可以随时、无条件地进行双向兑换，并且WNFT可以任意交易，交易以后原始NFT也随之交易而走。",
+        title4: "如何获得WNFT?",
+        descrip4: "WNFT只能由持有原始NFT的人抵押获得，这个过程称为抵押NFT。其他任何人包括WNFT合约的管理者都不能随意获得WNFT，原始NFT抵押以后将被存入WNFT合约中，只有持有对应WNFT的用户才能解抵押该NFT。WNFT和NFT可以随时进行兑换，没有任何的限制，类似WETH和ETH之间的任意兑换。",
+        title5: "什么是STB？",
+        descrip5: "STB是StarBlock发行的治理代币，持有STB将拥有治理权、分红权、提案权等权益。同时STB作为交易货币，也可用于交易StarBlock平台的NFT。",
+        title6: "如何获得STB奖励？",
+        descrip6: "抵押NFT后开始计算STB奖励，每过一个区块都会结算一次抵押奖励，根据矿池的不同，每个矿池奖励数量不同。",
+        title7: "我的NFT安全么？",
+        descrip7: "用户抵押的NFT是绝对安全的，NFT抵押挖矿是纯Web3应用，所有操作都在以太坊区块链上完成，抵押以后用户的NFT将被转移到WNFT合约，并且用户会获得WNFT作为抵押凭证，只有持有WNFT的用户才能解抵押原始的NFT，其它任何人包括管理员都不能取出用户的NFT。",
+        title8: "我在哪里可以找到抵押或解抵押记录？",
+        descrip8: "抵押与解抵押操作都在区块链上完成，通过点击矿池的区块浏览器按钮，即可查询到该矿池所有的抵押或解抵押信息，筛选你的地址即可查询到您的所有交易记录。",
+        title9: "矿工费用和交易？",
+        descrip9: "用户支付的大部分费用是Gas费。每次您发送链上交易时，这些费用都会交给网络上的矿工。与您的交易一起发送的以太坊将被包含在区块中，作为对处理交易的矿工的奖励。金额根据网络的需求和拥塞情况而波动。",
+        title10: "为何需要授权？",
+        descrip10: "在进行抵押与解抵押的时候，我们需要先取得您的钱包授权后，合约才能对您的NFT或WNFT进行处理。",
+        title11: "如何让NFT Farming支持更多的合集？",
+        descrip11Sub1: "请提交此申请：",
+        descrip11Sub2: "https://forms.gle/83sgDR1NjMMfXBvKA",
+        descrip11Sub3: "，将合集加入我们的NFT Farming List，一旦申请数量达到100，该合集会自动上线。",
+        title12: "抵押合约地址是什么？",
+        descrip12: "https://etherscan.io/address/0xBbF9CC5DeCDB8e1d9895b7d98793136798BD512E",
+        title13: "STB合约地址是什么？",
+        descrip13: "https://etherscan.io/address/0xc481a850aead5002598b7ed355cbb3349c148072",
+
+
+    }
+
+
 }

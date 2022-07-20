@@ -25,14 +25,20 @@
               </dropdown-menu>
             </dropdown>
           </div>
-
-          <div class="messageDropdownBox">
-
+          <div class="messageBox" v-if="$store.getters.messageList.length == 0">
+            <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
+            <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
+              {{ $store.getters.messageList.length }}</p>
+            <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? "交易确认中" : "暂无交易信息" }}</p>
+            <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0" :src="drow_upDownImgUrl" />
+          </div>
+          <div class="messageDropdownBox" v-if="$store.getters.messageList.length > 0">
             <el-dropdown trigger="click" class="el-dropdown" @command="messageDropdownClick"
-              @visible-change="dropdownHiddenClick">
-              <div class="messageBox">
+              @visible-change="dropdownHiddenClick" v-if="$store.getters.messageList.length > 0">
+              <div class="messageBox_active">
                 <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
-
+                <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
+                  {{ $store.getters.messageList.length }}</p>
                 <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? "交易确认中" : "暂无交易信息" }}</p>
                 <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0"
                   :src="drow_upDownImgUrl" />
@@ -46,7 +52,7 @@
                       <img class="el-dropdown-itemBox_copy" src="@/assets/img/common/copy.svg"
                         @click.stop="copyTxHashAction(item.txHash)" />
 
-                      <p class="el-dropdown-itemBox_time">{{ "1m ago" }}</p>
+                      <p class="el-dropdown-itemBox_time">{{ getFormmatTimeStr(item.optionTime) }}</p>
 
                       <div class="el-dropdown-itemBox_optionBox">
                         <p class="el-dropdown-itemBox_option">{{ item.optionName }}</p>
@@ -279,6 +285,28 @@ export default {
     });
   },
   methods: {
+    getFormmatTimeStr(timeSp) {
+      var ago = " ago"
+      var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
+
+      if (cutSp > 0 && cutSp < 60) {
+        return cutSp + "s" + ago
+      }
+      if (cutSp > 60 && cutSp < 60 * 60) {
+        return (cutSp / 60).toFixed(0) + "m" + ago
+      }
+      if (cutSp > 60 * 60) {
+        return cutSp / (60 * 60).toFixed(2) + "h" + ago
+      }
+
+    },
+
+    formmatSecond(value) {
+      var newTime = new Date(value); //就得到普通的时间了 
+      var newTimeStr = Date.parse(newTime);
+
+      return newTimeStr * Math.pow(10, -3);
+    },
     copyTxHashAction(txHash) {
       // alert(txHash);
       var that = this;
@@ -892,7 +920,7 @@ export default {
 
 
 .messageDropdownBox {
-  width: 3.2rem;
+  width: 3.3rem;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0rem;
   /* margin-top: 18px; */
@@ -911,6 +939,19 @@ export default {
 
 .messageBox {
   justify-content: center;
+  margin-left: -1rem;
+  width: 4.35rem;
+  height: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: .1rem;
+  border: 1px solid #E5E5E5;
+}
+
+.messageBox_active {
+  cursor: pointer;
+  justify-content: center;
   margin-left: 1.5rem;
   width: 4.35rem;
   height: 1rem;
@@ -925,6 +966,27 @@ export default {
   /* margin-left: .25rem; */
   width: .54rem;
   height: .65rem;
+}
+
+.messageBox_count {
+  margin-left: -0.3rem;
+  margin-top: -0.3rem;
+  /* padding-left: .12rem;
+  padding-right: .12rem;
+  padding-top: .12rem;
+  /* padding-bottom: .12rem; */
+  padding-top: .15rem;
+  width: .5rem;
+  height: .5rem;
+  font-size: .3rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: .225rem;
+  background-color: #FF0F23;
+  border-radius: .4rem;
+  text-align: center;
+  /* align-content: center; */
 }
 
 .messageBox_text {

@@ -4,9 +4,53 @@
       <div class="topBackView">
         <!-- <div></div> -->
         <img class="topLogo" src="@/assets/img/home/topLogo.png" />
-        <img class="moreAction" src="@/assets/img/home/mobile/moreAction.svg" @click="moreOptionAction" />
+        <div class="topBack_rightBox">
+          <div class="messageDropdownBox">
+
+
+            <div class="messageBox" @click="messageBoxClick">
+              <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
+              <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
+                {{ $store.getters.messageList.length }}</p>
+            </div>
+          </div>
+
+          <img class="moreAction" src="@/assets/img/home/mobile/moreAction.svg" @click="moreOptionAction" />
+        </div>
+
       </div>
     </div>
+
+    <div class="messageSuperBox" v-show="messageViewShow">
+      <div class="moreOptionViewBack" @click="disMissMessageView()"></div>
+      <div class="moreOptionSubViewBox">
+        <div class="messageCloseView" @click="disMissMessageView">
+          <div class=""></div>
+          <p class="messageTitle">交易确认中</p>
+          <img class="closeImg" src="@/assets/img/home/mobile/optionViewClose.svg" />
+        </div>
+        <div class="el-dropdown-itemBox" v-for="(item, index) in $store.getters.messageList">
+          <div class="el-dropdown-itemBox_sub">
+            <div class="hashBox">
+              <p class="el-dropdown-itemBox_hash">{{ getFrommatAccount(item.txHash) }}</p>
+              <img class="el-dropdown-itemBox_copy" src="@/assets/img/common/copy.svg"
+                @click.stop="copyTxHashAction(item.txHash)" />
+            </div>
+
+
+            <p class="el-dropdown-itemBox_time">{{ getFormmatTimeStr(item.optionTime) }}</p>
+
+            <!-- <div class="el-dropdown-itemBox_optionBox"> -->
+            <p class="el-dropdown-itemBox_option">{{ item.optionName }}</p>
+            <!-- </div> -->
+
+          </div>
+          <div class="el-dropdown-itemBox_sepLine"></div>
+        </div>
+      </div>
+
+    </div>
+
 
     <div class="moreOptionView" v-show="moreOptionViewShow">
       <div class="moreOptionViewBack" @click="disMissmoreOptionView()"></div>
@@ -127,6 +171,8 @@ export default {
     //   currentLangrage = "navBar.English";
     // }
     return {
+      messageViewShow: false,
+      drow_upDownImgUrl: require("@/assets/img/common/drow_down.svg"),
       elDialogTopMargin: document.documentElement.clientWidth > 1200 ? "300px" : "150px",
       loginErrorDialog: false,
       isShowCloseLoginErrorBtn: true,
@@ -229,6 +275,65 @@ export default {
     });
   },
   methods: {
+    disMissMessageView() {
+      this.messageViewShow = false;
+    },
+    messageBoxClick() {
+      if (this.$store.getters.messageList.length == 0) {
+        return;
+      }
+      this.messageViewShow = true;
+    },
+    getFormmatTimeStr(timeSp) {
+      var ago = " ago"
+      var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
+
+      if (cutSp > 0 && cutSp < 60) {
+        return cutSp + "s" + ago
+      }
+      if (cutSp > 60 && cutSp < 60 * 60) {
+        return (cutSp / 60).toFixed(0) + "m" + ago
+      }
+      if (cutSp > 60 * 60) {
+        return (cutSp / (60 * 60)).toFixed(2) + "h" + ago
+      }
+
+    },
+
+    formmatSecond(value) {
+      var newTime = new Date(value); //就得到普通的时间了 
+      var newTimeStr = Date.parse(newTime);
+
+      return newTimeStr * Math.pow(10, -3);
+    },
+    copyTxHashAction(txHash) {
+      // alert(txHash);
+      var that = this;
+      var clipBoardContent = txHash;
+      this.$copyText(clipBoardContent).then(
+        function (e) {
+          that.$message.success(that.$t("common.copySucceess"));
+          console.log(e);
+        },
+        function (e) {
+          that.$message.error("复制失败");
+          console.log(e);
+        }
+      );
+    },
+    getFrommatAccount(account) {
+      if (account) {
+        var str1 = account.substr(0, 5);
+        var str2 = "...";
+        var str3 = account.substr(-4, 4);
+        return str1 + str2 + str3;
+      } else {
+        return "";
+      }
+    },
+    dropdownHiddenClick(value) {
+      this.drow_upDownImgUrl = value == true ? require("@/assets/img/common/drow_up.svg") : require("@/assets/img/common/drow_down.svg");
+    },
     handleCurentChainid(chainId) {
       this.currentChainId = chainId;
       setLocalStorage("chaiIdNum", chainId);
@@ -669,6 +774,31 @@ export default {
   background-color: rgba(120, 120, 120, 0.95);
 }
 
+.messageSuperBox {
+  width: 18.75rem;
+  position: absolute;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0.25rem;
+  /* background-color: #111; */
+  display: flex;
+  flex-direction: column;
+  /* background-color: white; */
+  background-color: rgba(120, 120, 120, 0.95);
+
+  /* background-color: rgba(120, 120, 120, 0.95); */
+}
+
+.el-dropdown-itemBox {
+  height: 2.175rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+
+
+
 .moreOptionSubView {
   display: flex;
   flex-direction: column;
@@ -684,6 +814,18 @@ export default {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
+  /* background-color: white; */
+  background-color: rgba(255, 255, 255, 1);
+  z-index: 100;
+  height: 2.25rem;
+  align-items: center;
+}
+
+.messageCloseView {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
   /* background-color: white; */
   background-color: rgba(255, 255, 255, 1);
   z-index: 100;
@@ -810,5 +952,156 @@ export default {
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
   font-size: 0.65rem;
+}
+
+.topBack_rightBox {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+}
+
+.messageDropdownBox {
+  margin-right: .5rem;
+  width: 3.2rem;
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
+  margin-top: -0rem;
+  /* margin-top: 18px; */
+  /* align-items: center; */
+  /* flex: 1; */
+  display: flex;
+  flex-direction: row-reverse;
+  /* z-index: 99; */
+
+  /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
+  /* height: 1.5rem; */
+  /* align-items: center;s */
+  /* width: 100%; */
+  /* background-color: aqua; */
+}
+
+.messageBox {
+  /* margin-right: .5rem; */
+  justify-content: center;
+  margin-left: 1rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: .875rem;
+  border: 1px solid #E5E5E5;
+}
+
+.messageBox_icon {
+  /* margin-left: -.125rem; */
+  width: .765rem;
+  height: .85rem;
+}
+
+.messageBox_count {
+  margin-left: -0.5rem;
+  margin-top: -0.5rem;
+  width: .6rem;
+  height: .6rem;
+  font-size: .45rem;
+  padding-top: .05rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: .45rem;
+  background-color: #FF0F23;
+  border-radius: .3rem;
+  text-align: center;
+}
+
+.messageBox_text {
+  margin-left: .125rem;
+  font-size: .45rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #111111;
+  line-height: .625rem;
+}
+
+.messageBox_rightIcon {
+  margin-left: .125rem;
+  width: .5rem;
+  height: .45rem;
+}
+
+
+
+.el-dropdown-itemBox_sub {
+  width: 100%;
+  height: 2.175rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.el-dropdown-itemBox_hash {
+  margin-left: .75rem;
+  font-size: .7rem;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #0091FF;
+  line-height: .7rem;
+}
+
+.el-dropdown-itemBox_copy {
+  margin-left: .125rem;
+  width: .7rem;
+  height: .7rem;
+}
+
+.el-dropdown-itemBox_time {
+  font-size: .7rem;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #8C9399;
+  line-height: .7rem;
+
+}
+
+.el-dropdown-itemBox_optionBox {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+}
+
+.el-dropdown-itemBox_option {
+  margin-right: .75rem;
+  font-size: .7rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8C9399;
+  line-height: .7rem;
+  text-align: right;
+}
+
+.el-dropdown-itemBox_sepLine {
+  width: 100%;
+  height: .025rem;
+  background-color: #E5E5E5;
+}
+
+.messageTitle {
+  margin-left: .75rem;
+  text-align: center;
+  font-size: .9rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #212121;
+  line-height: .9rem;
+}
+
+.hashBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 </style>
