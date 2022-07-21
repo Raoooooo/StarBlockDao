@@ -164,8 +164,8 @@ export default {
         time_m: "m",
         time_h: "h",
         timeBefore: "ago",
-        transationDoing: "On transaction",
-        noTransation: "No ongoing  transaction on blockchain",
+        transationDoing: "Waiting for transaction",
+        noTransation: "No on-blockchain transactions currently in progress",
 
         optionName1: "Stake Approve",
         optionName2: "Unstake Approve",

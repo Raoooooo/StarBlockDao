@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="messageSuperBox" v-show="messageViewShow">
+    <div class="messageSuperBox" v-show="messageViewShow && $store.getters.messageList.length > 0">
       <div class="moreOptionViewBack" @click="disMissMessageView()"></div>
       <div class="moreOptionSubViewBox">
         <div class="messageCloseView" @click="disMissMessageView">
@@ -783,7 +783,7 @@ export default {
   margin-top: 0.25rem;
   /* background-color: #111; */
 
-  background-color: rgba(120, 120, 120, 0.95);
+  background-color: rgba(00, 00, 00, 0.7);
 }
 
 .messageSuperBox {
@@ -796,7 +796,7 @@ export default {
   display: flex;
   flex-direction: column;
   /* background-color: white; */
-  background-color: rgba(120, 120, 120, 0.95);
+  background-color: rgba(00, 00, 00, 0.7);
 
   /* background-color: rgba(120, 120, 120, 0.95); */
 }

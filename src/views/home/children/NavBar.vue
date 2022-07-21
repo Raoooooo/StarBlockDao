@@ -36,9 +36,10 @@
                   {{ $store.getters.messageList.length }}</p>
                 <!-- <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? $t("common.transationDoing") :
                     $t("common.noTransation")
-                }}</p>
+                }}</p> -->
+                <!-- 这个控件不能去掉否则弹框会出现刷新问题 暂时不知道element bug 怎么解决-->
                 <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0"
-                  :src="drow_upDownImgUrl" /> -->
+                  :src="drow_upDownImgUrl" />
               </div>
 
               <el-dropdown-menu slot="dropdown" class="menuWidth">
@@ -322,7 +323,7 @@ export default {
         return (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
       }
       if (cutSp > 60 * 60) {
-        return (cutSp / (60 * 60)).toFixed(2) + this.$t("common.time_h") + ago
+        return (cutSp / (60 * 60)).toFixed(0) + this.$t("common.time_h") + ago
       }
 
     },
@@ -1033,7 +1034,7 @@ export default {
   padding-right: .12rem;
   padding-top: .12rem;
   /* padding-bottom: .12rem; */
-  padding-top: .15rem;
+  padding-top: .1rem;
   width: .45rem;
   height: .45rem;
   font-size: .25rem;
@@ -1058,8 +1059,9 @@ export default {
 }
 
 .messageBox_rightIcon {
-  margin-left: .125rem;
-  width: .5rem;
+  margin-left: 0;
+  width: 0rem;
+  /* width: .5rem; */
   height: .45rem;
 }
 
