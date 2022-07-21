@@ -18,14 +18,14 @@
           </div>
 
 
-          <div class="messageBox" v-if="$store.getters.messageList.length == 0">
+          <div class="messageBox" v-if="$store.getters.messageList.length == 0" @click="noMessageClick">
             <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
-            <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
+            <!-- <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
               {{ $store.getters.messageList.length }}</p>
             <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? $t("common.transationDoing") :
                 $t("common.noTransation")
             }}</p>
-            <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0" :src="drow_upDownImgUrl" />
+            <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0" :src="drow_upDownImgUrl" /> -->
           </div>
           <div class="messageDropdownBox" v-if="$store.getters.messageList.length > 0">
             <el-dropdown trigger="click" class="el-dropdown" @command="messageDropdownClick"
@@ -34,11 +34,11 @@
                 <img class="messageBox_icon" src="@/assets/img/common/message_icon.svg" />
                 <p class="messageBox_count" v-if="$store.getters.messageList.length > 0">
                   {{ $store.getters.messageList.length }}</p>
-                <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? $t("common.transationDoing") :
+                <!-- <p class="messageBox_text">{{ $store.getters.messageList.length > 0 ? $t("common.transationDoing") :
                     $t("common.noTransation")
                 }}</p>
                 <img class="messageBox_rightIcon" v-if="$store.getters.messageList.length > 0"
-                  :src="drow_upDownImgUrl" />
+                  :src="drow_upDownImgUrl" /> -->
               </div>
 
               <el-dropdown-menu slot="dropdown" class="menuWidth">
@@ -53,6 +53,7 @@
                         @click.stop="copyTxHashAction(item.txHash)" />
 
                       <p class="el-dropdown-itemBox_time">{{ getFormmatTimeStr(item.optionTime) }}</p>
+                      <!-- <p class="el-dropdown-itemBox_time">{{ "ddsdsddweewewe" }}</p> -->
 
                       <div class="el-dropdown-itemBox_optionBox">
                         <p class="el-dropdown-itemBox_option">{{ $t(item.optionName) }}</p>
@@ -71,7 +72,10 @@
 
           <div class="dropdownBox">
             <dropdown class="dropdownStyle" trigger="click" @on-click="changeLangeDropdownClick">
-              <button class="changeLangeBtn">{{ $t(currentLangrage) }}</button>
+              <div class="changeLangeBtnBox">
+                <img class="changeLangeBtn_img" src="@/assets/img/common/langrage.svg" />
+                <p class="changeLangeBtn_text">{{ $t(currentLangrage) }}</p>
+              </div>
               <dropdown-menu slot="list" class="menuWidth" v-for="(item, index) in langrageList">
                 <dropdown-item class="menuItem" :name="item">{{ $t(item) }}</dropdown-item>
               </dropdown-menu>
@@ -153,7 +157,7 @@ export default {
   },
   data() {
     var langType = navigator.language;
-    var currentLangrage = "navBar.English";
+    var currentLangrage = document.documentElement.clientWidth <= 1200 ? "navBar.English" : "EN";
     // if (langType == "en") {
     //   currentLangrage = "navBar.English";
     // } else if (langType.startsWith("zh")) {
@@ -295,6 +299,9 @@ export default {
     });
   },
   methods: {
+    noMessageClick() {
+      this.$message.warning(this.$t("common.noTransation"))
+    },
     getChainWebUrl(subStr) {
       if (getProdcutMode() == 1) {
         return "https://etherscan.io/tx/" + subStr;
@@ -305,16 +312,18 @@ export default {
     getFormmatTimeStr(timeSp) {
       var ago = " " + this.$t("common.timeBefore")
       var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
-
+      var timeStr = "";
       if (cutSp > 0 && cutSp < 60) {
-        return cutSp + this.$t("common.time_s") + ago
+        timeStr = cutSp + this.$t("common.time_s") + ago
       }
       if (cutSp > 60 && cutSp < 60 * 60) {
-        return (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
+        timeStr = (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
       }
       if (cutSp > 60 * 60) {
-        return (cutSp / (60 * 60)).toFixed(0) + this.$t("common.time_h") + ago
+        timeStr = (cutSp / (60 * 60)).toFixed(0) + this.$t("common.time_h") + ago
       }
+
+      return timeStr;
 
     },
 
@@ -452,11 +461,13 @@ export default {
       this.$bus.$emit("changeDescripHeight", value);
       if (value == "navBar.chinese") {
         this.$i18n.locale = "zh";
-        this.currentLangrage = "navBar.chinese";
+        // this.currentLangrage = "navBar.chinese";
+        this.currentLangrage = "中文";
         localStorage.setItem("lang", "zh");
       } else if (value == "navBar.English") {
         this.$i18n.locale = "en";
-        this.currentLangrage = "navBar.English";
+        // this.currentLangrage = "navBar.English";
+        this.currentLangrage = "EN";
         localStorage.setItem("lang", "en");
       }
     },
@@ -813,7 +824,7 @@ export default {
 
 .loginBtn {
   cursor: pointer;
-  width: 4.25rem;
+  width: 4rem;
   height: 1rem;
   border-radius: 0.1rem;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
@@ -827,20 +838,20 @@ export default {
 }
 
 .accountBox {
-  width: 4.25rem;
+  width: 4rem;
   height: 1rem;
   display: flex;
   border-radius: 0.1rem;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
-  ;
+  justify-content: center;
   flex-direction: row;
   align-items: center;
 }
 
 .account_img {
-  margin-left: 0.25rem;
-  width: 0.75rem;
-  height: 0.75rem;
+  /* margin-left: 0.25rem; */
+  width: .7rem;
+  height: 0.7rem;
 }
 
 .account_text {
@@ -854,7 +865,7 @@ export default {
 
 .dropdownBox {
   margin-right: 0rem;
-  width: 3.2rem;
+  width: 1.5rem;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0.45rem;
   /* margin-top: 18px; */
@@ -873,23 +884,35 @@ export default {
 
 
 
-.changeLangeBtn {
-  margin-top: -0.125rem;
+.changeLangeBtnBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 0.45rem;
+  width: 2.25rem;
   height: 1rem;
-  width: 3rem;
-  font-size: 0.4rem;
-  color: #f7b500;
-  border-color: #f7b500;
   border-style: solid;
   border-width: 1px;
-  border-color: #f7b500;
+  border-color: #E5E5E5;
   border-style: solid;
   background-color: white;
   border-radius: 0.1rem;
   cursor: pointer;
+  justify-content: center;
+}
+
+.changeLangeBtn_img {
+  width: .6rem;
+  height: .6rem;
+}
+
+.changeLangeBtn_text {
+  margin-left: .125rem;
+  font-size: .4rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  /* margin-right: 2.5rem; */
+  color: #212121;
+  line-height: .4rem;
 }
 
 .dialogBack {
@@ -937,7 +960,7 @@ export default {
 
 
 .messageDropdownBox {
-  width: 5.2rem;
+  width: 0.25rem;
   /*   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);; */
   margin-top: -0rem;
   /* margin-top: 18px; */
@@ -955,29 +978,29 @@ export default {
 }
 
 .messageBox {
+  cursor: pointer;
   justify-content: center;
-  margin-left: 0.125rem;
-  width: 4.75rem;
+  margin-left: -.75rem;
+  width: 1rem;
   height: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-radius: .1rem;
-  border: 1px solid #f7b500;
-  ;
+  border: 1px solid #E5E5E5;
 }
 
 .messageBox_active {
   cursor: pointer;
   justify-content: center;
-  margin-left: 2.5rem;
-  width: 5rem;
+  margin-left: .25rem;
+  width: 1rem;
   height: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-radius: .1rem;
-  border: 1px solid #f7b500;
+  border: 1px solid #E5E5E5;
   ;
 }
 

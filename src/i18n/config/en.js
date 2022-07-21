@@ -165,7 +165,7 @@ export default {
         time_h: "h",
         timeBefore: "ago",
         transationDoing: "On transaction",
-        noTransation: "No transaction",
+        noTransation: "No ongoing  transaction on blockchain",
 
         optionName1: "Stake Approve",
         optionName2: "Unstake Approve",
@@ -173,6 +173,7 @@ export default {
         optionName4: "Unstake NFT",
         optionName5: "Stake Rewards",
         optionName6: "Dividend Rewards",
+        moreInfo: "More"
 
     },
 
@@ -218,7 +219,7 @@ export default {
         title8: "Where can I find stake or unstake records?",
         descrip8: "The stake and unstake operations are based on the ethereum blockchain. By clicking the block browser button of the farming pool, you can query both stake and unstake information of the farming pool, and filter your address to query all your transcation records.",
         title9: "Gas fees and transactions?",
-        descrip9: "The majority of fees that the users pay are gas fees. These fees go to miners on the network– every time you send an on-chain transaction. The Ethereum sent with your transaction gets included in blocks as a reward for miners who process transactions. The amount fluctuates according to the demand and congestion of the network.",
+        descrip9: "The fees that the users pay are gas fee. These fees go to miners on the network every time you send an transaction. The Ethereum sent with your transaction gets included in blocks as a reward for miners who process transactions. The amount fluctuates according to the demand and congestion of the network.",
         title10: "Why is approve required?",
         descrip10: "When staking and unstaking, the contract need to obtain approve from your wallet before it can transfer your NFT or WNFT.",
         title11: "How to add more collections to NFT Farming?",

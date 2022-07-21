@@ -14,25 +14,14 @@ const state = {
   // 是否开启请求加载
   isLoading: true,
   messageList: [],
-  messageList: [{ txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
-  { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // messageList: [{ txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
+  // { txHash: "dsdsdsdsdsdsdsdssddssdsdsd", optionName: "抵押NFT", optionTime: 1658233380000 },
 
-  ],
+  // ],
 };
 
 export default new Vuex.Store({

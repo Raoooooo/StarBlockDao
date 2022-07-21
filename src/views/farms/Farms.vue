@@ -1,6 +1,6 @@
 <template>
   <div class="back">
-    <list class="contantBack">
+    <list class="contantBack" ref="content">
       <!-- <div class="contantList"> -->
       <!-- 头部 -->
       <div class="topBackBox">
@@ -70,8 +70,28 @@
         </div>
       </div>
 
+
+      <div class="topCourseBox">
+        <div class="courseLeftBox">
+          <div class="courseTopImgBox">
+            <img class="courseTopImg" :src="topImgUrl" />
+          </div>
+
+          <div class="topItemBox" v-for="(item, index) in topItemList">
+            <p class="topItemIndex">{{ index + 1 }}</p>
+            <p class="topItemText">{{ $t(item) }}</p>
+          </div>
+        </div>
+        <div class="courseRightBox" @click="courseRightBoxClick">
+          <p class="courseRightBox_text">{{ $t("common.moreInfo") }}</p>
+          <img class="courseRightBox_img" src="@/assets/img/common/access_yellow.svg" />
+        </div>
+
+
+      </div>
+
       <!-- Farms -->
-      <div class="itemsBox">
+      <div class="itemsBox" id="main2" ref="instro">
         <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
       </div>
 
@@ -105,7 +125,8 @@
         </p>
       </div>
     </div> -->
-    <div class="courseSectionBox">
+    <!-- <div id="main3" ref="instro"></div> -->
+    <div class="courseSectionBox" id="main3" ref="instro">
       <course></course>
     </div>
 
@@ -249,13 +270,13 @@
           {{ requestSuccessStr2 }}
         </p>
 
-        <!-- <div class="txHashBox">
+        <div class="txHashBox">
           <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
           <a :href="getChainWebUrl(txHashOringion)" target="_blank">
             <p class="txHash">{{ txHash }}</p>
           </a>
           <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-        </div> -->
+        </div>
         <div class="bottomBtnBox1">
           <button class="alertCloseBtn" @click="alertCloseBtnAction">
             {{ $t("common.alertClose") }}
@@ -643,6 +664,9 @@ export default {
     Course
   },
   computed: {
+    topImgUrl() {
+      return this.$t("course.topImg")
+    },
     defaultAlertTitle() {
       if (this.isSwitch1) {
         return this.$t("common.defaultStakeAlertTitle");
@@ -889,6 +913,7 @@ export default {
     }
 
     return {
+      topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
       processSuccessAlertShow: false,
@@ -1083,6 +1108,40 @@ export default {
   },
 
   methods: {
+
+    changeTab() {
+      // setTimeout(() => {
+      //   this.active = index;
+      // }, 50);
+
+      let blocks = document.querySelectorAll(".courseSectionBox");
+      console.log("--changeTab", blocks[0].id);
+      let step = 40; //滚动步长
+      let currentScrollTop = this.$refs.content.scrollTop;
+      let targetOffsetTop = blocks[0].offsetTop - 30;
+      // let targetOffsetTop = 0;
+      // if (index == 0) {
+      //   targetOffsetTop = blocks[index].offsetTop;
+      // }
+      console.log("currentScrollTop", currentScrollTop);
+      console.log("targetOffsetTop", targetOffsetTop);
+
+      setTimeout(() => {
+        if (document.documentElement.clientWidth < 1200) {
+          document.documentElement.scrollTop = targetOffsetTop - 45;
+          document.body.scrollTop = targetOffsetTop - 45;
+        } else {
+          document.documentElement.scrollTop = targetOffsetTop - (80 * document.documentElement.clientWidth / 1920);
+          document.body.scrollTop = targetOffsetTop - (80 * document.documentElement.clientWidth / 1920);
+        }
+
+      }, 100);
+      // this.$refs.content.scrollTop = targetOffsetTop;
+    },
+    courseRightBoxClick() {
+      this.changeTab()
+      // document.querySelector("#main3").scrollIntoView();
+    },
     rewardAmount(item) {
       if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
@@ -1174,7 +1233,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 1,
-        optionName: this.$t("common.optionName1"),
+        optionName: "common.optionName1",
         txHash: txHash,
       };
       messageList.push(messageObj);
@@ -1184,7 +1243,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 2,
-        optionName: this.$t("common.optionName2"),
+        optionName: "common.optionName2",
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1195,7 +1254,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 3,
-        optionName: this.$t("common.optionName3"),
+        optionName: "common.optionName3",
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1206,7 +1265,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 4,
-        optionName: this.$t("common.optionName4"),
+        optionName: "common.optionName4",
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1217,7 +1276,7 @@ export default {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 5,
-        optionName: this.$t("common.optionName5"),
+        optionName: "common.optionName5",
         txHash: txHash,
         optionTime: new Date().getTime()
       };
@@ -1775,6 +1834,7 @@ export default {
   width: 95%;
   margin-left: 2.5%;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .contantList {
@@ -2820,6 +2880,101 @@ export default {
   background-color: white;
   margin-left: 3.5%;
   width: 93%;
+}
+
+
+.topCourseBox {
+  background-color: white;
+  margin-top: .5rem;
+  width: 96.5%;
+  display: flex;
+  flex-direction: row;
+  align-items: unset;
+  height: auto;
+  border-radius: .25rem;
+  margin-bottom: 0.25rem;
+  justify-content: space-between;
+}
+
+.courseLeftBox {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+  margin-bottom: .5rem;
+}
+
+.courseRightBox {
+  margin-top: .85rem;
+  margin-right: .75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: unset;
+  cursor: pointer;
+}
+
+.courseRightBox_text {
+  font-size: .6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #F7B500;
+  line-height: .6rem;
+  white-space: nowrap;
+}
+
+.courseRightBox_img {
+  margin-top: .1rem;
+  margin-left: .075rem;
+  height: .35rem;
+}
+
+.courseTopImg {
+  margin-top: .75rem;
+  margin-left: 0.75rem;
+  /* width: 3.225rem; */
+  width: auto;
+  height: .75rem;
+  /* margin-right: .5rem; */
+  margin-bottom: .325rem;
+}
+
+
+.topItemBox {
+  margin-top: .5rem;
+  width: 100%;
+  margin-left: .75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.topItemIndex {
+  width: .75rem;
+  height: .75rem;
+  background: #F7B500;
+  border-radius: .1rem;
+  font-size: .6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: .75rem;
+  text-align: center;
+}
+
+
+
+.topItemText {
+  margin-left: .25rem;
+  font-size: .6rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #212121;
+  line-height: .6rem;
+}
+
+.courseTopImgBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -3874,6 +4029,96 @@ export default {
     background-color: white;
     margin-left: 5%;
     width: 90%;
+  }
+
+
+  .topCourseBox {
+    margin-bottom: -0.5rem;
+    background-color: white;
+    border-radius: .25rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 1.75rem;
+    justify-content: space-between;
+  }
+
+  .courseLeftBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0rem;
+  }
+
+  .courseRightBox {
+    margin-right: .75rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0rem;
+    cursor: pointer;
+  }
+
+  .courseRightBox_text {
+    font-size: .4rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #F7B500;
+    line-height: .55rem;
+  }
+
+  .courseRightBox_img {
+    margin-top: .0rem;
+    margin-left: .075rem;
+    height: .2rem;
+  }
+
+  .courseTopImg {
+    margin-top: -0rem;
+    margin-left: .8rem;
+    /* width: 3.225rem; */
+    /* margin-right: unset; */
+    /* width: 2.45rem; */
+    height: .575rem;
+    /* margin-right: -.25rem; */
+    margin-bottom: 0rem;
+  }
+
+
+  .topItemBox {
+    margin-top: 0rem;
+    width: auto;
+    margin-left: .75rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .topItemIndex {
+    /* padding-bottom: -.05rem; */
+    width: .5rem;
+    height: .5rem;
+    background: #F7B500;
+    border-radius: .1rem;
+    font-size: .4rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: .5rem;
+    text-align: center;
+  }
+
+
+
+  .topItemText {
+    margin-left: .125rem;
+    font-size: .375rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #111111;
+    line-height: .55rem;
+    white-space: nowrap;
   }
 
 }

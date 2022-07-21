@@ -897,6 +897,8 @@ export default {
   left: 0%;
   top: 0%;
   width: 100%;
+  /* max-height: 100%; */
+  /* overflow-y: scroll; */
 }
 
 .topBackView {
