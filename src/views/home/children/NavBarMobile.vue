@@ -43,7 +43,7 @@
             <p class="el-dropdown-itemBox_time">{{ getFormmatTimeStr(item.optionTime) }}</p>
 
             <!-- <div class="el-dropdown-itemBox_optionBox"> -->
-            <p class="el-dropdown-itemBox_option">{{ item.optionName }}</p>
+            <p class="el-dropdown-itemBox_option">{{ $t(item.optionName) }}</p>
             <!-- </div> -->
 
           </div>
@@ -289,22 +289,25 @@ export default {
     },
     messageBoxClick() {
       if (this.$store.getters.messageList.length == 0) {
+        this.$message.warning(this.$t("common.noTransation"))
         return;
       }
       this.messageViewShow = true;
     },
     getFormmatTimeStr(timeSp) {
-      var ago = " ago"
+      var ago = " " + this.$t("common.timeBefore")
+
+      // var ago = " ago"
       var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
 
       if (cutSp > 0 && cutSp < 60) {
-        return cutSp + "s" + ago
+        return cutSp + this.$t("common.time_s") + ago
       }
       if (cutSp > 60 && cutSp < 60 * 60) {
-        return (cutSp / 60).toFixed(0) + "m" + ago
+        return (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
       }
       if (cutSp > 60 * 60) {
-        return (cutSp / (60 * 60)).toFixed(2) + "h" + ago
+        return (cutSp / (60 * 60)).toFixed(2) + this.$t("common.time_h") + ago
       }
 
     },

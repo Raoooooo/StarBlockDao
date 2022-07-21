@@ -1237,7 +1237,7 @@ export default {
         txHash: txHash,
       };
       messageList.push(messageObj);
-      $this.$store.commit('changeMessageList', messageList);
+      this.$store.commit('changeMessageList', messageList);
     },
     getApproveWNFTTxHash(txHash) {
       var messageList = this.$store.getters.messageList;
@@ -1480,9 +1480,9 @@ export default {
       this.successVisible2 = false;
     },
     alertBeforeAction() {
-      // if (this.selectTokenIdsArr.length == 0) {
-      //   return;
-      // }
+      if (this.selectTokenIdsArr.length == 0) {
+        return;
+      }
       if (checkChainIdError()) {
         this.$bus.$emit("checkChainIdError", "1");
         return;

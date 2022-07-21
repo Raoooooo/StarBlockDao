@@ -191,7 +191,7 @@ export async function approveNFTAction(item, getIsApproveNFT, index, isOnlyGetAp
 }
 
 
-export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove, faildHandle) {
+export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetApprove, faildHandle, requesUploadHash) {
     if (!accounts) {
         await getAccounts();
     }
@@ -224,7 +224,7 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
     //     }
     //     return;
     // }
-
+    var nftContract = "";
 
     await daoport.setApprovalForAll(
         owner,

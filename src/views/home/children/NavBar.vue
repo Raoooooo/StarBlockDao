@@ -311,21 +311,37 @@ export default {
     },
     getFormmatTimeStr(timeSp) {
       var ago = " " + this.$t("common.timeBefore")
+
+      // var ago = " ago"
+      var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
+
+      if (cutSp > 0 && cutSp < 60) {
+        return cutSp + this.$t("common.time_s") + ago
+      }
+      if (cutSp > 60 && cutSp < 60 * 60) {
+        return (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
+      }
+      if (cutSp > 60 * 60) {
+        return (cutSp / (60 * 60)).toFixed(2) + this.$t("common.time_h") + ago
+      }
+
+    },
+
+    getFormmatTimeDes(timeSp) {
       var cutSp = this.formmatSecond(new Date().getTime()) - this.formmatSecond(timeSp)
       var timeStr = "";
       if (cutSp > 0 && cutSp < 60) {
-        timeStr = cutSp + this.$t("common.time_s") + ago
+        return "common.time_s";
       }
       if (cutSp > 60 && cutSp < 60 * 60) {
-        timeStr = (cutSp / 60).toFixed(0) + this.$t("common.time_m") + ago
+        return "common.time_m"
       }
       if (cutSp > 60 * 60) {
-        timeStr = (cutSp / (60 * 60)).toFixed(0) + this.$t("common.time_h") + ago
+        return "common.time_h"
       }
-
-      return timeStr;
-
     },
+
+
 
     formmatSecond(value) {
       var newTime = new Date(value); //就得到普通的时间了 
