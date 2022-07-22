@@ -1189,6 +1189,7 @@ export default {
   font-weight: 500;
   color: #8C9399;
   line-height: .425rem;
+  white-space: nowrap;
 }
 
 .linkTopBox_left_text_active {
@@ -1198,6 +1199,7 @@ export default {
   font-weight: 500;
   color: #F7B500;
   line-height: .425rem;
+  white-space: nowrap;
 }
 
 
@@ -1505,6 +1507,7 @@ export default {
     font-weight: 500;
     color: #8C9399;
     line-height: .425rem;
+    white-space: nowrap;
   }
 
   .linkTopBox_left_text_active {
@@ -1515,6 +1518,7 @@ export default {
     font-weight: 500;
     color: #F7B500;
     line-height: .425rem;
+    white-space: nowrap;
   }
 
 
