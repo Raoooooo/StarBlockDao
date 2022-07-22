@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { Protocol } from "./protocol";
-import { Network, MasterChefPoolsInfo, Web3Callback } from "./types";
+import { Network, MasterChefPoolsInfo, Web3Callback, ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
 import BigNumber from "bignumber.js";
 
 export class DaoPort {
@@ -17,98 +17,177 @@ export class DaoPort {
     this._protocol.onlyReadNFTUtilsContract(provider);
   }
 
-  public async deposit({ pid, tokenIds }: { pid: number; tokenIds: number[] }): Promise<string> {
-    let txHash;
-    try {
-      const txnData = { from: this._protocol.account };
-      txHash = await this._protocol.NFTMasterChefContract.methods
-        .deposit(pid, tokenIds)
-        .send(txnData);
-    } catch (error) {
-      console.error(error);
-      throw new Error(
-        `Failed to deposit transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+  public async deposit(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void> {
+    // let txHash;
+    // try {
+    //   const txnData = { from: this._protocol.account };
+    //   txHash = await this._protocol.NFTMasterChefContract.methods
+    //     .deposit(pid, tokenIds)
+    //     .send(txnData);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw new Error(
+    //     `Failed to deposit transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
+
+
+    const txnData = { from: this._protocol.account };
+
+    await this._protocol.NFTMasterChefContract.methods
+      .deposit(pid, tokenIds)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to deposit transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
   }
 
-  public async withdraw({ pid, tokenIds }: { pid: number; tokenIds: number[] }): Promise<string> {
-    let txHash;
-    try {
-      const txnData = { from: this._protocol.account };
-      txHash = await this._protocol.NFTMasterChefContract.methods
-        .withdraw(pid, tokenIds)
-        .send(txnData);
-    } catch (error) {
-      console.error(error);
-      throw new Error(
-        `Failed to withdraw transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+  public async withdraw(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void> {
+    // let txHash;
+    // try {
+    //   const txnData = { from: this._protocol.account };
+    //   txHash = await this._protocol.NFTMasterChefContract.methods
+    //     .withdraw(pid, tokenIds)
+    //     .send(txnData);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw new Error(
+    //     `Failed to withdraw transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
+
+    const txnData = { from: this._protocol.account };
+
+    await this._protocol.NFTMasterChefContract.methods
+      .withdraw(pid, tokenIds)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to withdraw transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
   }
 
-  public async setApprovalForAll({
-    owner,
-    nftContract,
-    wnftContract,
-    isApproveNFT
-  }: {
-    owner: string;
-    nftContract?: string;
-    wnftContract: string;
-    isApproveNFT: Boolean;
-  }): Promise<string> {
-    let txHash;
+  public async setApprovalForAll(
+    owner: string,
+    nftContract: string,
+    wnftContract: string,
+    isApproveNFT: Boolean,
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
+    // let txHash;
+    // let REC721Address = wnftContract;
+    // if (isApproveNFT) {
+    //   REC721Address = nftContract as string;
+    // }
+
+    // const operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
+    // try {
+    //   const txnData = { from: owner };
+    //   const REC721Contract = this._protocol.setERC721Addess(REC721Address);
+    //   txHash = await REC721Contract.methods.setApprovalForAll(operator, true).send(txnData);
+    // } catch (error) {
+    //   throw new Error(
+    //     `Failed to setApprovalForAll transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
+
     let REC721Address = wnftContract;
     if (isApproveNFT) {
       REC721Address = nftContract as string;
     }
-
+    const REC721Contract = this._protocol.setERC721Addess(REC721Address);
     const operator = isApproveNFT ? wnftContract : this._protocol.NFTMasterChefContractAddress;
-    try {
-      const txnData = { from: owner };
-      const REC721Contract = this._protocol.setERC721Addess(REC721Address);
-      txHash = await REC721Contract.methods.setApprovalForAll(operator, true).send(txnData);
-    } catch (error) {
-      throw new Error(
-        `Failed to setApprovalForAll transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+
+    const txnData = { from: owner };
+    await REC721Contract.methods
+      .setApprovalForAll(operator, true)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to setApprovalForAll transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
   }
 
-  public async harvest({
-    pid,
-    to,
-    wnftTokenIds
-  }: {
-    pid: number;
-    to: string;
-    wnftTokenIds: number[];
-  }): Promise<string> {
-    let txHash;
-    try {
-      const txnData = { from: this._protocol.account };
-      txHash = await this._protocol.NFTMasterChefContract.methods
-        .harvest(pid, to, wnftTokenIds)
-        .send(txnData);
-    } catch (error) {
-      console.error(error);
-      throw new Error(
-        `Failed to harvest transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+  public async harvest(
+    pid: number,
+    to: string,
+    wnftTokenIds: number[],
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
+    // let txHash;
+    // try {
+    //   const txnData = { from: this._protocol.account };
+    //   txHash = await this._protocol.NFTMasterChefContract.methods
+    //     .harvest(pid, to, wnftTokenIds)
+    //     .send(txnData);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw new Error(
+    //     `Failed to harvest transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
+
+    const txnData = { from: this._protocol.account };
+    await this._protocol.NFTMasterChefContract.methods
+      .withdraw(pid, to, wnftTokenIds)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to harvest transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
   }
 
   /*  public async harvestAll({
@@ -175,8 +254,7 @@ export class DaoPort {
     } catch (error) {
       handle(
         new Error(
-          `Failed to pending transaction: "${
-            error instanceof Error && error.message ? error.message : "user denied"
+          `Failed to pending transaction: "${error instanceof Error && error.message ? error.message : "user denied"
           }..."`
         ),
         null
@@ -292,8 +370,7 @@ export class DaoPort {
     } catch (error) {
       handle(
         new Error(
-          `Failed to canClaim transaction: "${
-            error instanceof Error && error.message ? error.message : "user denied"
+          `Failed to canClaim transaction: "${error instanceof Error && error.message ? error.message : "user denied"
           }..."`
         ),
         null
@@ -321,8 +398,7 @@ export class DaoPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to updateTradingRewards transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to updateTradingRewards transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -347,8 +423,7 @@ export class DaoPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to claim transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to claim transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -431,8 +506,7 @@ export class DaoPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to harvestAll transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to harvestAll transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -493,8 +567,7 @@ export class DaoPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to harvestAllByWNFTTokenIds transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to harvestAllByWNFTTokenIds transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }

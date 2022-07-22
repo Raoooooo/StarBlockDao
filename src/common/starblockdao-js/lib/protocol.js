@@ -94,7 +94,7 @@ var Protocol = /** @class */ (function () {
                     case 2:
                         error_1 = _a.sent();
                         console.error(error_1);
-                        throw new Error("Failed to deposit transaction: \"".concat(error_1 instanceof Error && error_1.message ? error_1.message : "user denied", "...\""));
+                        throw new Error("Failed to deposit transaction: \"" + (error_1 instanceof Error && error_1.message ? error_1.message : "user denied") + "...\"");
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -115,7 +115,7 @@ var Protocol = /** @class */ (function () {
                     case 2:
                         error_2 = _a.sent();
                         console.error(error_2);
-                        throw new Error("Failed to withdraw transaction: \"".concat(error_2 instanceof Error && error_2.message ? error_2.message : "user denied", "...\""));
+                        throw new Error("Failed to withdraw transaction: \"" + (error_2 instanceof Error && error_2.message ? error_2.message : "user denied") + "...\"");
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -139,7 +139,7 @@ var Protocol = /** @class */ (function () {
                     case 3:
                         error_3 = _a.sent();
                         console.error(error_3);
-                        throw new Error("Failed to harvestToken transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
+                        throw new Error("Failed to harvestToken transaction: \"" + (error_3 instanceof Error && error_3.message ? error_3.message : "user denied") + "...\"");
                     case 4: return [2 /*return*/, txHash];
                 }
             });

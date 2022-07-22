@@ -151,7 +151,7 @@ var CollectionPort = /** @class */ (function () {
                     case 2:
                         error_1 = _a.sent();
                         console.error(error_1);
-                        throw new Error("Failed to updateWhitelistSaleConfig transaction: \"".concat(error_1 instanceof Error && error_1.message ? error_1.message : "user denied", "...\""));
+                        throw new Error("Failed to updateWhitelistSaleConfig transaction: \"" + (error_1 instanceof Error && error_1.message ? error_1.message : "user denied") + "...\"");
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -174,7 +174,7 @@ var CollectionPort = /** @class */ (function () {
                     case 2:
                         error_2 = _a.sent();
                         console.error(error_2);
-                        throw new Error("Failed to updatePublicSaleConfig transaction: \"".concat(error_2 instanceof Error && error_2.message ? error_2.message : "user denied", "...\""));
+                        throw new Error("Failed to updatePublicSaleConfig transaction: \"" + (error_2 instanceof Error && error_2.message ? error_2.message : "user denied") + "...\"");
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -197,7 +197,7 @@ var CollectionPort = /** @class */ (function () {
                     case 2:
                         error_3 = _a.sent();
                         console.error(error_3);
-                        throw new Error("Failed to addWhitelists transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
+                        throw new Error("Failed to addWhitelists transaction: \"" + (error_3 instanceof Error && error_3.message ? error_3.message : "user denied") + "...\"");
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -239,7 +239,7 @@ var CollectionPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to whitelistMint transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                                errorCallback(new Error("Failed to whitelistMint transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
                             })];
                     case 2:
                         //   txHash = await this._protocol.StarblockCollectionContract.methods
@@ -284,7 +284,7 @@ var CollectionPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to publicMint transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
+                                errorCallback(new Error("Failed to publicMint transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
                             })];
                     case 2:
                         _a.sent();

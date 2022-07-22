@@ -6,31 +6,10 @@ export declare class DaoPort {
     constructor(provider: Web3, chainId: number);
     setAccount(account: string): void;
     setOnlyReadWeb3Provider(provider: Web3): void;
-    deposit({ pid, tokenIds }: {
-        pid: number,
-        tokenIds: number[],
-        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
-
-    }): Promise<void>;
-    withdraw({ pid, tokenIds }: {
-        pid: number,
-        tokenIds: number[],
-        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
-    }): Promise<void>;
-    setApprovalForAll({ owner, nftContract, wnftContract, isApproveNFT }: {
-        owner: string,
-        nftContract?: string,
-        wnftContract: string,
-        isApproveNFT: Boolean,
-        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
-
-    }): Promise<void>;
-    harvest({ pid, to, wnftTokenIds }: {
-        pid: number,
-        to: string,
-        wnftTokenIds: number[],
-        callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback
-    }): Promise<void>;
+    deposit(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
+    withdraw(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
+    setApprovalForAll(owner: string, nftContract: string, wnftContract: string, isApproveNFT: Boolean, callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
+    harvest(pid: number, to: string, wnftTokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
     ownedNFTTokens({ contractAddress, owner, rangeTokenIds }: {
         contractAddress: string;
         owner: string;
