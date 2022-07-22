@@ -867,8 +867,8 @@ export default {
 
 .account_img {
   /* margin-left: 0.25rem; */
-  width: .7rem;
-  height: 0.7rem;
+  width: .55rem;
+  height: 0.55rem;
 }
 
 .account_text {
@@ -919,8 +919,8 @@ export default {
 }
 
 .changeLangeBtn_img {
-  width: .6rem;
-  height: .6rem;
+  width: .5rem;
+  height: .5rem;
 }
 
 .changeLangeBtn_text {

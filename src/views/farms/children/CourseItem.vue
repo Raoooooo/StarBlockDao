@@ -241,11 +241,11 @@ export default {
     width: 100%;
     text-align: center;
     margin-top: .5rem;
-    font-size: .45rem;
+    font-size: .55rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #111111;
-    line-height: .45rem;
+    line-height: .55rem;
     margin-bottom: .5rem;
     height: auto;
     /* background-color: aqua; */
@@ -255,14 +255,14 @@ export default {
 .itemTitle_en {
     width: 100%;
     text-align: center;
-    margin-top: .5rem;
-    font-size: .45rem;
+    margin-top: .35rem;
+    font-size: .55rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #111111;
-    line-height: .45rem;
+    line-height: .65rem;
     margin-bottom: .5rem;
-    height: 1rem;
+    height: 1.1rem;
     /* background-color: aqua; */
 
 }

@@ -163,7 +163,7 @@ export default {
         time_h: "小时",
         timeBefore: "前",
         transationDoing: "交易确认中",
-        noTransation: "暂无正在进行中的链上交易",
+        noTransation: "自刷新页面后，暂无正在进行中的上链交易",
 
         optionName1: "抵押授权",
         optionName2: "解抵押授权",
