@@ -95,6 +95,25 @@
 
       <!-- Farms -->
       <div class="itemsBox" id="main2" ref="instro">
+        <div class="searchAndSortBox">
+          <div class="searchBox"></div>
+          <div class="sortBox">
+            <div class="sortItemBox0">
+              <p class="sortItemBox0_text">最新</p>
+              <img class="sortItemBox0_img" />
+            </div>
+            <div class="sortItemBox1">
+              <img class="sortItemBox1_img" />
+              <p class="sortItemBox1_text">我的持有</p>
+
+            </div>
+            <div class="sortItemBox1">
+              <img class="sortItemBox1_img" />
+              <p class="sortItemBox1_text">我的抵押</p>
+
+            </div>
+          </div>
+        </div>
         <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
       </div>
 
@@ -2982,6 +3001,84 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.searchAndSortBox {
+  margin-top: .75rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+  width: 100%;
+  margin-bottom: .75rem;
+
+}
+
+.searchBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sortBox {
+  margin-right: .75rem;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.sortItemBox0 {
+  margin-left: .5rem;
+  width: 3rem;
+  height: 1rem;
+  border-radius: .1rem;
+  border: 1px solid #EEEEEE;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sortItemBox1 {
+  margin-left: .5rem;
+  width: 3rem;
+  height: 1rem;
+  border-radius: .1rem;
+  border: 1px solid #EEEEEE;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.sortItemBox0_text {
+  margin-left: .25rem;
+  font-size: .35rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #212121;
+  line-height: .5rem;
+}
+
+.sortItemBox1_text {
+  margin-left: .125rem;
+  font-size: .35rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #212121;
+  line-height: .5rem;
+}
+
+.sortItemBox0_img {
+  margin-right: .25rem;
+  width: .3rem;
+  height: .175rem;
+}
+
+.sortItemBox1_img {
+  width: .4rem;
+  height: .4rem;
+
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {

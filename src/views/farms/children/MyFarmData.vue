@@ -35,7 +35,7 @@
                     <button class="rightBox_topBox_rightButton" @click="receiveReward">
                         <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg"
                             v-show="showImgLoading" />
-                        <p v-show="!showImgLoading">领取奖励</p>
+                        <p v-show="!showImgLoading">领取所有奖励</p>
                     </button>
                     <!-- </a> -->
                 </div>
