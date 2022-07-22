@@ -1201,6 +1201,7 @@ export default {
 }
 
 
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .el-col {
     /* margin-left: -0.25rem; */
@@ -1215,6 +1216,7 @@ export default {
   }
 
   .row-bg {
+    padding: 0 0.75rem;
     /* padding: 0 -0.25rem; */
     /* background-color: white; */
     /* background-color: tomato; */

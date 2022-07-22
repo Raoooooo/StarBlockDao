@@ -1935,8 +1935,10 @@ export default {
 }
 
 .itemsBox {
+  border-radius: .25rem;
+  background-color: #f7faff;
   margin-top: 0.25rem;
-  width: 101%;
+  width: 100%;
 }
 
 .alertContantBox1 {
@@ -2995,8 +2997,8 @@ export default {
     display: flex;
     flex-direction: column;
     /* height: 100%; */
-    width: 90%;
-    margin-left: 5%;
+    width: 95%;
+    margin-left: 2.5%;
     overflow-x: hidden;
     background-color: #f7faff;
   }
@@ -3098,8 +3100,12 @@ export default {
   }
 
   .itemsBox {
+    border-radius: .25rem;
+    background-color: white;
+    width: 100%;
+    margin-bottom: .75rem;
     margin-top: 1.275rem;
-    width: 101%;
+    width: 100%;
   }
 
   .alertContantBox1 {
@@ -4027,8 +4033,8 @@ export default {
   .courseSectionBox {
     border-radius: 0.25rem;
     background-color: white;
-    margin-left: 5%;
-    width: 90%;
+    margin-left: 2.5%;
+    width: 95%;
   }
 
 
