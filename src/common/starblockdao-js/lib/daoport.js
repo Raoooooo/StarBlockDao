@@ -259,6 +259,30 @@ var DaoPort = /** @class */ (function () {
         );
       }
     } */
+    DaoPort.prototype.getPoolSta = function (_a) {
+        var user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, _poolSta, _userInfo, _wrappedPoolInfos, poolSta, userInfo, wrappedPoolInfos;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                            .getPoolSta(user, withOwnedNFTTokenIds)
+                            .call()];
+                    case 1:
+                        _b = _c.sent(), _poolSta = _b._poolSta, _userInfo = _b._userInfo, _wrappedPoolInfos = _b._wrappedPoolInfos;
+                        console.log("getPoolSta _poolSta、_userInfo、_wrappedPoolInfos:::", _poolSta, _userInfo, _wrappedPoolInfos);
+                        poolSta = _poolSta;
+                        userInfo = _userInfo;
+                        wrappedPoolInfos = _wrappedPoolInfos;
+                        return [2 /*return*/, {
+                                poolSta: poolSta,
+                                userInfo: userInfo,
+                                wrappedPoolInfos: wrappedPoolInfos
+                            }];
+                }
+            });
+        });
+    };
     DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
         var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
         return __awaiter(this, void 0, void 0, function () {

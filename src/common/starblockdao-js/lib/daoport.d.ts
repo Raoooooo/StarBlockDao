@@ -19,6 +19,10 @@ export declare class DaoPort {
         pid: number;
         tokenIds: number[];
     }, handle: Web3Callback<T>): Promise<void>;
+    getPoolSta({ user, withOwnedNFTTokenIds }: {
+        user: string;
+        withOwnedNFTTokenIds: boolean;
+    }): Promise<{}>;
     getNFTMasterChefInfos({ nftMasterchef, pid, owner, rangeTokenIds }: {
         nftMasterchef?: string;
         pid: number;

@@ -45,6 +45,8 @@
     <button id="button" @click="publicMint">publicMint</button>
     <button id="button" @click="getCollectionInfo">getCollectionInfo</button>
     <button id="button" @click="approveERC20">授权ERC20</button>
+
+    <button id="button" @click="getPoolSta">getPoolSta</button>
   </div>
 </template>
 
@@ -271,7 +273,7 @@ export default {
       try {
         const txHash = await daoport.setApprovalForAll(parameters);
         console.log("daoporApprovedtAction --txHash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async daoporDeposit() {
@@ -293,7 +295,7 @@ export default {
       try {
         const txHash = await daoport.deposit(parameters);
         console.log("daoporDeposit==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async daoporWithdraw() {
@@ -314,7 +316,7 @@ export default {
       try {
         const txHash = await daoport.withdraw(parameters);
         console.log("daoporWithdraw==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async daoporHarvest() {
@@ -336,7 +338,7 @@ export default {
       try {
         const txHash = await daoport.harvest(parameters);
         console.log("daoporHarvest==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async daoportPending() {
@@ -382,7 +384,7 @@ export default {
       try {
         const txHash = await daoport.claim(parameters);
         console.log("daoporWithdraw==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async daoportUpdateTradingRewards() {
@@ -416,7 +418,7 @@ export default {
       try {
         const txHash = await daoport.withdraw(parameters);
         console.log("daoporWithdraw==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async daoportCanClaim() {
@@ -479,6 +481,25 @@ export default {
       const wrappedPoolInfo = await daoport.getPoolInfo(parameters);
       console.log("Document getPoolInfo:::", wrappedPoolInfo);
     },
+
+    async getPoolSta() {
+      if (!accounts) {
+        await this.getAccounts();
+      }
+      if (!daoport) {
+        this.getDaoPort(accounts[0]);
+      }
+
+      const user = accounts[0];
+      const withOwnedNFTTokenIds = true;
+      const parameters = {
+        user,
+        withOwnedNFTTokenIds
+      };
+      const poolStaInfos = await daoport.getPoolSta(parameters);
+      console.log("Document getPoolSta:::", poolStaInfos);
+    },
+
 
     async getAllPoolInfos() {
       if (!accounts) {
@@ -550,7 +571,7 @@ export default {
       try {
         const txHash = await daoport.harvestAll(forUser);
         console.log("harvestAll==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async pendingByNFTorWNFT() {
@@ -617,7 +638,7 @@ export default {
       try {
         const txHash = await daoport.harvestAllByWNFTTokenIds(parameters);
         console.log("harvestAllByWNFTTokenIds==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async ownedNFTsTokenIdsByPids() {
@@ -790,7 +811,7 @@ export default {
       try {
         const txHash = await starblockport.updateWhitelistSaleConfig(whitelistSaleConfig);
         console.log("updateWhitelistSaleConfig==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async updatePublicSaleConfig() {
@@ -805,7 +826,7 @@ export default {
       try {
         const txHash = await starblockport.updatePublicSaleConfig(publicSaleConfig);
         console.log("updatePublicSaleConfig==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async addWhitelists() {
@@ -823,7 +844,7 @@ export default {
       try {
         const txHash = await starblockport.addWhitelists(addresses);
         console.log("addWhitelists==txhash", txHash);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async whitelistMint() {
@@ -930,13 +951,13 @@ export default {
         .deploy(options)
         .send(txnData)
         .on("transactionHash", tH => console.log("on--transactionHash:==>", tH))
-        .then(function(res) {
+        .then(function (res) {
           console.log("then--", res.options.address.toLowerCase());
           const address = res.options.address.toLowerCase();
           setLocalStorage("starblockCollection", { address });
           starblockport.setStarblockCollectionAddress(address);
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.log("catch--", err);
         });
     },
@@ -989,7 +1010,6 @@ export default {
         .approve("0xc72c1265cb59e821c6399998796a1dde4ec27276", "100000000000000000000000")
         .send(txnData);
     },
-
     toggleShow() {
       this.show = !this.show;
       alert(this.show);
@@ -1105,25 +1125,30 @@ export default {
 
   /* background-color: aqua; */
 }
+
 .pText {
   margin-top: 2rem;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
   font-size: 0.4rem;
 }
+
 .testImg {
   width: 180px;
   height: 180px;
   background-color: aqua;
 }
+
 img {
   display: block;
   width: 120px;
   height: 120px;
 }
+
 h3 {
   text-align: center;
 }
+
 h1,
 h2 {
   font-weight: normal;
