@@ -1199,7 +1199,7 @@ export default {
           this.selectPollItem,
           this.handleWithdraw,
           this.selectTokenIdsArr,
-          this.faildHandleDaoporWithdraw.apply,
+          this.faildHandleDaoporWithdraw,
           this.getWithdrawTxHash
         );
       }
