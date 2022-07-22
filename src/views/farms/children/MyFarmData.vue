@@ -419,7 +419,7 @@ export default {
     /* padding-top: .175rem; */
     /* padding-bottom: .175rem; */
     background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
-    border-radius: .55rem;
+    border-radius: .1rem;
     font-size: .55rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -572,7 +572,7 @@ export default {
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
         background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
-        border-radius: .4rem;
+        border-radius: .1rem;
         font-size: .35rem;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
@@ -648,7 +648,7 @@ export default {
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
         background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
-        border-radius: .4rem;
+        border-radius: .1rem;
         font-size: .35rem;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
