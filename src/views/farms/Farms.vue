@@ -1943,7 +1943,7 @@ export default {
   border-radius: .25rem;
   background-color: #f7faff;
   margin-top: 0.25rem;
-  width: 100%;
+  width: 103%;
 }
 
 .alertContantBox1 {
@@ -2885,15 +2885,15 @@ export default {
 .courseSectionBox {
   border-radius: 0.25rem;
   background-color: white;
-  margin-left: 3.5%;
-  width: 93%;
+  margin-left: 2.5%;
+  width: 95%;
 }
 
 
 .topCourseBox {
   background-color: white;
   margin-top: .5rem;
-  width: 96.5%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: unset;

@@ -5,8 +5,8 @@
                 <div class="leftBox">
                     <div class="leftBox_topBox">
                         <div class="leftBox_topBox_leftBox">
-                            <img class="itemTopImg" src="@/assets/img/common/alertWaring.svg" />
-                            <p class="itemTopTitle">交易奖励</p>
+                            <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
+                            <p class="itemTopTitle">抵押挖矿教程</p>
                         </div>
                         <button class="leftBox_topBox_rightBtn">了解更多</button>
                     </div>
@@ -16,8 +16,8 @@
                 <div class="leftBox1">
                     <div class="leftBox_topBox">
                         <div class="leftBox_topBox_leftBox">
-                            <img class="itemTopImg" src="@/assets/img/common/alertWaring.svg" />
-                            <p class="itemTopTitle">交易奖励</p>
+                            <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
+                            <p class="itemTopTitle">申请合集</p>
                         </div>
                         <button class="leftBox_topBox_rightBtn">了解更多</button>
                     </div>
@@ -28,7 +28,7 @@
             <div class="rightBox">
                 <div class="rightBox_topBox">
                     <div class="rightBox_topBox_leftBox">
-                        <img class="itemTopImg" src="@/assets/img/common/alertWaring.svg" />
+                        <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
                         <p class="itemTopTitle">我的NFT抵押挖矿</p>
                     </div>
                     <!-- <a href="https://starblockdao.io" target="_blank" class=""> -->
@@ -43,31 +43,31 @@
                 <div class="rightBox_bottomBox">
                     <div class="miniDataBox">
                         <!-- <p class="miniDataBox_topP">{{ awardAmountStr(lpObject) }}</p> -->
-                        <p class="miniDataBox_topP">{{ "dsdsd" }}</p>
-                        <p class="miniDataBox_bottomP">待领取交易奖励</p>
+                        <p class="miniDataBox_topP">{{ "1213332.34 STB" }}</p>
+                        <p class="miniDataBox_bottomP">待领取总抵押奖励</p>
                     </div>
 
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
                         <!-- <p class="miniDataBox_topP">{{ bonusAmountStr(lpObject) }}</p>
                          -->
-                        <p class="miniDataBox_topP">{{ "sdd" }}</p>
-                        <p class="miniDataBox_bottomP">当前结算日期</p>
+                        <p class="miniDataBox_topP">{{ "234.34 WETH" }}</p>
+                        <p class="miniDataBox_bottomP">待领取总分红奖励</p>
                     </div>
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
                         <!-- <p class="miniDataBox_topP">{{ lpObject.nftQuantity + " NFT" }}</p> -->
-                        <p class="miniDataBox_topP">{{ "dsddsds"
+                        <p class="miniDataBox_topP">{{ "11"
                         }}</p>
-                        <p class="miniDataBox_bottomP">贡献交易额</p>
+                        <p class="miniDataBox_bottomP">可抵押</p>
                     </div>
 
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
                         <!-- <p class="miniDataBox_topP">{{ lpObject.nftQuantity + " NFT" }}</p> -->
-                        <p class="miniDataBox_topP">{{ "dsddsds"
+                        <p class="miniDataBox_topP">{{ "12"
                         }}</p>
-                        <p class="miniDataBox_bottomP">贡献交易额</p>
+                        <p class="miniDataBox_bottomP">已抵押</p>
                     </div>
                 </div>
             </div>
@@ -285,7 +285,27 @@ export default {
 
 }
 
+.leftBox_super {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .leftBox {
+    margin-top: .75rem;
+    margin-left: 0rem;
+    border-radius: .25rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* height: 100%; */
+    background-color: #FFFFFF;
+    height: 100%;
+
+}
+
+.leftBox1 {
     margin-top: .75rem;
     margin-left: 0rem;
     border-radius: .25rem;
@@ -469,12 +489,7 @@ export default {
     /* padding-right: .6rem; */
 }
 
-.leftBox_super {
-    height: 100%;
-    width: 40%;
-    display: flex;
-    flex-direction: row;
-}
+
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
     .contant {
@@ -494,6 +509,13 @@ export default {
         width: 100%;
         /* height: 5.45rem; */
 
+    }
+
+    .leftBox_super {
+        height: 100%;
+        width: 40%;
+        display: flex;
+        flex-direction: row;
     }
 
     .leftBox {
