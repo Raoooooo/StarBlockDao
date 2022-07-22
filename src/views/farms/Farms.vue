@@ -90,6 +90,9 @@
 
       </div>
 
+
+      <myfarmdata class="myfarmdata"></myfarmdata>
+
       <!-- Farms -->
       <div class="itemsBox" id="main2" ref="instro">
         <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
@@ -608,6 +611,7 @@
 <script>
 import { onConnect, initWeb3Modal, resetApp } from "@/common/useWallet";
 import Farmitem from "../farms/children/FarmsItem.vue";
+import Myfarmdata from "../farms/children/MyFarmData.vue";
 import Selectnft from "../farms/children/SelectNFT.vue";
 import poolDatas from "@/common/dataConfig";
 import poolDatas_main from "@/common/dataConfig_main";
@@ -661,7 +665,8 @@ export default {
     Farmitem,
     Selectnft,
     Bottom,
-    Course
+    Course,
+    Myfarmdata,
   },
   computed: {
     topImgUrl() {
@@ -4125,6 +4130,12 @@ export default {
     color: #111111;
     line-height: .55rem;
     white-space: nowrap;
+  }
+
+  .myfarmdata {
+    margin-top: 1.35rem;
+    width: 100%;
+    margin-bottom: -0.35rem;
   }
 
 }
