@@ -1190,6 +1190,7 @@ export default {
   color: #8C9399;
   line-height: .425rem;
   white-space: nowrap;
+  overflow-x: hidden;
 }
 
 .linkTopBox_left_text_active {
@@ -1200,6 +1201,7 @@ export default {
   color: #F7B500;
   line-height: .425rem;
   white-space: nowrap;
+  overflow-x: hidden;
 }
 
 
