@@ -1676,8 +1676,10 @@ export default {
               (this.currentBlockNumber - Number(item.poolInfo.startBlock)) *
               Number(item.rewardForEachBlock);
           }
+          console.log("item.poolInfo.pid*** ,currentRewardIndex", item.poolInfo.pid, item.poolInfo.currentRewardIndex);
           if (Number(item.poolInfo.currentRewardIndex) == 1) {
             reward = Number(item.rewardForEachBlock) * 6500 * 30 + reward
+            // console.log("item.poolInfo.pid***", item.poolInfo.pid);
           }
           this.totalReward += reward;
           this.totalBonus += item.dividend;
