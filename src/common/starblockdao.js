@@ -83,6 +83,29 @@ export function initReadWeb3() {
 
 }
 
+
+export async function getPoolSta(handlePoolSta, isFirstLoad) {
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+
+    const user = accounts[0];
+    const withOwnedNFTTokenIds = true;
+    const parameters = {
+        user,
+        withOwnedNFTTokenIds
+    };
+    const poolStaInfos = await daoport.getPoolSta(parameters);
+    console.log("getPoolSta:::wrappedPoolInfos,userInfo,poolSta", poolStaInfos.wrappedPoolInfos, poolStaInfos.userInfo, poolStaInfos.poolSta);
+    if (handlePoolSta) {
+        handlePoolSta(poolStaInfos, isFirstLoad);
+    }
+
+}
+
 export async function daoportAction(item, handleMasterChefInfo, index, isFirstLoad) {
 
     if (!accounts) {

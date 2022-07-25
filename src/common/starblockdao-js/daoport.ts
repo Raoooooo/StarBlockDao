@@ -304,7 +304,7 @@ export class DaoPort {
     const { _poolSta, _userInfo, _wrappedPoolInfos, } = await this._protocol.NFTMasterChefBatchContract.methods
       .getPoolSta(user, withOwnedNFTTokenIds)
       .call();
-    console.log("getPoolSta _poolSta、_userInfo、_wrappedPoolInfos:::", _poolSta, _userInfo, _wrappedPoolInfos);
+    // console.log("getPoolSta _poolSta、_userInfo、_wrappedPoolInfos:::", _poolSta, _userInfo, _wrappedPoolInfos);
     const poolSta = _poolSta;
     const userInfo = _userInfo;
     const wrappedPoolInfos = _wrappedPoolInfos;

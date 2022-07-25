@@ -270,7 +270,6 @@ var DaoPort = /** @class */ (function () {
                             .call()];
                     case 1:
                         _b = _c.sent(), _poolSta = _b._poolSta, _userInfo = _b._userInfo, _wrappedPoolInfos = _b._wrappedPoolInfos;
-                        console.log("getPoolSta _poolSta、_userInfo、_wrappedPoolInfos:::", _poolSta, _userInfo, _wrappedPoolInfos);
                         poolSta = _poolSta;
                         userInfo = _userInfo;
                         wrappedPoolInfos = _wrappedPoolInfos;

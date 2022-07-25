@@ -114,7 +114,7 @@
             </div>
           </div>
         </div>
-        <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
+        <farmitem :items="wrappedPoolInfos" :currentBlockNumber="currentBlockNumber"></farmitem>
       </div>
 
       <!-- <div class="emptyContantBox">
@@ -661,7 +661,8 @@ import {
   getWNFTTokenIDs,
   daoporWithdraw,
   daoporHarvest,
-  openseaApiBaseUrl
+  openseaApiBaseUrl,
+  getPoolSta
 } from "@/common/starblockdao";
 
 import {
@@ -985,6 +986,7 @@ export default {
       isSwitch1: true,
       isGetReward: false,
       poolItems: [],
+      wrappedPoolInfos: [],
       canSelectNftItems: [],
       isShowEmptyImg: true,
       NFTItems: [],
@@ -1634,14 +1636,11 @@ export default {
     },
 
     async getMasterChefInfo(isFirstLoad) {
-      for (var i = 0; i < this.poolItems.length; i++) {
-        var item = this.poolItems[i];
-        await daoportAction(item, this.handleMasterChefInfo, i, isFirstLoad);
-        // await approveNFTAction(item, this.handleNftApprove, i, true, this.faildHandleApproveNFT);
-        // approveWNFTAction(item, this.handleWNftApprove, i, true, this.faildHandleApproveWNFT);
-        // getNFTTokenIDs(item, this.handleGetNFTTokenIDs, i);
-        // getWNFTTokenIDs(item, this.handleGetWNFTTokenIDs, i);
-      }
+      getPoolSta(this.handlePoolSta, isFirstLoad);
+      // for (var i = 0; i < this.poolItems.length; i++) {
+      //   var item = this.poolItems[i];
+      //   await daoportAction(item, this.handleMasterChefInfo, i, isFirstLoad);
+      // }
     },
     async getFloorPriceData() {
       for (var i = 0; i < this.poolItems.length; i++) {
@@ -1650,6 +1649,79 @@ export default {
           this.requestFloorPrice(item, this.handleFloorPrice, i);
         }
 
+      }
+    },
+
+
+    handlePoolSta(poolStaInfo, isFirstLoad) {
+      this.wrappedPoolInfos = poolStaInfo.wrappedPoolInfos;
+      for (var i = 0; i < poolStaInfo.wrappedPoolInfos.length; i++) {
+        var item = poolStaInfo.wrappedPoolInfos[i];
+        this.setLocalDataWithItem(item);
+      }
+    },
+
+    setLocalDataWithItem(item) {
+      for (var i = 0; i < this.poolItems.length; i++) {
+        var localItem = this.poolItems[i];
+        if (localItem.poolInfo.pid == Number(item.pid)) {
+
+        }
+
+      }
+      console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
+      item.endBlock = masterChefInfo.endBlock;
+      item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
+      item.nftQuantity = masterChefInfo.nftQuantity;
+
+      item.wnftQuantity = masterChefInfo.wnftQuantity;
+      if (window.ethereum) {
+        item.selectedAddress = window.ethereum.selectedAddress;
+      } else {
+        item.selectedAddress = null;
+      }
+      item.poolInfo.amount = masterChefInfo.poolInfo.amount;
+      item.dividend = Number(masterChefInfo.dividend);
+      item.isNFTApproved = masterChefInfo.isNFTApproved;
+      item.isWNFTApproved = masterChefInfo.isWNFTApproved;
+      item.mining = Number(masterChefInfo.mining);
+      item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
+      item.nft = masterChefInfo.nft;
+      item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
+      item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
+      item.poolInfo.currentRewardIndex = masterChefInfo.poolInfo.currentRewardIndex;
+      if (isFirstLoad) {
+        if (item.collection.name) {
+          this.requestFloorPrice(item, this.handleFloorPrice, index);
+        }
+
+      }
+      if (index == this.poolItems.length - 1) {
+        this.totalNftQuantity = 0;
+        this.totalReward = 0;
+        this.totalBonus = 0;
+        for (var i = 0; i < this.poolItems.length; i++) {
+          const item = this.poolItems[i];
+          this.totalNftQuantity += Number(item.poolInfo.amount);
+          var reward = 0;
+
+          if (this.currentBlockNumber > Number(item.poolInfo.startBlock)) {
+            reward =
+              (this.currentBlockNumber - Number(item.poolInfo.startBlock)) *
+              Number(item.rewardForEachBlock);
+          }
+          console.log("item.poolInfo.pid*** ,currentRewardIndex", item.poolInfo.pid, item.poolInfo.currentRewardIndex);
+          if (Number(item.poolInfo.currentRewardIndex) == 1) {
+            reward = Number(item.rewardForEachBlock) * 6500 * 30 + reward
+            // console.log("item.poolInfo.pid***", item.poolInfo.pid);
+          }
+          this.totalReward += reward;
+          this.totalBonus += item.dividend;
+        }
+      }
+
+      if (item.collection.name) {
+        this.requestFloorPrice(item, this.handleFloorPrice, i);
       }
     },
 

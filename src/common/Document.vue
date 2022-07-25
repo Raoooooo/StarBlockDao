@@ -497,7 +497,7 @@ export default {
         withOwnedNFTTokenIds
       };
       const poolStaInfos = await daoport.getPoolSta(parameters);
-      console.log("Document getPoolSta:::", poolStaInfos);
+      console.log("Document getPoolSta:::wrappedPoolInfos,userInfo,poolSta", poolStaInfos.wrappedPoolInfos, poolStaInfos.userInfo, poolStaInfos.poolSta);
     },
 
 
