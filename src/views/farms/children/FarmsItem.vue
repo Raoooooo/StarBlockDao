@@ -202,6 +202,7 @@ export default {
       rowNum = 6;
     }
     return {
+      ratio: 0,
       currentPollItem: null,
       isNftPrrove: false,
       isWNftPrrove: false,
@@ -222,6 +223,10 @@ export default {
     };
   },
   created() {
+    this.ratio = this.detectZoom();
+    if (this.ratio >= 300) {
+      this.rowNum = 8
+    }
     // alert(document.documentElement.clientWidth);
     // if (this.serviceRate == 0) {
     // this.requestServiceRate();
@@ -297,6 +302,12 @@ export default {
       that.rowNum = rowNum;
       that.gutterSpace = that.windowWidth > 600 ? 27 : 6;
 
+
+      this.ratio = this.detectZoom();
+      if (this.ratio >= 300) {
+        this.rowNum = 8
+      }
+
       // var html = document.documentElement; //获取到html元素
       // var hWidth = html.getBoundingClientRect().width; //获取到html的宽度
       // if (hWidth < 1000) {
@@ -326,6 +337,27 @@ export default {
     };
   },
   methods: {
+
+    //获取当前页面的缩放值
+
+    detectZoom() {
+      let ratio = 0;
+      const screen = window.screen;
+      const ua = navigator.userAgent.toLowerCase();
+      if (window.devicePixelRatio !== undefined) {
+        ratio = window.devicePixelRatio;
+      } else if (~ua.indexOf("msie")) {
+        if (screen.deviceXDPI && screen.logicalXDPI) {
+          ratio = screen.deviceXDPI / screen.logicalXDPI;
+        }
+      } else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+        ratio = window.outerWidth / window.innerWidth;
+      }
+      if (ratio) {
+        ratio = Math.round(ratio * 100);
+      }
+      return ratio;
+    },
     linkBottomBoxClick(item) {
       if (item.poolInfo.wnft.length == 0) {
         return;

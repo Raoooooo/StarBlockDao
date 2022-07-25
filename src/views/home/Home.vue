@@ -68,6 +68,8 @@ export default {
       bottomImgUrl = require("@/assets/img/home/frameImg.png");
     }
     return {
+      windowWidth: 0,
+      ratio: 0,
       bottomImgUrl: bottomImgUrl,
       currentBlockNumber: 0,
       itemCountTextArr: ["8", "5", "5", "2", "3"],
@@ -156,6 +158,7 @@ export default {
         // that.isShowMobile = true;
       }
       console.log(that.windowWidth);
+      this.ratio = this.detectZoom();
       // this.ratio = this.detectZoom();
 
       var html = document.documentElement; //获取到html元素

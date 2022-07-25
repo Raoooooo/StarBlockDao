@@ -1,9 +1,12 @@
 <template>
   <div class="back">
+
     <list class="contantBack" ref="content">
       <!-- <div class="contantList"> -->
       <!-- 头部 -->
       <div class="topBackBox">
+        <!-- <p>{{ ratio }}</p> -->
+        <!-- <p>{{ windowWidth }}</p> -->
         <img :src="topBackImgUrl" class="topImg" />
         <div class="topBackContant">
           <div class="topImgIconBox">
@@ -913,6 +916,8 @@ export default {
     }
 
     return {
+      ratio: 0,
+      windowWidth: document.documentElement.clientWidth,
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
@@ -994,6 +999,7 @@ export default {
     });
   },
   created() {
+    this.ratio = this.detectZoom();
     // var prama = {
     //   treeId: 0,
     //   address: "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
@@ -1062,10 +1068,10 @@ export default {
       var hWidth = that.windowWidth; //获取到html的宽度
       // 当hWidth大于640时，则物理分辨率小于1280（这就看设备的devicePixelRatio这个值了），应该去访问pc网站了
       // alert(hWidth);
-      var bili = Number(this.ratio) / 100;
-      if (this.ratio > 100) {
-        this.metaItemContantDesFontSize = 14 / (3 * bili) + "px";
-      }
+      // var bili = Number(this.ratio) / 100;
+      // if (this.ratio > 100) {
+      //   this.metaItemContantDesFontSize = 14 / (3 * bili) + "px";
+      // }
     }
   },
   mounted() {
@@ -1108,6 +1114,27 @@ export default {
   },
 
   methods: {
+
+    //获取当前页面的缩放值
+
+    detectZoom() {
+      let ratio = 0;
+      const screen = window.screen;
+      const ua = navigator.userAgent.toLowerCase();
+      if (window.devicePixelRatio !== undefined) {
+        ratio = window.devicePixelRatio;
+      } else if (~ua.indexOf("msie")) {
+        if (screen.deviceXDPI && screen.logicalXDPI) {
+          ratio = screen.deviceXDPI / screen.logicalXDPI;
+        }
+      } else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+        ratio = window.outerWidth / window.innerWidth;
+      }
+      if (ratio) {
+        ratio = Math.round(ratio * 100);
+      }
+      return ratio;
+    },
 
     changeTab() {
       // setTimeout(() => {
@@ -3042,6 +3069,7 @@ export default {
     font-family: DINAlternate-Bold, DINAlternate;
     font-weight: bold;
     color: #ffffff;
+    /* color: #5C5E67; */
     line-height: 1.2rem;
     letter-spacing: 1px;
     text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
