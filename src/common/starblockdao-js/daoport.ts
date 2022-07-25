@@ -476,19 +476,16 @@ export class DaoPort {
   }
 
   public async getAllPoolInfos({
-    fromPid,
-    toPid,
     user,
-    withOwnedNFTTokenIds
+    canDeposite,
+    deposited
   }: {
-    fromPid: number;
-    toPid: number;
-    pid: number;
     user: string;
-    withOwnedNFTTokenIds: boolean;
+    canDeposite: boolean;
+    deposited: boolean
   }): Promise<[]> {
     const _wrappedPoolInfos = await this._protocol.NFTMasterChefBatchContract.methods
-      .getAllPoolInfos(fromPid, toPid, user, withOwnedNFTTokenIds)
+      .getAllPoolInfos(user, canDeposite, deposited)
       .call();
     console.log("getPoolInfo _wrappedPoolInfos:::", _wrappedPoolInfos);
     return _wrappedPoolInfos;

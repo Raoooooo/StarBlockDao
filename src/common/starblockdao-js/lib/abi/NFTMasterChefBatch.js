@@ -5,13 +5,18 @@ exports.NFTMasterChefBatch = [
     {
         "inputs": [
             {
+                "internalType": "contract ICollectionUtils",
+                "name": "_collectionUtils",
+                "type": "address"
+            },
+            {
                 "internalType": "contract INFTPool",
                 "name": "_nftPool",
                 "type": "address"
             },
             {
-                "internalType": "contract ITokenPriceUtil",
-                "name": "_tokenPriceUtil",
+                "internalType": "contract ITokenPriceUtils",
+                "name": "_tokenPriceUtils",
                 "type": "address"
             }
         ],
@@ -40,42 +45,6 @@ exports.NFTMasterChefBatch = [
     {
         "inputs": [
             {
-                "internalType": "contract IERC721[]",
-                "name": "_nfts",
-                "type": "address[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_maxTokenIds",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "addMaxTokenIds",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "contract IERC721[]",
-                "name": "_nfts",
-                "type": "address[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_minTokenIds",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "addMinTokenIds",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "uint256[]",
                 "name": "_pids",
                 "type": "uint256[]"
@@ -92,11 +61,34 @@ exports.NFTMasterChefBatch = [
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "collectionUtils",
+        "outputs": [
+            {
+                "internalType": "contract ICollectionUtils",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
                 "name": "_user",
                 "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_canDeposite",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "_deposited",
+                "type": "bool"
             }
         ],
         "name": "getAllPoolInfos",
@@ -285,30 +277,6 @@ exports.NFTMasterChefBatch = [
                 "internalType": "struct NFTMasterChefBatch.WrappedPoolInfo[]",
                 "name": "_wrappedPoolInfos",
                 "type": "tuple[]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "contract IERC721",
-                "name": "_nft",
-                "type": "address"
-            }
-        ],
-        "name": "getMinAndMaxTokenId",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "_minTokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_maxTokenId",
-                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -2141,44 +2109,6 @@ exports.NFTMasterChefBatch = [
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "contract IERC721",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "name": "maxTokenIds",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "contract IERC721",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "name": "minTokenIds",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [],
         "name": "nftMasterChef",
         "outputs": [
@@ -2571,22 +2501,35 @@ exports.NFTMasterChefBatch = [
     {
         "inputs": [
             {
-                "internalType": "contract ITokenPriceUtil",
-                "name": "_tokenPriceUtil",
+                "internalType": "contract ICollectionUtils",
+                "name": "_collectionUtils",
                 "type": "address"
             }
         ],
-        "name": "setTokenPriceUtil",
+        "name": "setCollectionUtils",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ITokenPriceUtils",
+                "name": "_tokenPriceUtils",
+                "type": "address"
+            }
+        ],
+        "name": "setTokenPriceUtils",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "inputs": [],
-        "name": "tokenPriceUtil",
+        "name": "tokenPriceUtils",
         "outputs": [
             {
-                "internalType": "contract ITokenPriceUtil",
+                "internalType": "contract ITokenPriceUtils",
                 "name": "",
                 "type": "address"
             }

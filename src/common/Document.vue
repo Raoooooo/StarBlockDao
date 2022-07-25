@@ -509,15 +509,14 @@ export default {
         this.getDaoPort(accounts[0]);
       }
 
-      const fromPid = 0;
-      const toPid = 4;
       const user = accounts[0];
       const withOwnedNFTTokenIds = false;
+      const canDeposite = false;
+      const deposited = false;
       const parameters = {
-        fromPid,
-        toPid,
         user,
-        withOwnedNFTTokenIds
+        canDeposite,
+        deposited
       };
       const wrappedPoolInfos = await daoport.getAllPoolInfos(parameters);
       console.log("Document getAllPoolInfos:::", wrappedPoolInfos);

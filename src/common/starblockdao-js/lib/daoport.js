@@ -433,13 +433,13 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.getAllPoolInfos = function (_a) {
-        var fromPid = _a.fromPid, toPid = _a.toPid, user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        var user = _a.user, canDeposite = _a.canDeposite, deposited = _a.deposited;
         return __awaiter(this, void 0, void 0, function () {
             var _wrappedPoolInfos;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getAllPoolInfos(fromPid, toPid, user, withOwnedNFTTokenIds)
+                            .getAllPoolInfos(user, canDeposite, deposited)
                             .call()];
                     case 1:
                         _wrappedPoolInfos = _b.sent();

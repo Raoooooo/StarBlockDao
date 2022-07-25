@@ -97,8 +97,7 @@ export class CollectionPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to updateWhitelistSaleConfig transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to updateWhitelistSaleConfig transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -115,8 +114,7 @@ export class CollectionPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to updatePublicSaleConfig transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to updatePublicSaleConfig transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -133,8 +131,7 @@ export class CollectionPort {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to addWhitelists transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to addWhitelists transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -185,8 +182,7 @@ export class CollectionPort {
       .catch((error: Error) => {
         errorCallback(
           new Error(
-            `Failed to whitelistMint transaction: "${
-              error instanceof Error && error.message ? error.message : "user denied"
+            `Failed to whitelistMint transaction: "${error instanceof Error && error.message ? error.message : "user denied"
             }..."`
           )
         );
@@ -237,8 +233,7 @@ export class CollectionPort {
       .catch((error: Error) => {
         errorCallback(
           new Error(
-            `Failed to publicMint transaction: "${
-              error instanceof Error && error.message ? error.message : "user denied"
+            `Failed to publicMint transaction: "${error instanceof Error && error.message ? error.message : "user denied"
             }..."`
           )
         );

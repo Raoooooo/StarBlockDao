@@ -52,12 +52,10 @@ export declare class DaoPort {
         user: string;
         withOwnedNFTTokenIds: boolean;
     }): Promise<{}>;
-    getAllPoolInfos({ fromPid, toPid, user, withOwnedNFTTokenIds }: {
-        fromPid: number;
-        toPid: number;
-        pid: number;
+    getAllPoolInfos({ user, canDeposite, deposited }: {
         user: string;
-        withOwnedNFTTokenIds: boolean;
+        canDeposite: boolean;
+        deposited: boolean;
     }): Promise<[]>;
     getPoolInfosByNFTorWNFTs({ poolNFTorWNFTs, user, withOwnedNFTTokenIds }: {
         poolNFTorWNFTs: string[];
