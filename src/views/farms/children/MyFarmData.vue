@@ -42,31 +42,27 @@
                 <!-- <div class="rightBox_sepLine"></div> -->
                 <div class="rightBox_bottomBox">
                     <div class="miniDataBox">
-                        <!-- <p class="miniDataBox_topP">{{ awardAmountStr(lpObject) }}</p> -->
-                        <p class="miniDataBox_topP">{{ "1213332.34 STB" }}</p>
+                        <p class="miniDataBox_topP">{{ awardAmountStr(userInfo) }}</p>
+                        <!-- <p class="miniDataBox_topP">{{ "1213332.34 STB" }}</p> -->
                         <p class="miniDataBox_bottomP">待领取总抵押奖励</p>
                     </div>
 
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
-                        <!-- <p class="miniDataBox_topP">{{ bonusAmountStr(lpObject) }}</p>
-                         -->
-                        <p class="miniDataBox_topP">{{ "234.34 WETH" }}</p>
+                        <p class="miniDataBox_topP">{{ bonusAmountStr(userInfo) }}</p>
+
+                        <!-- <p class="miniDataBox_topP">{{ "234.34 WETH" }}</p> -->
                         <p class="miniDataBox_bottomP">待领取总分红奖励</p>
                     </div>
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
-                        <!-- <p class="miniDataBox_topP">{{ lpObject.nftQuantity + " NFT" }}</p> -->
-                        <p class="miniDataBox_topP">{{ "11"
-                        }}</p>
+                        <p class="miniDataBox_topP">{{ userInfo.nftQuantity + " NFT" }}</p>
                         <p class="miniDataBox_bottomP">可抵押</p>
                     </div>
 
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
-                        <!-- <p class="miniDataBox_topP">{{ lpObject.nftQuantity + " NFT" }}</p> -->
-                        <p class="miniDataBox_topP">{{ "12"
-                        }}</p>
+                        <p class="miniDataBox_topP">{{ userInfo.nftQuantity + " NFT" }}</p>
                         <p class="miniDataBox_bottomP">已抵押</p>
                     </div>
                 </div>
@@ -149,18 +145,12 @@ export default {
         },
     },
     props: {
-        lpObject: {
-            type: Object,
-            default() {
-                return {};
-            }
-        },
-        canClaimResult: {
+        userInfo: {
             type: Array,
             default() {
                 return [];
             }
-        }
+        },
     },
     watch: {
         windowWidth(val) {
@@ -252,12 +242,18 @@ export default {
             if (item.mining != "--") {
                 return (item.mining * Math.pow(10, -18)).toFixed(4) + " STB";
             }
+            if (item.mining == "--") {
+                return "-- STB";
+            }
             return item.mining;
         },
 
         bonusAmountStr(item) {
             if (item.dividend != "--") {
                 return (item.dividend * Math.pow(10, -18)).toFixed(4) + " WETH";
+            }
+            if (item.dividend == "--") {
+                return "-- WETH";
             }
             return item.dividend;
         },

@@ -91,7 +91,7 @@
       </div>
 
 
-      <myfarmdata class="myfarmdata"></myfarmdata>
+      <myfarmdata class="myfarmdata" :userInfo="userInfo"></myfarmdata>
 
       <!-- Farms -->
       <div class="itemsBox" id="main2" ref="instro">
@@ -114,7 +114,7 @@
             </div>
           </div>
         </div>
-        <farmitem :items="wrappedPoolInfos" :currentBlockNumber="currentBlockNumber"></farmitem>
+        <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
       </div>
 
       <!-- <div class="emptyContantBox">
@@ -938,6 +938,7 @@ export default {
     }
 
     return {
+      userInfo: { dividend: "--", mining: "--", nftQuantity: "--", wnftQuantity: "--" },
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
@@ -1445,7 +1446,7 @@ export default {
         })
         .then(res => {
           if (handleFloorPrice) {
-            handleFloorPrice(item, res.data.stats.floor_price, index);
+            handleFloorPrice(item, res.data.stats.floor_price);
 
           }
           console.log("collection/doodles-official/stats", res.data.stats.floor_price);
@@ -1655,73 +1656,70 @@ export default {
 
     handlePoolSta(poolStaInfo, isFirstLoad) {
       this.wrappedPoolInfos = poolStaInfo.wrappedPoolInfos;
+      this.userInfo = poolStaInfo.userInfo;
       for (var i = 0; i < poolStaInfo.wrappedPoolInfos.length; i++) {
         var item = poolStaInfo.wrappedPoolInfos[i];
-        this.setLocalDataWithItem(item);
+        this.setLocalDataWithItem(item, poolStaInfo.poolSta, isFirstLoad, i);
       }
     },
 
-    setLocalDataWithItem(item) {
-      for (var i = 0; i < this.poolItems.length; i++) {
-        var localItem = this.poolItems[i];
-        if (localItem.poolInfo.pid == Number(item.pid)) {
-
-        }
-
+    setLocalDataWithItem(masterChefInfo, poolSta, isFirstLoad, index) {
+      const item = this.poolItems.find(localItem => localItem.poolInfo.pid == Number(masterChefInfo.pid));
+      // console.log("foundLoalItem", foundLoalItem);
+      // console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
+      console.log(" masterChefInfo.endBlock", masterChefInfo.endBlock, item);
+      if (item == undefined) {
+        return;
       }
-      console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
+
       item.endBlock = masterChefInfo.endBlock;
       item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
-      item.nftQuantity = masterChefInfo.nftQuantity;
+      item.nftQuantity = masterChefInfo.userInfo.nftQuantity;
 
-      item.wnftQuantity = masterChefInfo.wnftQuantity;
+      item.wnftQuantity = masterChefInfo.userInfo.wnftQuantity;
       if (window.ethereum) {
         item.selectedAddress = window.ethereum.selectedAddress;
       } else {
         item.selectedAddress = null;
       }
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
-      item.dividend = Number(masterChefInfo.dividend);
-      item.isNFTApproved = masterChefInfo.isNFTApproved;
-      item.isWNFTApproved = masterChefInfo.isWNFTApproved;
-      item.mining = Number(masterChefInfo.mining);
+      item.dividend = Number(masterChefInfo.userInfo.dividend);
+      item.isNFTApproved = masterChefInfo.userInfo.isNFTApproved;
+      item.isWNFTApproved = masterChefInfo.userInfo.isWNFTApproved;
+      item.mining = Number(masterChefInfo.userInfo.mining);
       item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
       item.nft = masterChefInfo.nft;
       item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
       item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
-      item.poolInfo.currentRewardIndex = masterChefInfo.poolInfo.currentRewardIndex;
-      if (isFirstLoad) {
-        if (item.collection.name) {
-          this.requestFloorPrice(item, this.handleFloorPrice, index);
-        }
+      item.poolInfo.currentRewardIndex = masterChefInfo.currentRewardIndex;
 
-      }
+
       if (index == this.poolItems.length - 1) {
-        this.totalNftQuantity = 0;
-        this.totalReward = 0;
-        this.totalBonus = 0;
-        for (var i = 0; i < this.poolItems.length; i++) {
-          const item = this.poolItems[i];
-          this.totalNftQuantity += Number(item.poolInfo.amount);
-          var reward = 0;
-
-          if (this.currentBlockNumber > Number(item.poolInfo.startBlock)) {
-            reward =
-              (this.currentBlockNumber - Number(item.poolInfo.startBlock)) *
-              Number(item.rewardForEachBlock);
-          }
-          console.log("item.poolInfo.pid*** ,currentRewardIndex", item.poolInfo.pid, item.poolInfo.currentRewardIndex);
-          if (Number(item.poolInfo.currentRewardIndex) == 1) {
-            reward = Number(item.rewardForEachBlock) * 6500 * 30 + reward
-            // console.log("item.poolInfo.pid***", item.poolInfo.pid);
-          }
-          this.totalReward += reward;
-          this.totalBonus += item.dividend;
-        }
+        this.totalNftQuantity = poolSta.totalNFTAmount;
+        this.totalReward = poolSta.totalRewardedToken;
+        this.totalBonus = poolSta.totalRewardedDividend;
       }
 
-      if (item.collection.name) {
-        this.requestFloorPrice(item, this.handleFloorPrice, i);
+      // for (var i = 0; i < this.poolItems.length; i++) {
+      //   const item = this.poolItems[i];
+      //   this.totalNftQuantity += Number(item.poolInfo.amount);
+      //   var reward = 0;
+
+      //   if (this.currentBlockNumber > Number(item.poolInfo.startBlock)) {
+      //     reward =
+      //       (this.currentBlockNumber - Number(item.poolInfo.startBlock)) *
+      //       Number(item.rewardForEachBlock);
+      //   }
+      //   console.log("item.poolInfo.pid*** ,currentRewardIndex", item.poolInfo.pid, item.poolInfo.currentRewardIndex);
+      //   if (Number(item.poolInfo.currentRewardIndex) == 1) {
+      //     reward = Number(item.rewardForEachBlock) * 6500 * 30 + reward
+      //     // console.log("item.poolInfo.pid***", item.poolInfo.pid);
+      //   }
+      //   this.totalReward += reward;
+      //   this.totalBonus += item.dividend;
+      // }
+      if (item.collection.name && isFirstLoad) {
+        this.requestFloorPrice(item, this.handleFloorPrice);
       }
     },
 
@@ -1759,7 +1757,7 @@ export default {
       //   item.poolInfo.startBlock = 10776740;
       // }
       if (index == this.poolItems.length - 1) {
-        this.totalNftQuantity = 0;
+        this.totalNftQuantity = totalNFTAmount;
         this.totalReward = 0;
         this.totalBonus = 0;
         for (var i = 0; i < this.poolItems.length; i++) {
