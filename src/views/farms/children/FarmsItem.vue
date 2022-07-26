@@ -630,7 +630,10 @@ export default {
   border-color: #99a9bf;
   /* border-width: 0.05px; */
   /* border-style: solid; */
-  box-shadow: 0px 5px 12px 0px rgb(207 214 230 / 30%);
+  /* box-shadow: 0px 5px 12px 0px rgb(207 214 230 / 30%); */
+  border-color: #F1F1F1;
+  border-style: solid;
+  border-width: .025rem;
   margin-left: 2px;
   margin-right: 2px;
 }

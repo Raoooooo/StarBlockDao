@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60 (88103) - https://sketch.com -->
+    <title>编组 3</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon" transform="translate(-249.000000, -1909.000000)" fill-rule="nonzero">
+            <g id="编组-3" transform="translate(249.000000, 1909.000000)">
+                <rect id="矩形备份" fill="#F7B500" x="0" y="0" width="30" height="30" rx="4"></rect>
+                <path d="M24.5896601,9.95352528 L13.3813183,21.1618681 L12.7488087,21.7943777 C12.0822932,22.4608932 11.0009059,22.4608932 10.3343904,21.7943777 L9.70188082,21.1618681 L5.38993379,16.8499207 C4.83563776,16.2956246 4.8866466,15.3570619 5.54636089,14.8741782 C6.07005162,14.4933122 6.80117829,14.5783269 7.25685723,15.0374065 L11.538199,19.3187486 L22.7703449,8.08660168 C23.3246409,7.5323056 24.2632035,7.58331444 24.7460872,8.24302879 C25.1337544,8.76671956 25.045339,9.49784629 24.5896601,9.95352528 Z" id="路径" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

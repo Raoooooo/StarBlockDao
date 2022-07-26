@@ -96,25 +96,34 @@
       <!-- Farms -->
       <div class="itemsBox" id="main2" ref="instro">
         <div class="searchAndSortBox">
-          <div class="searchBox"></div>
+          <div class="searchBoxSuper">
+            <div class="searchBox">
+              <img class="searchBox_leftImg" src="@/assets/img/common/search_yellow.svg" />
+              <input class="searchBox_input" v-model="searchText" :placeholder="placeholderText" />
+              <img class="searchBox_rightImg" src="@/assets/img/common/close_gray.svg" @click="clearSearchText" />
+            </div>
+
+            <button class="searchBtn">搜索</button>
+          </div>
+
           <div class="sortBox">
             <div class="sortItemBox0">
               <p class="sortItemBox0_text">最新</p>
-              <img class="sortItemBox0_img" />
+              <img class="sortItemBox0_img" :src="drow_upDownImgUrl" />
             </div>
             <div class="sortItemBox1">
-              <img class="sortItemBox1_img" />
+              <img class="sortItemBox1_img" :src="sort_myNFTimgUrl" @click="sortMyNFTAction" />
               <p class="sortItemBox1_text">我的持有</p>
-
             </div>
             <div class="sortItemBox1">
-              <img class="sortItemBox1_img" />
+              <img class="sortItemBox1_img" :src="sort_myWNFTimgUrl" @click="sortMyWNFTAction" />
               <p class="sortItemBox1_text">我的抵押</p>
 
             </div>
           </div>
         </div>
-        <farmitem :items="poolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
+        <farmitem :items="handledPoolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
+        <farmitemplace :items="placeItems" v-show="handledPoolItems.length == 0"></farmitemplace>
       </div>
 
       <!-- <div class="emptyContantBox">
@@ -320,7 +329,7 @@
           {{
               !isGetReward
                 ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
           }}
         </span>
         <div class="bottomBtnBox1">
@@ -347,7 +356,7 @@
           {{
               !isGetReward
                 ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
           }}
         </span>
         <div class="bottomBtnBox1">
@@ -374,7 +383,34 @@
           {{
               !isGetReward
                 ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem)
+                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
+          }}
+        </span>
+        <div class="bottomBtnBox1">
+          <button class="goOnCreatBtn" @click="defaultBtnAction">
+            {{ $t("common.confirm") }}
+          </button>
+          <button class="lookDetailBtn" @click="cancleBtnAction">
+            {{ $t("common.cancle") }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog title="" :visible.sync="warningDefaultReceiveAllReward" :width="elDialogWidth" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+      <div class="dialogBack">
+        <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
+        <p class="dialopTitle">
+          {{ defaultMessageStr }}
+        </p>
+        <span class="dialogDes" v-bind="{ color: dialogDesColor }">
+          {{
+              !isGetReward
+                ? defaultMessageDesStr
+                : defaultMessageDesStr + ":" + awardAmountStr(userInfo.mining)
           }}
         </span>
         <div class="bottomBtnBox1">
@@ -630,6 +666,8 @@
 <script>
 import { onConnect, initWeb3Modal, resetApp } from "@/common/useWallet";
 import Farmitem from "../farms/children/FarmsItem.vue";
+import Farmitemplace from "../farms/children/FarmItemPlace.vue";
+
 import Myfarmdata from "../farms/children/MyFarmData.vue";
 import Selectnft from "../farms/children/SelectNFT.vue";
 import poolDatas from "@/common/dataConfig";
@@ -662,7 +700,8 @@ import {
   daoporWithdraw,
   daoporHarvest,
   openseaApiBaseUrl,
-  getPoolSta
+  getPoolSta,
+  getAllPoolInfos
 } from "@/common/starblockdao";
 
 import {
@@ -687,6 +726,7 @@ export default {
     Bottom,
     Course,
     Myfarmdata,
+    Farmitemplace
   },
   computed: {
     topImgUrl() {
@@ -938,6 +978,13 @@ export default {
     }
 
     return {
+      placeholderText: "输入合约地址或者合约name",
+      searchText: "",
+      drow_upDownImgUrl: require("@/assets/img/common/drow_down.svg"),
+      sort_myNFTimgUrl: require("@/assets/img/common/sort_unselect.svg"),
+      sort_myWNFTimgUrl: require("@/assets/img/common/sort_unselect.svg"),
+      selectSortMyNFT: false,
+      selectSortMyWNFT: false,
       userInfo: { dividend: "--", mining: "--", nftQuantity: "--", wnftQuantity: "--" },
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
@@ -969,7 +1016,7 @@ export default {
       warningDefaultVisible: false,
       warningDefaultVisible1: false,
       warningDefaultVisible2: false,
-
+      warningDefaultReceiveAllReward: false,
 
       selectTokenIdsArr: [],
       selectCount: 0,
@@ -987,6 +1034,8 @@ export default {
       isSwitch1: true,
       isGetReward: false,
       poolItems: [],
+      placeItems: ["", "", "", "", "", "", "", ""],
+      handledPoolItems: [],
       wrappedPoolInfos: [],
       canSelectNftItems: [],
       isShowEmptyImg: true,
@@ -1135,7 +1184,24 @@ export default {
   },
 
   methods: {
-
+    sortPoolInfos(canDeposite, deposited) {
+      getAllPoolInfos(this.handlePoolInfos, canDeposite, deposited)
+    },
+    clearSearchText() {
+      this.searchText = "";
+    },
+    sortMyNFTAction() {
+      this.selectSortMyNFT = !this.selectSortMyNFT;
+      this.sort_myNFTimgUrl = this.selectSortMyNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
+      this.handledPoolItems = [];
+      this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
+    },
+    sortMyWNFTAction() {
+      this.selectSortMyWNFT = !this.selectSortMyWNFT;
+      this.sort_myWNFTimgUrl = this.selectSortMyWNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
+      this.handledPoolItems = [];
+      this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
+    },
     changeTab() {
       // setTimeout(() => {
       //   this.active = index;
@@ -1466,16 +1532,16 @@ export default {
       // }
       // }
     },
-    awardAmountStr(item) {
-      if (item.mining != "--") {
-        var number = item.mining * Math.pow(10, -18);
+    awardAmountStr(mining) {
+      if (mining != "--") {
+        var number = mining * Math.pow(10, -18);
         if (number >= 10000) {
           return number.toFixed(0) + " STB";
         } else {
           return Number(number.toFixed(2)) + " STB";
         }
       }
-      return item.mining;
+      return mining;
     },
     copyAddressAction(address) {
       var that = this;
@@ -1659,15 +1725,32 @@ export default {
       this.userInfo = poolStaInfo.userInfo;
       for (var i = 0; i < poolStaInfo.wrappedPoolInfos.length; i++) {
         var item = poolStaInfo.wrappedPoolInfos[i];
-        this.setLocalDataWithItem(item, poolStaInfo.poolSta, isFirstLoad, i);
+        this.setLocalDataWithItem(item, isFirstLoad, i);
       }
+      this.setTopData(poolStaInfo.poolSta);
     },
 
-    setLocalDataWithItem(masterChefInfo, poolSta, isFirstLoad, index) {
+    handlePoolInfos(poolInfos) {
+      for (var i = 0; i < poolInfos.length; i++) {
+        var item = poolInfos[i];
+        this.setLocalDataWithItem(item, false, i);
+      }
+
+    },
+    setTopData(poolSta) {
+      this.totalNftQuantity = poolSta.totalNFTAmount;
+      this.totalReward = poolSta.totalRewardedToken;
+      this.totalBonus = poolSta.totalRewardedDividend;
+    },
+
+    setLocalDataWithItem(masterChefInfo, isFirstLoad, index) {
       const item = this.poolItems.find(localItem => localItem.poolInfo.pid == Number(masterChefInfo.pid));
       // console.log("foundLoalItem", foundLoalItem);
       // console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
       console.log(" masterChefInfo.endBlock", masterChefInfo.endBlock, item);
+      if (index == 0) {
+        this.handledPoolItems = [];
+      }
       if (item == undefined) {
         return;
       }
@@ -1689,16 +1772,17 @@ export default {
       item.mining = Number(masterChefInfo.userInfo.mining);
       item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
       item.nft = masterChefInfo.nft;
-      item.rewardPerNFTForEachBlock = masterChefInfo.rewardPerNFTForEachBlock;
-      item.rewardForEachBlock = masterChefInfo.rewardForEachBlock;
+      item.rewardPerNFTForEachBlock = masterChefInfo.currentReward.rewardPerNFTForEachBlock;
+      item.rewardForEachBlock = masterChefInfo.currentReward.rewardForEachBlock;
       item.poolInfo.currentRewardIndex = masterChefInfo.currentRewardIndex;
 
+      this.handledPoolItems.push(item);
 
-      if (index == this.poolItems.length - 1) {
-        this.totalNftQuantity = poolSta.totalNFTAmount;
-        this.totalReward = poolSta.totalRewardedToken;
-        this.totalBonus = poolSta.totalRewardedDividend;
-      }
+      // if (index == this.poolItems.length - 1) {
+      //   this.totalNftQuantity = poolSta.totalNFTAmount;
+      //   this.totalReward = poolSta.totalRewardedToken;
+      //   this.totalBonus = poolSta.totalRewardedDividend;
+      // }
 
       // for (var i = 0; i < this.poolItems.length; i++) {
       //   const item = this.poolItems[i];
@@ -3086,10 +3170,71 @@ export default {
 
 }
 
-.searchBox {
+.searchBoxSuper {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.searchBox {
+  margin-left: .75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: .1rem;
+  border: 1px solid #F1F1F1;
+  width: 8.625rem;
+  height: 1rem;
+}
+
+.searchBtn {
+  padding-left: .3rem;
+  padding-right: .3rem;
+  padding-top: .2rem;
+  padding-bottom: .2rem;
+  margin-left: .75rem;
+  font-size: .35rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: .5rem;
+  border-style: none;
+  background-color: #F7B500;
+  border-radius: .1rem;
+}
+
+.searchBox_leftImg {
+  margin-left: .25rem;
+  width: .4055rem;
+  height: .4487rem;
+
+}
+
+.searchBox_input {
+  margin-left: .175rem;
+  margin-right: .5rem;
+  flex: 1;
+  height: 100%;
+  border: none;
+  font-size: .325rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #8C9399;
+  color: #111;
+  line-height: .4rem;
+  background-color: #fff;
+  border-width: 0rem;
+  outline: none;
+
+
+
+}
+
+.searchBox_rightImg {
+  margin-right: .25rem;
+  width: .35rem;
+  height: .35rem;
 }
 
 .sortBox {
@@ -3143,8 +3288,8 @@ export default {
 
 .sortItemBox0_img {
   margin-right: .25rem;
-  width: .3rem;
-  height: .175rem;
+  width: .4rem;
+  /* height: .175rem; */
 }
 
 .sortItemBox1_img {

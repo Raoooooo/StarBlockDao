@@ -106,6 +106,27 @@ export async function getPoolSta(handlePoolSta, isFirstLoad) {
 
 }
 
+export async function getAllPoolInfos(handlePoolInfos, canDeposite, deposited) {
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+
+    const user = accounts[0];
+    const parameters = {
+        user,
+        canDeposite,
+        deposited
+    };
+    const poolInfos = await daoport.getAllPoolInfos(parameters);
+    console.log("poolInfos", poolInfos);
+    if (handlePoolInfos) {
+        handlePoolInfos(poolInfos);
+    }
+}
+
 export async function daoportAction(item, handleMasterChefInfo, index, isFirstLoad) {
 
     if (!accounts) {
