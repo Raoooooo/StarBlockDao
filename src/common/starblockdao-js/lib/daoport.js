@@ -491,7 +491,7 @@ var DaoPort = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
-                        return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                        return [4 /*yield*/, this._protocol.NFTMasterChefBatchContractWrite.methods
                                 .harvestAll(forUser)
                                 .send(txnData)];
                     case 1:
@@ -547,7 +547,7 @@ var DaoPort = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         txnData = { from: this._protocol.account };
-                        return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
+                        return [4 /*yield*/, this._protocol.NFTMasterChefBatchContractWrite.methods
                                 .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
                                 .send(txnData)
                                 .on("transactionHash", function (txHash) {

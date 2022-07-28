@@ -519,7 +519,7 @@ export class DaoPort {
     let txHash;
     try {
       const txnData = { from: this._protocol.account };
-      txHash = await this._protocol.NFTMasterChefBatchContract.methods
+      txHash = await this._protocol.NFTMasterChefBatchContractWrite.methods
         .harvestAll(forUser)
         .send(txnData);
     } catch (error) {
@@ -577,7 +577,7 @@ export class DaoPort {
     errorCallback: ContractErrorCallback
   ): Promise<void> {
     const txnData = { from: this._protocol.account };
-    await this._protocol.NFTMasterChefBatchContract.methods
+    await this._protocol.NFTMasterChefBatchContractWrite.methods
       .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
       .send(txnData)
       .on("transactionHash", (txHash: string) => {

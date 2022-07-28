@@ -14,6 +14,7 @@ export class Protocol {
   public MerkletRootDistributorContractAddress: string;
   public MerkletRootDistributorContract: Contract;
   public NFTMasterChefBatchContract: Contract;
+  public NFTMasterChefBatchContractWrite: Contract;
   public StarblockCollectionContract: Contract;
   public StarblockCollectionUtilsContract: Contract;
   private _networkName = Network.Main;
@@ -39,6 +40,11 @@ export class Protocol {
     this.NFTUtilsAbi = constants.NFTUtils_ABI;
 
     this.NFTUtilsContract = new this.web3.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
+
+    this.NFTMasterChefBatchContractWrite = new this.web3.eth.Contract(
+      constants.NFTMASTERCHEFBATCH_ABI,
+      constants.DEPLOYED[this._networkName].NFTMasterChefBatch
+    );
 
     this.MerkletRootDistributorContractAddress =
       constants.DEPLOYED[this._networkName].MerkletRootDistributor;

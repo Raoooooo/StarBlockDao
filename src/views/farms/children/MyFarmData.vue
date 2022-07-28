@@ -47,7 +47,7 @@
                     <div class="getAwardBox">
                         <div class="miniDataBox1">
                             <p class="miniDataBox_topP">{{ awardAmountStr(userInfo) }}</p>
-                            <p class="miniDataBox_bottomP">待领取总抵押奖励</p>
+                            <p class="miniDataBox_bottomP">{{ $t("common.optionName5") }}</p>
                         </div>
                         <img src="@/assets/img/common/getAward.svg" class="getAwardBox_img" @click="getAwardBoxAction"
                             v-show="getAwardIconShow" />
@@ -56,7 +56,7 @@
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
                         <p class="miniDataBox_topP">{{ bonusAmountStr(userInfo) }}</p>
-                        <p class="miniDataBox_bottomP">待领取总分红奖励</p>
+                        <p class="miniDataBox_bottomP">{{ $t("common.optionName6") }}</p>
                     </div>
 
                     <div class="vSepLine"></div>
@@ -67,13 +67,13 @@
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
                         <p class="miniDataBox_topP">{{ userInfo.nftQuantity + " NFT" }}</p>
-                        <p class="miniDataBox_bottomP">可抵押</p>
+                        <p class="miniDataBox_bottomP">{{ $t("common.canStake") }}</p>
                     </div>
 
                     <div class="vSepLine"></div>
                     <div class="miniDataBox">
                         <p class="miniDataBox_topP">{{ userInfo.wnftQuantity + " NFT" }}</p>
-                        <p class="miniDataBox_bottomP">已抵押</p>
+                        <p class="miniDataBox_bottomP">{{ $t("common.havePledge") }}</p>
                     </div>
                 </div>
 

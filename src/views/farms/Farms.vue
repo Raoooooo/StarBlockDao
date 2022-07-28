@@ -187,11 +187,7 @@
       </div>
 
       <div class="alertSectionBox1">
-        <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">{{ this.selectPollItem.wnftQuantity + " NFT" }}</p>
-          <p class="itemDataBox_bottomText_alert">{{ $t("farms.havePledge") }}</p>
-        </div>
-        <div class="vSepLine_alert"></div>
+
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">
             {{ (selectPollItem.mining * Math.pow(10, -18)).toFixed(2) + " STB" }}
@@ -199,10 +195,22 @@
           <p class="itemDataBox_bottomText_alert">{{ $t("farms.getAwardAmount") }}</p>
         </div>
         <div class="vSepLine_alert"></div>
+
         <div class="itemDataBox">
+          <p class="itemDataBox_topText_alert">{{ this.selectPollItem.wnftQuantity + " NFT" }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("farms.havePledge") }}</p>
+        </div>
+        <div class="vSepLine_alert"></div>
+        <div class="itemDataBox">
+          <p class="itemDataBox_topText_alert">{{ this.selectPollItem.nftQuantity + " NFT" }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("farms.canStake") }}</p>
+        </div>
+        <div class="vSepLine_alert"></div>
+
+        <!-- <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">{{ "0 WETH" }}</p>
           <p class="itemDataBox_bottomText_alert">{{ $t("farms.getBonusAmount") }}</p>
-        </div>
+        </div> -->
       </div>
 
       <div class="alertSectionBox2" v-loading.lock="actionAlertShowLoading"
@@ -255,55 +263,6 @@
       <p class="alertTip2">{{ "· " + $t("farms.optionTip4") }}</p>
     </el-dialog>
 
-    <el-dialog title="" :visible.sync="successVisible" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
-      :destroy-on-close="true">
-      <div class="dialogBack">
-        <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
-        <p class="dialopTitle">
-          {{ requestSuccessStr }}
-        </p>
-
-        <div class="txHashBox">
-          <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
-          <a :href="getChainWebUrl(txHashOringion)" target="_blank">
-            <p class="txHash">{{ txHash }}</p>
-          </a>
-          <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-        </div>
-        <div class="bottomBtnBox1">
-          <button class="alertCloseBtn" @click="alertCloseBtnAction">
-            {{ $t("common.alertClose") }}
-          </button>
-        </div>
-      </div>
-    </el-dialog>
-
-
-    <el-dialog title="" :visible.sync="successVisible1" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
-      :destroy-on-close="true">
-      <div class="dialogBack">
-        <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
-        <p class="dialopTitle">
-          {{ requestSuccessStr1 }}
-        </p>
-
-        <div class="txHashBox">
-          <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
-          <a :href="getChainWebUrl(txHashOringion)" target="_blank">
-            <p class="txHash">{{ txHash }}</p>
-          </a>
-          <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
-        </div>
-        <div class="bottomBtnBox1">
-          <button class="alertCloseBtn" @click="alertCloseBtnAction">
-            {{ $t("common.alertClose") }}
-          </button>
-        </div>
-      </div>
-    </el-dialog>
-
 
     <el-dialog title="" :visible.sync="successVisible2" :width="elDialogWidth" :show-close="false" center top="200px"
       :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
@@ -321,8 +280,15 @@
           </a>
           <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
         </div>
+        <p class="defaultRewardDes">将STB Token添加到您的钱包中即可查看STB余额 STB可用于在StarBlock交易NFT</p>
+
         <div class="bottomBtnBox1">
-          <button class="alertCloseBtn" @click="alertCloseBtnAction">
+          <a href="https://starblock.io/" target="_blank" class="traddingStarblockBtn_a">
+            <button class="traddingStarblockBtn_yellow">
+              {{ "交易NFT" }}
+            </button>
+          </a>
+          <button class="lookDetailBtn" @click="alertCloseBtnAction">
             {{ $t("common.alertClose") }}
           </button>
         </div>
@@ -345,60 +311,8 @@
                 : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
           }}
         </span>
-        <div class="bottomBtnBox1">
-          <button class="goOnCreatBtn" @click="defaultBtnAction">
-            {{ $t("common.confirm") }}
-          </button>
-          <button class="lookDetailBtn" @click="cancleBtnAction">
-            {{ $t("common.cancle") }}
-          </button>
-        </div>
-      </div>
-    </el-dialog>
+        <p class="defaultRewardDes">挖矿奖励跟随出块发放，请以实际领取数量为准; 奖励将发放到您钱包中，请在钱包中确认您的交易</p>
 
-
-    <el-dialog title="" :visible.sync="warningDefaultVisible1" :width="elDialogWidth" :show-close="false" center
-      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
-      :destroy-on-close="true">
-      <div class="dialogBack">
-        <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
-        <p class="dialopTitle">
-          {{ defaultMessageStr }}
-        </p>
-        <span class="dialogDes" v-bind="{ color: dialogDesColor }">
-          {{
-              !isGetReward
-                ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
-          }}
-        </span>
-        <div class="bottomBtnBox1">
-          <button class="goOnCreatBtn" @click="defaultBtnAction">
-            {{ $t("common.confirm") }}
-          </button>
-          <button class="lookDetailBtn" @click="cancleBtnAction">
-            {{ $t("common.cancle") }}
-          </button>
-        </div>
-      </div>
-    </el-dialog>
-
-
-    <el-dialog title="" :visible.sync="warningDefaultVisible2" :width="elDialogWidth" :show-close="false" center
-      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
-      :destroy-on-close="true">
-      <div class="dialogBack">
-        <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
-        <p class="dialopTitle">
-          {{ defaultMessageStr }}
-        </p>
-        <span class="dialogDes" v-bind="{ color: dialogDesColor }">
-          {{
-              !isGetReward
-                ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
-          }}
-        </span>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultBtnAction">
             {{ $t("common.confirm") }}
@@ -424,6 +338,8 @@
               defaultMessageDesStr + ":" + awardAmountStr(userInfo.mining)
           }}
         </span>
+
+        <p class="defaultRewardDes">挖矿奖励跟随出块发放，请以实际领取数量为准; 奖励将发放到您钱包中，请在钱包中确认您的交易</p>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaulAllRewardAlertBtnAction">
             {{ $t("common.confirm") }}
@@ -475,7 +391,7 @@
 
           <p class="stakeDes">{{ defaltAlertStakeDes }}</p>
 
-          <button class="stakeBtn" @click="defalutStakeBtnAction">{{ defaultStakeAlertBtnStr }}</button>
+          <button class="stakeBtnOfAction" @click="defalutStakeBtnAction">{{ defaultStakeAlertBtnStr }}</button>
         </div>
       </div>
     </el-dialog>
@@ -624,7 +540,20 @@
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
           </div>
 
-          <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
+          <div class="alertDesBox">
+            <div class="alertDesItemBox" v-for="(item, index) in alertDesItemArr">
+              <img class="alertDesItemBox_img" :src="alertDesItemBoxImgUrl(index)" />
+              <p class="alertDesItemBox_text">{{ item }}</p>
+            </div>
+          </div>
+
+          <div class="alertBottomBtnBox">
+            <a href="https://starblock.io/" target="_blank" class="traddingStarblockBtn_a">
+              <button class="traddingStarblockBtn">{{ "Trading WNFT" }}</button>
+            </a>
+            <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
+
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -665,7 +594,20 @@
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
           </div>
 
-          <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueunstake") }}</button>
+          <div class="alertDesBox">
+            <div class="alertDesItemBox" v-for="(item, index) in alertDesItemArr1">
+              <img class="alertDesItemBox_img" :src="alertDesItemBoxImgUrl(index)" />
+              <p class="alertDesItemBox_text">{{ item }}</p>
+            </div>
+          </div>
+
+          <div class="alertBottomBtnBox">
+            <a href="https://starblock.io/" target="_blank" class="traddingStarblockBtn_a">
+              <button class="traddingStarblockBtn">{{ "Trading WNFT" }}</button>
+            </a>
+            <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueStake") }}</button>
+
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -869,7 +811,7 @@ export default {
           Number(this.selectPollItem.poolInfo.amount)
         ).toFixed(2)) + " STB"
       } else if (Number(this.selectPollItem.poolInfo.amount) == 0) {
-        return this.rewardAmount(this.selectPollItem) + " STB"
+        return Number(this.rewardAmount(this.selectPollItem).toFixed(2)) + " STB"
       }
     },
     selectIconUrl() {
@@ -990,13 +932,25 @@ export default {
     }
 
     return {
+      alertDesItemArr: ["此NFT已经开始挖矿",
+        "NFT已转移到WNFT合约，WNFT已转",
+        "持有WNFT可领取挖矿奖励、可解抵押原NFT",
+        "1 WNFT = 1 Original NFT",
+        "WNFT可在StarBlock进行交易，0.3%服务费，0%版权费"],
+
+      alertDesItemArr1: ["此NFT已经停止挖矿，重新抵押即可继续挖",
+        "WNFT已转移到合约，原NFT已转移到您的钱包",
+        "持有WNFT可领取挖矿奖励、可解抵押原NFT",
+        "1 WNFT = 1 Original NFT",
+        "WNFT可在StarBlock进行交易，0.3%服务费，0%版权费"],
+
       shortNameStr: "推荐",
       shortList: ["推荐", "最新", "抵押池奖励", "单NFT抵押奖励", "抵押总量"],
       dropdownClickIndex: 0,
       isSearchEmpty: false,
       keyword: "",
       pids: [],
-      placeholderText: "输入合约地址或者名称",
+      placeholderText: "合约地址、合集名称",
       searchText: "",
       drow_upDownImgUrl: require("@/assets/img/common/drow_down.svg"),
       sort_myNFTimgUrl: require("@/assets/img/common/sort_unselect.svg"),
@@ -1025,12 +979,12 @@ export default {
       actionAlertShowLoading: false,
       txHash: "",
       txHashOringion: "",
-      successVisible: true,
+      successVisible: false,
       successVisible1: false,
       successVisible2: false,
 
       selectPollItem: { collection: {}, poolInfo: {} },
-      elDialogWidth: document.documentElement.clientWidth > 1200 ? "360px" : "300px",
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "500px" : "300px",
       elDialogWidth1: elDialogWidth1,
       warningDefaultVisible: false,
       warningDefaultVisible1: false,
@@ -1232,6 +1186,63 @@ export default {
   },
 
   methods: {
+    alertDesItemBoxImgUrl(index) {
+      if (index <= 1) {
+        return require("@/assets/img/common/requestSuccess.svg");
+      } else {
+        return require("@/assets/img/common/alertDesItemIcon.svg");
+
+      }
+    },
+    rewardAmount(item) {
+      if (Number(item.rewardForEachBlock) > 0) {
+        var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
+        return number;
+        // if (number >= 10000) {
+        //   return formmatToToLocaleStringEnUS(number.toFixed(0));
+        // } else {
+        //   return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
+        // }
+      } else if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
+        var number =
+          Number(item.rewardPerNFTForEachBlock) *
+          6500 *
+          30 *
+          (Number(item.poolInfo.amount) *
+            Math.pow(10, -18));
+        return number;
+        // if (number >= 10000) {
+        //   return formmatToToLocaleStringEnUS(number.toFixed(0));
+        // } else {
+        //   return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
+        // }
+      } else if (Number(item.poolInfo.amount) == 0) {
+        return "--";
+      } else if (item.rewardForEachBlock == "--") {
+        return "--";
+      }
+    },
+
+    rewardPerNFTAmount(item) {
+      if (Number(item.rewardPerNFTForEachBlock) > 0) {
+        return (Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2)
+
+        // return formmatToToLocaleStringEnUS((Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2))
+      } else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
+        return (
+          (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
+          Number(item.poolInfo.amount)
+        ).toFixed(2);
+        // return formmatToToLocaleStringEnUS((
+        //   (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
+        //   Number(item.poolInfo.amount)
+        // ).toFixed(2));
+      } else if (Number(item.poolInfo.amount) == 0) {
+        return this.rewardAmount(item)
+      } else {
+        return "--";
+      }
+    },
     dropdownClick(command) {
       var index = this.getArrayIndex(this.shortList, command);
       this.dropdownClickIndex = index;
@@ -1372,32 +1383,32 @@ export default {
       this.changeTab()
       // document.querySelector("#main3").scrollIntoView();
     },
-    rewardAmount(item) {
-      if (Number(item.rewardForEachBlock) > 0) {
-        var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
-        if (number >= 10000) {
-          return formmatToToLocaleStringEnUS(number.toFixed(0));
-        } else {
-          return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
-        }
-      } else if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
-        var number =
-          Number(item.rewardPerNFTForEachBlock) *
-          6500 *
-          30 *
-          formmatToToLocaleStringEnUS(Number(item.poolInfo.amount) *
-            Math.pow(10, -18));
-        if (number >= 10000) {
-          return formmatToToLocaleStringEnUS(number.toFixed(0));
-        } else {
-          return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
-        }
-      } else if (Number(item.poolInfo.amount) == 0) {
-        return "--";
-      } else if (item.rewardForEachBlock == "--") {
-        return "--";
-      }
-    },
+    // rewardAmount(item) {
+    //   if (Number(item.rewardForEachBlock) > 0) {
+    //     var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
+    //     if (number >= 10000) {
+    //       return formmatToToLocaleStringEnUS(number.toFixed(0));
+    //     } else {
+    //       return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
+    //     }
+    //   } else if (Number(item.rewardPerNFTForEachBlock) > 0 && Number(item.poolInfo.amount) > 0) {
+    //     var number =
+    //       Number(item.rewardPerNFTForEachBlock) *
+    //       6500 *
+    //       30 *
+    //       formmatToToLocaleStringEnUS(Number(item.poolInfo.amount) *
+    //         Math.pow(10, -18));
+    //     if (number >= 10000) {
+    //       return formmatToToLocaleStringEnUS(number.toFixed(0));
+    //     } else {
+    //       return formmatToToLocaleStringEnUS(Number(number.toFixed(2)));
+    //     }
+    //   } else if (Number(item.poolInfo.amount) == 0) {
+    //     return "--";
+    //   } else if (item.rewardForEachBlock == "--") {
+    //     return "--";
+    //   }
+    // },
     stakeSuccessAlertCloseAction() {
       this.processSuccessAlertShow = false;
     },
@@ -1480,7 +1491,7 @@ export default {
       messageList.push(messageObj);
       this.$store.commit('changeMessageList', messageList);
     },
-    getHarvestAllTxHash() {
+    getHarvestAllTxHash(txHash) {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
         type: 5,
@@ -1852,19 +1863,19 @@ export default {
       messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
-    handleHarvestAll() {
+    handleHarvestAll(txHash) {
       this.isGetReward = false;
       this.$bus.$emit("resetBtnStatusNoti", "1");
 
       this.txHash = this.getFrommatAccount(txHash.transactionHash);
       this.txHashOringion = txHash.transactionHash;
-      this.getMasterChefInfo(false);
-      this.successVisible2 = true;
-      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
-
       var messageList = this.$store.getters.messageList;
       messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
+      this.getMasterChefInfo(false);
+      this.successVisible2 = true;
+
+
     },
     updateBlockData(number, web3) {
       this.currentBlockNumber = number;
@@ -1929,10 +1940,10 @@ export default {
         this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("startBlock"));
       }
       if (this.dropdownClickIndex == 2) {
-        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("mining"));
+        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("calculateRewardForEachBlock"));
       }
       if (this.dropdownClickIndex == 3) {
-        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("rewardPerNFTForEachBlock"));
+        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("calculateRewardPerNFTForEachBlock"));
       }
       if (this.dropdownClickIndex == 4) {
         this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("amount"));
@@ -1982,6 +1993,9 @@ export default {
       item.rewardForEachBlock = masterChefInfo.currentReward.rewardForEachBlock;
       item.poolInfo.currentRewardIndex = masterChefInfo.currentRewardIndex;
 
+
+      item.calculateRewardPerNFTForEachBlock = Number(this.rewardPerNFTAmount(item));
+      item.calculateRewardForEachBlock = this.rewardAmount(item);
 
       if (this.searchText.length > 0) {
         if (ethUtil.isValidAddress(this.searchText)) {
@@ -2790,7 +2804,7 @@ export default {
 }
 
 .dialogDes {
-  color: #666;
+  color: #FF7421;
   font-size: 0.325rem;
   margin-top: 0.25rem;
   align-content: center;
@@ -3082,6 +3096,23 @@ export default {
 }
 
 .stakeBtn {
+  cursor: pointer;
+  /* margin-top: .75rem; */
+  margin-left: 0rem;
+  margin-right: 0rem;
+  height: 1.5rem;
+  background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+  border-radius: 4px;
+  border-style: none;
+  font-size: .6rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: .65rem;
+  /* margin-bottom: -0.1rem; */
+}
+
+.stakeBtnOfAction {
   cursor: pointer;
   margin-top: .75rem;
   margin-left: 0rem;
@@ -3586,6 +3617,95 @@ export default {
   color: #999;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.alertDesBox {
+  width: 100%;
+  margin-top: .4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #2c6ff8; */
+
+}
+
+.alertDesItemBox {
+  margin-left: 10%;
+  width: 100%;
+  margin-top: .35rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.alertDesItemBox_img {
+  width: .4rem;
+  height: .4rem;
+
+}
+
+.alertDesItemBox_text {
+  margin-left: .125rem;
+  font-size: .375rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #212121;
+  line-height: .525rem;
+
+}
+
+.alertBottomBtnBox {
+  margin-top: .9rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.traddingStarblockBtn_a {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 47%;
+}
+
+.traddingStarblockBtn {
+  font-size: .4rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  line-height: .65rem;
+  border-radius: .1rem;
+  border: 1px solid #F7B500;
+  background-color: white;
+  color: #FE9C02;
+  height: 1rem;
+  width: 100%;
+}
+
+.traddingStarblockBtn_yellow {
+  font-size: .4rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  line-height: .65rem;
+  border-radius: .1rem;
+  border: 1px solid #F7B500;
+  background-color: white;
+  color: white;
+  background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+  height: 1rem;
+  width: 100%;
+}
+
+.defaultRewardDes {
+  width: 100%;
+  text-align: center;
+  margin-top: .375rem;
+  font-size: .35rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #5C5E67;
+  line-height: .5rem
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -4152,7 +4272,7 @@ export default {
   }
 
   .dialogDes {
-    color: #666;
+    color: #FF7421;
     font-size: .35rem;
     margin-top: 0.25rem;
     align-content: center;
@@ -4440,6 +4560,25 @@ export default {
 
   .stakeBtn {
     cursor: pointer;
+    /* margin-top: .825rem; */
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 47%;
+    height: 1.25rem;
+    background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+    border-radius: 4px;
+    border-style: none;
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: .65rem;
+    /* margin-bottom: -0.25rem; */
+
+  }
+
+  .stakeBtnOfAction {
+    cursor: pointer;
     margin-top: .825rem;
     margin-left: 0px;
     margin-right: 0px;
@@ -4453,7 +4592,6 @@ export default {
     color: #FFFFFF;
     line-height: .65rem;
     margin-bottom: -0.25rem;
-
   }
 
   .selectTextBox {

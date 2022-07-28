@@ -11,6 +11,7 @@ export declare class Protocol {
     MerkletRootDistributorContractAddress: string;
     MerkletRootDistributorContract: Contract;
     NFTMasterChefBatchContract: Contract;
+    NFTMasterChefBatchContractWrite: Contract;
     StarblockCollectionContract: Contract;
     StarblockCollectionUtilsContract: Contract;
     private _networkName;

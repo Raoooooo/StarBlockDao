@@ -174,6 +174,8 @@ export default {
         optionName6: "分红奖励",
         moreInfo: "了解更多",
 
+        canStake: "可抵押"
+
     },
 
 

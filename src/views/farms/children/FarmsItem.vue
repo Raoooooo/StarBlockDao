@@ -11,6 +11,7 @@
               <p class="contantDetailTopBox_leftBox_imgDes">STB</p>
               <p class="contantDetailTopBox_leftBox_des">
                 {{ rewardAmount(item) + "/" + $t("farms.month") }}
+                <!-- {{ item.calculateRewardForEachBlock + "/" + $t("farms.month") }} -->
               </p>
             </div>
 
@@ -54,7 +55,9 @@
                 {{ item.collection.showName }}
               </p>
               <p class="rewardPerNFTAmountText">
-                {{ rewardPerNFTAmount(item) }}
+                {{ rewardPerNFTAmount(item) + " STB" }}
+                <!-- {{ item.calculateRewardPerNFTForEachBlock + " STB" }} -->
+
               </p>
             </div>
             <div class="contantDetailSection1_rightBox_subBox">
@@ -400,10 +403,17 @@ export default {
       //   : "-- ETH"
     },
     rewardPerNFTAmount(item) {
+      if (item == '--') {
+        return "--";
+      } else {
+        return formmatToToLocaleStringEnUS(Number(item.calculateRewardPerNFTForEachBlock.toFixed(2)))
+      }
+
+
+      // return formmatToToLocaleStringEnUS(Number((item.calculateRewardPerNFTForEachBlock).toFixed(2)))
       if (Number(item.rewardPerNFTForEachBlock) > 0) {
         return formmatToToLocaleStringEnUS((Number(item.rewardPerNFTForEachBlock) * 6500 * 30 * Math.pow(10, -18)).toFixed(2)) +
-          " STB"
-          ;
+          " STB";
       }
       else if (Number(item.rewardForEachBlock) > 0 && Number(item.poolInfo.amount) != 0) {
         return formmatToToLocaleStringEnUS((
@@ -412,15 +422,7 @@ export default {
         ).toFixed(2)) + " STB";
       } else if (Number(item.poolInfo.amount) == 0) {
         return this.rewardAmount(item) + " STB"
-      }
-
-      // else if (Number(item.rewardForEachBlock) > 0) {
-      //   return formmatToToLocaleStringEnUS((
-      //     (Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18)) /
-      //     Number(item.poolInfo.amount)
-      //   ).toFixed(2)) + " STB";
-      // }
-      else {
+      } else {
         return "--" + " STB";
       }
     },
@@ -559,12 +561,7 @@ export default {
       }
     },
     rewardAmount(item) {
-      // if (
-      //   Number(item.poolInfo.startBlock) > 0 &&
-      //   Number(item.poolInfo.startBlock) > this.currentBlockNumber
-      // ) {
-      //   return "--";
-      // }
+      return formmatToToLocaleStringEnUS(Number(item.calculateRewardForEachBlock.toFixed(2)))
       if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
         if (number >= 10000) {
