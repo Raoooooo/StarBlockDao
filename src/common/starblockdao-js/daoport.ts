@@ -14,7 +14,7 @@ export class DaoPort {
   }
 
   public setOnlyReadWeb3Provider(provider: Web3) {
-    this._protocol.onlyReadNFTUtilsContract(provider);
+    this._protocol.onlyReadNFTMasterChefBatchContract(provider);
   }
 
   public async deposit(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void> {
@@ -172,7 +172,7 @@ export class DaoPort {
 
     const txnData = { from: this._protocol.account };
     await this._protocol.NFTMasterChefContract.methods
-      .withdraw(pid, to, wnftTokenIds)
+      .harvest(pid, to, wnftTokenIds)
       .send(txnData)
       .on("transactionHash", (txHash: string) => {
         callCallback(txHash);
@@ -217,23 +217,23 @@ export class DaoPort {
     return txHash;
   } */
 
-  public async ownedNFTTokens({
-    contractAddress,
-    owner,
-    rangeTokenIds
-  }: {
-    contractAddress: string;
-    owner: string;
-    rangeTokenIds: number[];
-  }): Promise<number[]> {
-    if (rangeTokenIds.length != 2) {
-      throw new Error(`beyend token range..."`);
-    }
-    const tokenIds = await this._protocol.NFTUtilsContract.methods
-      .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
-      .call();
-    return tokenIds;
-  }
+  // public async ownedNFTTokens({
+  //   contractAddress,
+  //   owner,
+  //   rangeTokenIds
+  // }: {
+  //   contractAddress: string;
+  //   owner: string;
+  //   rangeTokenIds: number[];
+  // }): Promise<number[]> {
+  //   if (rangeTokenIds.length != 2) {
+  //     throw new Error(`beyend token range..."`);
+  //   }
+  //   const tokenIds = await this._protocol.NFTUtilsContract.methods
+  //     .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
+  //     .call();
+  //   return tokenIds;
+  // }
 
   public async pending<T>(
     {
@@ -315,59 +315,59 @@ export class DaoPort {
     };
   }
 
-  public async getNFTMasterChefInfos({
-    nftMasterchef,
-    pid,
-    owner,
-    rangeTokenIds
-  }: {
-    nftMasterchef?: string;
-    pid: number;
-    owner: string;
-    rangeTokenIds: number[];
-  }): Promise<MasterChefPoolsInfo> {
-    if (rangeTokenIds.length != 2) {
-      throw new Error(` beyend token range..."`);
-    }
-    nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-    const {
-      _poolInfo,
-      _rewardInfo,
-      _userInfo,
-      _currentRewardIndex,
-      _endBlock,
-      _nft
-    } = await this._protocol.NFTUtilsContract.methods
-      .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
-      .call();
+  // public async getNFTMasterChefInfos({
+  //   nftMasterchef,
+  //   pid,
+  //   owner,
+  //   rangeTokenIds
+  // }: {
+  //   nftMasterchef?: string;
+  //   pid: number;
+  //   owner: string;
+  //   rangeTokenIds: number[];
+  // }): Promise<MasterChefPoolsInfo> {
+  //   if (rangeTokenIds.length != 2) {
+  //     throw new Error(` beyend token range..."`);
+  //   }
+  //   nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+  //   const {
+  //     _poolInfo,
+  //     _rewardInfo,
+  //     _userInfo,
+  //     _currentRewardIndex,
+  //     _endBlock,
+  //     _nft
+  //   } = await this._protocol.NFTUtilsContract.methods
+  //     .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
+  //     .call();
 
-    const rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
-    const rewardPerNFTForEachBlock = _rewardInfo["rewardPerNFTForEachBlock"];
-    const mining = _userInfo["mining"];
-    const dividend = _userInfo["dividend"];
-    const nftQuantity = _userInfo["nftQuantity"];
-    const wnftQuantity = _userInfo["wnftQuantity"];
-    const isNFTApproved = _userInfo["isNFTApproved"];
-    const isWNFTApproved = _userInfo["isWNFTApproved"];
+  //   const rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
+  //   const rewardPerNFTForEachBlock = _rewardInfo["rewardPerNFTForEachBlock"];
+  //   const mining = _userInfo["mining"];
+  //   const dividend = _userInfo["dividend"];
+  //   const nftQuantity = _userInfo["nftQuantity"];
+  //   const wnftQuantity = _userInfo["wnftQuantity"];
+  //   const isNFTApproved = _userInfo["isNFTApproved"];
+  //   const isWNFTApproved = _userInfo["isWNFTApproved"];
 
-    const poolInfo = _poolInfo;
-    const endBlock = _endBlock;
-    const nft = _nft;
+  //   const poolInfo = _poolInfo;
+  //   const endBlock = _endBlock;
+  //   const nft = _nft;
 
-    return {
-      poolInfo,
-      rewardForEachBlock,
-      rewardPerNFTForEachBlock,
-      endBlock,
-      mining,
-      dividend,
-      nftQuantity,
-      wnftQuantity,
-      isNFTApproved,
-      isWNFTApproved,
-      nft
-    };
-  }
+  //   return {
+  //     poolInfo,
+  //     rewardForEachBlock,
+  //     rewardPerNFTForEachBlock,
+  //     endBlock,
+  //     mining,
+  //     dividend,
+  //     nftQuantity,
+  //     wnftQuantity,
+  //     isNFTApproved,
+  //     isWNFTApproved,
+  //     nft
+  //   };
+  // }
 
   public async canClaim<T>(
     {
@@ -568,29 +568,46 @@ export class DaoPort {
     return { _mining, _dividend };
   }
 
-  public async harvestAllByWNFTTokenIds({
-    forUser,
-    pids,
-    poolWNFTTokenIds
-  }: {
-    forUser: string;
-    pids: number[];
-    poolWNFTTokenIds: number[][];
-  }): Promise<string> {
-    let txHash;
-    try {
-      const txnData = { from: this._protocol.account };
-      txHash = await this._protocol.NFTMasterChefBatchContract.methods
-        .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
-        .send(txnData);
-    } catch (error) {
-      console.error(error);
-      throw new Error(
-        `Failed to harvestAllByWNFTTokenIds transaction: "${error instanceof Error && error.message ? error.message : "user denied"
-        }..."`
-      );
-    }
-    return txHash;
+  public async harvestAllByWNFTTokenIds(
+    forUser: string,
+    pids: number[],
+    poolWNFTTokenIds: number[][],
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
+    const txnData = { from: this._protocol.account };
+    await this._protocol.NFTMasterChefBatchContract.methods
+      .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
+      .send(txnData)
+      .on("transactionHash", (txHash: string) => {
+        callCallback(txHash);
+      })
+      .then((res: {}) => {
+        resultCallback(res);
+      })
+      .catch((error: Error) => {
+        errorCallback(
+          new Error(
+            `Failed to harvestAllByWNFTTokenIds transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+            }..."`
+          )
+        );
+      });
+    // let txHash;
+    // try {
+    //   const txnData = { from: this._protocol.account };
+    //   txHash = await this._protocol.NFTMasterChefBatchContract.methods
+    //     .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
+    //     .send(txnData);
+    // } catch (error) {
+    //   console.error(error);
+    //   throw new Error(
+    //     `Failed to harvestAllByWNFTTokenIds transaction: "${error instanceof Error && error.message ? error.message : "user denied"
+    //     }..."`
+    //   );
+    // }
+    // return txHash;
   }
 
   public async ownedNFTsTokenIdsByPids({

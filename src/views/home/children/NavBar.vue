@@ -12,10 +12,12 @@
           <button class="loginBtn" @click="loginBtnAction" v-show="!isLogin">
             {{ $t("navBar.login") }}
           </button>
-          <div class="accountBox" v-show="isLogin">
-            <img class="account_img" src="@/assets/img/farms/accountIcon.png" />
-            <p class="account_text">{{ account }}</p>
-          </div>
+          <a :href="getChainWebUrlOfAccount(originAccount)" target="_blank">
+            <div class="accountBox" v-show="isLogin">
+              <img class="account_img" src="@/assets/img/farms/accountIcon.png" />
+              <p class="account_text">{{ account }}</p>
+            </div>
+          </a>
 
 
           <div class="messageBox" v-if="$store.getters.messageList.length == 0" @click="noMessageClick">
@@ -179,6 +181,7 @@ export default {
       langrageList: ["navBar.English", "navBar.chinese"],
       isLogin: false,
       account: "",
+      originAccount: "",
       currentLangrage: currentLangrage,
       isShowLangrageView: false,
       langrageItemArr: ["简体中文", "English"],
@@ -246,6 +249,7 @@ export default {
         getAccount(this.getAccount, this.getAccountError)
         this.isLogin = true;
         this.account = ethereum.selectedAddress;
+        this.originAccount = ethereum.selectedAddress;
         setLocalStorage("ethereumSelectedAddress", ethereum.selectedAddress);
       } else {
         this.isLogin = false;
@@ -300,6 +304,13 @@ export default {
     });
   },
   methods: {
+    getChainWebUrlOfAccount(subStr) {
+      if (getProdcutMode() == 1) {
+        return "https://etherscan.io/address/" + subStr;
+      } else {
+        return "https://rinkeby.etherscan.io/address/" + subStr;
+      }
+    },
     noMessageClick() {
       this.$message.warning(this.$t("common.noTransation"))
     },
@@ -381,6 +392,7 @@ export default {
     getAccountError() {
       setLocalStorage("isLogin", "");
       this.account = "";
+      this.originAccount = "";
     },
     handleCurentChainid(chainId) {
       this.currentChainId = chainId;
@@ -596,6 +608,7 @@ export default {
     setLoginData(account) {
       setLocalStorage("account", account);
       this.account = this.getFrommatAccount(account);
+      this.originAccount = account;
       this.isLogin = true;
       setLocalStorage("isLogin", "1");
     },

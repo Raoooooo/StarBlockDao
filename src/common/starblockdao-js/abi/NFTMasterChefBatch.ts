@@ -16,6 +16,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 				"internalType": "contract ITokenPriceUtils",
 				"name": "_tokenPriceUtils",
 				"type": "address"
+			},
+			{
+				"internalType": "contract IERC20",
+				"name": "_weth",
+				"type": "address"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -181,6 +186,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -227,6 +247,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -441,6 +466,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -487,6 +527,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -650,6 +695,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -696,6 +756,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -859,6 +924,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -905,6 +985,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -1068,6 +1153,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -1114,6 +1214,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -1272,6 +1377,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -1318,6 +1438,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -1476,6 +1601,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -1522,6 +1662,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -1635,6 +1780,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					},
 					{
 						"internalType": "uint256",
+						"name": "blockTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "tokenPrice",
 						"type": "uint256"
 					},
@@ -1665,6 +1815,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 			},
 			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "ethBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "wethBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenBalance",
+						"type": "uint256"
+					},
 					{
 						"internalType": "uint256",
 						"name": "mining",
@@ -1800,6 +1965,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 						"components": [
 							{
 								"internalType": "uint256",
+								"name": "ethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "wethBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenBalance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "mining",
 								"type": "uint256"
 							},
@@ -1846,6 +2026,11 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 					{
 						"internalType": "uint256",
 						"name": "currentRewardIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRewardEndBlock",
 						"type": "uint256"
 					},
 					{
@@ -2023,6 +2208,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 				"components": [
 					{
 						"internalType": "uint256",
+						"name": "ethBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "wethBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "mining",
 						"type": "uint256"
 					},
@@ -2079,7 +2279,18 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 			}
 		],
 		"name": "harvestAll",
-		"outputs": [],
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_mining",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_dividend",
+				"type": "uint256"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -2102,7 +2313,18 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 			}
 		],
 		"name": "harvestAllByWNFTTokenIds",
-		"outputs": [],
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_mining",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_dividend",
+				"type": "uint256"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -2322,6 +2544,21 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 				"components": [
 					{
 						"internalType": "uint256",
+						"name": "ethBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "wethBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "mining",
 						"type": "uint256"
 					},
@@ -2364,6 +2601,16 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 				"internalType": "struct NFTMasterChefBatch.UserInfo",
 				"name": "_userInfo",
 				"type": "tuple"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_blockNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_blockTime",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -2427,16 +2674,6 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 				"internalType": "uint256",
 				"name": "_dividend",
 				"type": "uint256"
-			},
-			{
-				"internalType": "contract IWrappedNFT",
-				"name": "_wnft",
-				"type": "address"
-			},
-			{
-				"internalType": "contract IERC721Metadata",
-				"name": "_nft",
-				"type": "address"
 			},
 			{
 				"internalType": "uint256[]",
@@ -2546,6 +2783,19 @@ export const NFTMasterChefBatch: PartialReadonlyContractAbi = [
 		"name": "transferOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "weth",
+		"outputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ];

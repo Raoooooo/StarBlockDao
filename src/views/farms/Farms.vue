@@ -20,7 +20,6 @@
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left.svg" />
                   <p class="courseBox_contantBox_text">{{ $t("common.course") }}</p>
-                  <!-- <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" /> -->
                 </div>
               </a>
             </div>
@@ -30,7 +29,6 @@
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left1.svg" />
                   <p class="courseBox_contantBox_text">{{ $t("common.applyCollection") }}</p>
-                  <!-- <img class="courseBox_contantBox_imgRight" src="@/assets/img/farms/course_right.svg" /> -->
                 </div>
               </a>
             </div>
@@ -99,18 +97,29 @@
           <div class="searchBoxSuper">
             <div class="searchBox">
               <img class="searchBox_leftImg" src="@/assets/img/common/search_yellow.svg" />
-              <input class="searchBox_input" v-model="searchText" :placeholder="placeholderText" />
+              <input class="searchBox_input" @keyup.enter="enterSearch" v-model="searchText"
+                :placeholder="placeholderText" />
               <img class="searchBox_rightImg" src="@/assets/img/common/close_gray.svg" @click="clearSearchText" />
             </div>
 
-            <button class="searchBtn">搜索</button>
+            <button class="searchBtn" @click="searchBtnAction">搜索</button>
           </div>
 
           <div class="sortBox">
-            <div class="sortItemBox0">
-              <p class="sortItemBox0_text">最新</p>
-              <img class="sortItemBox0_img" :src="drow_upDownImgUrl" />
-            </div>
+            <el-dropdown trigger="click" @visible-change="dropdownHiddenClick" @command="dropdownClick">
+              <div class="sortItemBox0">
+                <p class="sortItemBox0_text">{{ shortNameStr }}</p>
+                <img class="sortItemBox0_img" :src="drow_upDownImgUrl" />
+              </div>
+              <el-dropdown-menu slot="dropdown" class="filtrateBtnMarginRight">
+                <el-dropdown-item v-for="(item, index) in shortList" :command="item" class="el-dropdown-item">
+                  <p :class="index == dropdownClickIndex ? 'el-dropdown-item_active' : 'el-dropdown-item'">{{
+                      item
+                  }}</p>
+
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <div class="sortItemBox1">
               <img class="sortItemBox1_img" :src="sort_myNFTimgUrl" @click="sortMyNFTAction" />
               <p class="sortItemBox1_text">我的持有</p>
@@ -123,7 +132,11 @@
           </div>
         </div>
         <farmitem :items="handledPoolItems" :currentBlockNumber="currentBlockNumber"></farmitem>
-        <farmitemplace :items="placeItems" v-show="handledPoolItems.length == 0"></farmitemplace>
+        <farmitemplace :items="placeItems" v-show="handledPoolItems.length == 0 && !isSearchEmpty"></farmitemplace>
+        <div class="emptyNFTBox" v-show="isSearchEmpty">
+          <img class="emptyNFTImg" src="@/assets/img/common/empty_search.svg" />
+          <p class="emptyDes">{{ "没有相关数据" }}</p>
+        </div>
       </div>
 
       <!-- <div class="emptyContantBox">
@@ -408,16 +421,14 @@
         </p>
         <span class="dialogDes" v-bind="{ color: dialogDesColor }">
           {{
-              !isGetReward
-                ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(userInfo.mining)
+              defaultMessageDesStr + ":" + awardAmountStr(userInfo.mining)
           }}
         </span>
         <div class="bottomBtnBox1">
-          <button class="goOnCreatBtn" @click="defaultBtnAction">
+          <button class="goOnCreatBtn" @click="defaulAllRewardAlertBtnAction">
             {{ $t("common.confirm") }}
           </button>
-          <button class="lookDetailBtn" @click="cancleBtnAction">
+          <button class="lookDetailBtn" @click="cancleAllRewardAlertBtnAction">
             {{ $t("common.cancle") }}
           </button>
         </div>
@@ -701,7 +712,10 @@ import {
   daoporHarvest,
   openseaApiBaseUrl,
   getPoolSta,
-  getAllPoolInfos
+  getAllPoolInfos,
+  ownedWNFTsTokenIdsByPids,
+  harvestAllByWNFTTokenIds,
+  getPoolInfosByNFTorWNFTs
 } from "@/common/starblockdao";
 
 import {
@@ -714,6 +728,7 @@ import {
   checkChainIdError,
   formmatToToLocaleStringEnUS
 } from "@/common/utils";
+var ethUtil = require("ethereumjs-util");
 
 export default {
   name: "Farms",
@@ -879,17 +894,14 @@ export default {
     },
 
     totalBonusStr() {
-      if (Number(this.totalBonus) == 0) {
-        return "0 WETH"
-      }
       if (this.totalBonus * Math.pow(10, -18) > 10000) {
         return formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(0)) + " WETH";
       } else {
-        return formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(2)) + " WETH"
-
-        // return this.totalBonus > 0
-        //   ? (this.totalReward * Math.pow(10, -18)).toFixed(2) + " WETH"
-        //   : "--" + " WETH";
+        // if (this.totalBonus = "--") {
+        //   return "-- WETH";
+        // } else {
+        return this.totalBonus > 0 ? formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(2)) + " WETH" : "0 WETH"
+        // }
       }
     },
     defaultMessageStr() {
@@ -978,14 +990,21 @@ export default {
     }
 
     return {
-      placeholderText: "输入合约地址或者合约name",
+      shortNameStr: "推荐",
+      shortList: ["推荐", "最新", "抵押池奖励", "单NFT抵押奖励", "抵押总量"],
+      dropdownClickIndex: 0,
+      isSearchEmpty: false,
+      keyword: "",
+      pids: [],
+      placeholderText: "输入合约地址或者名称",
       searchText: "",
       drow_upDownImgUrl: require("@/assets/img/common/drow_down.svg"),
       sort_myNFTimgUrl: require("@/assets/img/common/sort_unselect.svg"),
       sort_myWNFTimgUrl: require("@/assets/img/common/sort_unselect.svg"),
       selectSortMyNFT: false,
       selectSortMyWNFT: false,
-      userInfo: { dividend: "--", mining: "--", nftQuantity: "--", wnftQuantity: "--" },
+      poolSta: { totalNFTAmount: "--", totalRewardedToken: "--", totalRewardedDividend: "--" },
+      userInfo: { dividend: "--", mining: "--", nftQuantity: "--", wnftQuantity: "--", selectedAddress: null, blockNumber: "--", tokenBalance: "--" },
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
@@ -1006,7 +1025,7 @@ export default {
       actionAlertShowLoading: false,
       txHash: "",
       txHashOringion: "",
-      successVisible: false,
+      successVisible: true,
       successVisible1: false,
       successVisible2: false,
 
@@ -1022,8 +1041,8 @@ export default {
       selectCount: 0,
       totalNftQuantity: "--",
       totalTVL: 0,
-      totalReward: 0,
-      totalBonus: 0,
+      totalReward: "--",
+      totalBonus: "--",
 
       currentBlockNumber: 0,
       topImgHeight: topImgHeight,
@@ -1082,6 +1101,8 @@ export default {
     //   .then(res => {
     //     console.log("tree/user*******", res.data);
     //   });
+
+
     getBlockNumber(this.updateBlockData);
     onLogsChange();
     // onBlockNumberChange(this.updateBlockData);
@@ -1098,27 +1119,33 @@ export default {
     }
     list.sort(this.compare("sort"));
     this.poolItems = list
-    // if (getProdcutMode() == 1) {
-    //   this.poolItems = arr;
-    // } else {
-    //   this.poolItems =arr;
-    // }
-    setTimeout(() => {
-      var isFirstLoad = true;
-      this.getMasterChefInfo(isFirstLoad);
-    }, 2000);
+    var emptyPids = [];
+    this.poolItems.forEach(element => emptyPids.push(element.poolInfo.pid));
+    console.log("pids", emptyPids)
+    this.pids = emptyPids;
 
-    // setTimeout(() => {
-    //   this.getFloorPriceData();
-    // }, 2000);
-    this.loadPoolDataCount = 0
-    setInterval(() => {
-      if (this.loadPoolDataCount == 5) {
-        return;
+    setTimeout(() => {
+      if (this.$route.query.keyword != "" && this.$route.query.keyword != null) {
+        this.searchText = this.$route.query.keyword;
+        this.searchBtnAction();
+      } else {
+        var isFirstLoad = true;
+        this.getMasterChefInfo(isFirstLoad);
       }
-      this.getMasterChefInfo(false);
-      getBlockNumber(this.updateBlockData);
-      this.loadPoolDataCount = this.loadPoolDataCount + 1;
+
+    }, 2000);
+    this.loadPoolDataCount = 0
+    // setInterval(() => {
+    //   if (this.loadPoolDataCount == 5) {
+    //     return;
+    //   }
+    //   this.getMasterChefInfo(false);
+    //   getBlockNumber(this.updateBlockData);
+    //   this.loadPoolDataCount = this.loadPoolDataCount + 1;
+    // }, 1000 * 60 * 2);
+
+    setInterval(() => {
+      this.$bus.$emit("showRefeshIcon", "1");
     }, 1000 * 60 * 2);
 
   },
@@ -1142,12 +1169,33 @@ export default {
       if (this.ratio > 100) {
         this.metaItemContantDesFontSize = 14 / (3 * bili) + "px";
       }
+    },
+    $route(to, from) {
+      // if (to.name == "farms") {
+      //   var keyWord = getLocalStorage("keyword");
+      //   this.keyword = keyWord;
+      // }
+      if (this.$route.query.keyword != "" && this.$route.query.keyword != null) {
+        this.searchText = this.$route.query.keyword;
+        this.searchBtnAction();
+      }
     }
+
   },
   mounted() {
-    this.$bus.$on("selectNftAction", val => {
-      this.setSelectIdsArr();
+    this.$bus.$on("refreshAllData", val => {
+      this.getMasterChefInfo(false)
     }),
+
+      this.$bus.$on("harvestAllNoti", val => {
+        this.warningDefaultReceiveAllReward = true;
+        this.isGetReward = true;
+      }),
+
+      this.$bus.$on("selectNftAction", val => {
+        this.setSelectIdsArr();
+      }),
+
       this.$bus.$on("pledgeBtnNotiAction", val => {
         this.actionAlertShowLoading = true;
 
@@ -1184,22 +1232,111 @@ export default {
   },
 
   methods: {
+    dropdownClick(command) {
+      var index = this.getArrayIndex(this.shortList, command);
+      this.dropdownClickIndex = index;
+      this.drow_upDownImgUrl = require("@/assets/img/common/drow_down.svg");
+
+      this.shortNameStr = command;
+      console.log(command);
+      if (this.searchText.length > 0) {
+        this.searchText = "";
+        this.$router.push({ path: "/nftfarming", query: {} });
+        this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT)
+      } else {
+        this.sortHandledPoolItems();
+      }
+
+
+    },
+
+    getArrayIndex(arr, obj) {
+      var i = arr.length;
+      while (i--) {
+        if (arr[i] === obj) {
+          return i;
+        }
+      }
+      return -1;
+    },
+    dropdownHiddenClick(value) {
+      this.drow_upDownImgUrl = value == true ? require("@/assets/img/common/drow_up.svg") : require("@/assets/img/common/drow_down.svg");
+    },
+    enterSearch() {
+      if (this.searchText.length > 0) {
+        this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
+      } else {
+        this.$router.push({ path: "/nftfarming", query: {} });
+      }
+    },
+    resetSelectSortStatus() {
+      this.selectSortMyWNFT = false;
+      this.selectSortMyNFT = false;
+      this.sort_myNFTimgUrl = this.selectSortMyNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
+      this.sort_myWNFTimgUrl = this.selectSortWMyNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
+      this.dropdownClickIndex = 0;
+      this.shortNameStr = this.shortList[this.dropdownClickIndex];
+    },
+    searchBtnAction(isReset) {
+      if (this.searchText.length == 0 && !isReset) {
+        return;
+      }
+      this.resetSelectSortStatus();
+      this.handledPoolItems = [];
+      if (this.searchText.length > 0) {
+        this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
+      } else {
+        this.$router.push({ path: "/nftfarming", query: {} });
+      }
+      if (!ethUtil.isValidAddress(this.searchText)) {
+        this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT)
+      } else {
+        getPoolInfosByNFTorWNFTs(this.searchText, this.handlePoolInfos);
+      }
+    },
+    cancleAllRewardAlertBtnAction() {
+      this.warningDefaultReceiveAllReward = false;
+      this.$bus.$emit("resetBtnStatusNoti", "1");
+
+    },
+    defaulAllRewardAlertBtnAction() {
+      ownedWNFTsTokenIdsByPids(this.pids, this.handleWNFTsTokenIds)
+      this.warningDefaultReceiveAllReward = false;
+      this.isGetReward = false;
+    },
+    handleWNFTsTokenIds(WNFTsTokenIds) {
+      harvestAllByWNFTTokenIds(WNFTsTokenIds, this.pids, this.handleHarvestAll, this.getHarvestAllTxHash, this.harvestAllFaild,)
+    },
+    harvestAllFaild() {
+      this.isGetReward = false;
+      this.$bus.$emit("resetBtnStatusNoti", "1");
+    },
+
     sortPoolInfos(canDeposite, deposited) {
+      this.isSearchEmpty = false;
       getAllPoolInfos(this.handlePoolInfos, canDeposite, deposited)
     },
     clearSearchText() {
-      this.searchText = "";
+      if (this.searchText.length > 0) {
+        this.searchText = "";
+        this.$router.push({ path: "/nftfarming", query: {} });
+        this.searchBtnAction(true)
+      }
     },
     sortMyNFTAction() {
       this.selectSortMyNFT = !this.selectSortMyNFT;
       this.sort_myNFTimgUrl = this.selectSortMyNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
       this.handledPoolItems = [];
+      this.searchText = "";
+      this.$router.push({ path: "/nftfarming", query: {} });
       this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
     },
     sortMyWNFTAction() {
       this.selectSortMyWNFT = !this.selectSortMyWNFT;
       this.sort_myWNFTimgUrl = this.selectSortMyWNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
       this.handledPoolItems = [];
+      this.searchText = "";
+      this.$router.push({ path: "/nftfarming", query: {} });
       this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
     },
     changeTab() {
@@ -1343,6 +1480,17 @@ export default {
       messageList.push(messageObj);
       this.$store.commit('changeMessageList', messageList);
     },
+    getHarvestAllTxHash() {
+      var messageList = this.$store.getters.messageList;
+      var messageObj = {
+        type: 5,
+        optionName: "common.optionName5",
+        txHash: txHash,
+        optionTime: new Date().getTime()
+      };
+      messageList.push(messageObj);
+      this.$store.commit('changeMessageList', messageList);
+    },
     getDepositTxHash(txHash) {
       var messageList = this.$store.getters.messageList;
       var messageObj = {
@@ -1474,6 +1622,13 @@ export default {
         var a = m[p];
         var b = n[p];
         return a - b; //升序
+      }
+    },
+    compareDes(p) { //这是比较函数
+      return function (m, n) {
+        var a = m[p];
+        var b = n[p];
+        return b - a; //降序
       }
     },
     setSelectIdsArr() {
@@ -1697,12 +1852,27 @@ export default {
       messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
     },
+    handleHarvestAll() {
+      this.isGetReward = false;
+      this.$bus.$emit("resetBtnStatusNoti", "1");
+
+      this.txHash = this.getFrommatAccount(txHash.transactionHash);
+      this.txHashOringion = txHash.transactionHash;
+      this.getMasterChefInfo(false);
+      this.successVisible2 = true;
+      this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
+
+      var messageList = this.$store.getters.messageList;
+      messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
+      this.$store.commit('changeMessageList', messageList);
+    },
     updateBlockData(number, web3) {
       this.currentBlockNumber = number;
       console.log("currentBlockNumber", this.currentBlockNumber);
     },
 
     async getMasterChefInfo(isFirstLoad) {
+      this.resetSelectSortStatus();
       getPoolSta(this.handlePoolSta, isFirstLoad);
       // for (var i = 0; i < this.poolItems.length; i++) {
       //   var item = this.poolItems[i];
@@ -1722,32 +1892,63 @@ export default {
 
     handlePoolSta(poolStaInfo, isFirstLoad) {
       this.wrappedPoolInfos = poolStaInfo.wrappedPoolInfos;
-      this.userInfo = poolStaInfo.userInfo;
+      this.userInfo.mining = poolStaInfo.userInfo.mining;
+      this.userInfo.dividend = poolStaInfo.userInfo.dividend;
+      this.userInfo.nftQuantity = poolStaInfo.userInfo.nftQuantity
+      this.userInfo.wnftQuantity = poolStaInfo.userInfo.wnftQuantity;
+      this.userInfo.blockNumber = poolStaInfo.poolSta.blockNumber;
+      this.userInfo.tokenBalance = Number(poolStaInfo.userInfo.tokenBalance);
+
+
+      // this.$emit("userInfoUpdateNoti",this.userInfo)
       for (var i = 0; i < poolStaInfo.wrappedPoolInfos.length; i++) {
         var item = poolStaInfo.wrappedPoolInfos[i];
         this.setLocalDataWithItem(item, isFirstLoad, i);
       }
+      this.sortHandledPoolItems();
       this.setTopData(poolStaInfo.poolSta);
     },
 
     handlePoolInfos(poolInfos) {
+      if (poolInfos.length == 0) {
+        this.isSearchEmpty = true;
+      }
       for (var i = 0; i < poolInfos.length; i++) {
         var item = poolInfos[i];
         this.setLocalDataWithItem(item, false, i);
       }
+      this.sortHandledPoolItems();
 
     },
+
+    sortHandledPoolItems() {
+      if (this.dropdownClickIndex == 0) {
+        this.handledPoolItems = this.handledPoolItems.sort(this.compare("sort"));
+      }
+      if (this.dropdownClickIndex == 1) {
+        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("startBlock"));
+      }
+      if (this.dropdownClickIndex == 2) {
+        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("mining"));
+      }
+      if (this.dropdownClickIndex == 3) {
+        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("rewardPerNFTForEachBlock"));
+      }
+      if (this.dropdownClickIndex == 4) {
+        this.handledPoolItems = this.handledPoolItems.sort(this.compareDes("amount"));
+      }
+    },
     setTopData(poolSta) {
-      this.totalNftQuantity = poolSta.totalNFTAmount;
-      this.totalReward = poolSta.totalRewardedToken;
-      this.totalBonus = poolSta.totalRewardedDividend;
+      this.totalNftQuantity = Number(poolSta.totalNFTAmount);
+      this.totalReward = Number(poolSta.totalRewardedToken);
+      this.totalBonus = Number(poolSta.totalRewardedDividend);
     },
 
     setLocalDataWithItem(masterChefInfo, isFirstLoad, index) {
       const item = this.poolItems.find(localItem => localItem.poolInfo.pid == Number(masterChefInfo.pid));
       // console.log("foundLoalItem", foundLoalItem);
       // console.log("document=== masterchefinfo", item.poolInfo.pid, masterChefInfo, index);
-      console.log(" masterChefInfo.endBlock", masterChefInfo.endBlock, item);
+      // console.log(" masterChefInfo.endBlock", masterChefInfo.endBlock, item);
       if (index == 0) {
         this.handledPoolItems = [];
       }
@@ -1755,28 +1956,53 @@ export default {
         return;
       }
 
-      item.endBlock = masterChefInfo.endBlock;
-      item.poolInfo.startBlock = masterChefInfo.poolInfo.startBlock;
+      item.endBlock = Number(masterChefInfo.endBlock);
+      item.poolInfo.startBlock = Number(masterChefInfo.poolInfo.startBlock);
+      item.startBlock = Number(masterChefInfo.poolInfo.startBlock);
+      item.currentRewardEndBlock = Number(masterChefInfo.currentRewardEndBlock)
       item.nftQuantity = masterChefInfo.userInfo.nftQuantity;
 
       item.wnftQuantity = masterChefInfo.userInfo.wnftQuantity;
       if (window.ethereum) {
+        this.userInfo.selectedAddress = window.ethereum.selectedAddress;
         item.selectedAddress = window.ethereum.selectedAddress;
       } else {
         item.selectedAddress = null;
+        this.userInfo.selectedAddress = null
       }
       item.poolInfo.amount = masterChefInfo.poolInfo.amount;
+      item.amount = Number(masterChefInfo.poolInfo.amount);
       item.dividend = Number(masterChefInfo.userInfo.dividend);
       item.isNFTApproved = masterChefInfo.userInfo.isNFTApproved;
       item.isWNFTApproved = masterChefInfo.userInfo.isWNFTApproved;
       item.mining = Number(masterChefInfo.userInfo.mining);
       item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
       item.nft = masterChefInfo.nft;
-      item.rewardPerNFTForEachBlock = masterChefInfo.currentReward.rewardPerNFTForEachBlock;
+      item.rewardPerNFTForEachBlock = Number(masterChefInfo.currentReward.rewardPerNFTForEachBlock);
       item.rewardForEachBlock = masterChefInfo.currentReward.rewardForEachBlock;
       item.poolInfo.currentRewardIndex = masterChefInfo.currentRewardIndex;
 
-      this.handledPoolItems.push(item);
+
+      if (this.searchText.length > 0) {
+        if (ethUtil.isValidAddress(this.searchText)) {
+          if (this.searchText.toLowerCase() == item.nft.toLowerCase() || this.searchText.toLowerCase() == item.poolInfo.wnft.toLowerCase()) {
+            this.handledPoolItems.push(item);
+          }
+
+        } else {
+
+          if ((item.collection.showName && item.collection.showName.toLowerCase().match(this.searchText.toLowerCase())) || (item.collection.name && item.collection.name.toLowerCase().match(this.searchText.toLowerCase()))) {
+            this.handledPoolItems.push(item);
+          }
+
+        }
+      } else {
+        this.handledPoolItems.push(item);
+      }
+      this.isSearchEmpty = this.handledPoolItems.length > 0 ? false : true;
+
+
+
 
       // if (index == this.poolItems.length - 1) {
       //   this.totalNftQuantity = poolSta.totalNFTAmount;
@@ -3160,23 +3386,29 @@ export default {
 }
 
 .searchAndSortBox {
-  margin-top: .75rem;
+  margin-top: .375rem;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: left;
   background-color: white;
-  width: 100%;
+  /* background-color: #2c6ff8; */
+  /* width: 100%; */
   margin-bottom: .75rem;
+  border-radius: .5rem;
 
 }
 
 .searchBoxSuper {
+  width: 100%;
+  margin-top: .5rem;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }
 
 .searchBox {
+  margin-right: .75rem;
   margin-left: .75rem;
   display: flex;
   flex-direction: row;
@@ -3184,17 +3416,19 @@ export default {
   justify-content: space-between;
   border-radius: .1rem;
   border: 1px solid #F1F1F1;
-  width: 8.625rem;
-  height: 1rem;
+  /* width: 13.625rem; */
+  flex: 1;
+  height: 1.5rem;
 }
 
 .searchBtn {
-  padding-left: .3rem;
-  padding-right: .3rem;
-  padding-top: .2rem;
-  padding-bottom: .2rem;
-  margin-left: .75rem;
-  font-size: .35rem;
+  margin-right: .75rem;
+  padding-left: .6rem;
+  padding-right: .6rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  margin-left: 0rem;
+  font-size: .6rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
@@ -3202,12 +3436,13 @@ export default {
   border-style: none;
   background-color: #F7B500;
   border-radius: .1rem;
+  cursor: pointer;
 }
 
 .searchBox_leftImg {
   margin-left: .25rem;
-  width: .4055rem;
-  height: .4487rem;
+  width: .811rem;
+  height: .8975rem;
 
 }
 
@@ -3217,7 +3452,7 @@ export default {
   flex: 1;
   height: 100%;
   border: none;
-  font-size: .325rem;
+  font-size: .525rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #8C9399;
@@ -3226,6 +3461,7 @@ export default {
   background-color: #fff;
   border-width: 0rem;
   outline: none;
+  cursor: pointer;
 
 
 
@@ -3233,21 +3469,28 @@ export default {
 
 .searchBox_rightImg {
   margin-right: .25rem;
-  width: .35rem;
-  height: .35rem;
+  width: .5rem;
+  height: .5rem;
+  cursor: pointer;
 }
 
 .sortBox {
-  margin-right: .75rem;
+  width: 100%;
+  margin-top: .375rem;
+  margin-right: 0rem;
   display: flex;
   flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: .5rem;
+  cursor: pointer;
 }
 
 .sortItemBox0 {
-  margin-left: .5rem;
-  width: 3rem;
-  height: 1rem;
+  margin-left: .75rem;
+  margin-right: .75rem;
+  width: 5rem;
+  height: 1.3rem;
   border-radius: .1rem;
   border: 1px solid #EEEEEE;
   display: flex;
@@ -3256,10 +3499,14 @@ export default {
   justify-content: space-between;
 }
 
+.filtrateBtnMarginRight {
+  margin-right: .75rem;
+}
+
 .sortItemBox1 {
-  margin-left: .5rem;
-  width: 3rem;
-  height: 1rem;
+  margin-left: .75rem;
+  width: 4rem;
+  height: 1.3rem;
   border-radius: .1rem;
   border: 1px solid #EEEEEE;
   display: flex;
@@ -3270,7 +3517,7 @@ export default {
 
 .sortItemBox0_text {
   margin-left: .25rem;
-  font-size: .35rem;
+  font-size: .5rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #212121;
@@ -3279,7 +3526,7 @@ export default {
 
 .sortItemBox1_text {
   margin-left: .125rem;
-  font-size: .35rem;
+  font-size: .5rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #212121;
@@ -3289,13 +3536,56 @@ export default {
 .sortItemBox0_img {
   margin-right: .25rem;
   width: .4rem;
+  cursor: pointer;
   /* height: .175rem; */
 }
 
 .sortItemBox1_img {
-  width: .4rem;
-  height: .4rem;
+  width: .6rem;
+  height: .6rem;
+  cursor: pointer;
 
+}
+
+.el-dropdown-item_active {
+  color: #f7b500;
+  font-size: .6rem;
+  line-height: 1.2rem;
+
+}
+
+.el-dropdown-item {
+  color: #212121;
+  font-size: .6rem;
+  line-height: 1.2rem;
+}
+
+.emptyNFTBox {
+  margin-top: -0.75rem;
+  width: 100%;
+  /* height: 5rem; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: .75rem;
+  background-color: white;
+  border-radius: .25rem;
+
+  /* background-color: #2c6ff8; */
+}
+
+.emptyNFTImg {
+  margin-top: .5rem;
+  width: 5rem;
+  height: 5rem;
+}
+
+.emptyDes {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -4450,6 +4740,200 @@ export default {
     margin-top: 1.35rem;
     width: 100%;
     margin-bottom: -0.35rem;
+  }
+
+
+  .emptyNFTBox {
+    margin-top: 3rem;
+    width: 100%;
+    /* height: 5rem; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    background-color: white;
+  }
+
+  .emptyNFTImg {
+    margin-top: 0rem;
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .emptyDes {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+
+  .searchAndSortBox {
+    margin-top: .75rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    /* width: 100%; */
+    margin-bottom: .75rem;
+
+  }
+
+  .searchBoxSuper {
+    width: 100%;
+    margin-top: 0rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .searchBox {
+    margin-right: 0rem;
+    margin-left: .75rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: .1rem;
+    border: 1px solid #F1F1F1;
+    width: 8.625rem;
+    height: 1rem;
+    flex: none;
+  }
+
+  .searchBtn {
+    margin-right: 0rem;
+    padding-left: .3rem;
+    padding-right: .3rem;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    margin-left: .75rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: .5rem;
+    border-style: none;
+    background-color: #F7B500;
+    border-radius: .1rem;
+  }
+
+  .searchBox_leftImg {
+    margin-left: .25rem;
+    width: .4055rem;
+    height: .4487rem;
+
+  }
+
+  .searchBox_input {
+    margin-left: .175rem;
+    margin-right: .5rem;
+    flex: 1;
+    height: 100%;
+    border: none;
+    font-size: .325rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #8C9399;
+    color: #111;
+    line-height: .4rem;
+    background-color: #fff;
+    border-width: 0rem;
+    outline: none;
+
+
+
+  }
+
+  .searchBox_rightImg {
+    margin-right: .25rem;
+    width: .35rem;
+    height: .35rem;
+  }
+
+  .sortBox {
+    margin-top: 0rem;
+    margin-right: .75rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: right;
+
+    align-items: center;
+    margin-bottom: 0rem;
+  }
+
+  .sortItemBox0 {
+    margin-left: .5rem;
+    margin-right: 0rem;
+    width: 4rem;
+    height: 1rem;
+    border-radius: .1rem;
+    border: 1px solid #EEEEEE;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filtrateBtnMarginRight {
+    margin-right: 0rem;
+  }
+
+  .sortItemBox1 {
+    margin-left: .5rem;
+    width: 3rem;
+    height: 1rem;
+    border-radius: .1rem;
+    border: 1px solid #EEEEEE;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sortItemBox0_text {
+    margin-left: .25rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #212121;
+    line-height: .5rem;
+  }
+
+  .sortItemBox1_text {
+    margin-left: .125rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #212121;
+    line-height: .5rem;
+  }
+
+  .sortItemBox0_img {
+    margin-right: .25rem;
+    width: .4rem;
+    /* height: .175rem; */
+  }
+
+  .sortItemBox1_img {
+    width: .4rem;
+    height: .4rem;
+
+  }
+
+  .el-dropdown-item_active {
+    color: #f7b500;
+    font-size: .35rem;
+    line-height: .8rem;
+  }
+
+  .el-dropdown-item {
+    color: #212121;
+    font-size: .35rem;
+    line-height: .8rem;
+
   }
 
 }

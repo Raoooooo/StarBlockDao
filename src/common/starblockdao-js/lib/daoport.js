@@ -46,7 +46,7 @@ var DaoPort = /** @class */ (function () {
         this._protocol.account = account;
     };
     DaoPort.prototype.setOnlyReadWeb3Provider = function (provider) {
-        this._protocol.onlyReadNFTUtilsContract(provider);
+        this._protocol.onlyReadNFTMasterChefBatchContract(provider);
     };
     DaoPort.prototype.deposit = function (pid, tokenIds, callCallback, resultCallback, errorCallback) {
         return __awaiter(this, void 0, void 0, function () {
@@ -140,7 +140,7 @@ var DaoPort = /** @class */ (function () {
                     case 0:
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefContract.methods
-                                .withdraw(pid, to, wnftTokenIds)
+                                .harvest(pid, to, wnftTokenIds)
                                 .send(txnData)
                                 .on("transactionHash", function (txHash) {
                                 callCallback(txHash);
@@ -184,26 +184,23 @@ var DaoPort = /** @class */ (function () {
       }
       return txHash;
     } */
-    DaoPort.prototype.ownedNFTTokens = function (_a) {
-        var contractAddress = _a.contractAddress, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
-        return __awaiter(this, void 0, void 0, function () {
-            var tokenIds;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        if (rangeTokenIds.length != 2) {
-                            throw new Error("beyend token range...\"");
-                        }
-                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
-                                .call()];
-                    case 1:
-                        tokenIds = _b.sent();
-                        return [2 /*return*/, tokenIds];
-                }
-            });
-        });
-    };
+    // public async ownedNFTTokens({
+    //   contractAddress,
+    //   owner,
+    //   rangeTokenIds
+    // }: {
+    //   contractAddress: string;
+    //   owner: string;
+    //   rangeTokenIds: number[];
+    // }): Promise<number[]> {
+    //   if (rangeTokenIds.length != 2) {
+    //     throw new Error(`beyend token range..."`);
+    //   }
+    //   const tokenIds = await this._protocol.NFTUtilsContract.methods
+    //     .ownedNFTTokens(contractAddress, owner, rangeTokenIds[0], rangeTokenIds[1])
+    //     .call();
+    //   return tokenIds;
+    // }
     DaoPort.prototype.pending = function (_a, handle) {
         var pid = _a.pid, tokenIds = _a.tokenIds;
         return __awaiter(this, void 0, void 0, function () {
@@ -282,50 +279,56 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.getNFTMasterChefInfos = function (_a) {
-        var nftMasterchef = _a.nftMasterchef, pid = _a.pid, owner = _a.owner, rangeTokenIds = _a.rangeTokenIds;
-        return __awaiter(this, void 0, void 0, function () {
-            var _b, _poolInfo, _rewardInfo, _userInfo, _currentRewardIndex, _endBlock, _nft, rewardForEachBlock, rewardPerNFTForEachBlock, mining, dividend, nftQuantity, wnftQuantity, isNFTApproved, isWNFTApproved, poolInfo, endBlock, nft;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (rangeTokenIds.length != 2) {
-                            throw new Error(" beyend token range...\"");
-                        }
-                        nftMasterchef = this._protocol.NFTMasterChefContractAddress;
-                        return [4 /*yield*/, this._protocol.NFTUtilsContract.methods
-                                .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
-                                .call()];
-                    case 1:
-                        _b = _c.sent(), _poolInfo = _b._poolInfo, _rewardInfo = _b._rewardInfo, _userInfo = _b._userInfo, _currentRewardIndex = _b._currentRewardIndex, _endBlock = _b._endBlock, _nft = _b._nft;
-                        rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
-                        rewardPerNFTForEachBlock = _rewardInfo["rewardPerNFTForEachBlock"];
-                        mining = _userInfo["mining"];
-                        dividend = _userInfo["dividend"];
-                        nftQuantity = _userInfo["nftQuantity"];
-                        wnftQuantity = _userInfo["wnftQuantity"];
-                        isNFTApproved = _userInfo["isNFTApproved"];
-                        isWNFTApproved = _userInfo["isWNFTApproved"];
-                        poolInfo = _poolInfo;
-                        endBlock = _endBlock;
-                        nft = _nft;
-                        return [2 /*return*/, {
-                                poolInfo: poolInfo,
-                                rewardForEachBlock: rewardForEachBlock,
-                                rewardPerNFTForEachBlock: rewardPerNFTForEachBlock,
-                                endBlock: endBlock,
-                                mining: mining,
-                                dividend: dividend,
-                                nftQuantity: nftQuantity,
-                                wnftQuantity: wnftQuantity,
-                                isNFTApproved: isNFTApproved,
-                                isWNFTApproved: isWNFTApproved,
-                                nft: nft
-                            }];
-                }
-            });
-        });
-    };
+    // public async getNFTMasterChefInfos({
+    //   nftMasterchef,
+    //   pid,
+    //   owner,
+    //   rangeTokenIds
+    // }: {
+    //   nftMasterchef?: string;
+    //   pid: number;
+    //   owner: string;
+    //   rangeTokenIds: number[];
+    // }): Promise<MasterChefPoolsInfo> {
+    //   if (rangeTokenIds.length != 2) {
+    //     throw new Error(` beyend token range..."`);
+    //   }
+    //   nftMasterchef = this._protocol.NFTMasterChefContractAddress;
+    //   const {
+    //     _poolInfo,
+    //     _rewardInfo,
+    //     _userInfo,
+    //     _currentRewardIndex,
+    //     _endBlock,
+    //     _nft
+    //   } = await this._protocol.NFTUtilsContract.methods
+    //     .getNFTMasterChefInfos(nftMasterchef, pid, owner, rangeTokenIds[0], rangeTokenIds[1])
+    //     .call();
+    //   const rewardForEachBlock = _rewardInfo["rewardForEachBlock"];
+    //   const rewardPerNFTForEachBlock = _rewardInfo["rewardPerNFTForEachBlock"];
+    //   const mining = _userInfo["mining"];
+    //   const dividend = _userInfo["dividend"];
+    //   const nftQuantity = _userInfo["nftQuantity"];
+    //   const wnftQuantity = _userInfo["wnftQuantity"];
+    //   const isNFTApproved = _userInfo["isNFTApproved"];
+    //   const isWNFTApproved = _userInfo["isWNFTApproved"];
+    //   const poolInfo = _poolInfo;
+    //   const endBlock = _endBlock;
+    //   const nft = _nft;
+    //   return {
+    //     poolInfo,
+    //     rewardForEachBlock,
+    //     rewardPerNFTForEachBlock,
+    //     endBlock,
+    //     mining,
+    //     dividend,
+    //     nftQuantity,
+    //     wnftQuantity,
+    //     isNFTApproved,
+    //     isWNFTApproved,
+    //     nft
+    //   };
+    // }
     DaoPort.prototype.canClaim = function (_a, handle) {
         var user = _a.user, treeIds = _a.treeIds, amounts = _a.amounts, merkleProofs = _a.merkleProofs;
         return __awaiter(this, void 0, void 0, function () {
@@ -537,26 +540,28 @@ var DaoPort = /** @class */ (function () {
             });
         });
     };
-    DaoPort.prototype.harvestAllByWNFTTokenIds = function (_a) {
-        var forUser = _a.forUser, pids = _a.pids, poolWNFTTokenIds = _a.poolWNFTTokenIds;
+    DaoPort.prototype.harvestAllByWNFTTokenIds = function (forUser, pids, poolWNFTTokenIds, callCallback, resultCallback, errorCallback) {
         return __awaiter(this, void 0, void 0, function () {
-            var txHash, txnData, error_6;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var txnData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
                         txnData = { from: this._protocol.account };
                         return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
                                 .harvestAllByWNFTTokenIds(forUser, pids, poolWNFTTokenIds)
-                                .send(txnData)];
+                                .send(txnData)
+                                .on("transactionHash", function (txHash) {
+                                callCallback(txHash);
+                            })
+                                .then(function (res) {
+                                resultCallback(res);
+                            })
+                                .catch(function (error) {
+                                errorCallback(new Error("Failed to harvestAllByWNFTTokenIds transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
+                            })];
                     case 1:
-                        txHash = _b.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_6 = _b.sent();
-                        console.error(error_6);
-                        throw new Error("Failed to harvestAllByWNFTTokenIds transaction: \"" + (error_6 instanceof Error && error_6.message ? error_6.message : "user denied") + "...\"");
-                    case 3: return [2 /*return*/, txHash];
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });

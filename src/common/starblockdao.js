@@ -127,6 +127,101 @@ export async function getAllPoolInfos(handlePoolInfos, canDeposite, deposited) {
     }
 }
 
+export async function ownedWNFTsTokenIdsByPids(pids, handleWNFTsTokenIds) {
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+
+    const user = accounts[0];
+    const parameters = {
+        pids,
+        user,
+    };
+    const WNFTsTokenIds = await daoport.ownedWNFTsTokenIdsByPids(parameters);
+    console.log("WNFTsTokenIds", WNFTsTokenIds);
+    if (handleWNFTsTokenIds) {
+        handleWNFTsTokenIds(WNFTsTokenIds);
+    }
+}
+
+export async function harvestAllByWNFTTokenIds(poolWNFTTokenIds, pids, handleHarvestAll, requesUploadHash, faildHandle) {
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+
+    const forUser = accounts[0];
+    await daoport.harvestAllByWNFTTokenIds(
+        forUser,
+        pids,
+        poolWNFTTokenIds,
+        txHash => {
+            if (requesUploadHash) {
+                requesUploadHash(txHash)
+            }
+            console.log("handleHarvestAll on:::", txHash);
+        },
+        res => {
+            if (handleHarvestAll) {
+                handleHarvestAll(res);
+            }
+            console.log("handleHarvestAll then:::", res);
+        },
+        err => {
+
+            var reg = RegExp(/Transaction was not mined within/);
+            if (err.message.match(reg)) {
+
+            } else {
+                if (faildHandle) {
+                    faildHandle()
+                }
+            }
+            console.log("handleHarvestAll catch:::", err);
+        }
+    );
+    // const info = await daoport.harvestAllByWNFTTokenIds(parameters);
+    // console.log("harvestAllByWNFTTokenIds", info);
+    // if (handleHarvestAll) {
+    //     handleHarvestAll();
+    // }
+}
+
+export async function getPoolInfosByNFTorWNFTs(contractAddress, handleSearch) {
+    if (!accounts) {
+        await getAccounts();
+    }
+    if (!daoport) {
+        getDaoPort(accounts[0]);
+    }
+
+
+    try {
+        const user = accounts[0];
+        const withOwnedNFTTokenIds = false;
+        const poolNFTorWNFTs = [contractAddress]
+        const parameters = {
+            poolNFTorWNFTs,
+            user,
+            withOwnedNFTTokenIds
+        };
+
+        const poolInfos = await daoport.getPoolInfosByNFTorWNFTs(parameters);
+        console.log("poolInfos", poolInfos);
+
+        if (handleSearch) {
+            handleSearch(poolInfos);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export async function daoportAction(item, handleMasterChefInfo, index, isFirstLoad) {
 
     if (!accounts) {
@@ -323,6 +418,28 @@ export async function approveWNFTAction(item, getIsApproveNFT, index, isOnlyGetA
 }
 
 export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
+    // if (!accounts) {
+    //     await getAccounts();
+    // }
+
+    // if (!daoport) {
+    //     getDaoPort(accounts[0]);
+    // }
+    // const owner = accounts[0];
+    // var contractAddress = item.nft;
+    // item.collection.contractAddress = contractAddress;
+    // const rangeTokenIds = item.poolInfo.rangeTokenIds;
+    // var parameters = {
+    //     contractAddress,
+    //     owner,
+    //     rangeTokenIds
+    // };
+    // const tokenIds = await daoport.ownedNFTTokens(parameters);
+    // console.log("daoportAction=== tokenIds:", tokenIds);
+    // if (handleGetNFTTokenIDs) {
+    //     handleGetNFTTokenIDs(tokenIds, item, index);
+    // }
+
     if (!accounts) {
         await getAccounts();
     }
@@ -330,43 +447,41 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
     if (!daoport) {
         getDaoPort(accounts[0]);
     }
-    const owner = accounts[0];
-    //获取可抵押tokens
-    // var contractAddress = await daoport.getNFTContractAddress(item.poolInfo.wnft);
-    var contractAddress = item.nft;
-    item.collection.contractAddress = contractAddress;
-    const rangeTokenIds = item.poolInfo.rangeTokenIds;
-    // const fromTokenId = item.poolInfo.fromTokenId;
+    const user = accounts[0];
+    const pids = [item.poolInfo.pid]
     var parameters = {
-        contractAddress,
-        owner,
-        rangeTokenIds
+        pids,
+        user,
     };
-    const tokenIds = await daoport.ownedNFTTokens(parameters);
-    console.log("daoportAction=== tokenIds:", tokenIds);
+    const tokenIds = await daoport.ownedNFTsTokenIdsByPids(parameters);
+    console.log("ownedNFTsTokenIdsByPids=== tokenIds:", tokenIds);
     if (handleGetNFTTokenIDs) {
-        handleGetNFTTokenIDs(tokenIds, item, index);
+        handleGetNFTTokenIDs(tokenIds[0], item, index);
     }
+
+
 }
 
 export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
-    // var owner = "";
     // if (!accounts) {
-    //     // await getAccounts();
-
-    //     await getAccounts()
-    //         .then(accounts => {
-    //             if (accounts) {
-
-    //             } else {
-    //                 owner = "0x0000000000000000000000000000000000000000"
-    //                 // this.$message.error(this.$t("common.connectWalletMsg"));
-    //             }
-    //         })
-    //         .catch(error => this.$message.error(owner = "0x0000000000000000000000000000000000000000"));
+    //     await getAccounts();
     // }
+
     // if (!daoport) {
-    //     getDaoPort(owner);
+    //     getDaoPort(accounts[0]);
+    // }
+    // const owner = accounts[0];
+    // const rangeTokenIds = item.poolInfo.rangeTokenIds;
+    // var contractAddress = item.poolInfo.wnft;
+    // var parameters = {
+    //     contractAddress,
+    //     owner,
+    //     rangeTokenIds
+    // };
+    // const tokenIds = await daoport.ownedNFTTokens(parameters);
+    // console.log("daoportAction=== tokenIds:", tokenIds);
+    // if (handleGetWNFTTokenIDs) {
+    //     handleGetWNFTTokenIDs(tokenIds, item, isHarvest);
     // }
 
     if (!accounts) {
@@ -376,20 +491,16 @@ export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
     if (!daoport) {
         getDaoPort(accounts[0]);
     }
-    const owner = accounts[0];
-    // owner = "0x0000000000000000000000000000000000000000";
-    const rangeTokenIds = item.poolInfo.rangeTokenIds;
-    //获取可抵押tokens
-    var contractAddress = item.poolInfo.wnft;
+    const user = accounts[0];
+    const pids = [item.poolInfo.pid]
     var parameters = {
-        contractAddress,
-        owner,
-        rangeTokenIds
+        pids,
+        user,
     };
-    const tokenIds = await daoport.ownedNFTTokens(parameters);
-    console.log("daoportAction=== tokenIds:", tokenIds);
+    const tokenIds = await daoport.ownedWNFTsTokenIdsByPids(parameters);
+    console.log("ownedNFTsTokenIdsByPids=== tokenIds:", tokenIds);
     if (handleGetWNFTTokenIDs) {
-        handleGetWNFTTokenIDs(tokenIds, item, isHarvest);
+        handleGetWNFTTokenIDs(tokenIds[0], item, isHarvest);
     }
 }
 
@@ -840,12 +951,20 @@ export function openseaApiBaseUrl() {
 
 export function etherscanCountDownBase() {
     if (getProdcutMode() == 0) {
-        return "https://etherscan.io/block/countdown/";
+        return "https://rinkeby.etherscan.io/block/countdown/";
     } else {
         return "https://etherscan.io/block/countdown/";
     }
 }
 
+
+export function etherscanAccountBalanceBase(accountAddress) {
+    if (getProdcutMode() == 0) {
+        return "https://rinkeby.etherscan.io/token/0x38781bd54b74bf1b7692c16e9362587c13fa3986?a=" + accountAddress;
+    } else {
+        return "https://etherscan.io/token/0xc481a850aead5002598b7ed355cbb3349c148072?a=" + accountAddress;
+    }
+}
 
 
 

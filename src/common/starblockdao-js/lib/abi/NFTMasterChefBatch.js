@@ -18,6 +18,11 @@ exports.NFTMasterChefBatch = [
                 "internalType": "contract ITokenPriceUtils",
                 "name": "_tokenPriceUtils",
                 "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_weth",
+                "type": "address"
             }
         ],
         "stateMutability": "nonpayable",
@@ -183,6 +188,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -229,6 +249,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -443,6 +468,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -489,6 +529,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -652,6 +697,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -698,6 +758,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -861,6 +926,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -907,6 +987,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -1070,6 +1155,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -1116,6 +1216,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -1274,6 +1379,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -1320,6 +1440,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -1478,6 +1603,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -1524,6 +1664,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -1637,6 +1782,11 @@ exports.NFTMasterChefBatch = [
                     },
                     {
                         "internalType": "uint256",
+                        "name": "blockTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
                         "name": "tokenPrice",
                         "type": "uint256"
                     },
@@ -1667,6 +1817,21 @@ exports.NFTMasterChefBatch = [
             },
             {
                 "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "ethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenBalance",
+                        "type": "uint256"
+                    },
                     {
                         "internalType": "uint256",
                         "name": "mining",
@@ -1802,6 +1967,21 @@ exports.NFTMasterChefBatch = [
                         "components": [
                             {
                                 "internalType": "uint256",
+                                "name": "ethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "wethBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenBalance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
                                 "name": "mining",
                                 "type": "uint256"
                             },
@@ -1848,6 +2028,11 @@ exports.NFTMasterChefBatch = [
                     {
                         "internalType": "uint256",
                         "name": "currentRewardIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "currentRewardEndBlock",
                         "type": "uint256"
                     },
                     {
@@ -2025,6 +2210,21 @@ exports.NFTMasterChefBatch = [
                 "components": [
                     {
                         "internalType": "uint256",
+                        "name": "ethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
                         "name": "mining",
                         "type": "uint256"
                     },
@@ -2081,7 +2281,18 @@ exports.NFTMasterChefBatch = [
             }
         ],
         "name": "harvestAll",
-        "outputs": [],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_mining",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_dividend",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -2104,7 +2315,18 @@ exports.NFTMasterChefBatch = [
             }
         ],
         "name": "harvestAllByWNFTTokenIds",
-        "outputs": [],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_mining",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_dividend",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -2324,6 +2546,21 @@ exports.NFTMasterChefBatch = [
                 "components": [
                     {
                         "internalType": "uint256",
+                        "name": "ethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
                         "name": "mining",
                         "type": "uint256"
                     },
@@ -2366,6 +2603,16 @@ exports.NFTMasterChefBatch = [
                 "internalType": "struct NFTMasterChefBatch.UserInfo",
                 "name": "_userInfo",
                 "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_blockNumber",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_blockTime",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -2429,16 +2676,6 @@ exports.NFTMasterChefBatch = [
                 "internalType": "uint256",
                 "name": "_dividend",
                 "type": "uint256"
-            },
-            {
-                "internalType": "contract IWrappedNFT",
-                "name": "_wnft",
-                "type": "address"
-            },
-            {
-                "internalType": "contract IERC721Metadata",
-                "name": "_nft",
-                "type": "address"
             },
             {
                 "internalType": "uint256[]",
@@ -2548,6 +2785,19 @@ exports.NFTMasterChefBatch = [
         "name": "transferOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "weth",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     }
 ];

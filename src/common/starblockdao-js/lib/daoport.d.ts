@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { MasterChefPoolsInfo, Web3Callback, ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
+import { Web3Callback, ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
 import BigNumber from "bignumber.js";
 export declare class DaoPort {
     private _protocol;
@@ -10,11 +10,6 @@ export declare class DaoPort {
     withdraw(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
     setApprovalForAll(owner: string, nftContract: string, wnftContract: string, isApproveNFT: Boolean, callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
     harvest(pid: number, to: string, wnftTokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
-    ownedNFTTokens({ contractAddress, owner, rangeTokenIds }: {
-        contractAddress: string;
-        owner: string;
-        rangeTokenIds: number[];
-    }): Promise<number[]>;
     pending<T>({ pid, tokenIds }: {
         pid: number;
         tokenIds: number[];
@@ -23,12 +18,6 @@ export declare class DaoPort {
         user: string;
         withOwnedNFTTokenIds: boolean;
     }): Promise<{}>;
-    getNFTMasterChefInfos({ nftMasterchef, pid, owner, rangeTokenIds }: {
-        nftMasterchef?: string;
-        pid: number;
-        owner: string;
-        rangeTokenIds: number[];
-    }): Promise<MasterChefPoolsInfo>;
     canClaim<T>({ user, treeIds, amounts, merkleProofs }: {
         user: string;
         treeIds: number[];
@@ -72,11 +61,7 @@ export declare class DaoPort {
         pids: number[];
         poolWNFTTokenIds: number[][];
     }): Promise<{}>;
-    harvestAllByWNFTTokenIds({ forUser, pids, poolWNFTTokenIds }: {
-        forUser: string;
-        pids: number[];
-        poolWNFTTokenIds: number[][];
-    }): Promise<string>;
+    harvestAllByWNFTTokenIds(forUser: string, pids: number[], poolWNFTTokenIds: number[][], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void>;
     ownedNFTsTokenIdsByPids({ pids, user }: {
         pids: number[];
         user: string;

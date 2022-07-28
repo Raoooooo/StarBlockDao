@@ -18,7 +18,7 @@
             <div class="contantDetailTopBox_rightBox" v-if="isShowEndBlock(item, currentBlockNumber)">
               <a :href="countdownUrl(item, 1)" target="_blank">
                 <p class="contantDetailTopBox_rightBox_text">
-                  {{ formmatBlockStr(Number(item.endBlock) - currentBlockNumber, 1) }}
+                  {{ formmatBlockStr(Number(item.currentRewardEndBlock) - currentBlockNumber, 1) }}
                 </p>
               </a>
             </div>
@@ -350,7 +350,7 @@ export default {
     },
     countdownUrl(item, type) {
       if (type == 1) {
-        return etherscanCountDownBase() + Number(item.endBlock);
+        return etherscanCountDownBase() + Number(item.currentRewardEndBlock);
       } else if (type == 2) {
         return etherscanCountDownBase() + Number(item.poolInfo.startBlock);
       }
@@ -426,35 +426,65 @@ export default {
     },
     formmatBlockStr(blockNumber, type) {
       if (blockNumber / 6500 > 1000 && blockNumber / 6500 < 10000) {
-        return (
-          Number(blockNumber / 1000 / 6500).toFixed(0) +
-          "K" +
-          (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
-        );
-      } else if (blockNumber / 6500 >= 10000 && blockNumber / 6500 < 10000000) {
-        return (
-          Number(blockNumber / 10000 / 6500).toFixed(0) +
-          "W" +
-          (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
-        );
-      } else if (blockNumber / 6500 >= 10000000) {
-        return (
-          Number(blockNumber / 10000000 / 6500).toFixed(0) +
-          "KW" +
-          (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
-        );
-      } else {
-        if (blockNumber / 6500 > 3) {
-          return (
-            Number((blockNumber / 6500).toFixed(0)) +
-            (type == 1 ? this.$t("farms.endBlockDay") : this.$t("farms.startBlockDay"))
+        if (type == 1) {
+          return this.$t("farms.havling") + (
+            Number(blockNumber / 1000 / 6500).toFixed(0) +
+            "K" + this.$t("farms.endBlockDay")
           );
         } else {
           return (
-            blockNumber +
-            " " +
-            (type == 1 ? this.$t("farms.endBlock") : this.$t("farms.startBlock"))
+            Number(blockNumber / 1000 / 6500).toFixed(0) +
+            "K" + this.$t("farms.startBlockDay")
           );
+        }
+
+      } else if (blockNumber / 6500 >= 10000 && blockNumber / 6500 < 10000000) {
+        if (type == 1) {
+          return this.$t("farms.havling") + (
+            Number(blockNumber / 10000 / 6500).toFixed(0) +
+            "W" + this.$t("farms.endBlockDay")
+          );
+        } else {
+          return (
+            Number(blockNumber / 10000 / 6500).toFixed(0) +
+            "W" + this.$t("farms.startBlockDay")
+          );
+        }
+
+      } else if (blockNumber / 6500 >= 10000000) {
+        if (type == 1) {
+          return this.$t("farms.havling") + (
+            Number(blockNumber / 10000000 / 6500).toFixed(0) +
+            "KW" + this.$t("farms.endBlockDay")
+          );
+        } else {
+          return (
+            Number(blockNumber / 10000000 / 6500).toFixed(0) +
+            "KW" + this.$t("farms.startBlockDay")
+          );
+        }
+
+      } else {
+        if (blockNumber / 6500 > 3) {
+          if (type == 1) {
+            return this.$t("farms.havling") + (
+              Number((blockNumber / 6500).toFixed(0)) + this.$t("farms.endBlockDay")
+            );
+          } else {
+            return (
+              Number((blockNumber / 6500).toFixed(0)) + this.$t("farms.startBlockDay")
+            );
+          }
+
+        } else {
+          if (type == 1) {
+            return this.$t("farms.havling") + blockNumber + " " + this.$t("farms.endBlock");
+          } else {
+            return (
+              blockNumber + " " + this.$t("farms.startBlock")
+            );
+          }
+
         }
       }
     },

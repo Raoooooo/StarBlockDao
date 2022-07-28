@@ -84,6 +84,13 @@ export class Protocol {
     this.NFTUtilsContract = new provider.eth.Contract(this.NFTUtilsAbi, this.NFTUtilsAddress);
   }
 
+  public onlyReadNFTMasterChefBatchContract(provider: Web3) {
+    this.NFTMasterChefBatchContract = new provider.eth.Contract(
+      constants.NFTMASTERCHEFBATCH_ABI,
+      constants.DEPLOYED[this._networkName].NFTMasterChefBatch
+    );
+  }
+
   public onlyReadCollectionUtilsContract(provider: Web3) {
     this.StarblockCollectionUtilsContract = new provider.eth.Contract(
       constants.STARBLOCKCOLLECTIONUTILS_ABI,
@@ -99,8 +106,7 @@ export class Protocol {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to deposit transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to deposit transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -115,8 +121,7 @@ export class Protocol {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to withdraw transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to withdraw transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
@@ -132,8 +137,7 @@ export class Protocol {
     } catch (error) {
       console.error(error);
       throw new Error(
-        `Failed to harvestToken transaction: "${
-          error instanceof Error && error.message ? error.message : "user denied"
+        `Failed to harvestToken transaction: "${error instanceof Error && error.message ? error.message : "user denied"
         }..."`
       );
     }
