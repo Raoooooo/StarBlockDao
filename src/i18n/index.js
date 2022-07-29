@@ -22,6 +22,8 @@ const messages = {
 }
 var langType = navigator.language;
 var defaultLocale = "en";
+// var defaultLocale = "zh";
+
 // alert(langType);
 console.log("navigator.language*******", navigator.language);
 // alert(langType);

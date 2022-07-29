@@ -87,14 +87,14 @@
           <!-- <a :href="linkOfType(item, 1)" target="_blank" class="linkIconUrl"> -->
           <div :class="isShowStarBlockLink(item) ? 'linkTopBox_left' : 'linkTopBox_left_unActive'"
             @click="pushToUrl(item, 1)">
-            <img class="linkTopBox_left_img" :src="link1ImgUrl(item)" />
+            <!-- <img class="linkTopBox_left_img" :src="link1ImgUrl(item)" /> -->
             <p :class="isShowStarBlockLink(item) ? 'linkTopBox_left_text' : 'linkTopBox_left_text_unActive'">
               {{ !item.isFree ? 'Mint on StarBlock' : "Free Mint" }}</p>
           </div>
           <!-- </a> -->
           <div :class="item.collection.name ? 'linkTopBox_right' : 'linkTopBox_right_unActive'"
             @click="pushToUrl(item, 2)">
-            <img class="linkTopBox_left_img" :src="link2ImgUrl(item)" />
+            <!-- <img class="linkTopBox_left_img" :src="link2ImgUrl(item)" /> -->
             <p :class="item.collection.name ? 'linkTopBox_left_text' : 'linkTopBox_left_text_unActive'">Buy on
               Opensea</p>
           </div>
@@ -1204,7 +1204,7 @@ export default {
 }
 
 .linkTopBox_left_text {
-  margin-left: .25rem;
+  /* margin-left: .25rem; */
   font-size: .5rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -1213,7 +1213,7 @@ export default {
 }
 
 .linkTopBox_left_text_unActive {
-  margin-left: .125rem;
+  /* margin-left: .125rem; */
   font-size: .5rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -1525,7 +1525,7 @@ export default {
 
   .linkTopBox_left_text {
     overflow: hidden;
-    margin-left: .125rem;
+    /* margin-left: .125rem; */
     font-size: .3rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -1535,7 +1535,7 @@ export default {
 
   .linkTopBox_left_text_unActive {
     overflow: hidden;
-    margin-left: .125rem;
+    /* margin-left: .125rem; */
     font-size: .3rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;

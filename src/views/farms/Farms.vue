@@ -282,7 +282,13 @@
           </a>
           <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
         </div>
-        <p class="defaultRewardDes">{{ $t("common.rewardAlertDes_success") }}</p>
+
+        <p class="defaultRewardDes_reward">{{ $t("common.rewardAlertDes_successSub1") }}
+          <br />
+          <span class="defaultRewardDes_reward">
+            {{ $t("common.rewardAlertDes_successSub2") }}
+          </span>
+        </p>
 
         <div class="bottomBtnBox1">
           <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
@@ -313,8 +319,13 @@
                 : defaultMessageDesStr + ": " + awardAmountStr(selectPollItem.mining)
           }}
         </span>
-        <p class="defaultRewardDes">{{ $t("common.rewardAlertDes") }}</p>
-
+        <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub1") }}
+          <br />
+          <span class="defaultRewardDes">
+            {{ $t("common.rewardAlertDesSub2") }}
+          </span>
+        </p>
+        <!-- <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub2") }}</p> -->
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultBtnAction">
             {{ $t("common.confirm") }}
@@ -341,7 +352,12 @@
           }}
         </span>
 
-        <p class="defaultRewardDes">{{ $t("common.rewardAlertDes") }}</p>
+        <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub1") }}
+          <br />
+          <span class="defaultRewardDes">
+            {{ $t("common.rewardAlertDesSub2") }}
+          </span>
+        </p>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaulAllRewardAlertBtnAction">
             {{ $t("common.confirm") }}
@@ -975,7 +991,7 @@ export default {
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
-      processSuccessAlertShow: false,
+      processSuccessAlertShow: true,
       processSuccessAlertShow1: false,
       isDelyFailed: false,
       isDelySuccess: false,
@@ -994,7 +1010,7 @@ export default {
       txHashOringion: "",
       successVisible: false,
       successVisible1: false,
-      successVisible2: false,
+      successVisible2: true,
 
       selectPollItem: { collection: {}, poolInfo: {} },
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "500px" : "350px",
@@ -1111,13 +1127,13 @@ export default {
     //   this.loadPoolDataCount = this.loadPoolDataCount + 1;
     // }, 1000 * 60 * 2);
 
-    setInterval(() => {
-      this.$bus.$emit("showRefeshIcon", "1");
-    }, 1000 * 60 * 2);
-
     // setInterval(() => {
     //   this.$bus.$emit("showRefeshIcon", "1");
-    // }, 1000);
+    // }, 1000 * 60 * 2);
+
+    setInterval(() => {
+      this.$bus.$emit("showRefeshIcon", "1");
+    }, 1000);
 
   },
   watch: {
@@ -3725,6 +3741,17 @@ export default {
 
 .defaultRewardDes {
   width: 100%;
+  /* text-align: center; */
+  margin-top: .375rem;
+  font-size: .5rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #5C5E67;
+  line-height: .75rem
+}
+
+.defaultRewardDes_reward {
+  width: 100%;
   text-align: center;
   margin-top: .375rem;
   font-size: .5rem;
@@ -3733,6 +3760,7 @@ export default {
   color: #5C5E67;
   line-height: .75rem
 }
+
 
 .myfarmdata {
   margin-top: .125rem;
@@ -5118,7 +5146,7 @@ export default {
 
   .traddingStarblockBtn {
     margin-left: 0rem;
-    font-size: .4rem;
+    font-size: .375rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
     line-height: .65rem;
@@ -5131,7 +5159,7 @@ export default {
   }
 
   .traddingStarblockBtn_yellow {
-    font-size: .4rem;
+    font-size: .375rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
     line-height: .65rem;
@@ -5147,6 +5175,17 @@ export default {
 
   .defaultRewardDes {
     width: 100%;
+    /* text-align: center; */
+    margin-top: .375rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #5C5E67;
+    line-height: .5rem
+  }
+
+  .defaultRewardDes_reward {
+    width: 100%;
     text-align: center;
     margin-top: .375rem;
     font-size: .35rem;
@@ -5155,6 +5194,7 @@ export default {
     color: #5C5E67;
     line-height: .5rem
   }
+
 
 
   .alertDesBox {
@@ -5183,7 +5223,7 @@ export default {
   }
 
   .alertDesItemBox_text {
-    margin-top: -0.1rem;
+    margin-top: -0.07rem;
     margin-left: .125rem;
     font-size: .375rem;
     font-family: PingFangSC-Medium, PingFang SC;

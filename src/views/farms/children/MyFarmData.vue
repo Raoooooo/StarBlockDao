@@ -55,13 +55,13 @@
                     <a :href="accountUrl" target="_blank" v-if="isBtnActive">
                         <p class="balanceBox_leftText">{{ $t("common.STBBalance") + ": " }}
                             <span class="balanceBox_value">
-                                {{ balanceStr(userInfo) }}
+                                {{ balanceStr(userInfo) + " STB" }}
                             </span>
                         </p>
                     </a>
                     <p class="balanceBox_leftText" v-if="!isBtnActive">{{ $t("common.STBBalance") + ": " }}
                         <span class="balanceBox_value">
-                            {{ balanceStr(userInfo) }}
+                            {{ balanceStr(userInfo) + " STB" }}
                         </span>
                     </p>
                     <p class="balanceBox_rightText">{{ $t("common.STBDes") }}</p>
@@ -559,14 +559,14 @@ export default {
 }
 
 .miniDataBox1 {
-    margin-left: 20%;
+    margin-left: 27%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .miniDataBox_mobile {
-    width: 27.33%;
+    width: 33.33%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -586,6 +586,7 @@ export default {
     font-weight: 500;
     color: #111111;
     line-height: .7rem;
+    white-space: nowrap;
 }
 
 .miniDataBox_bottomP {
@@ -661,9 +662,10 @@ export default {
 }
 
 .getAwardBox_img {
-    margin-top: -1.3rem;
+    /* position: absolute; */
+    margin-top: -1.6rem;
     cursor: pointer;
-    margin-left: 0rem;
+    margin-left: -.3rem;
     width: 1.75rem;
 }
 
