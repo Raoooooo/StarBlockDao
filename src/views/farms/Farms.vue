@@ -88,8 +88,10 @@
 
       </div>
 
+      <div class="myfarmdata">
+        <myfarmdata :userInfo="userInfo"></myfarmdata>
+      </div>
 
-      <myfarmdata class="myfarmdata" :userInfo="userInfo"></myfarmdata>
 
       <!-- Farms -->
       <div class="itemsBox" id="main2" ref="instro">
@@ -98,23 +100,23 @@
             <div class="searchBox">
               <img class="searchBox_leftImg" src="@/assets/img/common/search_yellow.svg" />
               <input class="searchBox_input" @keyup.enter="enterSearch" v-model="searchText"
-                :placeholder="placeholderText" />
+                :placeholder="$t(placeholderText)" />
               <img class="searchBox_rightImg" src="@/assets/img/common/close_gray.svg" @click="clearSearchText" />
             </div>
 
-            <button class="searchBtn" @click="searchBtnAction">搜索</button>
+            <button class="searchBtn" @click="searchBtnAction">{{ $t("common.search") }}</button>
           </div>
 
           <div class="sortBox">
             <el-dropdown trigger="click" @visible-change="dropdownHiddenClick" @command="dropdownClick">
               <div class="sortItemBox0">
-                <p class="sortItemBox0_text">{{ shortNameStr }}</p>
+                <p class="sortItemBox0_text">{{ $t(shortNameStr) }}</p>
                 <img class="sortItemBox0_img" :src="drow_upDownImgUrl" />
               </div>
               <el-dropdown-menu slot="dropdown" class="filtrateBtnMarginRight">
                 <el-dropdown-item v-for="(item, index) in shortList" :command="item" class="el-dropdown-item">
                   <p :class="index == dropdownClickIndex ? 'el-dropdown-item_active' : 'el-dropdown-item'">{{
-                      item
+                      $t(item)
                   }}</p>
 
                 </el-dropdown-item>
@@ -122,11 +124,11 @@
             </el-dropdown>
             <div class="sortItemBox1">
               <img class="sortItemBox1_img" :src="sort_myNFTimgUrl" @click="sortMyNFTAction" />
-              <p class="sortItemBox1_text">我的持有</p>
+              <p class="sortItemBox1_text">{{ $t("common.myNFT") }}</p>
             </div>
             <div class="sortItemBox1">
               <img class="sortItemBox1_img" :src="sort_myWNFTimgUrl" @click="sortMyWNFTAction" />
-              <p class="sortItemBox1_text">我的抵押</p>
+              <p class="sortItemBox1_text">{{ $t("common.myStake") }}</p>
 
             </div>
           </div>
@@ -135,7 +137,7 @@
         <farmitemplace :items="placeItems" v-show="handledPoolItems.length == 0 && !isSearchEmpty"></farmitemplace>
         <div class="emptyNFTBox" v-show="isSearchEmpty">
           <img class="emptyNFTImg" src="@/assets/img/common/empty_search.svg" />
-          <p class="emptyDes">{{ "没有相关数据" }}</p>
+          <p class="emptyDes">{{ $t("common.noData") }}</p>
         </div>
       </div>
 
@@ -192,7 +194,7 @@
           <p class="itemDataBox_topText_alert">
             {{ (selectPollItem.mining * Math.pow(10, -18)).toFixed(2) + " STB" }}
           </p>
-          <p class="itemDataBox_bottomText_alert">{{ $t("farms.getAwardAmount") }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("common.optionName5") }}</p>
         </div>
         <div class="vSepLine_alert"></div>
 
@@ -203,9 +205,9 @@
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">{{ this.selectPollItem.nftQuantity + " NFT" }}</p>
-          <p class="itemDataBox_bottomText_alert">{{ $t("farms.canStake") }}</p>
+          <p class="itemDataBox_bottomText_alert">{{ $t("common.canStake") }}</p>
         </div>
-        <div class="vSepLine_alert"></div>
+        <!-- <div class="vSepLine_alert"></div> -->
 
         <!-- <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">{{ "0 WETH" }}</p>
@@ -280,12 +282,12 @@
           </a>
           <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
         </div>
-        <p class="defaultRewardDes">将STB Token添加到您的钱包中即可查看STB余额 STB可用于在StarBlock交易NFT</p>
+        <p class="defaultRewardDes">{{ $t("common.rewardAlertDes_success") }}</p>
 
         <div class="bottomBtnBox1">
-          <a href="https://starblock.io/" target="_blank" class="traddingStarblockBtn_a">
+          <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
             <button class="traddingStarblockBtn_yellow">
-              {{ "交易NFT" }}
+              {{ $t("common.tradingNFT") }}
             </button>
           </a>
           <button class="lookDetailBtn" @click="alertCloseBtnAction">
@@ -308,10 +310,10 @@
           {{
               !isGetReward
                 ? defaultMessageDesStr
-                : defaultMessageDesStr + ":" + awardAmountStr(selectPollItem.mining)
+                : defaultMessageDesStr + ": " + awardAmountStr(selectPollItem.mining)
           }}
         </span>
-        <p class="defaultRewardDes">挖矿奖励跟随出块发放，请以实际领取数量为准; 奖励将发放到您钱包中，请在钱包中确认您的交易</p>
+        <p class="defaultRewardDes">{{ $t("common.rewardAlertDes") }}</p>
 
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultBtnAction">
@@ -335,11 +337,11 @@
         </p>
         <span class="dialogDes" v-bind="{ color: dialogDesColor }">
           {{
-              defaultMessageDesStr + ":" + awardAmountStr(userInfo.mining)
+              defaultMessageDesStr + ": " + awardAmountStr(userInfo.mining)
           }}
         </span>
 
-        <p class="defaultRewardDes">挖矿奖励跟随出块发放，请以实际领取数量为准; 奖励将发放到您钱包中，请在钱包中确认您的交易</p>
+        <p class="defaultRewardDes">{{ $t("common.rewardAlertDes") }}</p>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaulAllRewardAlertBtnAction">
             {{ $t("common.confirm") }}
@@ -543,12 +545,12 @@
           <div class="alertDesBox">
             <div class="alertDesItemBox" v-for="(item, index) in alertDesItemArr">
               <img class="alertDesItemBox_img" :src="alertDesItemBoxImgUrl(index)" />
-              <p class="alertDesItemBox_text">{{ item }}</p>
+              <p class="alertDesItemBox_text">{{ $t(item) }}</p>
             </div>
           </div>
 
           <div class="alertBottomBtnBox">
-            <a href="https://starblock.io/" target="_blank" class="traddingStarblockBtn_a">
+            <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
               <button class="traddingStarblockBtn">{{ "Trading WNFT" }}</button>
             </a>
             <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
@@ -597,12 +599,12 @@
           <div class="alertDesBox">
             <div class="alertDesItemBox" v-for="(item, index) in alertDesItemArr1">
               <img class="alertDesItemBox_img" :src="alertDesItemBoxImgUrl(index)" />
-              <p class="alertDesItemBox_text">{{ item }}</p>
+              <p class="alertDesItemBox_text">{{ $t(item) }}</p>
             </div>
           </div>
 
           <div class="alertBottomBtnBox">
-            <a href="https://starblock.io/" target="_blank" class="traddingStarblockBtn_a">
+            <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
               <button class="traddingStarblockBtn">{{ "Trading WNFT" }}</button>
             </a>
             <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueStake") }}</button>
@@ -836,6 +838,17 @@ export default {
     },
 
     totalBonusStr() {
+
+
+
+      if (this.poolSta.totalRewardedDividend != "--") {
+        return Number((this.poolSta.totalRewardedDividend * Math.pow(10, -18)).toFixed(2)) + " WETH";
+      }
+      if (this.poolSta.totalRewardedDividend == "--") {
+        return "-- WETH";
+      }
+      return this.poolSta.totalRewardedDividend;
+
       if (this.totalBonus * Math.pow(10, -18) > 10000) {
         return formmatToToLocaleStringEnUS((this.totalBonus * Math.pow(10, -18)).toFixed(0)) + " WETH";
       } else {
@@ -932,25 +945,25 @@ export default {
     }
 
     return {
-      alertDesItemArr: ["此NFT已经开始挖矿",
-        "NFT已转移到WNFT合约，WNFT已转",
-        "持有WNFT可领取挖矿奖励、可解抵押原NFT",
-        "1 WNFT = 1 Original NFT",
-        "WNFT可在StarBlock进行交易，0.3%服务费，0%版权费"],
+      alertDesItemArr: ["common.stakeAlertItem1",
+        "common.stakeAlertItem2",
+        "common.stakeAlertItem3",
+        "common.stakeAlertItem4",
+        "common.stakeAlertItem5"],
 
-      alertDesItemArr1: ["此NFT已经停止挖矿，重新抵押即可继续挖",
-        "WNFT已转移到合约，原NFT已转移到您的钱包",
-        "持有WNFT可领取挖矿奖励、可解抵押原NFT",
-        "1 WNFT = 1 Original NFT",
-        "WNFT可在StarBlock进行交易，0.3%服务费，0%版权费"],
+      alertDesItemArr1: ["common.unstakeAlertItem1",
+        "common.unstakeAlertItem2",
+        "common.unstakeAlertItem3",
+        "common.unstakeAlertItem4",
+        "common.unstakeAlertItem5"],
 
-      shortNameStr: "推荐",
-      shortList: ["推荐", "最新", "抵押池奖励", "单NFT抵押奖励", "抵押总量"],
+      shortNameStr: "common.sortOption1",
+      shortList: ["common.sortOption1", "common.sortOption2", "common.sortOption3", "common.sortOption4", "common.sortOption5"],
       dropdownClickIndex: 0,
       isSearchEmpty: false,
       keyword: "",
       pids: [],
-      placeholderText: "合约地址、合集名称",
+      placeholderText: "common.searchPlace",
       searchText: "",
       drow_upDownImgUrl: require("@/assets/img/common/drow_down.svg"),
       sort_myNFTimgUrl: require("@/assets/img/common/sort_unselect.svg"),
@@ -984,7 +997,7 @@ export default {
       successVisible2: false,
 
       selectPollItem: { collection: {}, poolInfo: {} },
-      elDialogWidth: document.documentElement.clientWidth > 1200 ? "500px" : "300px",
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "500px" : "350px",
       elDialogWidth1: elDialogWidth1,
       warningDefaultVisible: false,
       warningDefaultVisible1: false,
@@ -1101,6 +1114,10 @@ export default {
     setInterval(() => {
       this.$bus.$emit("showRefeshIcon", "1");
     }, 1000 * 60 * 2);
+
+    // setInterval(() => {
+    //   this.$bus.$emit("showRefeshIcon", "1");
+    // }, 1000);
 
   },
   watch: {
@@ -1950,6 +1967,7 @@ export default {
       }
     },
     setTopData(poolSta) {
+      this.poolSta.totalRewardedDividend = Number(poolSta.totalRewardedDividend)
       this.totalNftQuantity = Number(poolSta.totalNFTAmount);
       this.totalReward = Number(poolSta.totalRewardedToken);
       this.totalBonus = Number(poolSta.totalRewardedDividend);
@@ -2792,12 +2810,12 @@ export default {
 
 .dialogTopImg {
   margin-top: -0.5rem;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .dialopTitle {
-  font-size: 0.3rem;
+  font-size: 0.6rem;
   font-weight: 500;
   color: #111;
   margin-top: 0.15rem;
@@ -2805,7 +2823,7 @@ export default {
 
 .dialogDes {
   color: #FF7421;
-  font-size: 0.325rem;
+  font-size: 0.5rem;
   margin-top: 0.25rem;
   align-content: center;
   text-align: center;
@@ -2830,11 +2848,11 @@ export default {
 
 .lookDetailBtn {
   margin-top: 0rem;
-  font-size: 0.375rem;
+  font-size: 0.6rem;
   font-weight: 400;
   color: #f7b500;
   background-color: white;
-  height: 1rem;
+  height: 1.25rem;
   border-radius: 5px;
   border-style: solid;
   border-width: 1px;
@@ -2843,13 +2861,13 @@ export default {
 }
 
 .goOnCreatBtn {
-  margin-top: 0.2rem;
-  font-size: 0.375rem;
+  margin-top: 0rem;
+  font-size: 0.6rem;
   font-weight: 400;
   color: white;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
-  height: 1rem;
+  height: 1.25rem;
   border-radius: 5px;
   border-style: none;
   /* border-width: 1px; */
@@ -2902,12 +2920,12 @@ export default {
 }
 
 .txHash_pre {
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   color: #666;
 }
 
 .txHash {
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   color: #2c6ff8;
 }
 
@@ -3099,8 +3117,9 @@ export default {
   cursor: pointer;
   /* margin-top: .75rem; */
   margin-left: 0rem;
-  margin-right: 0rem;
-  height: 1.5rem;
+  margin-right: 0.25rem;
+  height: 1.25rem;
+  width: 45%;
   background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
   border-radius: 4px;
   border-style: none;
@@ -3117,7 +3136,7 @@ export default {
   margin-top: .75rem;
   margin-left: 0rem;
   margin-right: 0rem;
-  height: 1.5rem;
+  height: 1.25rem;
   background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
   border-radius: 4px;
   border-style: none;
@@ -3456,8 +3475,9 @@ export default {
   margin-right: .75rem;
   padding-left: .6rem;
   padding-right: .6rem;
-  padding-top: .4rem;
-  padding-bottom: .4rem;
+  height: 1.5rem;
+  /* padding-top: .4rem;
+  padding-bottom: .4rem; */
   margin-left: 0rem;
   font-size: .6rem;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -3520,7 +3540,9 @@ export default {
 .sortItemBox0 {
   margin-left: .75rem;
   margin-right: .75rem;
-  width: 5rem;
+  /* width: 6rem; */
+  flex: 1;
+  width: 8rem;
   height: 1.3rem;
   border-radius: .1rem;
   border: 1px solid #EEEEEE;
@@ -3630,32 +3652,34 @@ export default {
 }
 
 .alertDesItemBox {
-  margin-left: 10%;
+  margin-left: 3%;
   width: 100%;
   margin-top: .35rem;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: top;
 }
 
 .alertDesItemBox_img {
-  width: .4rem;
-  height: .4rem;
+  width: .6rem;
+  height: .6rem;
 
 }
 
 .alertDesItemBox_text {
+  margin-right: .25rem;
+  margin-top: -0.05rem;
   margin-left: .125rem;
-  font-size: .375rem;
+  font-size: .5rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #212121;
-  line-height: .525rem;
+  line-height: .7rem;
 
 }
 
 .alertBottomBtnBox {
-  margin-top: .9rem;
+  margin-top: .79rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -3667,11 +3691,12 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: row;
-  width: 47%;
+  width: 45%;
 }
 
 .traddingStarblockBtn {
-  font-size: .4rem;
+  margin-left: .25rem;
+  font-size: .6rem;
   font-family: Poppins-Medium, Poppins;
   font-weight: 500;
   line-height: .65rem;
@@ -3679,12 +3704,13 @@ export default {
   border: 1px solid #F7B500;
   background-color: white;
   color: #FE9C02;
-  height: 1rem;
+  height: 1.25rem;
   width: 100%;
 }
 
 .traddingStarblockBtn_yellow {
-  font-size: .4rem;
+  margin-left: .25rem;
+  font-size: .6rem;
   font-family: Poppins-Medium, Poppins;
   font-weight: 500;
   line-height: .65rem;
@@ -3693,7 +3719,7 @@ export default {
   background-color: white;
   color: white;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
-  height: 1rem;
+  height: 1.25rem;
   width: 100%;
 }
 
@@ -3701,11 +3727,17 @@ export default {
   width: 100%;
   text-align: center;
   margin-top: .375rem;
-  font-size: .35rem;
+  font-size: .5rem;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #5C5E67;
-  line-height: .5rem
+  line-height: .75rem
+}
+
+.myfarmdata {
+  margin-top: .125rem;
+  width: 100%;
+  margin-bottom: -0rem;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -4564,7 +4596,7 @@ export default {
     margin-left: 0px;
     margin-right: 0px;
     width: 47%;
-    height: 1.25rem;
+    height: 1rem;
     background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
     border-radius: 4px;
     border-style: none;
@@ -4900,7 +4932,7 @@ export default {
   }
 
   .emptyDes {
-    font-size: 0.75rem;
+    font-size: 0.5rem;
     color: #999;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
@@ -4945,9 +4977,10 @@ export default {
     margin-right: 0rem;
     padding-left: .3rem;
     padding-right: .3rem;
-    padding-top: .2rem;
-    padding-bottom: .2rem;
-    margin-left: .75rem;
+    /* padding-top: .2rem;
+    padding-bottom: .2rem; */
+    height: 1rem;
+    margin-left: .5rem;
     font-size: .35rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
@@ -5005,11 +5038,12 @@ export default {
   .sortItemBox0 {
     margin-left: .5rem;
     margin-right: 0rem;
-    width: 4rem;
+    width: 4.6rem;
     height: 1rem;
     border-radius: .1rem;
     border: 1px solid #EEEEEE;
     display: flex;
+    flex: unset;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -5071,6 +5105,91 @@ export default {
     color: #212121;
     font-size: .35rem;
     line-height: .8rem;
+
+  }
+
+
+  .traddingStarblockBtn_a {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 47%;
+  }
+
+  .traddingStarblockBtn {
+    margin-left: 0rem;
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    line-height: .65rem;
+    border-radius: .1rem;
+    border: 1px solid #F7B500;
+    background-color: white;
+    color: #FE9C02;
+    height: 1rem;
+    width: 100%;
+  }
+
+  .traddingStarblockBtn_yellow {
+    font-size: .4rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    line-height: .65rem;
+    border-radius: .1rem;
+    border: 1px solid #F7B500;
+    background-color: white;
+    color: white;
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    height: 1rem;
+    width: 100%;
+  }
+
+
+  .defaultRewardDes {
+    width: 100%;
+    text-align: center;
+    margin-top: .375rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #5C5E67;
+    line-height: .5rem
+  }
+
+
+  .alertDesBox {
+    width: 100%;
+    margin-top: .4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #2c6ff8; */
+
+  }
+
+  .alertDesItemBox {
+    margin-left: 2%;
+    width: 100%;
+    margin-top: .35rem;
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+  }
+
+  .alertDesItemBox_img {
+    width: .4rem;
+    height: .4rem;
+
+  }
+
+  .alertDesItemBox_text {
+    margin-top: -0.1rem;
+    margin-left: .125rem;
+    font-size: .375rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #212121;
+    line-height: .525rem;
 
   }
 

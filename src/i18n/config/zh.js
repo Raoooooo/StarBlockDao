@@ -174,7 +174,43 @@ export default {
         optionName6: "分红奖励",
         moreInfo: "了解更多",
 
-        canStake: "可抵押"
+        canStake: "可抵押",
+        myStakeTitle: "我的NFT挖矿数据",
+        rewardBlock: "奖励发放区块",
+        getAllReward: "领取所有奖励",
+        STBBalance: "STB余额",
+        STBDes: "每次出块都将发放STB奖励",
+
+        searchPlace: "合约地址、合集名称",
+        search: "搜索",
+        noData: "没有相关数据",
+        myStake: "我的抵押",
+        myNFT: "我的持有",
+        sortOption1: "推荐",
+        sortOption2: "最新",
+        sortOption3: "总奖励",
+        sortOption4: "单NFT奖励",
+        sortOption5: "抵押总数量",
+
+        rewardAlertDes: "STB挖矿奖励跟随出块发放，请以实际领取数量为准; 奖励将发放到您钱包中，请在钱包中确认您的交易",
+        rewardAlertDes_success: "将STB Token添加到您的钱包中即可查看STB余额。STB可用于在StarBlock交易NFT",
+        tradingNFT: "交易NFT",
+        tradingWNFT: "交易WNFT",
+
+        stakeAlertItem1: "NFT已经开始挖矿，每个区块您都将获得STB奖励",
+        stakeAlertItem2: "NFT已转移至WNFT合约，WNFT已转移至您的钱包",
+        stakeAlertItem3: "持有WNFT可领取挖矿奖励、可解抵押原NFT",
+        stakeAlertItem4: "1 WNFT = 1 Original NFT",
+        stakeAlertItem5: "WNFT可在StarBlock进行交易，0.3%服务费、0%版权费",
+
+        unstakeAlertItem1: "NFT已经停止挖矿，STB奖励已发送至您的钱包",
+        unstakeAlertItem2: "WNFT已转移到合约，原NFT已转移到您的钱包",
+        unstakeAlertItem3: "持有WNFT可领取挖矿奖励、可解抵押原NFT",
+        unstakeAlertItem4: "1 WNFT = 1 Original NFT",
+        unstakeAlertItem5: "WNFT可在StarBlock进行交易，0.3%服务费、0%版权费",
+
+        refeshImgUrl: require("@/assets/img/common/getAward.svg")
+
 
     },
 
@@ -237,3 +273,4 @@ export default {
 
 
 }
+

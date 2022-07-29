@@ -1,97 +1,70 @@
 <template>
     <div class="contant">
         <div class="contantBack">
-            <!-- <div class="leftBox_super">
-                <div class="leftBox">
-                    <div class="leftBox_topBox">
-                        <div class="leftBox_topBox_leftBox">
-                            <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
-                            <p class="itemTopTitle">抵押挖矿教程</p>
-                        </div>
-                        <a :href="$t('common.courseLinkUrl')" target="_blank" class="leftBox_topBox_rightBtn_a">
 
-                            <button class="leftBox_topBox_rightBtn">了解更多</button>
-                        </a>
-                    </div>
-                    <p class="descrip">当您在StartBlock上购买或出售任何W-NFT，都可获得交易奖励（私人交易除外）。奖励每天发放一次</p>
-                </div>
-
-                <div class="leftBox1">
-                    <div class="leftBox_topBox">
-                        <div class="leftBox_topBox_leftBox">
-                            <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
-                            <p class="itemTopTitle">申请合集</p>
-                        </div>
-                        <a href="https://forms.gle/FZukoQmPMTYGDFQCA" target="_blank" class="leftBox_topBox_rightBtn_a">
-                            <button class="leftBox_topBox_rightBtn">了解更多</button>
-                        </a>
-                    </div>
-                    <p class="descrip">当您在StartBlock上购买或出售任何W-NFT，都可获得交易奖励（私人交易除外）。奖励每天发放一次</p>
-                </div>
-            </div> -->
 
             <div class="rightBox">
                 <div class="rightBox_topBox">
                     <div class="rightBox_topBox_leftBox">
                         <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
-                        <p class="itemTopTitle">我的NFT抵押挖矿</p>
+                        <p class="itemTopTitle">{{ $t("common.myStakeTitle") }}</p>
                     </div>
                     <button :class="isBtnActive ? 'rightBox_topBox_rightButton_active' : 'rightBox_topBox_rightButton'"
                         @click="receiveReward">
                         <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg"
                             v-show="showImgLoading" />
-                        <p v-show="!showImgLoading">领取所有奖励</p>
+                        <p v-show="!showImgLoading">{{ $t("common.getAllReward") }}</p>
                     </button>
                 </div>
                 <div class="rightBox_bottomBox">
                     <div class="getAwardBox">
-                        <div class="miniDataBox1">
+                        <div :class="isShowMobile ? 'miniDataBox1_mobile' : 'miniDataBox1'">
                             <p class="miniDataBox_topP">{{ awardAmountStr(userInfo) }}</p>
                             <p class="miniDataBox_bottomP">{{ $t("common.optionName5") }}</p>
                         </div>
-                        <img src="@/assets/img/common/getAward.svg" class="getAwardBox_img" @click="getAwardBoxAction"
+                        <img :src="refeshImgUrl" class="getAwardBox_img" @click="getAwardBoxAction"
                             v-show="getAwardIconShow" />
                     </div>
 
-                    <div class="vSepLine"></div>
-                    <div class="miniDataBox">
+                    <div class="vSepLine" v-show="!isShowMobile"></div>
+                    <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox'" v-show="!isShowMobile">
                         <p class="miniDataBox_topP">{{ bonusAmountStr(userInfo) }}</p>
                         <p class="miniDataBox_bottomP">{{ $t("common.optionName6") }}</p>
                     </div>
 
-                    <div class="vSepLine"></div>
-                    <div class="miniDataBox">
+                    <div class="vSepLine" v-show="!isShowMobile"></div>
+                    <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox'" v-show="!isShowMobile">
                         <p class="miniDataBox_topP">{{ userInfo.blockNumber }}</p>
-                        <p class="miniDataBox_bottomP">奖励发放区块</p>
+                        <p class="miniDataBox_bottomP">{{ $t("common.rewardBlock") }}</p>
                     </div>
                     <div class="vSepLine"></div>
-                    <div class="miniDataBox">
+                    <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox'">
                         <p class="miniDataBox_topP">{{ userInfo.nftQuantity + " NFT" }}</p>
                         <p class="miniDataBox_bottomP">{{ $t("common.canStake") }}</p>
                     </div>
 
                     <div class="vSepLine"></div>
-                    <div class="miniDataBox">
+                    <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox'">
                         <p class="miniDataBox_topP">{{ userInfo.wnftQuantity + " NFT" }}</p>
-                        <p class="miniDataBox_bottomP">{{ $t("common.havePledge") }}</p>
+                        <p class="miniDataBox_bottomP">{{ $t("farms.havePledge") }}</p>
                     </div>
                 </div>
 
 
                 <div class="balanceBox">
                     <a :href="accountUrl" target="_blank" v-if="isBtnActive">
-                        <p class="balanceBox_leftText">STB Balance:
+                        <p class="balanceBox_leftText">{{ $t("common.STBBalance") + ": " }}
                             <span class="balanceBox_value">
                                 {{ balanceStr(userInfo) }}
                             </span>
                         </p>
                     </a>
-                    <p class="balanceBox_leftText" v-if="!isBtnActive"> Balance:
+                    <p class="balanceBox_leftText" v-if="!isBtnActive">{{ $t("common.STBBalance") + ": " }}
                         <span class="balanceBox_value">
                             {{ balanceStr(userInfo) }}
                         </span>
                     </p>
-                    <p class="balanceBox_rightText">STB奖励跟随每个区块发放奖励</p>
+                    <p class="balanceBox_rightText">{{ $t("common.STBDes") }}</p>
                 </div>
             </div>
         </div>
@@ -140,13 +113,18 @@ export default {
             isShowCountDown: false,
             isShowEndSell: false,
             serviceRate: 0,
-            isRequestServiceRate: false
+            isRequestServiceRate: false,
+            isShowMobile: document.documentElement.clientWidth > 750 ? false : true
+
         };
     },
     created() {
 
     },
     computed: {
+        refeshImgUrl() {
+            return this.$t("common.refeshImgUrl")
+        },
         accountUrl() {
             if (this.userInfo.selectedAddress) {
                 return etherscanAccountBalanceBase() + this.userInfo.selectedAddress;
@@ -254,7 +232,6 @@ export default {
         });
 
         this.$bus.$on("userInfoUpdateNoti", val => {
-            alert("sddd");
             gsap.to(this.$data, { duration: 0.5, awardAmount: 1333 });
 
         });
@@ -377,7 +354,8 @@ export default {
 .contantBack {
     /* background-color: aqua; */
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    /* flex-direction: row-reverse; */
     /* flex-direction: row; */
     align-items: center;
     /* background: #FFFFFF; */
@@ -490,13 +468,9 @@ export default {
 }
 
 .rightBox {
-    margin-right: 0rem;
     margin-top: .375rem;
     display: flex;
-    margin-left: 0rem;
     width: 100%;
-    /* margin-right: .75rem; */
-    flex: 1;
     background-color: #FFFFFF;
     border-radius: .25rem;
     display: flex;
@@ -522,7 +496,7 @@ export default {
 
 .rightBox_topBox_rightButton {
     margin-right: .5rem;
-    width: 4.3rem;
+    width: 5.3rem;
     /* padding-left: .6rem; */
     /* padding-right: .6rem; */
     height: 1.1rem;
@@ -545,7 +519,7 @@ export default {
 .rightBox_topBox_rightButton_active {
     cursor: pointer;
     margin-right: .5rem;
-    width: 4.3rem;
+    width: 5.3rem;
     /* padding-left: .6rem; */
     /* padding-right: .6rem; */
     height: 1.1rem;
@@ -570,15 +544,29 @@ export default {
     border: .7px solid #E5E5E5;
     display: flex;
     flex-direction: row;
-    width: 98%;
-    justify-content: space-around;
+    width: 95%;
+    justify-content: space-between;
     margin-top: .35rem;
     margin-bottom: .5rem;
     align-items: center;
 }
 
+.miniDataBox1_mobile {
+    margin-left: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .miniDataBox1 {
     margin-left: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.miniDataBox_mobile {
+    width: 27.33%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -608,6 +596,7 @@ export default {
     color: #8C9399;
     line-height: .5rem;
     margin-bottom: .5rem;
+    white-space: nowrap;
 }
 
 .rightBox_sepLine {
@@ -634,13 +623,13 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 98%;
+    width: 95%;
     justify-content: space-between;
     margin-bottom: .5rem;
 }
 
 .balanceBox_leftText {
-    font-size: .4rem;
+    font-size: .5rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
     color: #666666;
@@ -648,7 +637,7 @@ export default {
 }
 
 .balanceBox_value {
-    font-size: .4rem;
+    font-size: .5rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
     color: #212121;
@@ -656,7 +645,7 @@ export default {
 }
 
 .balanceBox_rightText {
-    font-size: .4rem;
+    font-size: .5rem;
     font-family: Poppins-Regular, Poppins;
     font-weight: 400;
     color: #5C5E67;
@@ -674,8 +663,8 @@ export default {
 .getAwardBox_img {
     margin-top: -1.3rem;
     cursor: pointer;
-    margin-left: .125rem;
-    width: 1.5rem;
+    margin-left: 0rem;
+    width: 1.75rem;
 }
 
 
@@ -689,7 +678,7 @@ export default {
     .contantBack {
         /* background-color: aqua; */
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: column;
         /* flex-direction: row; */
         align-items: center;
         /* background: #FFFFFF; */
@@ -797,19 +786,14 @@ export default {
     }
 
     .rightBox {
-        margin-right: 0rem;
         margin-top: 0rem;
-        width: auto;
         display: flex;
-        margin-left: 0rem;
         width: 100%;
-        /* flex: 1; */
         background-color: #FFFFFF;
         border-radius: .25rem;
         display: flex;
         flex-direction: column;
         align-items: center;
-
     }
 
     .rightBox_topBox {
@@ -831,7 +815,7 @@ export default {
         margin-right: .5rem;
         /* padding-left: .6rem; */
         /* padding-right: .6rem; */
-        width: 3.1rem;
+        width: 4.1rem;
         height: .8rem;
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
@@ -853,7 +837,7 @@ export default {
         margin-right: .5rem;
         /* padding-left: .6rem; */
         /* padding-right: .6rem; */
-        width: 3.1rem;
+        width: 4.1rem;
         height: .8rem;
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
@@ -923,6 +907,55 @@ export default {
         /* padding-right: .6rem; */
         width: 1rem;
         height: 1rem;
+    }
+
+
+    .balanceBox {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 98%;
+        justify-content: space-between;
+        margin-bottom: .5rem;
+    }
+
+    .balanceBox_leftText {
+        font-size: .4rem;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+        color: #666666;
+        line-height: .65rem;
+    }
+
+    .balanceBox_value {
+        font-size: .4rem;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+        color: #212121;
+        line-height: .65rem;
+    }
+
+    .balanceBox_rightText {
+        font-size: .4rem;
+        font-family: Poppins-Regular, Poppins;
+        font-weight: 400;
+        color: #5C5E67;
+        line-height: .65rem;
+    }
+
+    .getAwardBox {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: left;
+    }
+
+    .getAwardBox_img {
+        margin-top: -1.3rem;
+        cursor: pointer;
+        margin-left: .125rem;
+        width: 2rem;
     }
 
 }

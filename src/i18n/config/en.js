@@ -174,7 +174,46 @@ export default {
         optionName4: "Unstake NFT",
         optionName5: "Stake Rewards",
         optionName6: "Dividend Rewards",
-        moreInfo: "More"
+        moreInfo: "More",
+
+
+        canStake: "Can Stake",
+        myStakeTitle: "My NFT Farming",
+        rewardBlock: "Reward Block",
+        getAllReward: "Claim All Rewards",
+        STBBalance: "STB Balance",
+        STBDes: "Every block will reward STB token",
+
+        searchPlace: "NFT/WNFT Address, Name",
+        search: "Search",
+        noData: "No Items Found",
+        myStake: "My Staked",
+        myNFT: "My NFT",
+        sortOption1: "Recommend",
+        sortOption2: "Latest",
+        sortOption3: "Total Rewards",
+        sortOption4: "per NFT Rewards",
+        sortOption5: "Staked Amount",
+
+        rewardAlertDes: "STB Staking rewards are issued following the block production, please refer to the actual amount received; STB rewards will be issued to your wallet, please confirm your transaction in the wallet",
+        rewardAlertDes_success: "Add STB Token to your wallet to view balance. STB can be used to trade NFTs on StarBlock",
+        tradingNFT: "Trade NFT",
+        tradingWNFT: "Trade WNFT",
+
+        stakeAlertItem1: "NFT has started to farm STB, you will get STB rewards every block",
+        stakeAlertItem2: "NFT was transferred to WNFT contract, WNFT has been sent to your wallet",
+        stakeAlertItem3: "Holding WNFT can receive farming rewards, and can unstake the original NFT",
+        stakeAlertItem4: "1 WNFT = 1 Original NFT",
+        stakeAlertItem5: "WNFT can be traded on StarBlock, with 0.3% service fee & 0% creator fee",
+
+        unstakeAlertItem1: "NFT has stopped farming, staking rewards has been sent to your wallet",
+        unstakeAlertItem2: "WNFT was transferred to contract, original NFT was sent to your wallet",
+        unstakeAlertItem3: "Holding WNFT can receive farming rewards, and can unstake the original NFT",
+        unstakeAlertItem4: "1 WNFT = 1 Original NFT",
+        unstakeAlertItem5: "WNFT can be traded on StarBlock, with 0.3% service fee & 0% creator fee",
+
+        refeshImgUrl: require("@/assets/img/common/getAward_en.svg")
+
 
     },
 
