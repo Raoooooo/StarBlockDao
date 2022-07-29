@@ -16,14 +16,19 @@
                         <p v-show="!showImgLoading">{{ $t("common.getAllReward") }}</p>
                     </button>
                 </div>
+
                 <div class="rightBox_bottomBox">
+                    <div class="rightBox_bottomBox_contant">
+                        <img :src="refeshImgUrl" class="getAwardBox_img" @click="getAwardBoxAction"
+                            v-show="getAwardIconShow" v-bind:style="{ marginLeft: getAwardBox_imgMarginLeft }" />
+                    </div>
                     <div class="getAwardBox">
+
                         <div :class="isShowMobile ? 'miniDataBox1_mobile' : 'miniDataBox1'">
-                            <p class="miniDataBox_topP">{{ awardAmountStr(userInfo) }}</p>
+                            <p class="miniDataBoxTopP1" id="miniDataBoxTopP1">{{ awardAmountStr(userInfo) }}</p>
                             <p class="miniDataBox_bottomP">{{ $t("common.optionName5") }}</p>
                         </div>
-                        <img :src="refeshImgUrl" class="getAwardBox_img" @click="getAwardBoxAction"
-                            v-show="getAwardIconShow" />
+
                     </div>
 
                     <div class="vSepLine" v-show="!isShowMobile"></div>
@@ -97,6 +102,8 @@ export default {
     },
     data() {
         return {
+            getAwardBox_imgMarginLeft: 0,
+            getAwardBox_imgMarginTop: 0,
             getAwardIconShow: false,
             awardAmount: 0,
             showImgLoading: false,
@@ -221,6 +228,7 @@ export default {
                 window.fullWidth = document.documentElement.clientWidth;
                 that.windowHeight = window.fullHeight; // 高
                 that.windowWidth = window.fullWidth; // 宽
+                that.setImgMarginLeftOfGetAward();
             })();
         };
         this.$bus.$on("resetBtnStatusNoti", val => {
@@ -229,6 +237,8 @@ export default {
         });
         this.$bus.$on("showRefeshIcon", val => {
             this.getAwardIconShow = true;
+            this.setImgMarginLeftOfGetAward();
+            // console.log("miniDataBox_topPwidth", this.getWH("miniDataBox_topP", "width"))
         });
 
         this.$bus.$on("userInfoUpdateNoti", val => {
@@ -240,6 +250,43 @@ export default {
 
     },
     methods: {
+
+        setImgMarginLeftOfGetAward() {
+            let elem = document.querySelector('.miniDataBoxTopP1');
+            let rect = elem.getBoundingClientRect();
+            if (this.isShowMobile) {
+                this.getAwardBox_imgMarginLeft = (rect.width / 2.0 + 24 * document.documentElement.clientWidth / 750 * 4.6) + "px"
+                this.getAwardBox_imgMarginTop = rect.top + "px";
+
+            } else {
+                this.getAwardBox_imgMarginLeft = (rect.width * 2) + "px"
+                this.getAwardBox_imgMarginTop = rect.top + "px";
+            }
+        },
+
+        // 考虑 IE 的兼容性
+        getStyle(el) {
+            if (window.getComputedStyle) {
+                return window.getComputedStyle(el, null);
+            } else {
+                return el.currentStyle;
+            }
+        },
+        getWH(el, name) {
+            var val = name === "width" ? el.offsetWidth : el.offsetHeight,
+                which = name === "width" ? ['Left', 'Right'] : ['Top', 'Bottom'];
+            // display is none 
+            if (val === 0) {
+                return 0;
+            }
+            var style = this.getStyle(el);
+            // 左右或上下两边的都减去
+            for (var i = 0, a; a = which[i++];) {
+                val -= parseFloat(style["border" + a + "Width"]) || 0;
+                val -= parseFloat(style["padding" + a]) || 0;
+            }
+            return val;
+        },
         getAwardBoxAction() {
             this.getAwardIconShow = false;
             this.$bus.$emit("refreshAllData", "1");
@@ -310,6 +357,16 @@ export default {
                 } else {
                     this.awardAmount = Number((item.mining * Math.pow(10, -18)).toFixed(2)) + " STB";
                 }
+
+                // let elem = document.querySelector('miniDataBox_topP1');
+                // let rect = elem.getBoundingClientRect();
+                // if (this.isShowMobile) {
+                //     this.getAwardBox_imgMarginLeft = this.awardAmount.length * 0.6 / 2.0 + "rem"
+
+                // } else {
+                //     this.getAwardBox_imgMarginLeft = this.awardAmount.length * 0.5 / 2.0 + "rem"
+                // }
+
                 return this.awardAmount;
             }
             if (item.mining == "--") {
@@ -540,6 +597,7 @@ export default {
 
 
 .rightBox_bottomBox {
+    position: relative;
     border-radius: 5px;
     border: .7px solid #E5E5E5;
     display: flex;
@@ -551,15 +609,24 @@ export default {
     align-items: center;
 }
 
+.rightBox_bottomBox_contant {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: aqua; */
+}
+
 .miniDataBox1_mobile {
-    margin-left: 20%;
+    /* margin-left: 20%; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .miniDataBox1 {
-    margin-left: 27%;
+    /* margin-left: 27%; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -580,6 +647,16 @@ export default {
 }
 
 .miniDataBox_topP {
+    margin-top: .5rem;
+    font-size: .6rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #111111;
+    line-height: .7rem;
+    white-space: nowrap;
+}
+
+.miniDataBoxTopP1 {
     margin-top: .5rem;
     font-size: .6rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -614,6 +691,7 @@ export default {
 }
 
 .loadingImg {
+    margin-top: -0.125rem;
     width: 1.75rem;
     height: 1.75rem;
     /* padding-left: .6rem; */
@@ -657,15 +735,16 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: left;
+    /* align-items: center; */
+    justify-content: center;
 }
 
 .getAwardBox_img {
-    /* position: absolute; */
-    margin-top: -1.6rem;
+    position: absolute;
+    /* float: left; */
+    margin-top: .25rem;
     cursor: pointer;
-    margin-left: -.3rem;
+    margin-left: .5rem;
     width: 1.75rem;
 }
 
@@ -855,6 +934,7 @@ export default {
 
 
     .rightBox_bottomBox {
+        position: relative;
         border-radius: 5px;
         border: .7px solid #E5E5E5;
         display: flex;
@@ -864,6 +944,15 @@ export default {
         margin-top: .35rem;
         margin-bottom: .5rem;
         align-items: center;
+    }
+
+    .rightBox_bottomBox_contant {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color: aqua; */
     }
 
     .miniDataBox {
@@ -879,6 +968,17 @@ export default {
         font-weight: 500;
         color: #111111;
         line-height: .7rem;
+        white-space: nowrap;
+    }
+
+    .miniDataBoxTopP1 {
+        margin-top: .5rem;
+        font-size: .5rem;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #111111;
+        line-height: .7rem;
+        white-space: nowrap;
     }
 
     .miniDataBox_bottomP {
@@ -905,6 +1005,7 @@ export default {
     }
 
     .loadingImg {
+        margin-top: -0rem;
         /* padding-left: .6rem; */
         /* padding-right: .6rem; */
         width: 1rem;
@@ -949,14 +1050,15 @@ export default {
         flex: 1;
         display: flex;
         flex-direction: row;
-        align-items: center;
-        justify-content: left;
+        /* align-items: center; */
+        justify-content: center;
     }
 
     .getAwardBox_img {
-        margin-top: -1.3rem;
+        position: absolute;
+        margin-top: .25rem;
         cursor: pointer;
-        margin-left: .125rem;
+        margin-left: .5rem;
         width: 2rem;
     }
 

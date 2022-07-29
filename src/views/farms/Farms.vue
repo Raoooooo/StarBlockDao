@@ -957,7 +957,7 @@ export default {
     } else if (document.documentElement.clientWidth > 1200 && document.documentElement.clientWidth < 1500) {
       elDialogWidth1 = "400px";
     } else {
-      elDialogWidth1 = "480px";
+      elDialogWidth1 = "600px";
     }
 
     return {
@@ -991,7 +991,7 @@ export default {
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
-      processSuccessAlertShow: true,
+      processSuccessAlertShow: false,
       processSuccessAlertShow1: false,
       isDelyFailed: false,
       isDelySuccess: false,
@@ -1010,10 +1010,10 @@ export default {
       txHashOringion: "",
       successVisible: false,
       successVisible1: false,
-      successVisible2: true,
+      successVisible2: false,
 
       selectPollItem: { collection: {}, poolInfo: {} },
-      elDialogWidth: document.documentElement.clientWidth > 1200 ? "500px" : "350px",
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "600px" : "350px",
       elDialogWidth1: elDialogWidth1,
       warningDefaultVisible: false,
       warningDefaultVisible1: false,
@@ -1127,13 +1127,13 @@ export default {
     //   this.loadPoolDataCount = this.loadPoolDataCount + 1;
     // }, 1000 * 60 * 2);
 
-    // setInterval(() => {
-    //   this.$bus.$emit("showRefeshIcon", "1");
-    // }, 1000 * 60 * 2);
-
     setInterval(() => {
       this.$bus.$emit("showRefeshIcon", "1");
-    }, 1000);
+    }, 1000 * 60 * 2);
+
+    // setInterval(() => {
+    //   this.$bus.$emit("showRefeshIcon", "1");
+    // }, 5000);
 
   },
   watch: {
@@ -1368,6 +1368,14 @@ export default {
       }
     },
     sortMyNFTAction() {
+      if (!window.ethereum) {
+        this.$message.warning(this.$t("common.checkLoginMes"))
+        return;
+      }
+      if (!window.ethereum.selectedAddress) {
+        this.$message.warning(this.$t("common.checkLoginMes"))
+        return;
+      }
       this.selectSortMyNFT = !this.selectSortMyNFT;
       this.sort_myNFTimgUrl = this.selectSortMyNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
       this.handledPoolItems = [];
@@ -1376,6 +1384,14 @@ export default {
       this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
     },
     sortMyWNFTAction() {
+      if (!window.ethereum) {
+        this.$message.warning(this.$t("common.checkLoginMes"))
+        return;
+      }
+      if (!window.ethereum.selectedAddress) {
+        this.$message.warning(this.$t("common.checkLoginMes"))
+        return;
+      }
       this.selectSortMyWNFT = !this.selectSortMyWNFT;
       this.sort_myWNFTimgUrl = this.selectSortMyWNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
       this.handledPoolItems = [];
@@ -2868,7 +2884,7 @@ export default {
   font-weight: 400;
   color: #f7b500;
   background-color: white;
-  height: 1.25rem;
+  height: 1.75rem;
   border-radius: 5px;
   border-style: solid;
   border-width: 1px;
@@ -2883,7 +2899,7 @@ export default {
   color: white;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
   ;
-  height: 1.25rem;
+  height: 1.75rem;
   border-radius: 5px;
   border-style: none;
   /* border-width: 1px; */
@@ -3134,7 +3150,7 @@ export default {
   /* margin-top: .75rem; */
   margin-left: 0rem;
   margin-right: 0.25rem;
-  height: 1.25rem;
+  height: 1.75rem;
   width: 45%;
   background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
   border-radius: 4px;
@@ -3152,11 +3168,11 @@ export default {
   margin-top: .75rem;
   margin-left: 0rem;
   margin-right: 0rem;
-  height: 1.25rem;
+  height: 1.75rem;
   background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
   border-radius: 4px;
   border-style: none;
-  font-size: .6rem;
+  font-size: .7rem;
   font-family: Poppins-Medium, Poppins;
   font-weight: 500;
   color: #FFFFFF;
@@ -3508,8 +3524,9 @@ export default {
 
 .searchBox_leftImg {
   margin-left: .25rem;
-  width: .811rem;
-  height: .8975rem;
+  /* width: .811rem; */
+  width: .75rem;
+  /* height: .8975rem; */
 
 }
 
@@ -3528,7 +3545,7 @@ export default {
   background-color: #fff;
   border-width: 0rem;
   outline: none;
-  cursor: pointer;
+  /* cursor: pointer; */
 
 
 
@@ -3720,7 +3737,7 @@ export default {
   border: 1px solid #F7B500;
   background-color: white;
   color: #FE9C02;
-  height: 1.25rem;
+  height: 1.75rem;
   width: 100%;
 }
 
@@ -3735,7 +3752,7 @@ export default {
   background-color: white;
   color: white;
   background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
-  height: 1.25rem;
+  height: 1.75rem;
   width: 100%;
 }
 
@@ -5021,8 +5038,9 @@ export default {
 
   .searchBox_leftImg {
     margin-left: .25rem;
+    /* width: .35rem; */
     width: .4055rem;
-    height: .4487rem;
+    /* height: .4487rem; */
 
   }
 

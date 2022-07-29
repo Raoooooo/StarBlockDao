@@ -211,8 +211,8 @@ export default {
         unstakeAlertItem4: "1 WNFT = 1 Original NFT",
         unstakeAlertItem5: "WNFT可在StarBlock进行交易，0.3%服务费、0%版权费",
 
-        refeshImgUrl: require("@/assets/img/common/getAward.svg")
-
+        refeshImgUrl: require("@/assets/img/common/getAward.png"),
+        checkLoginMes: "请连接钱包后再试",
 
     },
 

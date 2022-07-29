@@ -214,7 +214,8 @@ export default {
         unstakeAlertItem4: "1 WNFT = 1 Original NFT",
         unstakeAlertItem5: "WNFT can be traded on StarBlock, with 0.3% service fee & 0% creator fee",
 
-        refeshImgUrl: require("@/assets/img/common/getAward_en.svg")
+        refeshImgUrl: require("@/assets/img/common/getAward_en.png"),
+        checkLoginMes: "Please connect wallet and try again",
 
 
     },
