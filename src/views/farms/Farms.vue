@@ -266,17 +266,20 @@
     </el-dialog>
 
 
-    <el-dialog title="" :visible.sync="successVisible2" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+    <el-dialog title="" :visible.sync="rewardSuccessAlertShow" :width="elDialogWidth" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
       :destroy-on-close="true">
       <div class="dialogBack">
+        <div class="optionViewCloseIconBox">
+          <img class="optionViewCloseIcon" src="@/assets/img/farms/optionViewClose.svg" @click="alertCloseBtnAction" />
+        </div>
         <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
         <p class="dialopTitle">
-          {{ requestSuccessStr2 }}
+          {{ rewardSuccessStr }}
         </p>
 
         <div class="txHashBox">
-          <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+          <p class="txHash_pre">{{ $t("common.txHash") + ": " }}</p>
           <a :href="getChainWebUrl(txHashOringion)" target="_blank">
             <p class="txHash">{{ txHash }}</p>
           </a>
@@ -296,18 +299,23 @@
               {{ $t("common.tradingNFT") }}
             </button>
           </a>
-          <button class="lookDetailBtn" @click="alertCloseBtnAction">
-            {{ $t("common.alertClose") }}
+          <button class="lookDetailBtn" @click="addSTBtoWalletAction">
+            {{ $t("common.addSTBToWallet") }}
           </button>
         </div>
       </div>
     </el-dialog>
 
 
-    <el-dialog title="" :visible.sync="warningDefaultVisible" :width="elDialogWidth" :show-close="false" center
+    <el-dialog title="" :visible.sync="defaultPoolRewardAlertShow" :width="elDialogWidth" :show-close="false" center
       top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
       :destroy-on-close="true">
       <div class="dialogBack">
+
+        <div class="optionViewCloseIconBox">
+          <img class="optionViewCloseIcon" src="@/assets/img/farms/optionViewClose.svg" @click="cancleBtnAction" />
+        </div>
+
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
           {{ defaultMessageStr }}
@@ -327,21 +335,27 @@
         </p>
         <!-- <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub2") }}</p> -->
         <div class="bottomBtnBox1">
-          <button class="goOnCreatBtn" @click="defaultBtnAction">
+          <button class="goOnCreatBtn" @click="defaultPoolRewardAction">
             {{ $t("common.confirm") }}
           </button>
-          <button class="lookDetailBtn" @click="cancleBtnAction">
+          <!-- <button class="lookDetailBtn" @click="cancleBtnAction">
             {{ $t("common.cancle") }}
-          </button>
+          </button> -->
         </div>
       </div>
     </el-dialog>
 
 
-    <el-dialog title="" :visible.sync="warningDefaultReceiveAllReward" :width="elDialogWidth" :show-close="false" center
+    <el-dialog title="" :visible.sync="defaultAllRewardAlertShow" :width="elDialogWidth" :show-close="false" center
       top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
       :destroy-on-close="true">
       <div class="dialogBack">
+
+        <div class="optionViewCloseIconBox">
+          <img class="optionViewCloseIcon" src="@/assets/img/farms/optionViewClose.svg"
+            @click="cancleAllRewardAlertBtnAction" />
+        </div>
+
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
           {{ defaultMessageStr }}
@@ -359,12 +373,12 @@
           </span>
         </p>
         <div class="bottomBtnBox1">
-          <button class="goOnCreatBtn" @click="defaulAllRewardAlertBtnAction">
+          <button class="goOnCreatBtn" @click="defaultAllRewardAlertBtnAction">
             {{ $t("common.confirm") }}
           </button>
-          <button class="lookDetailBtn" @click="cancleAllRewardAlertBtnAction">
+          <!-- <button class="lookDetailBtn" @click="cancleAllRewardAlertBtnAction">
             {{ $t("common.cancle") }}
-          </button>
+          </button> -->
         </div>
       </div>
     </el-dialog>
@@ -523,7 +537,7 @@
 
 
 
-    <el-dialog title="" :visible.sync="processSuccessAlertShow" :width="elDialogWidth1" :show-close="false" center
+    <el-dialog title="" :visible.sync="stakeSuccessAlertShow" :width="elDialogWidth1" :show-close="false" center
       top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
       :destroy-on-close="true">
       <div class="dialogBack">
@@ -551,7 +565,7 @@
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
           <div class="txHashBox_process">
-            <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+            <p class="txHash_pre">{{ $t("common.txHash") + ": " }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
               <p class="txHash">{{ txHash }}</p>
             </a>
@@ -577,7 +591,7 @@
     </el-dialog>
 
 
-    <el-dialog title="" :visible.sync="processSuccessAlertShow1" :width="elDialogWidth1" :show-close="false" center
+    <el-dialog title="" :visible.sync="unStakeSuccessAlertShow" :width="elDialogWidth1" :show-close="false" center
       top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
       :destroy-on-close="true">
       <div class="dialogBack">
@@ -605,7 +619,7 @@
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
           <div class="txHashBox_process">
-            <p class="txHash_pre">{{ $t("common.txHash") + ":" }}</p>
+            <p class="txHash_pre">{{ $t("common.txHash") + ": " }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
               <p class="txHash">{{ txHash }}</p>
             </a>
@@ -626,6 +640,46 @@
             <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueStake") }}</button>
 
           </div>
+        </div>
+      </div>
+    </el-dialog>
+
+
+
+    <el-dialog title="" :visible.sync="myBalanceAlertShow" :width="elDialogWidth" :show-close="false" center top="200px"
+      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+
+
+      <div class="dialogBack">
+
+        <div class="balanceAlertTitleBox">
+          <div class=""></div>
+          <p class="balanceAlertTitle">
+            {{ $t("common.mySTBBalance") }}
+          </p>
+          <img class="closeAlertIcon" src="@/assets/img/farms/optionViewClose.svg" @click="closeBalanceAlertAction" />
+        </div>
+        <p class="balanceValue">
+          {{ balanceOfSTB }}
+        </p>
+
+        <p class="defaultRewardDes_reward">{{ $t("common.rewardAlertDes_successSub1") }}
+          <br />
+          <span class="defaultRewardDes_reward">
+            {{ $t("common.rewardAlertDes_successSub2") }}
+          </span>
+        </p>
+
+        <div class="bottomBtnBox1">
+          <a :href="accountUrl" target="_blank" class="traddingStarblockBtn_a">
+            <button class="traddingStarblockBtn_yellow">
+              {{ $t("common.gotoEtherscan") }}
+            </button>
+          </a>
+          <button class="lookDetailBtn" @click="addSTBtoWalletAction">
+            {{ $t("common.addSTBToWallet") }}
+          </button>
         </div>
       </div>
     </el-dialog>
@@ -675,7 +729,9 @@ import {
   getAllPoolInfos,
   ownedWNFTsTokenIdsByPids,
   harvestAllByWNFTTokenIds,
-  getPoolInfosByNFTorWNFTs
+  getPoolInfosByNFTorWNFTs,
+  addSTBtoWallet,
+  etherscanAccountBalanceBase
 } from "@/common/starblockdao";
 
 import {
@@ -704,6 +760,15 @@ export default {
     Farmitemplace
   },
   computed: {
+    accountUrl() {
+      if (this.userInfo.selectedAddress != undefined && this.userInfo.selectedAddress) {
+        var url = etherscanAccountBalanceBase(this.userInfo.selectedAddress);
+        return url;
+      } else {
+        return ""
+      }
+
+    },
     topImgUrl() {
       return this.$t("course.topImg")
     },
@@ -935,7 +1000,7 @@ export default {
       return this.$t("farms.withdrawSuccess");
     },
 
-    requestSuccessStr2() {
+    rewardSuccessStr() {
       return this.$t("farms.getRewardSuccess");
     },
 
@@ -961,6 +1026,13 @@ export default {
     }
 
     return {
+      balanceOfSTB: "",
+      myBalanceAlertShow: false,
+      rewardSuccessAlertShow: true,
+      defaultPoolRewardAlertShow: false,
+      defaultAllRewardAlertShow: false,
+      stakeSuccessAlertShow: true,
+      unStakeSuccessAlertShow: true,
       alertDesItemArr: ["common.stakeAlertItem1",
         "common.stakeAlertItem2",
         "common.stakeAlertItem3",
@@ -991,8 +1063,6 @@ export default {
       topItemList: ["course.guide1", 'course.guide2', 'course.guide3', 'course.guide4'],
       deployProcessImgClass: "processImg",
       approveProcessImgClass: "processImg",
-      processSuccessAlertShow: false,
-      processSuccessAlertShow1: false,
       isDelyFailed: false,
       isDelySuccess: false,
       isStartedDelyContract: false,
@@ -1008,17 +1078,10 @@ export default {
       actionAlertShowLoading: false,
       txHash: "",
       txHashOringion: "",
-      successVisible: false,
-      successVisible1: false,
-      successVisible2: false,
-
       selectPollItem: { collection: {}, poolInfo: {} },
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "400px" : "350px",
       elDialogWidth1: elDialogWidth1,
-      warningDefaultVisible: false,
-      warningDefaultVisible1: false,
-      warningDefaultVisible2: false,
-      warningDefaultReceiveAllReward: false,
+
 
       selectTokenIdsArr: [],
       selectCount: 0,
@@ -1170,12 +1233,17 @@ export default {
 
   },
   mounted() {
-    this.$bus.$on("refreshAllData", val => {
-      this.getMasterChefInfo(false)
+    this.$bus.$on("balanceBoxClickNoti", val => {
+      this.balanceOfSTB = val + " STB";
+      this.myBalanceAlertShow = true;
     }),
 
+      this.$bus.$on("refreshAllData", val => {
+        this.getMasterChefInfo(false)
+      }),
+
       this.$bus.$on("harvestAllNoti", val => {
-        this.warningDefaultReceiveAllReward = true;
+        this.defaultAllRewardAlertShow = true;
         this.isGetReward = true;
       }),
 
@@ -1191,7 +1259,7 @@ export default {
         this.isGetReward = val.isGetReward;
 
         if (this.isGetReward) {
-          this.warningDefaultVisible = true;
+          this.defaultPoolRewardAlertShow = true;
         } else {
           if (val.isNFTSell) {
             getNFTTokenIDs(val.item, this.handleGetNFTTokenIDs);
@@ -1219,6 +1287,12 @@ export default {
   },
 
   methods: {
+    closeBalanceAlertAction() {
+      this.myBalanceAlertShow = false;
+    },
+    addSTBtoWalletAction() {
+      addSTBtoWallet()
+    },
     alertDesItemBoxImgUrl(index) {
       if (index <= 1) {
         return require("@/assets/img/common/requestSuccess.svg");
@@ -1339,13 +1413,13 @@ export default {
       }
     },
     cancleAllRewardAlertBtnAction() {
-      this.warningDefaultReceiveAllReward = false;
+      this.defaultAllRewardAlertShow = false;
       this.$bus.$emit("resetBtnStatusNoti", "1");
 
     },
-    defaulAllRewardAlertBtnAction() {
+    defaultAllRewardAlertBtnAction() {
       ownedWNFTsTokenIdsByPids(this.pids, this.handleWNFTsTokenIds)
-      this.warningDefaultReceiveAllReward = false;
+      this.defaultAllRewardAlertShow = false;
       this.isGetReward = false;
     },
     handleWNFTsTokenIds(WNFTsTokenIds) {
@@ -1459,16 +1533,16 @@ export default {
     //   }
     // },
     stakeSuccessAlertCloseAction() {
-      this.processSuccessAlertShow = false;
+      this.stakeSuccessAlertShow = false;
     },
     continueStakeBtnAction() {
-      this.processSuccessAlertShow = false;
+      this.stakeSuccessAlertShow = false;
     },
     unstakeSuccessAlertCloseAction() {
-      this.processSuccessAlertShow1 = false;
+      this.unStakeSuccessAlertShow = false;
     },
     continueUnstakeBtnAction() {
-      this.processSuccessAlertShow1 = false;
+      this.unStakeSuccessAlertShow = false;
     },
     startDelyContractBtnAction() {
       this.isDelyFailed = false;
@@ -1783,9 +1857,7 @@ export default {
       }
     },
     alertCloseBtnAction() {
-      this.successVisible = false;
-      this.successVisible1 = false;
-      this.successVisible2 = false;
+      this.rewardSuccessAlertShow = false;
     },
     alertBeforeAction() {
       if (this.selectTokenIdsArr.length == 0) {
@@ -1797,17 +1869,15 @@ export default {
       }
       this.actionAlertShow = false;
       this.defaultAlertShow = true;
-      // this.warningDefaultVisible = true;
+      // this.defaultPoolRewardAlertShow = true;
     },
-    defaultBtnAction() {
+    defaultPoolRewardAction() {
 
       if (checkChainIdError()) {
         this.$bus.$emit("checkChainIdError", "1");
         return;
       }
-      this.warningDefaultVisible = false;
-      this.warningDefaultVisible1 = false;
-      this.warningDefaultVisible2 = false;
+      this.defaultPoolRewardAlertShow = false;
 
       this.actionAlertShow = false;
 
@@ -1868,9 +1938,7 @@ export default {
     },
 
     cancleBtnAction() {
-      this.warningDefaultVisible = false;
-      this.warningDefaultVisible1 = false;
-      this.warningDefaultVisible2 = false;
+      this.defaultPoolRewardAlertShow = false;
 
     },
 
@@ -1879,7 +1947,7 @@ export default {
       this.txHash = this.getFrommatAccount(txHash.transactionHash);
       this.txHashOringion = txHash.transactionHash;
       this.getMasterChefInfo(false);
-      this.processSuccessAlertShow = true;
+      this.stakeSuccessAlertShow = true;
       this.actionAlertShow = false;
       this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 0 });
@@ -1892,7 +1960,7 @@ export default {
       this.txHash = this.getFrommatAccount(txHash.transactionHash);
       this.txHashOringion = txHash.transactionHash;
       this.getMasterChefInfo(false);
-      this.processSuccessAlertShow1 = true;
+      this.unStakeSuccessAlertShow = true;
       this.actionAlertShow = false;
       this.stakeProcessAlertShow = false;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 1 });
@@ -1905,7 +1973,7 @@ export default {
       this.txHash = this.getFrommatAccount(txHash.transactionHash);
       this.txHashOringion = txHash.transactionHash;
       this.getMasterChefInfo(false);
-      this.successVisible2 = true;
+      this.rewardSuccessAlertShow = true;
       this.$bus.$emit("upChainSuccessNoti", { selectItem: item, clickType: 2 });
 
       var messageList = this.$store.getters.messageList;
@@ -1922,7 +1990,7 @@ export default {
       messageList.splice(messageList.findIndex(item => item.txHash === txHash.transactionHash), 1)
       this.$store.commit('changeMessageList', messageList);
       this.getMasterChefInfo(false);
-      this.successVisible2 = true;
+      this.rewardSuccessAlertShow = true;
 
 
     },
@@ -2904,7 +2972,7 @@ export default {
   border-style: none;
   /* border-width: 1px; */
   /* border-color: #111; */
-  width: 45%;
+  width: 100%;
   /* width: 100%; */
 }
 
@@ -3786,6 +3854,50 @@ export default {
   margin-bottom: -0rem;
 }
 
+.balanceAlertTitleBox {
+  margin-top: -1.1rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.balanceAlertTitle {
+  margin-right: -0.575rem;
+  font-size: .6rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #111111;
+  line-height: .425rem;
+}
+
+.balanceValue {
+  margin-top: .7rem;
+  font-size: .8rem;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  color: #111111;
+  line-height: .8rem;
+}
+
+.optionViewCloseIconBox {
+  width: 100%;
+  /* background-color: #2c6ff8; */
+  /* margin-top: -1.25rem; */
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.optionViewCloseIcon {
+  cursor: pointer;
+  margin-right: -0.25rem;
+  /* background-color: #2c6ff8; */
+  margin-top: -1rem;
+  width: .65rem;
+  height: .65rem;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .back {
     display: flex;
@@ -4391,7 +4503,7 @@ export default {
     border-style: none;
     /* border-width: 1px; */
     /* border-color: #111; */
-    width: 45%;
+    width: 100%;
   }
 
   .alertCloseBtn {
@@ -5251,6 +5363,41 @@ export default {
     color: #212121;
     line-height: .525rem;
 
+  }
+
+
+  .balanceAlertTitle {
+    margin-right: -0.4rem;
+    font-size: .4rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #111111;
+    line-height: .425rem;
+  }
+
+  .balanceValue {
+    margin-top: 1rem;
+    font-size: .6rem;
+    font-family: Poppins-SemiBold, Poppins;
+    font-weight: 600;
+    color: #111111;
+    line-height: .425rem;
+  }
+
+
+  .optionViewCloseIconBox {
+    width: 100%;
+    /* margin-top: -1.25rem; */
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .optionViewCloseIcon {
+    cursor: pointer;
+    margin-right: -0.4rem;
+    margin-top: -1.25rem;
+    width: .45rem;
+    height: .45rem;
   }
 
 }

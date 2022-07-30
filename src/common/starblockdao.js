@@ -817,7 +817,37 @@ export function onLogsChange() {
 
 
 
+export async function addSTBtoWallet() {
 
+    const tokenAddress = getProdcutMode() == 0 ? "0xF864C6390B410D0Ce497faA5b9e768794765B35a" : "0xc481a850aead5002598b7ed355cbb3349c148072";
+    const tokenSymbol = 'STB';
+    const tokenDecimals = 18;
+    const tokenImage = 'https://file.starblock.io/coin/bg_stb.png';
+
+    try {
+        // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        const wasAdded = await ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                options: {
+                    address: tokenAddress, // The address that the token is at.
+                    symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                    decimals: tokenDecimals, // The number of decimals in the token
+                    image: tokenImage, // A string url of the token logo
+                },
+            },
+        });
+
+        if (wasAdded) {
+            console.log('Thanks for your interest!');
+        } else {
+            console.log('Your loss!');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export async function getAccounts() {
     if (!window.ethereum) {

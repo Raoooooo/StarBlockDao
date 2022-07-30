@@ -68,14 +68,14 @@
 
 
                 <div class="balanceBox">
-                    <a :href="accountUrl" target="_blank" v-if="isBtnActive">
+                    <!-- <a :href="accountUrl" target="_blank" v-if="isBtnActive">
                         <p class="balanceBox_leftText">{{ $t("common.STBBalance") + ": " }}
                             <span class="balanceBox_value">
                                 {{ balanceStr(userInfo) + " STB" }}
                             </span>
                         </p>
-                    </a>
-                    <p class="balanceBox_leftText" v-if="!isBtnActive">{{ $t("common.STBBalance") + ": " }}
+                    </a> -->
+                    <p class="balanceBox_leftText" @click="balanceBoxClick">{{ $t("common.STBBalance") + ": " }}
                         <span class="balanceBox_value">
                             {{ balanceStr(userInfo) + " STB" }}
                         </span>
@@ -281,7 +281,12 @@ export default {
     },
     methods: {
 
-
+        balanceBoxClick() {
+            if (!this.isBtnActive) {
+                return;
+            }
+            this.$bus.$emit("balanceBoxClickNoti", this.balanceStr(this.userInfo));
+        },
         clickToBlockNumberUrl() {
             if (this.userInfo.blockNumber == "--") {
                 return;
@@ -418,7 +423,7 @@ export default {
                 if (Number((item.tokenBalance * Math.pow(10, -18)).toFixed(2)) > 1000) {
                     return formmatToToLocaleStringEnUS(Number((item.tokenBalance * Math.pow(10, -18)).toFixed(2)));
                 } else {
-                    return Number((item.tokenBalance * Math.pow(10, -18)).toFixed(2));
+                    return Number((item.tokenBalance * Math.pow(10, -18)).toFixed(4));
                 }
             }
             if (item.tokenBalance == "--") {
@@ -746,6 +751,7 @@ export default {
 }
 
 .balanceBox {
+    cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -802,7 +808,8 @@ export default {
 }
 
 .refreshBox {
-    width: 3rem;
+    cursor: pointer;
+    width: 4.5rem;
     height: 1.1rem;
     border-radius: .1rem;
     border-width: .025rem;
@@ -823,7 +830,7 @@ export default {
 }
 
 .refreshBox_text {
-    font-size: .375rem;
+    font-size: .55rem;
     color: #F7B500;
 }
 
@@ -1101,6 +1108,7 @@ export default {
 
 
     .balanceBox {
+        cursor: pointer;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -1162,16 +1170,20 @@ export default {
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     .refreshBox_img {
         margin-left: .125rem;
         width: .45rem;
         height: .45rem;
+        cursor: pointer;
     }
 
     .refreshBox_text {
-        font-size: .375rem;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        font-size: .35rem;
         color: #F7B500;
     }
 

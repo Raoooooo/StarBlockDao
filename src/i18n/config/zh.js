@@ -215,6 +215,10 @@ export default {
         checkLoginMes: "请连接钱包后再试",
         newReward: "新奖励",
 
+        gotoEtherscan: "区块链浏览器查看",
+        addSTBToWallet: "添加STB到钱包",
+        mySTBBalance: "我的STB余额",
+
     },
 
 

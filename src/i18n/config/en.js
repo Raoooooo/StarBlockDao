@@ -218,6 +218,10 @@ export default {
         checkLoginMes: "Please connect wallet and try again",
         newReward: "New Rewards",
 
+        gotoEtherscan: "View on Blockchain",
+        addSTBToWallet: "Add STB to Wallet",
+        mySTBBalance: "My STB balance"
+
     },
 
 
