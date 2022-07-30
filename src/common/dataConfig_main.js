@@ -1291,6 +1291,7 @@ const poolDatas_main = [
         isFree: false,
         sort: 33
     },
+
     {
         poolInfo: {
             pid: 34,
@@ -1393,7 +1394,7 @@ const poolDatas_main = [
         collection: {
             imagePath: require("@/assets/img/farms/collectionIcon37.png"),
             name: "gummiesgang-official",
-            showName: "Gummies Gang - Official",
+            showName: "Gummies Gang",
             contractAddress: "",
         },
         selectedAddress: null,
@@ -1437,6 +1438,307 @@ const poolDatas_main = [
         isFree: false,
         sort: 37
     },
+
+    {
+        poolInfo: {
+            pid: 38,
+            rangeTokenIds: [1, 7777],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon39.png"),
+            name: "lucky-ducky-nft",
+            showName: "Lucky Ducky NFT",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 38
+    },
+
+    {
+        poolInfo: {
+            pid: 39,
+            rangeTokenIds: [0, 2999],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon40.png"),
+            name: "thealphaqueen",
+            showName: "TheAlphaQueen",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 39
+    },
+
+    {
+        poolInfo: {
+            pid: 40,
+            rangeTokenIds: [1, 9999],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon41.png"),
+            name: "psychonautznft",
+            showName: "PsychonautzNFT",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 40
+    },
+
+
+    {
+        poolInfo: {
+            pid: 41,
+            rangeTokenIds: [0, 8887],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon42.png"),
+            name: "fortune-friends-club-official-nft",
+            showName: "Fortune Friends Club",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 41
+    },
+
+
+    {
+        poolInfo: {
+            pid: 42,
+            rangeTokenIds: [0, 7776],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon43.png"),
+            name: "zombietown-wtf-official",
+            showName: "zombiestown.wtf",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 42
+    },
+
+    {
+        poolInfo: {
+            pid: 43,
+            rangeTokenIds: [0, 6205],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon44.png"),
+            name: "ginos-big-town-chef-genesis-chefs",
+            showName: "Gino's Big Town Chef",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 43
+    },
+
+
+    {
+        poolInfo: {
+            pid: 44,
+            rangeTokenIds: [0, 10000],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon45.png"),
+            name: "rarelandnft",
+            showName: "Rare Land NFT",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 44
+    },
+
+    {
+        poolInfo: {
+            pid: 45,
+            rangeTokenIds: [0, 7776],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon46.png"),
+            name: "spriteclub",
+            showName: "Sprite Club Official",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 45
+    },
+
+
 
 ]
 
