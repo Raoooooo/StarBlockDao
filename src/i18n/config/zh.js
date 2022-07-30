@@ -213,6 +213,7 @@ export default {
 
         refeshImgUrl: require("@/assets/img/common/getAward.png"),
         checkLoginMes: "请连接钱包后再试",
+        newReward: "新奖励",
 
     },
 

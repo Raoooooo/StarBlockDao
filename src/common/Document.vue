@@ -47,6 +47,9 @@
     <button id="button" @click="approveERC20">授权ERC20</button>
 
     <button id="button" @click="getPoolSta">getPoolSta</button>
+
+    <button id="button" @click="AddSTBtoWallet">AddSTBtoWallet</button>
+
   </div>
 </template>
 
@@ -91,6 +94,36 @@ export default {
   },
 
   methods: {
+    async AddSTBtoWallet() {
+      const tokenAddress = '0xd00981105e61274c8a5cd5a88fe7e037d935b513';
+      const tokenSymbol = 'TUT';
+      const tokenDecimals = 18;
+      const tokenImage = 'http://placekitten.com/200/300';
+
+      try {
+        // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+        const wasAdded = await ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20', // Initially only supports ERC20, but eventually more!
+            options: {
+              address: tokenAddress, // The address that the token is at.
+              symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+              decimals: tokenDecimals, // The number of decimals in the token
+              image: tokenImage, // A string url of the token logo
+            },
+          },
+        });
+
+        if (wasAdded) {
+          console.log('Thanks for your interest!');
+        } else {
+          console.log('Your loss!');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     initWeb3() {
       var web3;
       if (window.ethereum) {

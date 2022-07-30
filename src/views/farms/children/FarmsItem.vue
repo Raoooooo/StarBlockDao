@@ -561,7 +561,7 @@ export default {
       }
     },
     rewardAmount(item) {
-      return formmatToToLocaleStringEnUS(Number(item.calculateRewardForEachBlock.toFixed(2)))
+      return formmatToToLocaleStringEnUS(Number(item.calculateRewardForEachBlock.toFixed(0)))
       if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
         if (number >= 10000) {

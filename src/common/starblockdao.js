@@ -960,9 +960,18 @@ export function etherscanCountDownBase() {
 
 export function etherscanAccountBalanceBase(accountAddress) {
     if (getProdcutMode() == 0) {
-        return "https://rinkeby.etherscan.io/token/0x38781bd54b74bf1b7692c16e9362587c13fa3986?a=" + accountAddress;
+        return "https://rinkeby.etherscan.io/token/0xF864C6390B410D0Ce497faA5b9e768794765B35a?a=" + accountAddress;
     } else {
         return "https://etherscan.io/token/0xc481a850aead5002598b7ed355cbb3349c148072?a=" + accountAddress;
+    }
+}
+
+
+export function etherscanBlockNumberBase() {
+    if (getProdcutMode() == 0) {
+        return "https://rinkeby.etherscan.io/block/";
+    } else {
+        return "https://etherscan.io/block/";
     }
 }
 

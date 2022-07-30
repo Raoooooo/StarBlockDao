@@ -957,7 +957,7 @@ export default {
     } else if (document.documentElement.clientWidth > 1200 && document.documentElement.clientWidth < 1500) {
       elDialogWidth1 = "400px";
     } else {
-      elDialogWidth1 = "600px";
+      elDialogWidth1 = "480px";
     }
 
     return {
@@ -1013,7 +1013,7 @@ export default {
       successVisible2: false,
 
       selectPollItem: { collection: {}, poolInfo: {} },
-      elDialogWidth: document.documentElement.clientWidth > 1200 ? "600px" : "350px",
+      elDialogWidth: document.documentElement.clientWidth > 1200 ? "400px" : "350px",
       elDialogWidth1: elDialogWidth1,
       warningDefaultVisible: false,
       warningDefaultVisible1: false,
@@ -1129,7 +1129,7 @@ export default {
 
     setInterval(() => {
       this.$bus.$emit("showRefeshIcon", "1");
-    }, 1000 * 60 * 2);
+    }, 1000 * 20);
 
     // setInterval(() => {
     //   this.$bus.$emit("showRefeshIcon", "1");
@@ -2875,7 +2875,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .lookDetailBtn {
@@ -3641,6 +3641,7 @@ export default {
 }
 
 .el-dropdown-item {
+  width: 8rem;
   color: #212121;
   font-size: .6rem;
   line-height: 1.2rem;
@@ -4342,7 +4343,7 @@ export default {
   }
 
   .dialopTitle {
-    font-size: 0.4rem;
+    font-size: 0.5rem;
     font-weight: 500;
     color: #111;
     margin-top: 0.5rem;
@@ -5084,7 +5085,7 @@ export default {
   .sortItemBox0 {
     margin-left: .5rem;
     margin-right: 0rem;
-    width: 4.6rem;
+    width: 5rem;
     height: 1rem;
     border-radius: .1rem;
     border: 1px solid #EEEEEE;
@@ -5148,6 +5149,7 @@ export default {
   }
 
   .el-dropdown-item {
+    width: 5rem;
     color: #212121;
     font-size: .35rem;
     line-height: .8rem;

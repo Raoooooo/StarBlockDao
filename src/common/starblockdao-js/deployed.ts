@@ -12,6 +12,6 @@ export const deployed = {
     FACTORY: "0x6df4A699Ac7086Ee4a8d0602F2D00A0054a0930A".toLowerCase(),
     MerkletRootDistributor: "0x368Af4581A017E0B487a0D61Ad4f37d05B28CE3c".toLowerCase(),
     NFTMasterChefBatch: "0x5D9e2A79fAB2b31eCeaEe13167e2Ac9b4440c257".toLowerCase(),
-    StarBlockCollectionUtils: "0x7f47f4ab5ae06c5962c93e8152fa63f105f03b".toLowerCase()
+    StarBlockCollectionUtils: "0xBC1B9eE78f751cFE0CF9874070c70c496f12f900".toLowerCase()
   }
 };

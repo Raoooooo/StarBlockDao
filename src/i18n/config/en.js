@@ -192,7 +192,7 @@ export default {
         sortOption1: "Recommend",
         sortOption2: "Latest",
         sortOption3: "Total Rewards",
-        sortOption4: "per NFT Rewards",
+        sortOption4: "Rewards / NFT",
         sortOption5: "Staked Amount",
 
         rewardAlertDesSub1: "STB Staking rewards are issued following the block production, please refer to the actual amount received",
@@ -216,7 +216,7 @@ export default {
 
         refeshImgUrl: require("@/assets/img/common/getAward_en.png"),
         checkLoginMes: "Please connect wallet and try again",
-
+        newReward: "New Rewards",
 
     },
 

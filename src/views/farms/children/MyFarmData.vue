@@ -9,19 +9,27 @@
                         <img class="itemTopImg" src="@/assets/img/common/detail_Icon.svg" />
                         <p class="itemTopTitle">{{ $t("common.myStakeTitle") }}</p>
                     </div>
-                    <button :class="isBtnActive ? 'rightBox_topBox_rightButton_active' : 'rightBox_topBox_rightButton'"
-                        @click="receiveReward">
-                        <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg"
-                            v-show="showImgLoading" />
-                        <p v-show="!showImgLoading">{{ $t("common.getAllReward") }}</p>
-                    </button>
+                    <div class="rightBox_topBox_rightBox">
+                        <div class="refreshBox" v-show="getAwardIconShow" @click="getAwardBoxAction">
+                            <p class="refreshBox_text">{{ $t("common.newReward") }}</p>
+                            <img class="refreshBox_img" src="@/assets/img/common/refresh_icon.svg" />
+                        </div>
+                        <button
+                            :class="isBtnActive ? 'rightBox_topBox_rightButton_active' : 'rightBox_topBox_rightButton'"
+                            @click="receiveReward">
+                            <img class="loadingImg" src="@/assets/img/common/requestLoading_white.svg"
+                                v-show="showImgLoading" />
+                            <p v-show="!showImgLoading">{{ $t("common.getAllReward") }}</p>
+                        </button>
+                    </div>
+
                 </div>
 
                 <div class="rightBox_bottomBox">
-                    <div class="rightBox_bottomBox_contant">
+                    <!-- <div class="rightBox_bottomBox_contant">
                         <img :src="refeshImgUrl" class="getAwardBox_img" @click="getAwardBoxAction"
                             v-show="getAwardIconShow" v-bind:style="{ marginLeft: getAwardBox_imgMarginLeft }" />
-                    </div>
+                    </div> -->
                     <div class="getAwardBox">
 
                         <div :class="isShowMobile ? 'miniDataBox1_mobile' : 'miniDataBox1'">
@@ -38,10 +46,13 @@
                     </div>
 
                     <div class="vSepLine" v-show="!isShowMobile"></div>
-                    <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox'" v-show="!isShowMobile">
+                    <!-- <a :href="blockNumberUrl" target="_blank"> -->
+                    <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox_blockNumber'" v-show="!isShowMobile"
+                        @click="clickToBlockNumberUrl()">
                         <p class="miniDataBox_topP">{{ userInfo.blockNumber }}</p>
                         <p class="miniDataBox_bottomP">{{ $t("common.rewardBlock") }}</p>
                     </div>
+                    <!-- </a> -->
                     <div class="vSepLine"></div>
                     <div :class="isShowMobile ? 'miniDataBox_mobile' : 'miniDataBox'">
                         <p class="miniDataBox_topP">{{ userInfo.nftQuantity + " NFT" }}</p>
@@ -92,6 +103,7 @@ import {
 } from "@/common/utils";
 
 import {
+    etherscanBlockNumberBase,
     etherscanAccountBalanceBase
 } from "@/common/starblockdao";
 import { gsap } from "gsap"
@@ -129,17 +141,26 @@ export default {
 
     },
     computed: {
-        refeshImgUrl() {
-            return this.$t("common.refeshImgUrl")
+        blockNumberUrl() {
+            if (this.userInfo.blockNumber != "--") {
+                return etherscanBlockNumberBase() + this.userInfo.blockNumber;
+            }
+            return ""
         },
+
         accountUrl() {
-            if (this.userInfo.selectedAddress) {
-                return etherscanAccountBalanceBase() + this.userInfo.selectedAddress;
+            if (this.userInfo.selectedAddress != undefined && this.userInfo.selectedAddress) {
+                var url = etherscanAccountBalanceBase(this.userInfo.selectedAddress);
+                return url;
             } else {
                 return ""
             }
 
         },
+        refeshImgUrl() {
+            return this.$t("common.refeshImgUrl")
+        },
+
         isBtnActive() {
             if (!window.ethereum) {
                 return false;
@@ -236,8 +257,17 @@ export default {
 
         });
         this.$bus.$on("showRefeshIcon", val => {
+            if (!window.ethereum) {
+                return;
+            }
+            if (!window.ethereum.selectedAddress) {
+                return;
+            }
+            if (Number(this.userInfo.wnftQuantity) == 0) {
+                return;
+            }
             this.getAwardIconShow = true;
-            this.setImgMarginLeftOfGetAward();
+            // this.setImgMarginLeftOfGetAward();
             // console.log("miniDataBox_topPwidth", this.getWH("miniDataBox_topP", "width"))
         });
 
@@ -251,16 +281,24 @@ export default {
     },
     methods: {
 
+
+        clickToBlockNumberUrl() {
+            if (this.userInfo.blockNumber == "--") {
+                return;
+            }
+            window.open(etherscanBlockNumberBase() + this.userInfo.blockNumber, "_blank");
+            //    window.push(etherscanBlockNumberBase()+this.userInfo.blockNumber)
+        },
         setImgMarginLeftOfGetAward() {
             let elem = document.querySelector('.miniDataBoxTopP1');
             let rect = elem.getBoundingClientRect();
             if (this.isShowMobile) {
-                this.getAwardBox_imgMarginLeft = (rect.width / 2.0 + 24 * document.documentElement.clientWidth / 750 * 4.6) + "px"
-                this.getAwardBox_imgMarginTop = rect.top + "px";
+                // this.getAwardBox_imgMarginLeft = (rect.width / 2.0 + 24 * document.documentElement.clientWidth / 750 * 4.6) + "px"
+                this.getAwardBox_imgMarginLeft = (rect.right - document.documentElement.clientWidth * 0.025 - 10 * document.documentElement.clientWidth / 750) + "px"
 
             } else {
-                this.getAwardBox_imgMarginLeft = (rect.width * 2) + "px"
-                this.getAwardBox_imgMarginTop = rect.top + "px";
+                // this.getAwardBox_imgMarginLeft = (rect.width * 2) + "px"
+                this.getAwardBox_imgMarginLeft = (rect.right - document.documentElement.clientWidth * 0.025 - 15 * document.documentElement.clientWidth / 1920) + "px"
             }
         },
 
@@ -646,6 +684,15 @@ export default {
     align-items: center;
 }
 
+.miniDataBox_blockNumber {
+    cursor: pointer;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+}
+
 .miniDataBox_topP {
     margin-top: .5rem;
     font-size: .6rem;
@@ -746,6 +793,38 @@ export default {
     cursor: pointer;
     margin-left: .5rem;
     width: 1.75rem;
+}
+
+.rightBox_topBox_rightBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.refreshBox {
+    width: 3rem;
+    height: 1.1rem;
+    border-radius: .1rem;
+    border-width: .025rem;
+    border-color: #F7B500;
+    border-style: solid;
+    background-color: white;
+    margin-right: .25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.refreshBox_img {
+    margin-left: .125rem;
+    width: .45rem;
+    height: .45rem;
+}
+
+.refreshBox_text {
+    font-size: .375rem;
+    color: #F7B500;
 }
 
 
@@ -897,7 +976,7 @@ export default {
         /* padding-left: .6rem; */
         /* padding-right: .6rem; */
         width: 4.1rem;
-        height: .8rem;
+        height: 1rem;
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
         border-radius: .1rem;
@@ -919,7 +998,7 @@ export default {
         /* padding-left: .6rem; */
         /* padding-right: .6rem; */
         width: 4.1rem;
-        height: .8rem;
+        height: 1rem;
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
         background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
@@ -959,6 +1038,14 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .miniDataBox_blockNumber {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 100;
     }
 
     .miniDataBox_topP {
@@ -1060,6 +1147,32 @@ export default {
         cursor: pointer;
         margin-left: .5rem;
         width: 2rem;
+    }
+
+    .refreshBox {
+        width: 4rem;
+        height: 1rem;
+        border-radius: .1rem;
+        border-width: .025rem;
+        border-color: #F7B500;
+        border-style: solid;
+        background-color: white;
+        margin-right: .25rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .refreshBox_img {
+        margin-left: .125rem;
+        width: .45rem;
+        height: .45rem;
+    }
+
+    .refreshBox_text {
+        font-size: .375rem;
+        color: #F7B500;
     }
 
 }
