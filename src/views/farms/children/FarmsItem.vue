@@ -35,7 +35,7 @@
             <div class="contantDetailTopBox_rightBox_sellEnd" v-if="isShowSellEndBlock(item, currentBlockNumber)">
               <a :href="countdownUrl(item, 1)" target="_blank">
                 <p class="contantDetailTopBox_rightBox_text_sellEnd">
-                  {{ $t("common.blockEnd") }}
+                  {{ $t("farms.blockEnd") }}
                 </p>
               </a>
             </div>
@@ -1218,7 +1218,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #8C9399;
-  line-height: .425rem;
+  line-height: .6rem;
   white-space: nowrap;
   overflow-x: hidden;
 }
@@ -1229,7 +1229,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #F7B500;
-  line-height: .425rem;
+  line-height: .6rem;
   white-space: nowrap;
   overflow-x: hidden;
 }

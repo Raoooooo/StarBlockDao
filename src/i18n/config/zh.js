@@ -177,7 +177,7 @@ export default {
         canStake: "可抵押",
         myStakeTitle: "我的NFT挖矿数据",
         rewardBlock: "奖励发放区块",
-        getAllReward: "领取所有奖励",
+        getAllReward: "领取所有奖励 (Pass Only)",
         STBBalance: "STB余额",
         STBDes: "每次出块都将发放STB奖励",
 
@@ -214,10 +214,13 @@ export default {
         refeshImgUrl: require("@/assets/img/common/getAward.png"),
         checkLoginMes: "请连接钱包后再试",
         newReward: "新奖励",
-
+        newReward_mobile: "新奖励",
         gotoEtherscan: "区块链浏览器查看",
         addSTBToWallet: "添加STB到钱包",
         mySTBBalance: "我的STB余额",
+
+        refeshAwardMessage: "挖矿奖励已刷新",
+        checkPassMsg: "领取所有挖矿奖励功能仅限Pass会员使用，您未持有Pass会员NFT，无法使用此功能。"
 
     },
 

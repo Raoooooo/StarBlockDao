@@ -11,9 +11,16 @@
                     </div>
                     <div class="rightBox_topBox_rightBox">
                         <div class="refreshBox" v-show="getAwardIconShow" @click="getAwardBoxAction">
-                            <p class="refreshBox_text">{{ $t("common.newReward") }}</p>
-                            <img class="refreshBox_img" src="@/assets/img/common/refresh_icon.svg" />
+                            <p class="refreshBox_text" v-show="!showImgLoading_refresh">{{
+                                    isShowMobile ? $t("common.newReward_mobile") : $t("common.newReward")
+                            }}</p>
+                            <img class="refreshBox_img" src="@/assets/img/common/refresh_icon.svg"
+                                v-show="!showImgLoading_refresh" />
+                            <img class="loadingImg_refresh" src="@/assets/img/common/requestLoading_yellow.svg"
+                                v-show="showImgLoading_refresh" />
                         </div>
+
+                        <!-- <div class="rightBtnBox"></div> -->
                         <button
                             :class="isBtnActive ? 'rightBox_topBox_rightButton_active' : 'rightBox_topBox_rightButton'"
                             @click="receiveReward">
@@ -114,6 +121,7 @@ export default {
     },
     data() {
         return {
+            showImgLoading_refresh: false,
             getAwardBox_imgMarginLeft: 0,
             getAwardBox_imgMarginTop: 0,
             getAwardIconShow: false,
@@ -252,6 +260,10 @@ export default {
                 that.setImgMarginLeftOfGetAward();
             })();
         };
+        this.$bus.$on("hiddenRefeshIcon", val => {
+            this.getAwardIconShow = false;
+            this.showImgLoading_refresh = false;
+        });
         this.$bus.$on("resetBtnStatusNoti", val => {
             this.showImgLoading = false;
 
@@ -282,8 +294,15 @@ export default {
     methods: {
 
         balanceBoxClick() {
-            if (!this.isBtnActive) {
-                return;
+            // if (!this.isBtnActive) {
+            //     return;
+            // }
+
+            if (!window.ethereum) {
+                return false;
+            }
+            if (!this.userInfo.selectedAddress) {
+                return false;
             }
             this.$bus.$emit("balanceBoxClickNoti", this.balanceStr(this.userInfo));
         },
@@ -331,10 +350,14 @@ export default {
             return val;
         },
         getAwardBoxAction() {
-            this.getAwardIconShow = false;
+            // this.getAwardIconShow = false;
+            this.showImgLoading_refresh = true;
             this.$bus.$emit("refreshAllData", "1");
+
         },
         receiveReward() {
+            this.$message.warning(this.$t("common.checkPassMsg"))
+            return;
             if (this.showImgLoading) {
                 return;
             }
@@ -596,9 +619,9 @@ export default {
 
 .rightBox_topBox_rightButton {
     margin-right: .5rem;
-    width: 5.3rem;
-    /* padding-left: .6rem; */
-    /* padding-right: .6rem; */
+    /* width: 7.3rem; */
+    padding-left: .6rem;
+    padding-right: .6rem;
     height: 1.1rem;
     border-radius: .1rem;
     font-size: .55rem;
@@ -619,7 +642,29 @@ export default {
 .rightBox_topBox_rightButton_active {
     cursor: pointer;
     margin-right: .5rem;
-    width: 5.3rem;
+    /* width: 7.3rem; */
+    padding-left: .6rem;
+    padding-right: .6rem;
+    height: 1.1rem;
+    /* padding-top: .175rem; */
+    /* padding-bottom: .175rem; */
+    background: linear-gradient(270deg, #FF9902 0%, #F7B500 100%);
+    border-radius: .1rem;
+    font-size: .55rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: .5rem;
+    border-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rightBtnBox {
+    cursor: pointer;
+    margin-right: .5rem;
+    width: 7.3rem;
     /* padding-left: .6rem; */
     /* padding-right: .6rem; */
     height: 1.1rem;
@@ -750,6 +795,11 @@ export default {
     /* padding-right: .6rem; */
 }
 
+.loadingImg_refresh {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
 .balanceBox {
     cursor: pointer;
     display: flex;
@@ -808,8 +858,11 @@ export default {
 }
 
 .refreshBox {
+    padding-left: .375rem;
+    padding-right: .375rem;
+    margin-top: .025rem;
     cursor: pointer;
-    width: 4.5rem;
+    /* width: 2.5rem; */
     height: 1.1rem;
     border-radius: .1rem;
     border-width: .025rem;
@@ -980,9 +1033,9 @@ export default {
 
     .rightBox_topBox_rightButton {
         margin-right: .5rem;
-        /* padding-left: .6rem; */
-        /* padding-right: .6rem; */
-        width: 4.1rem;
+        padding-left: .375rem;
+        padding-right: .375rem;
+        /* width: 6.1rem; */
         height: 1rem;
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
@@ -1001,10 +1054,10 @@ export default {
 
     .rightBox_topBox_rightButton_active {
         cursor: pointer;
-        margin-right: .5rem;
-        /* padding-left: .6rem; */
-        /* padding-right: .6rem; */
-        width: 4.1rem;
+        /* margin-right: .5rem; */
+        padding-left: .375rem;
+        padding-right: .375rem;
+        /* width: 6.1rem; */
         height: 1rem;
         /* padding-top: .175rem; */
         /* padding-bottom: .175rem; */
@@ -1106,6 +1159,14 @@ export default {
         height: 1rem;
     }
 
+    .loadingImg_refresh {
+        margin-top: -0rem;
+        /* padding-left: .6rem; */
+        /* padding-right: .6rem; */
+        width: 1rem;
+        height: 1rem;
+    }
+
 
     .balanceBox {
         cursor: pointer;
@@ -1158,14 +1219,16 @@ export default {
     }
 
     .refreshBox {
-        width: 4rem;
+        /* width: 4rem; */
+        padding-left: .375rem;
+        padding-right: .375rem;
         height: 1rem;
         border-radius: .1rem;
         border-width: .025rem;
         border-color: #F7B500;
         border-style: solid;
         background-color: white;
-        margin-right: .25rem;
+        margin-right: .5rem;
         display: flex;
         flex-direction: row;
         align-items: center;

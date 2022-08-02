@@ -180,7 +180,7 @@ export default {
         canStake: "Can Stake",
         myStakeTitle: "My NFT Farming",
         rewardBlock: "Reward Block",
-        getAllReward: "Claim All Rewards",
+        getAllReward: "Claim All (Pass Only)",
         STBBalance: "STB Balance",
         STBDes: "Every block will reward STB token",
 
@@ -217,10 +217,16 @@ export default {
         refeshImgUrl: require("@/assets/img/common/getAward_en.png"),
         checkLoginMes: "Please connect wallet and try again",
         newReward: "New Rewards",
+        newReward_mobile: "New",
 
         gotoEtherscan: "View on Blockchain",
         addSTBToWallet: "Add STB to Wallet",
-        mySTBBalance: "My STB balance"
+        mySTBBalance: "My STB balance",
+
+        refeshAwardMessage: "Staking rewards has been refreshed",
+        checkPassMsg: "The function of claiming all farming rewards is only available to Pass holders. You cannot use this function if you are not a Pass holder."
+
+
 
     },
 

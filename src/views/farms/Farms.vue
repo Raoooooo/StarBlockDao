@@ -646,8 +646,8 @@
 
 
 
-    <el-dialog title="" :visible.sync="myBalanceAlertShow" :width="elDialogWidth" :show-close="false" center top="200px"
-      :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+    <el-dialog title="" :visible.sync="myBalanceAlertShow" :width="elDialogWidth2" :show-close="false" center
+      top="200px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
       :destroy-on-close="true">
 
 
@@ -671,7 +671,7 @@
           </span>
         </p>
 
-        <div class="bottomBtnBox1">
+        <div class="bottomBtnBox_balance">
           <a :href="accountUrl" target="_blank" class="traddingStarblockBtn_a">
             <button class="traddingStarblockBtn_yellow">
               {{ $t("common.gotoEtherscan") }}
@@ -1026,13 +1026,18 @@ export default {
     }
 
     return {
+      isClickRefreshAllData: false,
+      intervalTimer: null,
+      countDownSp: 20000,
+      // countDownSp: 5000,
+
       balanceOfSTB: "",
       myBalanceAlertShow: false,
-      rewardSuccessAlertShow: true,
+      rewardSuccessAlertShow: false,
       defaultPoolRewardAlertShow: false,
       defaultAllRewardAlertShow: false,
-      stakeSuccessAlertShow: true,
-      unStakeSuccessAlertShow: true,
+      stakeSuccessAlertShow: false,
+      unStakeSuccessAlertShow: false,
       alertDesItemArr: ["common.stakeAlertItem1",
         "common.stakeAlertItem2",
         "common.stakeAlertItem3",
@@ -1081,7 +1086,7 @@ export default {
       selectPollItem: { collection: {}, poolInfo: {} },
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "400px" : "350px",
       elDialogWidth1: elDialogWidth1,
-
+      elDialogWidth2: document.documentElement.clientWidth > 1200 ? "410px" : "350px",
 
       selectTokenIdsArr: [],
       selectCount: 0,
@@ -1164,7 +1169,14 @@ export default {
       list = poolDatas;
     }
     list.sort(this.compare("sort"));
-    this.poolItems = list
+    var newListArr = [];
+    for (var i = 0; i < list.length; i++) {
+      const item = list[i];
+      if (item.isShow) {
+        newListArr.push(item);
+      }
+    }
+    this.poolItems = newListArr
     var emptyPids = [];
     this.poolItems.forEach(element => emptyPids.push(element.poolInfo.pid));
     console.log("pids", emptyPids)
@@ -1190,9 +1202,12 @@ export default {
     //   this.loadPoolDataCount = this.loadPoolDataCount + 1;
     // }, 1000 * 60 * 2);
 
-    setInterval(() => {
+
+
+    this.intervalTimer = setInterval(() => {
       this.$bus.$emit("showRefeshIcon", "1");
-    }, 1000 * 20);
+      clearInterval(this.intervalTimer);
+    }, this.countDownSp);
 
     // setInterval(() => {
     //   this.$bus.$emit("showRefeshIcon", "1");
@@ -1239,7 +1254,8 @@ export default {
     }),
 
       this.$bus.$on("refreshAllData", val => {
-        this.getMasterChefInfo(false)
+        this.isClickRefreshAllData = true;
+        this.getMasterChefInfo(false);
       }),
 
       this.$bus.$on("harvestAllNoti", val => {
@@ -1422,8 +1438,8 @@ export default {
       this.defaultAllRewardAlertShow = false;
       this.isGetReward = false;
     },
-    handleWNFTsTokenIds(WNFTsTokenIds) {
-      harvestAllByWNFTTokenIds(WNFTsTokenIds, this.pids, this.handleHarvestAll, this.getHarvestAllTxHash, this.harvestAllFaild,)
+    handleWNFTsTokenIds(WNFTsTokenIds, newPids) {
+      harvestAllByWNFTTokenIds(WNFTsTokenIds, newPids, this.handleHarvestAll, this.getHarvestAllTxHash, this.harvestAllFaild,)
     },
     harvestAllFaild() {
       this.isGetReward = false;
@@ -2035,6 +2051,22 @@ export default {
       }
       this.sortHandledPoolItems();
       this.setTopData(poolStaInfo.poolSta);
+      // if (this.isClickRefreshAllData) {
+      //   this.intervalTimer = setInterval(() => {
+      //     this.$bus.$emit("showRefeshIcon", "1");
+      //     clearInterval(this.intervalTimer);
+      //   }, 1000 * 5);
+      // }
+      if (this.isClickRefreshAllData) {
+        this.$message.success(this.$t("common.refeshAwardMessage"))
+        this.isClickRefreshAllData = false;
+        this.intervalTimer = setInterval(() => {
+          this.$bus.$emit("showRefeshIcon", "1");
+          clearInterval(this.intervalTimer);
+        }, this.countDownSp);
+      }
+
+      this.$bus.$emit("hiddenRefeshIcon", "1");
     },
 
     handlePoolInfos(poolInfos) {
@@ -2938,6 +2970,15 @@ export default {
 }
 
 .bottomBtnBox1 {
+  width: 100%;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bottomBtnBox_balance {
   width: 100%;
   margin-top: 0.75rem;
   display: flex;

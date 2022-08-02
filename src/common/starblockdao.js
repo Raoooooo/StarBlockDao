@@ -140,10 +140,23 @@ export async function ownedWNFTsTokenIdsByPids(pids, handleWNFTsTokenIds) {
         pids,
         user,
     };
-    const WNFTsTokenIds = await daoport.ownedWNFTsTokenIdsByPids(parameters);
+    var WNFTsTokenIds = await daoport.ownedWNFTsTokenIdsByPids(parameters);
+    var newArr = [];
+    var newPidsArr = [];
+    for (var i = 0; i < WNFTsTokenIds.length; i++) {
+        const item = WNFTsTokenIds[i];
+        const pid = pids[i];
+        if (item.length > 0) {
+            newArr.push(item);
+            newPidsArr.push(pid);
+        }
+    }
+
     console.log("WNFTsTokenIds", WNFTsTokenIds);
+    console.log("newArr", newArr);
+    console.log("newPidsArr", newPidsArr);
     if (handleWNFTsTokenIds) {
-        handleWNFTsTokenIds(WNFTsTokenIds);
+        handleWNFTsTokenIds(newArr, newPidsArr);
     }
 }
 
