@@ -294,6 +294,15 @@ export default {
     methods: {
 
         balanceBoxClick() {
+            const h = this.$createElement;
+
+            this.$message({
+                message: h('p', null, [
+                    h('span', { fontSize: '10px' }, '内容可以是 '),
+                    // h('i', {}, 'VNode')
+                ])
+            });
+            return;
             // if (!this.isBtnActive) {
             //     return;
             // }
