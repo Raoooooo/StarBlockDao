@@ -480,6 +480,9 @@ export default {
 
         } else {
           if (type == 1) {
+            if (blockNumber > 10000) {
+              return this.$t("farms.havling") + (blockNumber / 1000).toFixed(1) + "K" + " " + this.$t("farms.endBlock");
+            }
             return this.$t("farms.havling") + blockNumber + " " + this.$t("farms.endBlock");
           } else {
             return (
@@ -561,6 +564,9 @@ export default {
       }
     },
     rewardAmount(item) {
+      if (Number(item.calculateRewardForEachBlock.toFixed(0)) >= 1000000) {
+        return (Number(item.calculateRewardForEachBlock.toFixed(0)) / 1000).toFixed(0) + "K"
+      }
       return formmatToToLocaleStringEnUS(Number(item.calculateRewardForEachBlock.toFixed(0)))
       if (Number(item.rewardForEachBlock) > 0) {
         var number = Number(item.rewardForEachBlock) * 6500 * 30 * Math.pow(10, -18);
@@ -783,6 +789,7 @@ export default {
   font-weight: 400;
   color: #f7b500;
   line-height: 0.7rem;
+  white-space: nowrap;
 }
 
 .contantDetailTopBox_rightBox_text_startBlock {
@@ -795,6 +802,7 @@ export default {
   color: #03cd93;
   line-height: 0.7rem;
   margin-bottom: .05rem;
+  white-space: nowrap;
 }
 
 .contantDetailTopBox_rightBox_text_sellEnd {

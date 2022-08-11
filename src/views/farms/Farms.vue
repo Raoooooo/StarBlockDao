@@ -2988,6 +2988,7 @@ export default {
 }
 
 .lookDetailBtn {
+  cursor: pointer;
   margin-top: 0rem;
   font-size: 0.6rem;
   font-weight: 400;
@@ -3852,6 +3853,7 @@ export default {
 }
 
 .traddingStarblockBtn_yellow {
+  cursor: pointer;
   margin-left: .25rem;
   font-size: .6rem;
   font-family: Poppins-Medium, Poppins;
@@ -4519,6 +4521,7 @@ export default {
   }
 
   .lookDetailBtn {
+    cursor: pointer;
     margin-top: 0rem;
     font-size: 0.375rem;
     font-weight: 400;
@@ -5332,6 +5335,7 @@ export default {
   }
 
   .traddingStarblockBtn_yellow {
+    cursor: pointer;
     font-size: .375rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
