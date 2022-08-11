@@ -216,12 +216,12 @@ export async function getPoolInfosByNFTorWNFTs(contractAddress, handleSearch) {
 
     try {
         const user = accounts[0];
-        const withOwnedNFTTokenIds = false;
-        const poolNFTorWNFTs = [contractAddress]
+        // const withOwnedNFTTokenIds = false;
+        const nftOrWNFTs = [contractAddress]
         const parameters = {
-            poolNFTorWNFTs,
+            nftOrWNFTs,
             user,
-            withOwnedNFTTokenIds
+            // withOwnedNFTTokenIds
         };
 
         const poolInfos = await daoport.getPoolInfosByNFTorWNFTs(parameters);

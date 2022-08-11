@@ -65,7 +65,7 @@ var DaoPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to deposit transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
+                                errorCallback(new Error("Failed to deposit transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
                     case 1:
                         _a.sent();
@@ -91,7 +91,7 @@ var DaoPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to withdraw transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
+                                errorCallback(new Error("Failed to withdraw transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
                     case 1:
                         _a.sent();
@@ -123,7 +123,7 @@ var DaoPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to setApprovalForAll transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
+                                errorCallback(new Error("Failed to setApprovalForAll transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
                     case 1:
                         _a.sent();
@@ -149,7 +149,7 @@ var DaoPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to harvest transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
+                                errorCallback(new Error("Failed to harvest transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
                     case 1:
                         _a.sent();
@@ -219,7 +219,7 @@ var DaoPort = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _c.sent();
-                        handle(new Error("Failed to pending transaction: \"" + (error_1 instanceof Error && error_1.message ? error_1.message : "user denied") + "...\""), null);
+                        handle(new Error("Failed to pending transaction: \"".concat(error_1 instanceof Error && error_1.message ? error_1.message : "user denied", "...\"")), null);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -347,7 +347,7 @@ var DaoPort = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _b.sent();
-                        handle(new Error("Failed to canClaim transaction: \"" + (error_2 instanceof Error && error_2.message ? error_2.message : "user denied") + "...\""), null);
+                        handle(new Error("Failed to canClaim transaction: \"".concat(error_2 instanceof Error && error_2.message ? error_2.message : "user denied", "...\"")), null);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -372,7 +372,7 @@ var DaoPort = /** @class */ (function () {
                     case 2:
                         error_3 = _b.sent();
                         console.error(error_3);
-                        throw new Error("Failed to updateTradingRewards transaction: \"" + (error_3 instanceof Error && error_3.message ? error_3.message : "user denied") + "...\"");
+                        throw new Error("Failed to updateTradingRewards transaction: \"".concat(error_3 instanceof Error && error_3.message ? error_3.message : "user denied", "...\""));
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -396,7 +396,7 @@ var DaoPort = /** @class */ (function () {
                     case 2:
                         error_4 = _b.sent();
                         console.error(error_4);
-                        throw new Error("Failed to claim transaction: \"" + (error_4 instanceof Error && error_4.message ? error_4.message : "user denied") + "...\"");
+                        throw new Error("Failed to claim transaction: \"".concat(error_4 instanceof Error && error_4.message ? error_4.message : "user denied", "...\""));
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -452,13 +452,13 @@ var DaoPort = /** @class */ (function () {
         });
     };
     DaoPort.prototype.getPoolInfosByNFTorWNFTs = function (_a) {
-        var poolNFTorWNFTs = _a.poolNFTorWNFTs, user = _a.user, withOwnedNFTTokenIds = _a.withOwnedNFTTokenIds;
+        var nftOrWNFTs = _a.nftOrWNFTs, user = _a.user;
         return __awaiter(this, void 0, void 0, function () {
             var _wrappedPoolInfos;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this._protocol.NFTMasterChefBatchContract.methods
-                            .getPoolInfosByNFTorWNFTs(poolNFTorWNFTs, user, withOwnedNFTTokenIds)
+                            .getPoolInfosByNFTorWNFTs(nftOrWNFTs, user)
                             .call()];
                     case 1:
                         _wrappedPoolInfos = _b.sent();
@@ -500,7 +500,7 @@ var DaoPort = /** @class */ (function () {
                     case 2:
                         error_5 = _a.sent();
                         console.error(error_5);
-                        throw new Error("Failed to harvestAll transaction: \"" + (error_5 instanceof Error && error_5.message ? error_5.message : "user denied") + "...\"");
+                        throw new Error("Failed to harvestAll transaction: \"".concat(error_5 instanceof Error && error_5.message ? error_5.message : "user denied", "...\""));
                     case 3: return [2 /*return*/, txHash];
                 }
             });
@@ -557,7 +557,7 @@ var DaoPort = /** @class */ (function () {
                                 resultCallback(res);
                             })
                                 .catch(function (error) {
-                                errorCallback(new Error("Failed to harvestAllByWNFTTokenIds transaction: \"" + (error instanceof Error && error.message ? error.message : "user denied") + "...\""));
+                                errorCallback(new Error("Failed to harvestAllByWNFTTokenIds transaction: \"".concat(error instanceof Error && error.message ? error.message : "user denied", "...\"")));
                             })];
                     case 1:
                         _a.sent();

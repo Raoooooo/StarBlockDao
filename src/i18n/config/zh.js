@@ -36,6 +36,17 @@ export default {
         block: "区块",
         esTime: "开启时间 ≈ ",
         esTimeDes: "6月1日 20:00 (UTC+8)",
+        lookMore: "查看更多",
+
+
+        communityTopTitle: "建立强大的社区",
+        communityItemTitle1: "创作者社区",
+        communityItemDes1: "StarBlock已经建立起超过1万人的创作者社区，将在平台不断地输出优秀的内容。",
+        communityItemTitle2: "NFT持有者社区",
+        communityItemDes2: "StarBlock通过发行、交易和抵押NFT，聚集了大量的NFT和$STB持有者社区。",
+        communityItemTitle3: "开发者社区",
+        communityItemDes3: "StarBlock通过发行$STB，正在建立社区驱动的开发模式，开发者社区不断壮大。",
+        join: "加入社区",
     },
 
     farms: {
@@ -220,8 +231,13 @@ export default {
         mySTBBalance: "我的STB余额",
 
         refeshAwardMessage: "挖矿奖励已刷新",
-        checkPassMsg: "领取所有挖矿奖励功能仅限Pass会员使用，您未持有Pass会员NFT，无法使用此功能。"
+        checkPassMsg: "领取所有挖矿奖励功能仅限Pass会员使用，您未持有Pass会员NFT，无法使用此功能。",
 
+        rewardWarnDes: "领取奖励功能仅限持有Pass的用户使用，连接钱包内含有下列任意合集中的NFT即可 领取所有奖励。WNFT与NFT具有相同效果。",
+        claimAllRewards: "领取所有奖励",
+        buyNow: "前往购买",
+        rewardCheckMsg: "您还没有可领取的奖励",
+        tradingWNFT: "交易WNFT"
     },
 
 
@@ -279,7 +295,16 @@ export default {
         descrip13: "https://etherscan.io/address/0xc481a850aead5002598b7ed355cbb3349c148072",
 
 
-    }
+    },
+
+    introduce: {
+
+        tokenTopTitle: "StarBlock Token($STB)",
+        tokenDes: "StarBlock DAO发行了治理代币StarBlock Token(STB)，持有$STB将拥有治理权、分红权、提案权等权益。高达70%的$STB将以NFT抵押挖矿、NFT交易挖矿、STB单币质押等形式回馈社区。",
+        tokenDetailLink: "https://docs.starblock.io/main/v/english/tokenomics",
+        tokenDesImgUrl: require("@/assets/img/home/STBDes.png")
+
+    },
 
 
 }

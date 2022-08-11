@@ -1,6 +1,13 @@
 import Web3 from "web3";
 import { Protocol } from "./protocol";
-import { Network, MasterChefPoolsInfo, Web3Callback, ContractCallCallback, ContractResultCallback, ContractErrorCallback } from "./types";
+import {
+  Network,
+  MasterChefPoolsInfo,
+  Web3Callback,
+  ContractCallCallback,
+  ContractResultCallback,
+  ContractErrorCallback
+} from "./types";
 import BigNumber from "bignumber.js";
 
 export class DaoPort {
@@ -17,7 +24,13 @@ export class DaoPort {
     this._protocol.onlyReadNFTMasterChefBatchContract(provider);
   }
 
-  public async deposit(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void> {
+  public async deposit(
+    pid: number,
+    tokenIds: number[],
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
     // let txHash;
     // try {
     //   const txnData = { from: this._protocol.account };
@@ -32,7 +45,6 @@ export class DaoPort {
     //   );
     // }
     // return txHash;
-
 
     const txnData = { from: this._protocol.account };
 
@@ -55,7 +67,13 @@ export class DaoPort {
       });
   }
 
-  public async withdraw(pid: number, tokenIds: number[], callCallback: ContractCallCallback, resultCallback: ContractResultCallback, errorCallback: ContractErrorCallback): Promise<void> {
+  public async withdraw(
+    pid: number,
+    tokenIds: number[],
+    callCallback: ContractCallCallback,
+    resultCallback: ContractResultCallback,
+    errorCallback: ContractErrorCallback
+  ): Promise<void> {
     // let txHash;
     // try {
     //   const txnData = { from: this._protocol.account };
@@ -293,7 +311,6 @@ export class DaoPort {
     }
   } */
 
-
   public async getPoolSta({
     user,
     withOwnedNFTTokenIds
@@ -301,7 +318,11 @@ export class DaoPort {
     user: string;
     withOwnedNFTTokenIds: boolean;
   }): Promise<{}> {
-    const { _poolSta, _userInfo, _wrappedPoolInfos, } = await this._protocol.NFTMasterChefBatchContract.methods
+    const {
+      _poolSta,
+      _userInfo,
+      _wrappedPoolInfos
+    } = await this._protocol.NFTMasterChefBatchContract.methods
       .getPoolSta(user, withOwnedNFTTokenIds)
       .call();
     // console.log("getPoolSta _poolSta、_userInfo、_wrappedPoolInfos:::", _poolSta, _userInfo, _wrappedPoolInfos);
@@ -482,7 +503,7 @@ export class DaoPort {
   }: {
     user: string;
     canDeposite: boolean;
-    deposited: boolean
+    deposited: boolean;
   }): Promise<[]> {
     const _wrappedPoolInfos = await this._protocol.NFTMasterChefBatchContract.methods
       .getAllPoolInfos(user, canDeposite, deposited)
@@ -492,16 +513,14 @@ export class DaoPort {
   }
 
   public async getPoolInfosByNFTorWNFTs({
-    poolNFTorWNFTs,
-    user,
-    withOwnedNFTTokenIds
+    nftOrWNFTs,
+    user
   }: {
-    poolNFTorWNFTs: string[];
+    nftOrWNFTs: string[];
     user: string;
-    withOwnedNFTTokenIds: boolean;
   }): Promise<[]> {
     const _wrappedPoolInfos = await this._protocol.NFTMasterChefBatchContract.methods
-      .getPoolInfosByNFTorWNFTs(poolNFTorWNFTs, user, withOwnedNFTTokenIds)
+      .getPoolInfosByNFTorWNFTs(nftOrWNFTs, user)
       .call();
     console.log("getPoolInfo _wrappedPoolInfos:::", _wrappedPoolInfos);
     return _wrappedPoolInfos;

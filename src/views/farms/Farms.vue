@@ -581,7 +581,7 @@
 
           <div class="alertBottomBtnBox">
             <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
-              <button class="traddingStarblockBtn">{{ "Trading WNFT" }}</button>
+              <button class="traddingStarblockBtn">{{ $t("common.tradingWNFT") }}</button>
             </a>
             <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
 
@@ -635,7 +635,7 @@
 
           <div class="alertBottomBtnBox">
             <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
-              <button class="traddingStarblockBtn">{{ "Trading WNFT" }}</button>
+              <button class="traddingStarblockBtn">{{ $t("common.tradingWNFT") }}</button>
             </a>
             <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueStake") }}</button>
 
@@ -683,6 +683,45 @@
         </div>
       </div>
     </el-dialog>
+
+
+
+    <el-dialog title="" :visible.sync="warnRewardAlertShow" :width="elDialogWidth3" :show-close="false" center
+      top="100px" :close-on-click-modal="false" append-to-body :lock-scroll="false" :close-on-press-escape="false"
+      :destroy-on-close="true">
+
+
+      <div class="dialogBack">
+
+        <div class="balanceAlertTitleBox">
+          <div class=""></div>
+          <p class="balanceAlertTitle">
+            {{ $t("common.claimAllRewards") }}
+          </p>
+          <img class="closeAlertIcon" src="@/assets/img/farms/optionViewClose.svg"
+            @click="warnRewardAlertShowClseAction" />
+        </div>
+
+
+        <div class="warnDesBox">
+          <img class="warnDesBox_img" src="@/assets/img/common/warnIcon.svg" v-show="!isShowMobile" />
+          <p class="warnDesBox_text">{{ $t("common.rewardWarnDes") }}</p>
+        </div>
+        <div class="buyItemBox">
+          <div class="buyItem" v-for="(item, index) in buyItemList">
+            <div class="buyItem_leftBox">
+              <img class="buyItem_img" :src="item.imgPath" />
+              <p class="buyItem_text">{{ item.name }}</p>
+            </div>
+            <a :href="item.pushUrl" target="_blank">
+              <button class="buyItem_btn">{{ $t("common.buyNow") }}</button>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </el-dialog>
+
 
 
   </div>
@@ -1026,6 +1065,11 @@ export default {
     }
 
     return {
+      buyItemList: [{ name: "Genesis Pass", imgPath: require("@/assets/img/farms/collectionIcon0.png"), pushUrl: "https://www.starblock.io/collection/0xf446831fb5727341d8542436f9c5307917a02850" },
+      { name: "Wrapped Genesis Pass", imgPath: require("@/assets/img/farms/collectionIcon0_w.jpg"), pushUrl: "https://www.starblock.io/collection/0x217A1B44e22286E77fD8CD214FF55d47FA6e2C55" },
+      { name: "Ghost Pirate", imgPath: require("@/assets/img/farms/collectionIcon48.png"), pushUrl: "https://www.starblock.io/collection/0x190398a13ff82cc3ef16079c948985b069af2726" },
+      { name: "Wrapped Ghost Pirate", imgPath: require("@/assets/img/farms/collectionIcon48_w.jpg"), pushUrl: "https://www.starblock.io/collection/0x7dfa186c16e4d0754e2eeb596d568bd53740b1f8" }],
+      warnRewardAlertShow: false,
       isClickRefreshAllData: false,
       intervalTimer: null,
       countDownSp: 20000,
@@ -1087,6 +1131,7 @@ export default {
       elDialogWidth: document.documentElement.clientWidth > 1200 ? "400px" : "350px",
       elDialogWidth1: elDialogWidth1,
       elDialogWidth2: document.documentElement.clientWidth > 1200 ? "410px" : "350px",
+      elDialogWidth3: document.documentElement.clientWidth > 1200 ? "600px" : "350px",
 
       selectTokenIdsArr: [],
       selectCount: 0,
@@ -1248,10 +1293,14 @@ export default {
 
   },
   mounted() {
-    this.$bus.$on("balanceBoxClickNoti", val => {
-      this.balanceOfSTB = val + " STB";
-      this.myBalanceAlertShow = true;
+
+    this.$bus.$on("warnAlertShowNoti", val => {
+      this.warnRewardAlertShow = true;
     }),
+      this.$bus.$on("balanceBoxClickNoti", val => {
+        this.balanceOfSTB = val + " STB";
+        this.myBalanceAlertShow = true;
+      }),
 
       this.$bus.$on("refreshAllData", val => {
         this.isClickRefreshAllData = true;
@@ -1303,6 +1352,9 @@ export default {
   },
 
   methods: {
+    warnRewardAlertShowClseAction() {
+      this.warnRewardAlertShow = false;
+    },
     closeBalanceAlertAction() {
       this.myBalanceAlertShow = false;
     },
@@ -1843,7 +1895,7 @@ export default {
         if (number >= 10000) {
           return number.toFixed(0) + " STB";
         } else {
-          return Number(number.toFixed(2)) + " STB";
+          return Number(number.toFixed(4)) + " STB";
         }
       }
       return mining;
@@ -2042,6 +2094,7 @@ export default {
       this.userInfo.wnftQuantity = poolStaInfo.userInfo.wnftQuantity;
       this.userInfo.blockNumber = poolStaInfo.poolSta.blockNumber;
       this.userInfo.tokenBalance = Number(poolStaInfo.userInfo.tokenBalance);
+      this.userInfo.canBatch = poolStaInfo.userInfo.canBatch;
 
 
       // this.$emit("userInfoUpdateNoti",this.userInfo)
@@ -2118,8 +2171,8 @@ export default {
       }
 
       item.endBlock = Number(masterChefInfo.endBlock);
-      item.poolInfo.startBlock = Number(masterChefInfo.poolInfo.startBlock);
-      item.startBlock = Number(masterChefInfo.poolInfo.startBlock);
+      item.poolInfo.startBlock = Number(masterChefInfo.startBlock);
+      item.startBlock = Number(masterChefInfo.startBlock);
       item.currentRewardEndBlock = Number(masterChefInfo.currentRewardEndBlock)
       item.nftQuantity = masterChefInfo.userInfo.nftQuantity;
 
@@ -2131,13 +2184,13 @@ export default {
         item.selectedAddress = null;
         this.userInfo.selectedAddress = null
       }
-      item.poolInfo.amount = masterChefInfo.poolInfo.amount;
-      item.amount = Number(masterChefInfo.poolInfo.amount);
+      item.poolInfo.amount = masterChefInfo.amount;
+      item.amount = Number(masterChefInfo.amount);
       item.dividend = Number(masterChefInfo.userInfo.dividend);
       item.isNFTApproved = masterChefInfo.userInfo.isNFTApproved;
       item.isWNFTApproved = masterChefInfo.userInfo.isWNFTApproved;
       item.mining = Number(masterChefInfo.userInfo.mining);
-      item.poolInfo.wnft = masterChefInfo.poolInfo.wnft;
+      item.poolInfo.wnft = masterChefInfo.wnft;
       item.nft = masterChefInfo.nft;
       item.rewardPerNFTForEachBlock = Number(masterChefInfo.currentReward.rewardPerNFTForEachBlock);
       item.rewardForEachBlock = masterChefInfo.currentReward.rewardForEachBlock;
@@ -3898,7 +3951,7 @@ export default {
 }
 
 .balanceAlertTitleBox {
-  margin-top: -1.1rem;
+  margin-top: -.8rem;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -3908,11 +3961,12 @@ export default {
 
 .balanceAlertTitle {
   margin-right: -0.575rem;
-  font-size: .6rem;
+  font-size: .75rem;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #111111;
   line-height: .425rem;
+  white-space: nowrap;
 }
 
 .balanceValue {
@@ -3937,8 +3991,87 @@ export default {
   margin-right: -0.25rem;
   /* background-color: #2c6ff8; */
   margin-top: -1rem;
-  width: .65rem;
-  height: .65rem;
+  width: .75rem;
+  height: .75rem;
+}
+
+.warnDesBox {
+  margin-top: .5rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.warnDesBox_img {
+  width: .375rem;
+  height: .375rem;
+  margin-right: .075rem;
+}
+
+.warnDesBox_text {
+  margin-top: -0.05rem;
+  font-size: .65rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #5C5E67;
+  line-height: 1rem;
+}
+
+.buyItemBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.buyItem {
+  margin-top: .5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  height: 3.85rem;
+  justify-content: space-between;
+}
+
+.buyItem_leftBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.buyItem_img {
+  margin-left: .5rem;
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.buyItem_text {
+  flex: 1;
+  margin-left: .25rem;
+  font-size: .7rem;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #212121;
+  line-height: 1.15rem;
+  margin-right: .5rem;
+}
+
+.buyItem_btn {
+  margin-right: .5rem;
+  width: 3.85rem;
+  height: 1.5rem;
+  background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+  border-radius: 4px;
+  border-style: none;
+  font-size: .7rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1rem;
+  cursor: pointer;
+
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
@@ -5443,6 +5576,87 @@ export default {
     margin-top: -1.25rem;
     width: .45rem;
     height: .45rem;
+  }
+
+  .warnDesBox {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .warnDesBox_img {
+    width: .375rem;
+    height: .375rem;
+    margin-right: .075rem;
+  }
+
+  .warnDesBox_text {
+    margin-top: -0.05rem;
+    margin-left: .075rem;
+    font-size: .35rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #5C5E67;
+    line-height: .5rem;
+  }
+
+  .buyItemBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .buyItem {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #e5e5e5;
+    height: 2.25rem;
+    justify-content: space-between;
+  }
+
+  .buyItem_leftBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .buyItem_img {
+    border-radius: .1rem;
+    margin-left: .25rem;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .buyItem_text {
+    flex: 1;
+    margin-left: .25rem;
+    font-size: .375rem;
+    font-family: Poppins-Medium, Poppins;
+    font-weight: 500;
+    color: #212121;
+    line-height: .625rem;
+    margin-right: .5rem;
+  }
+
+  .buyItem_btn {
+    margin-right: .575rem;
+    width: 3rem;
+    height: 1rem;
+    background: linear-gradient(270deg, #FF7C3D 0%, #F7B500 100%);
+    border-radius: 4px;
+    border-style: none;
+    font-size: .375rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: .525rem;
+    cursor: pointer;
+
   }
 
 }

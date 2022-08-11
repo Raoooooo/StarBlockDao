@@ -17,6 +17,13 @@
           <a href="https://medium.com/@StarBlockNFT" target="_blank">
             <img v-for="(item, index) in itemBtns3" :src="item" class="itemBtnImg" />
           </a>
+          <a href="https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xC481A850aEad5002598b7eD355cBB3349c148072&chain=mainnet"
+            target="_blank">
+            <img src="@/assets/img/common/bottom_uniswap.png" class="itemBtnImg" />
+          </a>
+          <a href="https://coinmarketcap.com/currencies/starblock/" target="_blank">
+            <img src="@/assets/img/common/bottom_mLinkIcon.png" class="itemBtnImg" />
+          </a>
         </div>
       </div>
 

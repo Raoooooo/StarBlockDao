@@ -46,10 +46,9 @@ export declare class DaoPort {
         canDeposite: boolean;
         deposited: boolean;
     }): Promise<[]>;
-    getPoolInfosByNFTorWNFTs({ poolNFTorWNFTs, user, withOwnedNFTTokenIds }: {
-        poolNFTorWNFTs: string[];
+    getPoolInfosByNFTorWNFTs({ nftOrWNFTs, user }: {
+        nftOrWNFTs: string[];
         user: string;
-        withOwnedNFTTokenIds: boolean;
     }): Promise<[]>;
     pendingAll(forUser: string): Promise<{}>;
     harvestAll(forUser: string): Promise<string>;

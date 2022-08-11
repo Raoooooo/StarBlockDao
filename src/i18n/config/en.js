@@ -35,7 +35,19 @@ export default {
         countDownTitle: "NFT Staking Farming in",
         block: "Blocks",
         esTime: "Launch Time ≈ ",
-        esTimeDes: "1st June 20:00 (UTC+8)"
+        esTimeDes: "1st June 20:00 (UTC+8)",
+
+
+
+        communityTopTitle: "Build for Strong Community",
+        communityItemTitle1: "Creator Community",
+        communityItemDes1: "StarBlock has established a creator community with more than 10,000 creators and will continue to output excellent content.",
+        communityItemTitle2: "NFT Holder Community",
+        communityItemDes2: "StarBlock has built a strong user community of NFT and $STB holders by issuing, trading and staking NFTs.",
+        communityItemTitle3: "Developer Community",
+        communityItemDes3: "By $STB, StarBlock is establishing a community driven development model, and the developer community is growing bigger.",
+        join: "Join",
+        lookMore: "View More",
 
     },
 
@@ -224,9 +236,13 @@ export default {
         mySTBBalance: "My STB balance",
 
         refeshAwardMessage: "Staking rewards has been refreshed",
-        checkPassMsg: "The function of claiming all farming rewards is only available to Pass holders. You cannot use this function if you are not a Pass holder."
+        checkPassMsg: "The function of claiming all farming rewards is only available to Pass holders. You cannot use this function if you are not a Pass holder.",
 
-
+        rewardWarnDes: "The function of receiving all rewards is only available to users who is holding Pass. Connect your wallet to locate requested NFT collections.Claim all rewards. WNFT has the same effect as NFT.",
+        claimAllRewards: "Claim all rewards",
+        buyNow: "Buy Now",
+        rewardCheckMsg: "You don't have any rewards to claim yet",
+        tradingWNFT: "Trading WNFT"
 
     },
 
@@ -285,6 +301,15 @@ export default {
         descrip13: "https://etherscan.io/address/0xc481a850aead5002598b7ed355cbb3349c148072",
 
 
-    }
+    },
 
+    introduce: {
+
+        tokenTopTitle: "StarBlock Token($STB)",
+        tokenDes: "StarBlock DAO has issued the governance token StarBlock Token (STB), holding $STB will have governance rights, dividend rights, proposal rights and other rights. Up to 70% $STB token will be distributed to community in the form of NFT farming, NFT trading farming, $STB staking, etc. ",
+        tokenDetailLink: "https://docs.starblock.io/main/v/english/tokenomics",
+        tokenDesImgUrl: require("@/assets/img/home/STBDes_en.png")
+
+
+    },
 }

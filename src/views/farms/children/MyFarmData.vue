@@ -87,10 +87,28 @@
                             {{ balanceStr(userInfo) + " STB" }}
                         </span>
                     </p>
-                    <p class="balanceBox_rightText">{{ $t("common.STBDes") }}</p>
+
+                    <div class="STBDesBox_rightBox_btnBox">
+                        <a href="https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xC481A850aEad5002598b7eD355cBB3349c148072&chain=mainnet"
+                            target="_blank">
+                            <div class="itemBtnBox">
+                                <img class="itemBtnBox_img" src="@/assets/img/home/stbDesItemIcon1.png" />
+                                <p class="itemBtnBox_text">STB on Uniswap</p>
+                            </div>
+                        </a>
+                        <a href="https://etherscan.io/token/0xc481a850aead5002598b7ed355cbb3349c148072" target="_blank"
+                            v-show="!isShowMobile">
+                            <div class="itemBtnBox">
+                                <img class="itemBtnBox_img" src="@/assets/img/home/stbDesItemIcon2.png" />
+                                <p class="itemBtnBox_text">$STB Address</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- <p class="balanceBox_rightText">{{ $t("common.STBDes") }}</p> -->
                 </div>
             </div>
         </div>
+
     </div>
 
 </template>
@@ -352,12 +370,25 @@ export default {
 
         },
         receiveReward() {
-            this.$message.warning(this.$t("common.checkPassMsg"))
-            return;
+
+            // this.$message.warning(this.$t("common.checkPassMsg"))
+            // return;
             if (this.showImgLoading) {
                 return;
             }
-            if (!this.isBtnActive) {
+            if (!window.ethereum) {
+                return;
+            }
+            if (!this.userInfo.selectedAddress) {
+                return;
+            }
+            if (Number(this.userInfo.mining) <= 0) {
+                this.$message.warning(this.$t("common.rewardCheckMsg"));
+                return
+            }
+
+            if (!this.userInfo.canBatch) {
+                this.$bus.$emit("warnAlertShowNoti", "1");
                 return;
             }
 
@@ -797,13 +828,14 @@ export default {
 }
 
 .balanceBox {
+    margin-top: -.35rem;
     cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 95%;
     justify-content: space-between;
-    margin-bottom: .5rem;
+    margin-bottom: .25rem;
 }
 
 .balanceBox_leftText {
@@ -818,7 +850,7 @@ export default {
     font-size: .5rem;
     font-family: Poppins-Medium, Poppins;
     font-weight: 500;
-    color: #212121;
+    color: #FF7421;
     line-height: .65rem;
 }
 
@@ -881,6 +913,41 @@ export default {
 .refreshBox_text {
     font-size: .55rem;
     color: #F7B500;
+}
+
+
+.STBDesBox_rightBox_btnBox {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+}
+
+.itemBtnBox {
+    margin-top: .25rem;
+    margin-left: 0rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    width: 6rem;
+    height: 1.5rem;
+    margin-bottom: .25rem;
+}
+
+.itemBtnBox_img {
+    width: .75rem;
+}
+
+.itemBtnBox_text {
+    margin-left: .1rem;
+    font-size: .5rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #212121;
+    line-height: 1.05rem;
 }
 
 
@@ -1165,13 +1232,14 @@ export default {
 
 
     .balanceBox {
+        margin-top: -.25rem;
         cursor: pointer;
         display: flex;
         flex-direction: row;
         align-items: center;
         width: 98%;
         justify-content: space-between;
-        margin-bottom: .5rem;
+        margin-bottom: .25rem;
     }
 
     .balanceBox_leftText {
@@ -1186,7 +1254,7 @@ export default {
         font-size: .4rem;
         font-family: Poppins-Medium, Poppins;
         font-weight: 500;
-        color: #212121;
+        color: #FF7421;
         line-height: .65rem;
     }
 
@@ -1244,6 +1312,40 @@ export default {
         font-weight: 500;
         font-size: .35rem;
         color: #F7B500;
+    }
+
+    .STBDesBox_rightBox_btnBox {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .itemBtnBox {
+        margin-top: 0rem;
+        margin-left: .3rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        background: #FFFFFF;
+        border-radius: 4px;
+        border: 1px solid #E5E5E5;
+        width: 4.5rem;
+        height: .75rem;
+        margin-bottom: 0rem;
+    }
+
+    .itemBtnBox_img {
+        width: .45rem;
+    }
+
+    .itemBtnBox_text {
+        margin-left: .1rem;
+        font-size: .375rem;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+        color: #212121;
+        line-height: .625rem;
     }
 
 }

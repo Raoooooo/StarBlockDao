@@ -29,6 +29,51 @@
         <img class="sectionBox2_bottomImg" :src="bottomImgUrl" />
       </div>
 
+      <div class="sectionBox1">
+        <p class="sectionBox1_title">{{ $t("home.communityTopTitle") }}</p>
+        <div class="featureitem">
+          <communityitem :goods="communityList"></communityitem>
+        </div>
+        <!-- <img class="sectionBox2_bottomImg" :src="bottomImgUrl" /> -->
+      </div>
+
+      <div class="sectionBox1">
+        <p class="sectionBox1_title">{{ "StarBlock Token ($STB)" }}</p>
+        <div class="STBDesBox">
+          <img class="STBDesBox_leftImg" :src="tokenDesImgUrl"
+            v-bind:style="{ marginLeft: stakeFarmingBox_leftBoxMarginLeft }" />
+          <div class="STBDesBox_rightBox" v-bind:style="{ marginRight: stakeFarmingBox_leftBoxMarginLeft }">
+            <p class="STBDesBox_rightBox_p1">{{ $t("introduce.tokenDes") }}<a :href="tokenDetailLink"
+                target="_blank"><span class="STBDesBox_rightBox_p1_active">{{
+                    $t("home.lookMore")
+                }}</span></a></p>
+            <div class="STBDesBox_rightBox_btnBox">
+              <a href="https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xC481A850aEad5002598b7eD355cBB3349c148072&chain=mainnet"
+                target="_blank">
+                <div class="itemBtnBox">
+                  <img class="itemBtnBox_img" src="@/assets/img/home/stbDesItemIcon1.png" />
+                  <p class="itemBtnBox_text">STB on Uniswap</p>
+                </div>
+              </a>
+              <a href="https://etherscan.io/token/0xc481a850aead5002598b7ed355cbb3349c148072" target="_blank">
+                <div class="itemBtnBox">
+                  <img class="itemBtnBox_img" src="@/assets/img/home/stbDesItemIcon2.png" />
+                  <p class="itemBtnBox_text">$STB Address</p>
+                </div>
+              </a>
+              <a href="https://github.com/StarBlockDAO" target="_blank">
+                <div class="itemBtnBox">
+                  <img class="itemBtnBox_img" src="@/assets/img/home/stbDesItemIcon3.png" />
+                  <p class="itemBtnBox_text">GitHub</p>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <div class="sectionBox2">
         <p class="sectionBox1_title">StarBlock DAO Tokenomics</p>
         <div class="contantImgBox">
@@ -46,6 +91,7 @@
 <script>
 // import { CountDown } from "vant";
 import Featureitem from "../home/children/FeatureItem.vue";
+import Communityitem from '../home/children/CommunityItem.vue'
 import Countdown from "../home/children/CountDown.vue";
 import { onConnect, initWeb3Modal, resetApp } from "@/common/useWallet";
 import { daoportAction, getBlockNumber, onBlockNumberChange } from "@/common/starblockdao";
@@ -57,7 +103,16 @@ export default {
   components: {
     Countdown,
     Featureitem,
-    Bottom
+    Bottom,
+    Communityitem
+  },
+  computed: {
+    tokenDesImgUrl() {
+      return this.$t("introduce.tokenDesImgUrl")
+    },
+    tokenDetailLink() {
+      return this.$t("introduce.tokenDetailLink")
+    },
   },
 
   data() {
@@ -67,7 +122,41 @@ export default {
     } else {
       bottomImgUrl = require("@/assets/img/home/frameImg.png");
     }
+
+    var stakeFarmingBox_leftBoxMarginLeft = 0;
+    if (
+      document.documentElement.clientWidth >= 1000 &&
+      document.documentElement.clientWidth < 1920
+    ) {
+      stakeFarmingBox_leftBoxMarginLeft = 90 + "px";
+
+    } else if (document.documentElement.clientWidth >= 1920) {
+      stakeFarmingBox_leftBoxMarginLeft = 137 + "px";
+    } else {
+      stakeFarmingBox_leftBoxMarginLeft = 0 + "px";
+    }
     return {
+      stakeFarmingBox_leftBoxMarginLeft: stakeFarmingBox_leftBoxMarginLeft,
+      communityList: [
+        {
+          name: "home.communityItemTitle1",
+          des: "home.communityItemDes1",
+          coverImgUrl: require("@/assets/img/home/communityItem1.png"),
+          linkUrl: "https://diilsclub.gitbook.io/diilsclub/nft-collect"
+        },
+        {
+          name: "home.communityItemTitle2",
+          des: "home.communityItemDes2",
+          coverImgUrl: require("@/assets/img/home/communityItem2.png"),
+          linkUrl: "https://diilsclub.gitbook.io/diilsclub/nft-collect"
+        },
+        {
+          name: "home.communityItemTitle3",
+          des: "home.communityItemDes3",
+          coverImgUrl: require("@/assets/img/home/communityItem3.png"),
+          linkUrl: "https://diilsclub.gitbook.io/diilsclub/nft-collect"
+        },
+      ],
       bottomImgUrl: bottomImgUrl,
       currentBlockNumber: 0,
       itemCountTextArr: ["8", "5", "5", "2", "3"],
@@ -498,6 +587,89 @@ export default {
   justify-content: center;
 }
 
+.STBDesBox {
+  margin-top: .25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.15rem;
+}
+
+.STBDesBox_leftImg {
+  margin-left: 0rem;
+  margin-top: 1.25rem;
+  /* width: 9.65rem; */
+  /* height: 8.875rem; */
+  width: 75%;
+
+}
+
+.STBDesBox_rightBox {
+  margin-top: 1.3rem;
+  margin-left: 0rem;
+  flex: unset;
+  width: 90%;
+  margin-right: 2.45rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.STBDesBox_rightBox_p1 {
+  font-size: .7rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+  line-height: 1.15rem;
+}
+
+.STBDesBox_rightBox_p1_active {
+  /* margin-left: .125rem; */
+  font-size: .7rem;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FE9C02;
+  line-height: 1.15rem;
+}
+
+.STBDesBox_rightBox_btnBox {
+  margin-top: .5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -0.15rem;
+}
+
+.itemBtnBox {
+  margin-top: .5rem;
+  margin-right: 0rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 4px;
+  border: 1px solid #E5E5E5;
+  width: 10rem;
+  height: 2.5rem;
+}
+
+.itemBtnBox_img {
+  width: 1rem;
+}
+
+.itemBtnBox_text {
+  margin-left: .1rem;
+  font-size: .75rem;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #212121;
+  line-height: 1.05rem;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 1200px) {
   .back {
     display: flex;
@@ -774,6 +946,87 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .STBDesBox {
+    margin-top: .25rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.15rem;
+  }
+
+  .STBDesBox_leftImg {
+    margin-top: 0rem;
+    margin-left: 3.425rem;
+    /* width: 9.65rem; */
+    /* height: 8.875rem; */
+    width: 25%;
+
+  }
+
+  .STBDesBox_rightBox {
+    margin-top: 0rem;
+    margin-left: 2rem;
+    flex: 1;
+    margin-right: 2.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: unset;
+    justify-content: center;
+  }
+
+  .STBDesBox_rightBox_p1 {
+    font-size: .5rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    line-height: .875rem;
+  }
+
+  .STBDesBox_rightBox_p1_active {
+    font-size: .45rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #FE9C02;
+    line-height: .75rem;
+  }
+
+  .STBDesBox_rightBox_btnBox {
+    margin-top: .75rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: -0rem;
+  }
+
+  .itemBtnBox {
+    margin-top: 0rem;
+    margin-right: .5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #E5E5E5;
+    width: 4.975rem;
+    height: 1.25rem;
+  }
+
+  .itemBtnBox_img {
+    width: .5rem;
+  }
+
+  .itemBtnBox_text {
+    margin-left: .1rem;
+    font-size: .375rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #212121;
+    line-height: .525rem;
   }
 }
 </style>
