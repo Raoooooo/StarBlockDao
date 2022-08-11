@@ -140,37 +140,8 @@
           <p class="emptyDes">{{ $t("common.noData") }}</p>
         </div>
       </div>
-
-      <!-- <div class="emptyContantBox">
-        <img class="emptyContantBox_img" src="@/assets/img/farms/empty.png" />
-        <div class="countDownBox">
-          <countdown :isFarms="true"></countdown>
-        </div>
-      </div> -->
     </list>
-
-    <!-- <div class="bottomDesBox">
-      <img src="@/assets/img/farms/farmsDes.png" class="farmsDesImg" />
-      <div class="farmsDesTextBox">
-        <p class="farmsDesText">
-          <span>{{ "· " }}</span>
-          <span>{{ $t("farms.tip1") }}</span>
-          <br />
-          <span>{{ "· " }}</span>
-          <span>{{ $t("farms.tip2") }}</span>
-          <br />
-          <span>{{ "· " + $t("farms.rewardsDes") }}</span>
-          <br />
-          <span>{{ "· " + $t("farms.tip3") }}</span>
-          <br />
-          <span>{{ "· " + $t("farms.tip4") }}</span>
-          <br />
-          <span>{{ "· " + $t("farms.tip5") }}</span>
-          <br />
-          <span>{{ "· " + $t("farms.tip6") }}</span>
-        </p>
-      </div>
-    </div> -->
+    
     <!-- <div id="main3" ref="instro"></div> -->
     <div class="courseSectionBox" id="main3" ref="instro">
       <course></course>
