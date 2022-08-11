@@ -231,9 +231,9 @@ export default {
         mySTBBalance: "我的STB余额",
 
         refeshAwardMessage: "挖矿奖励已刷新",
-        checkPassMsg: "领取所有挖矿奖励功能仅限Pass会员使用，您未持有Pass会员NFT，无法使用此功能。",
+        checkPassMsg: "领取所有奖励功能仅限Pass持有者使用，您未持有Pass NFT，无法使用此功能。",
 
-        rewardWarnDes: "领取奖励功能仅限持有Pass的用户使用，连接钱包内含有下列任意合集中的NFT即可 领取所有奖励。WNFT与NFT具有相同效果。",
+        rewardWarnDes: "领取所有奖励仅限持有Pass NFT的用户使用，持有下列任意合集中的NFT即可领取所有奖励，WNFT与NFT具有相同的权限。",
         claimAllRewards: "领取所有奖励",
         buyNow: "前往购买",
         rewardCheckMsg: "您还没有可领取的奖励",

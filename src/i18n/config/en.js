@@ -232,13 +232,13 @@ export default {
         newReward_mobile: "New",
 
         gotoEtherscan: "View on Blockchain",
-        addSTBToWallet: "Add STB to Wallet",
-        mySTBBalance: "My STB balance",
+        addSTBToWallet: "Add $STB to Wallet",
+        mySTBBalance: "My $STB balance",
 
-        refeshAwardMessage: "Staking rewards has been refreshed",
-        checkPassMsg: "The function of claiming all farming rewards is only available to Pass holders. You cannot use this function if you are not a Pass holder.",
+        refeshAwardMessage: "Staking rewards has been reloaded",
+        checkPassMsg: "The function of claiming all rewards is only available to Pass holders. You can not use this function if you are not a Pass holder.",
 
-        rewardWarnDes: "The function of receiving all rewards is only available to users who is holding Pass. Connect your wallet to locate requested NFT collections.Claim all rewards. WNFT has the same effect as NFT.",
+        rewardWarnDes: "The function of claiming all rewards is only available to Pass holders. You should own NFT belongs to any of the following collections to claim all rewards. WNFT equals to NFT.",
         claimAllRewards: "Claim all rewards",
         buyNow: "Buy Now",
         rewardCheckMsg: "You don't have any rewards to claim yet",
