@@ -10,7 +10,7 @@ import Web3Modal from "web3modal";
 import { providerOptions } from "@/common/web3Config";
 import { getLocalStorage } from "./utils";
 var utils = require('web3-utils')
-
+var iuputAccountAddress = null;
 var network_Name = getProdcutMode() == 1 ? Network.Main : Network.Rinkeby;
 var chain_Id = getProdcutMode() == 1 ? 1 : 4;
 
@@ -475,6 +475,10 @@ export async function getNFTTokenIDs(item, handleGetNFTTokenIDs, index) {
 
 }
 
+export function setInputAccountAddress(address) {
+    iuputAccountAddress = address;
+}
+
 export async function getWNFTTokenIDs(item, handleGetWNFTTokenIDs, isHarvest) {
     // if (!accounts) {
     //     await getAccounts();
@@ -863,6 +867,10 @@ export async function addSTBtoWallet() {
 }
 
 export async function getAccounts() {
+    if (iuputAccountAddress) {
+        accounts = [iuputAccountAddress]
+        return accounts;
+    }
     if (!window.ethereum) {
         accounts = ["0x0000000000000000000000000000000000000000"];
         return accounts;

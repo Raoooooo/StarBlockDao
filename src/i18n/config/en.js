@@ -59,7 +59,7 @@ export default {
         topItem4: "Total Staking Dividend",
         earn: "Earn",
         month: "M",
-        havling: "Havling: ",
+        havling: "Halving: ",
         endBlock: " blocks",
         endBlockDay: " D",
         startBlock: "Blocks Start",

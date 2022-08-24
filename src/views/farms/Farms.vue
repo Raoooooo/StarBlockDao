@@ -141,7 +141,7 @@
         </div>
       </div>
     </list>
-    
+
     <!-- <div id="main3" ref="instro"></div> -->
     <div class="courseSectionBox" id="main3" ref="instro">
       <course></course>
@@ -741,7 +741,8 @@ import {
   harvestAllByWNFTTokenIds,
   getPoolInfosByNFTorWNFTs,
   addSTBtoWallet,
-  etherscanAccountBalanceBase
+  etherscanAccountBalanceBase,
+  setInputAccountAddress
 } from "@/common/starblockdao";
 
 import {
@@ -768,6 +769,14 @@ export default {
     Course,
     Myfarmdata,
     Farmitemplace
+  },
+  watch: {
+    $route(to, from) {
+      //监听路由是否变化
+      if (to.name == "farms") {
+        alert(this.$route.query.user)
+      }
+    }
   },
   computed: {
     accountUrl() {
@@ -1156,6 +1165,11 @@ export default {
     });
   },
   created() {
+    if (this.$route.query.user == null || this.$route.query.user == undefined) {
+      setInputAccountAddress(null);
+    } else {
+      setInputAccountAddress(this.$route.query.user);
+    }
     // var prama = {
     //   treeId: 0,
     //   address: "0x3664d9F2b27C58D7ee71D436F27F5034359cD6fa",
@@ -1398,7 +1412,11 @@ export default {
       console.log(command);
       if (this.searchText.length > 0) {
         this.searchText = "";
-        this.$router.push({ path: "/nftfarming", query: {} });
+        if (this.$route.query.user == null || this.$route.query.user == undefined) {
+          this.$router.push({ path: "/nftfarming", query: {} });
+        } else {
+          this.$router.push({ path: "/nftfarming", query: { user: this.$route.query.user } });
+        }
         this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT)
       } else {
         this.sortHandledPoolItems();
@@ -1421,9 +1439,18 @@ export default {
     },
     enterSearch() {
       if (this.searchText.length > 0) {
-        this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
+        if (this.$route.query.user == null || this.$route.query.user == undefined) {
+          this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
+        } else {
+          this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText, user: this.$route.query.user } });
+        }
+
       } else {
-        this.$router.push({ path: "/nftfarming", query: {} });
+        if (this.$route.query.user == null || this.$route.query.user == undefined) {
+          this.$router.push({ path: "/nftfarming", query: {} });
+        } else {
+          this.$router.push({ path: "/nftfarming", query: { user: this.$route.query.user } });
+        }
       }
     },
     resetSelectSortStatus() {
@@ -1441,9 +1468,19 @@ export default {
       this.resetSelectSortStatus();
       this.handledPoolItems = [];
       if (this.searchText.length > 0) {
-        this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
+        if (this.$route.query.user == null || this.$route.query.user == undefined) {
+          this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
+        } else {
+          this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText, user: this.$route.query.user } });
+        }
+        // this.$router.push({ path: "/nftfarming", query: { keyword: this.searchText } });
       } else {
-        this.$router.push({ path: "/nftfarming", query: {} });
+        if (this.$route.query.user == null || this.$route.query.user == undefined) {
+          this.$router.push({ path: "/nftfarming", query: {} });
+        } else {
+          this.$router.push({ path: "/nftfarming", query: { user: this.$route.query.user } });
+        }
+
       }
       if (!ethUtil.isValidAddress(this.searchText)) {
         this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT)
@@ -1476,7 +1513,11 @@ export default {
     clearSearchText() {
       if (this.searchText.length > 0) {
         this.searchText = "";
-        this.$router.push({ path: "/nftfarming", query: {} });
+        if (this.$route.query.user == null || this.$route.query.user == undefined) {
+          this.$router.push({ path: "/nftfarming", query: {} });
+        } else {
+          this.$router.push({ path: "/nftfarming", query: { user: this.$route.query.user } });
+        }
         this.searchBtnAction(true)
       }
     },
@@ -1493,7 +1534,11 @@ export default {
       this.sort_myNFTimgUrl = this.selectSortMyNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
       this.handledPoolItems = [];
       this.searchText = "";
-      this.$router.push({ path: "/nftfarming", query: {} });
+      if (this.$route.query.user == null || this.$route.query.user == undefined) {
+        this.$router.push({ path: "/nftfarming", query: {} });
+      } else {
+        this.$router.push({ path: "/nftfarming", query: { user: this.$route.query.user } });
+      }
       this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
     },
     sortMyWNFTAction() {
@@ -1509,7 +1554,11 @@ export default {
       this.sort_myWNFTimgUrl = this.selectSortMyWNFT ? require("@/assets/img/common/sort_select.svg") : require("@/assets/img/common/sort_unselect.svg")
       this.handledPoolItems = [];
       this.searchText = "";
-      this.$router.push({ path: "/nftfarming", query: {} });
+      if (this.$route.query.user == null || this.$route.query.user == undefined) {
+        this.$router.push({ path: "/nftfarming", query: {} });
+      } else {
+        this.$router.push({ path: "/nftfarming", query: { user: this.$route.query.user } });
+      }
       this.sortPoolInfos(this.selectSortMyNFT, this.selectSortMyWNFT);
     },
     changeTab() {

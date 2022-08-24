@@ -8,6 +8,9 @@
           <a href="https://twitter.com/StarBlockNFT" target="_blank">
             <img v-for="(item, index) in itemBtns" :src="item" class="itemBtnImg" />
           </a>
+          <a href="https://t.me/starblocknft" target="_blank">
+            <img src="@/assets/img/common/telegram.svg" class="itemBtnImg" />
+          </a>
           <a href="https://discord.gg/starblocknft" target="_blank">
             <img v-for="(item, index) in itemBtns1" :src="item" class="itemBtnImg" />
           </a>
