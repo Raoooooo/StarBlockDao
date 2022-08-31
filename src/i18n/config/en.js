@@ -14,7 +14,7 @@ export default {
         github: "GitHub",
         login: "Connect Wallet",
         starBlock: "StarBlock",
-        documentUrl: "https://docs.starblock.io/main/v/english/",
+        documentUrl: "https://docs.starblock.io/main/",
 
     },
 
@@ -242,8 +242,13 @@ export default {
         claimAllRewards: "Claim all rewards",
         buyNow: "Buy Now",
         rewardCheckMsg: "You don't have any rewards to claim yet",
-        tradingWNFT: "Trading WNFT"
+        tradingWNFT: "Trading WNFT",
 
+
+        maxSelectNFTNumberSub1: "A maximum of ",
+        maxSelectNFTNumberSub2: " NFTs can be selected for a single staking.",
+        maxSelectWNFTNumberSub1: "A maximum of ",
+        maxSelectWNFTNumberSub2: " WNFTs can be selected for a single unstaking.",
     },
 
 

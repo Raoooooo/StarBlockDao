@@ -12,14 +12,14 @@
               <p class="topImgIconBox_contantBox_text">Stake NFT to Earn $STB</p>
             </div>
           </div>
-          <p class="topTitle">{{ $t("navBar.section1") }}</p>
+          <p class="topTitle">{{  $t("navBar.section1")  }}</p>
 
           <div class="courseBox_super">
             <div class="courseBox">
               <a :href="$t('common.courseLinkUrl')" target="_blank">
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left.svg" />
-                  <p class="courseBox_contantBox_text">{{ $t("common.course") }}</p>
+                  <p class="courseBox_contantBox_text">{{  $t("common.course")  }}</p>
                 </div>
               </a>
             </div>
@@ -28,41 +28,41 @@
               <a href="https://forms.gle/FZukoQmPMTYGDFQCA" target="_blank">
                 <div class="courseBox_contantBox">
                   <img class="courseBox_contantBox_imgLeft" src="@/assets/img/farms/course_left1.svg" />
-                  <p class="courseBox_contantBox_text">{{ $t("common.applyCollection") }}</p>
+                  <p class="courseBox_contantBox_text">{{  $t("common.applyCollection")  }}</p>
                 </div>
               </a>
             </div>
           </div>
 
-          <p class="topSubTitle">{{ $t("farms.topDes") }}</p>
+          <p class="topSubTitle">{{  $t("farms.topDes")  }}</p>
           <div class="topItemDataSuperBox">
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ totalTVL > 0 ? totalTVLStr : "-- ETH" }}
+                {{  totalTVL > 0 ? totalTVLStr : "-- ETH"  }}
               </p>
-              <p class="itemDataBox_bottomText">{{ $t("farms.topItem1") }}</p>
+              <p class="itemDataBox_bottomText">{{  $t("farms.topItem1")  }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
-              <p class="itemDataBox_topText">{{ totalNftQuantityStr }}</p>
+              <p class="itemDataBox_topText">{{  totalNftQuantityStr  }}</p>
               <!-- <p class="itemDataBox_topText">{{ "--" }}</p> -->
-              <p class="itemDataBox_bottomText">{{ $t("farms.topItem2") }}</p>
+              <p class="itemDataBox_bottomText">{{  $t("farms.topItem2")  }}</p>
             </div>
             <div class="vSepLine"></div>
             <div class="itemDataBox">
               <p class="itemDataBox_topText">
-                {{ totalRewardStr }}
+                {{  totalRewardStr  }}
               </p>
-              <p class="itemDataBox_bottomText">{{ $t("farms.topItem3") }}</p>
+              <p class="itemDataBox_bottomText">{{  $t("farms.topItem3")  }}</p>
             </div>
 
 
             <div class="vSepLine" v-show="!isShowMobile"></div>
             <div class="itemDataBox" v-show="!isShowMobile">
               <p class="itemDataBox_topText">
-                {{ totalBonusStr }}
+                {{  totalBonusStr  }}
               </p>
-              <p class="itemDataBox_bottomText">{{ $t("farms.topItem4") }}</p>
+              <p class="itemDataBox_bottomText">{{  $t("farms.topItem4")  }}</p>
             </div>
           </div>
         </div>
@@ -76,12 +76,12 @@
           </div>
 
           <div class="topItemBox" v-for="(item, index) in topItemList">
-            <p class="topItemIndex">{{ index + 1 }}</p>
-            <p class="topItemText">{{ $t(item) }}</p>
+            <p class="topItemIndex">{{  index + 1  }}</p>
+            <p class="topItemText">{{  $t(item)  }}</p>
           </div>
         </div>
         <div class="courseRightBox" @click="courseRightBoxClick">
-          <p class="courseRightBox_text">{{ $t("common.moreInfo") }}</p>
+          <p class="courseRightBox_text">{{  $t("common.moreInfo")  }}</p>
           <img class="courseRightBox_img" src="@/assets/img/common/access_yellow.svg" />
         </div>
 
@@ -104,31 +104,31 @@
               <img class="searchBox_rightImg" src="@/assets/img/common/close_gray.svg" @click="clearSearchText" />
             </div>
 
-            <button class="searchBtn" @click="searchBtnAction">{{ $t("common.search") }}</button>
+            <button class="searchBtn" @click="searchBtnAction">{{  $t("common.search")  }}</button>
           </div>
 
           <div class="sortBox">
             <el-dropdown trigger="click" @visible-change="dropdownHiddenClick" @command="dropdownClick">
               <div class="sortItemBox0">
-                <p class="sortItemBox0_text">{{ $t(shortNameStr) }}</p>
+                <p class="sortItemBox0_text">{{  $t(shortNameStr)  }}</p>
                 <img class="sortItemBox0_img" :src="drow_upDownImgUrl" />
               </div>
               <el-dropdown-menu slot="dropdown" class="filtrateBtnMarginRight">
                 <el-dropdown-item v-for="(item, index) in shortList" :command="item" class="el-dropdown-item">
                   <p :class="index == dropdownClickIndex ? 'el-dropdown-item_active' : 'el-dropdown-item'">{{
-                      $t(item)
-                  }}</p>
+                     $t(item) 
+                    }}</p>
 
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <div class="sortItemBox1">
               <img class="sortItemBox1_img" :src="sort_myNFTimgUrl" @click="sortMyNFTAction" />
-              <p class="sortItemBox1_text">{{ $t("common.myNFT") }}</p>
+              <p class="sortItemBox1_text">{{  $t("common.myNFT")  }}</p>
             </div>
             <div class="sortItemBox1">
               <img class="sortItemBox1_img" :src="sort_myWNFTimgUrl" @click="sortMyWNFTAction" />
-              <p class="sortItemBox1_text">{{ $t("common.myStake") }}</p>
+              <p class="sortItemBox1_text">{{  $t("common.myStake")  }}</p>
 
             </div>
           </div>
@@ -137,7 +137,7 @@
         <farmitemplace :items="placeItems" v-show="handledPoolItems.length == 0 && !isSearchEmpty"></farmitemplace>
         <div class="emptyNFTBox" v-show="isSearchEmpty">
           <img class="emptyNFTImg" src="@/assets/img/common/empty_search.svg" />
-          <p class="emptyDes">{{ $t("common.noData") }}</p>
+          <p class="emptyDes">{{  $t("common.noData")  }}</p>
         </div>
       </div>
     </list>
@@ -155,7 +155,7 @@
       :destroy-on-close="true" center top="70px" :lock-scroll="false" :close-on-press-escape="false">
       <div class="alertContantBox1">
         <div class=""></div>
-        <p class="alertTitle">{{ $t("farms.NFTOfCollection") }}</p>
+        <p class="alertTitle">{{  $t("farms.NFTOfCollection")  }}</p>
         <img class="closeAlertIcon" src="@/assets/img/farms/optionViewClose.svg" @click="closeAlertAction" />
       </div>
 
@@ -163,20 +163,20 @@
 
         <div class="itemDataBox">
           <p class="itemDataBox_topText_alert">
-            {{ (selectPollItem.mining * Math.pow(10, -18)).toFixed(2) + " STB" }}
+            {{  (selectPollItem.mining * Math.pow(10, -18)).toFixed(2) + " STB"  }}
           </p>
-          <p class="itemDataBox_bottomText_alert">{{ $t("common.optionName5") }}</p>
+          <p class="itemDataBox_bottomText_alert">{{  $t("common.optionName5")  }}</p>
         </div>
         <div class="vSepLine_alert"></div>
 
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">{{ this.selectPollItem.wnftQuantity + " NFT" }}</p>
-          <p class="itemDataBox_bottomText_alert">{{ $t("farms.havePledge") }}</p>
+          <p class="itemDataBox_topText_alert">{{  this.selectPollItem.wnftQuantity + " NFT"  }}</p>
+          <p class="itemDataBox_bottomText_alert">{{  $t("farms.havePledge")  }}</p>
         </div>
         <div class="vSepLine_alert"></div>
         <div class="itemDataBox">
-          <p class="itemDataBox_topText_alert">{{ this.selectPollItem.nftQuantity + " NFT" }}</p>
-          <p class="itemDataBox_bottomText_alert">{{ $t("common.canStake") }}</p>
+          <p class="itemDataBox_topText_alert">{{  this.selectPollItem.nftQuantity + " NFT"  }}</p>
+          <p class="itemDataBox_bottomText_alert">{{  $t("common.canStake")  }}</p>
         </div>
         <!-- <div class="vSepLine_alert"></div> -->
 
@@ -190,18 +190,18 @@
         element-loading-background="rgba(0, 0, 0, 0.0)">
         <div class="switchBtnBox">
           <button :class="isSwitch1 ? 'switchBtn_on' : 'switchBtn_off'" @click="switchBtn(1)">
-            {{ $t("farms.pledge") }}
+            {{  $t("farms.pledge")  }}
           </button>
           <button :class="!isSwitch1 ? 'switchBtn_on' : 'switchBtn_off'" @click="switchBtn(2)">
-            {{ $t("farms.havePledge") }}
+            {{  $t("farms.havePledge")  }}
           </button>
         </div>
         <div class="unPledgeActionBox">
           <button class="unPledgeAction" @click="alertBeforeAction">
-            {{ alertActionStr + " " + selectCount + $t("common.defaultMessSub2") }}
+            {{  alertActionStr + " " + selectCount + $t("common.defaultMessSub2")  }}
           </button>
           <div class="selectAllBtnBox" @click="selectAllAction">
-            <p class="selectAllBtnBox_text">{{ $t("common.sellectAll") }}</p>
+            <p class="selectAllBtnBox_text">{{  $t("common.sellectAll")  }}</p>
             <img class="selectAllBtnBox_img" :src="selectIconUrl" />
           </div>
         </div>
@@ -213,27 +213,28 @@
             <p class="alertSectionBox3_text1">NFT</p>
           </div>
           <div class="alertSectionBox3_textBox2">
-            <p class="alertSectionBox3_text2">{{ $t("farms.detailInfo") }}</p>
+            <p class="alertSectionBox3_text2">{{  $t("farms.detailInfo")  }}</p>
           </div>
           <div class="alertSectionBox3_textBox3">
-            <p class="alertSectionBox3_text3">{{ $t("farms.option") }}</p>
+            <p class="alertSectionBox3_text3">{{  $t("farms.option")  }}</p>
           </div>
         </div>
         <div class="selectItemSepLine"></div>
         <!-- <div v-for="(item, index) in selectItems"> -->
-        <selectnft :items="canSelectNftItems" v-show="!isShowEmptyImg"></selectnft>
+        <selectnft :items="canSelectNftItems" v-show="!isShowEmptyImg" :selectItems="selectTokenIdsArr"
+          :maxCanSelectNum="maxCanSelectNum" :maxCanSelectNum_WNFT="maxCanSelectNum_WNFT"></selectnft>
         <div class="emptyImgBox" v-show="isShowEmptyImg">
           <img class="emptyImg" src="@/assets/img/common/emptyNFT.png" />
-          <p class="emptyImgBox_des">{{ $t("farms.noWNFTDes") }}</p>
+          <p class="emptyImgBox_des">{{  $t("farms.noWNFTDes")  }}</p>
         </div>
 
         <!-- </div> -->
       </div>
 
-      <p class="alertTip1">{{ "· " + $t("farms.optionTip1") }}</p>
-      <p class="alertTip2">{{ "· " + $t("farms.optionTip2") }}</p>
-      <p class="alertTip2">{{ "· " + $t("farms.optionTip3") }}</p>
-      <p class="alertTip2">{{ "· " + $t("farms.optionTip4") }}</p>
+      <p class="alertTip1">{{  "· " + $t("farms.optionTip1")  }}</p>
+      <p class="alertTip2">{{  "· " + $t("farms.optionTip2")  }}</p>
+      <p class="alertTip2">{{  "· " + $t("farms.optionTip3")  }}</p>
+      <p class="alertTip2">{{  "· " + $t("farms.optionTip4")  }}</p>
     </el-dialog>
 
 
@@ -246,32 +247,32 @@
         </div>
         <img class="dialogTopImg" src="@/assets/img/common/requestSuccess.svg" />
         <p class="dialopTitle">
-          {{ rewardSuccessStr }}
+          {{  rewardSuccessStr  }}
         </p>
 
         <div class="txHashBox">
-          <p class="txHash_pre">{{ $t("common.txHash") + ": " }}</p>
+          <p class="txHash_pre">{{  $t("common.txHash") + ": "  }}</p>
           <a :href="getChainWebUrl(txHashOringion)" target="_blank">
-            <p class="txHash">{{ txHash }}</p>
+            <p class="txHash">{{  txHash  }}</p>
           </a>
           <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
         </div>
 
-        <p class="defaultRewardDes_reward">{{ $t("common.rewardAlertDes_successSub1") }}
+        <p class="defaultRewardDes_reward">{{  $t("common.rewardAlertDes_successSub1")  }}
           <br />
           <span class="defaultRewardDes_reward">
-            {{ $t("common.rewardAlertDes_successSub2") }}
+            {{  $t("common.rewardAlertDes_successSub2")  }}
           </span>
         </p>
 
         <div class="bottomBtnBox1">
           <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
             <button class="traddingStarblockBtn_yellow">
-              {{ $t("common.tradingNFT") }}
+              {{  $t("common.tradingNFT")  }}
             </button>
           </a>
           <button class="lookDetailBtn" @click="addSTBtoWalletAction">
-            {{ $t("common.addSTBToWallet") }}
+            {{  $t("common.addSTBToWallet")  }}
           </button>
         </div>
       </div>
@@ -289,25 +290,26 @@
 
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
-          {{ defaultMessageStr }}
+          {{  defaultMessageStr  }}
         </p>
         <span class="dialogDes" v-bind="{ color: dialogDesColor }">
           {{
-              !isGetReward
-                ? defaultMessageDesStr
-                : defaultMessageDesStr + ": " + awardAmountStr(selectPollItem.mining)
+           !isGetReward
+           ? defaultMessageDesStr
+           : defaultMessageDesStr + ": " + awardAmountStr(selectPollItem.mining)
+
           }}
         </span>
-        <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub1") }}
+        <p class="defaultRewardDes">{{  $t("common.rewardAlertDesSub1")  }}
           <br />
           <span class="defaultRewardDes">
-            {{ $t("common.rewardAlertDesSub2") }}
+            {{  $t("common.rewardAlertDesSub2")  }}
           </span>
         </p>
         <!-- <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub2") }}</p> -->
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultPoolRewardAction">
-            {{ $t("common.confirm") }}
+            {{  $t("common.confirm")  }}
           </button>
           <!-- <button class="lookDetailBtn" @click="cancleBtnAction">
             {{ $t("common.cancle") }}
@@ -329,23 +331,23 @@
 
         <img class="dialogTopImg" src="@/assets/img/common/alertWaring.svg" />
         <p class="dialopTitle">
-          {{ defaultMessageStr }}
+          {{  defaultMessageStr  }}
         </p>
         <span class="dialogDes" v-bind="{ color: dialogDesColor }">
           {{
-              defaultMessageDesStr + ": " + awardAmountStr(userInfo.mining)
+           defaultMessageDesStr + ": " + awardAmountStr(userInfo.mining) 
           }}
         </span>
 
-        <p class="defaultRewardDes">{{ $t("common.rewardAlertDesSub1") }}
+        <p class="defaultRewardDes">{{  $t("common.rewardAlertDesSub1")  }}
           <br />
           <span class="defaultRewardDes">
-            {{ $t("common.rewardAlertDesSub2") }}
+            {{  $t("common.rewardAlertDesSub2")  }}
           </span>
         </p>
         <div class="bottomBtnBox1">
           <button class="goOnCreatBtn" @click="defaultAllRewardAlertBtnAction">
-            {{ $t("common.confirm") }}
+            {{  $t("common.confirm")  }}
           </button>
           <!-- <button class="lookDetailBtn" @click="cancleAllRewardAlertBtnAction">
             {{ $t("common.cancle") }}
@@ -363,7 +365,7 @@
         <div class="dialogTopBack">
           <div></div>
           <p class="dialogTopBack_title">
-            {{ defaultAlertTitle }}
+            {{  defaultAlertTitle  }}
           </p>
           <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="stakeAlertCloseAction" />
         </div>
@@ -373,28 +375,28 @@
           <div class="dialogContantBox_topBox">
             <div class="dialogContantBox_topBox_leftBox">
               <img class="collectionImg" :src="selectPollItem.collection.imagePath" v-if="selectPollItem.collection" />
-              <p class="collectionName" v-if="selectPollItem.collection">{{ selectPollItem.collection.showName }}</p>
+              <p class="collectionName" v-if="selectPollItem.collection">{{  selectPollItem.collection.showName  }}</p>
             </div>
 
             <div class="dialogContantBox_topBox_rightBox">
               <div class="rewardBox">
-                <p class="rewardBox_text">{{ selectPollItemReward }}</p>
+                <p class="rewardBox_text">{{  selectPollItemReward  }}</p>
                 <!-- <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" /> -->
               </div>
               <!-- <p class="priceText">$124.98</p> -->
-              <p class="rewardDes">{{ $t("farms.awardNFT") + "/" + $t("farms.month") }}</p>
+              <p class="rewardDes">{{  $t("farms.awardNFT") + "/" + $t("farms.month")  }}</p>
             </div>
           </div>
           <div class="dialogContantBox_sepLine"></div>
 
           <div class="quantityBox">
-            <p class="quantityBox_leftText">{{ $t("common.quantity") }}</p>
-            <p class="quantityBox_rightText">{{ selectCount }}</p>
+            <p class="quantityBox_leftText">{{  $t("common.quantity")  }}</p>
+            <p class="quantityBox_rightText">{{  selectCount  }}</p>
           </div>
 
-          <p class="stakeDes">{{ defaltAlertStakeDes }}</p>
+          <p class="stakeDes">{{  defaltAlertStakeDes  }}</p>
 
-          <button class="stakeBtnOfAction" @click="defalutStakeBtnAction">{{ defaultStakeAlertBtnStr }}</button>
+          <button class="stakeBtnOfAction" @click="defalutStakeBtnAction">{{  defaultStakeAlertBtnStr  }}</button>
         </div>
       </div>
     </el-dialog>
@@ -407,7 +409,7 @@
         <div class="dialogTopBack">
           <div></div>
           <p class="dialogTopBack_title">
-            {{ defaultAlertTitle }}
+            {{  defaultAlertTitle  }}
           </p>
           <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="stakeProcessAlertCloseAction" />
         </div>
@@ -418,18 +420,18 @@
             <div class="dialogContantBox_topBox_leftBox">
               <img class="collectionImg" :src="selectPollItem.collection.imagePath" v-if="selectPollItem.collection" />
               <div class="selectTextBox">
-                <p class="collectionName" v-if="selectPollItem.collection">{{ selectPollItem.collection.showName }}</p>
-                <p class="selectTextBox_count">{{ $t("common.quantity") + ": " + selectCount }}</p>
+                <p class="collectionName" v-if="selectPollItem.collection">{{  selectPollItem.collection.showName  }}</p>
+                <p class="selectTextBox_count">{{  $t("common.quantity") + ": " + selectCount  }}</p>
               </div>
             </div>
 
             <div class="dialogContantBox_topBox_rightBox">
               <div class="rewardBox">
-                <p class="rewardBox_text">{{ selectPollItemReward }}</p>
+                <p class="rewardBox_text">{{  selectPollItemReward  }}</p>
                 <!-- <img class="rewardBox_img" src="@/assets/img/farms/linkIcon1.png" /> -->
               </div>
               <!-- <p class="priceText">$124.98</p> -->
-              <p class="rewardDes">{{ $t("farms.awardNFT") + "/" + $t("farms.month") }}</p>
+              <p class="rewardDes">{{  $t("farms.awardNFT") + "/" + $t("farms.month")  }}</p>
             </div>
           </div>
           <div class="dialogContantBox_sepLine"></div>
@@ -442,22 +444,22 @@
                 <img :class="approveProcessImgClass" :src="approveStatusImgUrl" />
               </div>
               <div class="stepBoxSub_contantBox">
-                <p class="processDesTopTitle">{{ approveStepTitle }}</p>
-                <p class="processDesBottomTitle">{{ approveStepDes }}</p>
+                <p class="processDesTopTitle">{{  approveStepTitle  }}</p>
+                <p class="processDesBottomTitle">{{  approveStepDes  }}</p>
 
                 <div class="processStepBtnBox">
                   <button class="processStepOffBtn" v-if="isApprove">
-                    {{ $t("common.haveComplete") }}
+                    {{  $t("common.haveComplete")  }}
                   </button>
                   <button class="processStepOnBtn" v-if="!isApprove" @click="startApprove">
-                    {{ $t("common.start") }}
+                    {{  $t("common.start")  }}
                   </button>
                   <button class="processStepOnBtn" v-if="isStartedApprove">
-                    {{ $t("common.approveIngStatus") }}
+                    {{  $t("common.approveIngStatus")  }}
                   </button>
 
                   <button class="processStepOnBtn" v-if="isApproveFaild" @click="startApprove">
-                    {{ $t("common.reStart") }}
+                    {{  $t("common.reStart")  }}
                   </button>
                 </div>
               </div>
@@ -470,33 +472,33 @@
                 <img :class="deployProcessImgClass" :src="delyContractStatusImgUrl" />
               </div>
               <div class="stepBoxSub_contantBox">
-                <p class="processDesTopTitle">{{ deployStepTitle }}</p>
+                <p class="processDesTopTitle">{{  deployStepTitle  }}</p>
                 <p class="processDesBottomTitle">
                   <span>
-                    {{ deployStepDesSub1 }}
+                    {{  deployStepDesSub1  }}
                   </span>
                   <span class="processDesBottomTitle_active">
-                    {{ deployStepDesSub2 }}
+                    {{  deployStepDesSub2  }}
                   </span>
-                  {{ deployStepDesSub3 }}
+                  {{  deployStepDesSub3  }}
                 </p>
 
                 <div class="processStepBtnBox">
                   <button class="processStepOffBtn" v-if="!isApprove">
-                    {{ $t("common.unStart") }}
+                    {{  $t("common.unStart")  }}
                   </button>
                   <button class="processStepOnBtn" v-if="isApprove && !isDelyFailed && !isDelySuccess"
                     @click="startDelyContractBtnAction()">
-                    {{ $t("common.start") }}
+                    {{  $t("common.start")  }}
                   </button>
                   <button class="processStepOnBtn" v-if="isStartedDelyContract">
-                    {{ $t("common.deployingStatus") }}
+                    {{  $t("common.deployingStatus")  }}
                   </button>
                   <button class="processStepOffBtn" v-if="isDelySuccess">
-                    {{ $t("common.haveComplete") }}
+                    {{  $t("common.haveComplete")  }}
                   </button>
                   <button class="processStepOnBtn" v-if="isDelyFailed" @click="startDelyContractBtnAction()">
-                    {{ $t("common.reStart") }}
+                    {{  $t("common.reStart")  }}
                   </button>
                 </div>
               </div>
@@ -515,7 +517,7 @@
         <div class="dialogTopBack">
           <div></div>
           <p class="dialogTopBack_title">
-            {{ processSuccessAlertTitle }}
+            {{  processSuccessAlertTitle  }}
           </p>
           <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="stakeSuccessAlertCloseAction" />
         </div>
@@ -527,7 +529,7 @@
           </div>
 
           <p class="stakeSuccessDes">
-            <span class="stakeSuccessDes">{{ stakeProcessSuccessDes }}</span>
+            <span class="stakeSuccessDes">{{  stakeProcessSuccessDes  }}</span>
             <!-- <span class="stakeSuccessDes_active">{{ selectCount }}</span>
             <span>{{ processSuccessDesSub2 }}</span>
             <span>{{ " " }}</span>
@@ -536,9 +538,9 @@
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
           <div class="txHashBox_process">
-            <p class="txHash_pre">{{ $t("common.txHash") + ": " }}</p>
+            <p class="txHash_pre">{{  $t("common.txHash") + ": "  }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
-              <p class="txHash">{{ txHash }}</p>
+              <p class="txHash">{{  txHash  }}</p>
             </a>
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
           </div>
@@ -546,15 +548,15 @@
           <div class="alertDesBox">
             <div class="alertDesItemBox" v-for="(item, index) in alertDesItemArr">
               <img class="alertDesItemBox_img" :src="alertDesItemBoxImgUrl(index)" />
-              <p class="alertDesItemBox_text">{{ $t(item) }}</p>
+              <p class="alertDesItemBox_text">{{  $t(item)  }}</p>
             </div>
           </div>
 
           <div class="alertBottomBtnBox">
             <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
-              <button class="traddingStarblockBtn">{{ $t("common.tradingWNFT") }}</button>
+              <button class="traddingStarblockBtn">{{  $t("common.tradingWNFT")  }}</button>
             </a>
-            <button class="stakeBtn" @click="continueStakeBtnAction">{{ $t("common.continueStake") }}</button>
+            <button class="stakeBtn" @click="continueStakeBtnAction">{{  $t("common.continueStake")  }}</button>
 
           </div>
         </div>
@@ -569,7 +571,7 @@
         <div class="dialogTopBack">
           <div></div>
           <p class="dialogTopBack_title">
-            {{ processSuccessAlertTitle1 }}
+            {{  processSuccessAlertTitle1  }}
           </p>
           <img class="dialogTopBack_img" src="@/assets/img/common/close.svg" @click="unstakeSuccessAlertCloseAction" />
         </div>
@@ -581,7 +583,7 @@
           </div>
 
           <p class="stakeSuccessDes">
-            <span class="stakeSuccessDes">{{ unstakeProcessSuccessDes }}</span>
+            <span class="stakeSuccessDes">{{  unstakeProcessSuccessDes  }}</span>
             <!-- <span class="stakeSuccessDes_active">{{ selectCount }}</span>
             <span>{{ processSuccessDesSub2 }}</span>
             <span>{{ " " }}</span>
@@ -590,9 +592,9 @@
             <span>{{ processSuccessDesSub3 }}</span> -->
           </p>
           <div class="txHashBox_process">
-            <p class="txHash_pre">{{ $t("common.txHash") + ": " }}</p>
+            <p class="txHash_pre">{{  $t("common.txHash") + ": "  }}</p>
             <a :href="getChainWebUrl(txHashOringion)" target="_blank">
-              <p class="txHash">{{ txHash }}</p>
+              <p class="txHash">{{  txHash  }}</p>
             </a>
             <img class="txHash_copy" src="@/assets/img/common/copy.svg" @click="copyAddressAction(txHashOringion)" />
           </div>
@@ -600,15 +602,15 @@
           <div class="alertDesBox">
             <div class="alertDesItemBox" v-for="(item, index) in alertDesItemArr1">
               <img class="alertDesItemBox_img" :src="alertDesItemBoxImgUrl(index)" />
-              <p class="alertDesItemBox_text">{{ $t(item) }}</p>
+              <p class="alertDesItemBox_text">{{  $t(item)  }}</p>
             </div>
           </div>
 
           <div class="alertBottomBtnBox">
             <a href="https://starblock.io/assets" target="_blank" class="traddingStarblockBtn_a">
-              <button class="traddingStarblockBtn">{{ $t("common.tradingWNFT") }}</button>
+              <button class="traddingStarblockBtn">{{  $t("common.tradingWNFT")  }}</button>
             </a>
-            <button class="stakeBtn" @click="continueUnstakeBtnAction">{{ $t("common.continueStake") }}</button>
+            <button class="stakeBtn" @click="continueUnstakeBtnAction">{{  $t("common.continueStake")  }}</button>
 
           </div>
         </div>
@@ -627,29 +629,29 @@
         <div class="balanceAlertTitleBox">
           <div class=""></div>
           <p class="balanceAlertTitle">
-            {{ $t("common.mySTBBalance") }}
+            {{  $t("common.mySTBBalance")  }}
           </p>
           <img class="closeAlertIcon" src="@/assets/img/farms/optionViewClose.svg" @click="closeBalanceAlertAction" />
         </div>
         <p class="balanceValue">
-          {{ balanceOfSTB }}
+          {{  balanceOfSTB  }}
         </p>
 
-        <p class="defaultRewardDes_reward">{{ $t("common.rewardAlertDes_successSub1") }}
+        <p class="defaultRewardDes_reward">{{  $t("common.rewardAlertDes_successSub1")  }}
           <br />
           <span class="defaultRewardDes_reward">
-            {{ $t("common.rewardAlertDes_successSub2") }}
+            {{  $t("common.rewardAlertDes_successSub2")  }}
           </span>
         </p>
 
         <div class="bottomBtnBox_balance">
           <a :href="accountUrl" target="_blank" class="traddingStarblockBtn_a">
             <button class="traddingStarblockBtn_yellow">
-              {{ $t("common.gotoEtherscan") }}
+              {{  $t("common.gotoEtherscan")  }}
             </button>
           </a>
           <button class="lookDetailBtn" @click="addSTBtoWalletAction">
-            {{ $t("common.addSTBToWallet") }}
+            {{  $t("common.addSTBToWallet")  }}
           </button>
         </div>
       </div>
@@ -667,7 +669,7 @@
         <div class="balanceAlertTitleBox">
           <div class=""></div>
           <p class="balanceAlertTitle">
-            {{ $t("common.claimAllRewards") }}
+            {{  $t("common.claimAllRewards")  }}
           </p>
           <img class="closeAlertIcon" src="@/assets/img/farms/optionViewClose.svg"
             @click="warnRewardAlertShowClseAction" />
@@ -676,16 +678,16 @@
 
         <div class="warnDesBox">
           <img class="warnDesBox_img" src="@/assets/img/common/warnIcon.svg" v-show="!isShowMobile" />
-          <p class="warnDesBox_text">{{ $t("common.rewardWarnDes") }}</p>
+          <p class="warnDesBox_text">{{  $t("common.rewardWarnDes")  }}</p>
         </div>
         <div class="buyItemBox">
           <div class="buyItem" v-for="(item, index) in buyItemList">
             <div class="buyItem_leftBox">
               <img class="buyItem_img" :src="item.imgPath" />
-              <p class="buyItem_text">{{ item.name }}</p>
+              <p class="buyItem_text">{{  item.name  }}</p>
             </div>
             <a :href="item.pushUrl" target="_blank">
-              <button class="buyItem_btn">{{ $t("common.buyNow") }}</button>
+              <button class="buyItem_btn">{{  $t("common.buyNow")  }}</button>
             </a>
           </div>
         </div>
@@ -1045,6 +1047,8 @@ export default {
     }
 
     return {
+      maxCanSelectNum: 170,
+      maxCanSelectNum_WNFT: 170,
       buyItemList: [{ name: "Genesis Pass", imgPath: require("@/assets/img/farms/collectionIcon0.png"), pushUrl: "https://www.starblock.io/collection/0xf446831fb5727341d8542436f9c5307917a02850" },
       { name: "Wrapped Genesis Pass", imgPath: require("@/assets/img/farms/collectionIcon0_w.jpg"), pushUrl: "https://www.starblock.io/collection/0x217A1B44e22286E77fD8CD214FF55d47FA6e2C55" },
       { name: "Ghost Pirate", imgPath: require("@/assets/img/farms/collectionIcon48.png"), pushUrl: "https://www.starblock.io/collection/0x190398a13ff82cc3ef16079c948985b069af2726" },
@@ -1298,6 +1302,7 @@ export default {
       }),
 
       this.$bus.$on("selectNftAction", val => {
+
         this.setSelectIdsArr();
       }),
 
@@ -1866,11 +1871,33 @@ export default {
     },
     selectAllAction() {
       this.selectAll = !this.selectAll;
-      Object.keys(this.canSelectNftItems).forEach(key => {
-        var item = this.canSelectNftItems[key];
-        item.select = this.selectAll;
-      });
-      this.setSelectIdsArr();
+      var maxCanSelectNum = this.isSwitch1 ? this.maxCanSelectNum : this.maxCanSelectNum_WNFT;
+      var message = this.isSwitch1 ? this.$t("common.maxSelectNFTNumberSub1") + maxCanSelectNum + this.$t("common.maxSelectNFTNumberSub2") : this.$t("common.maxSelectWNFTNumberSub1") + maxCanSelectNum + this.$t("common.maxSelectWNFTNumberSub2");
+      if (this.canSelectNftItems.length >= this.maxCanSelectNum) {
+        if (this.selectAll == true) {
+          this.$message.error(message);
+          var canSelectNftItems = this.canSelectNftItems.slice(0, maxCanSelectNum);
+          Object.keys(canSelectNftItems).forEach(key => {
+            var item = this.canSelectNftItems[key];
+            item.select = this.selectAll;
+          });
+          this.setSelectIdsArr();
+        } else {
+          Object.keys(this.canSelectNftItems).forEach(key => {
+            var item = this.canSelectNftItems[key];
+            item.select = false;
+          });
+          this.setSelectIdsArr();
+        }
+
+      } else {
+        Object.keys(this.canSelectNftItems).forEach(key => {
+          var item = this.canSelectNftItems[key];
+          item.select = this.selectAll;
+        });
+        this.setSelectIdsArr();
+      }
+
     },
     getChainWebUrl(subStr) {
       if (getProdcutMode() == 1) {

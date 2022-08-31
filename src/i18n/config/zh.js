@@ -14,7 +14,7 @@ export default {
         github: "GitHub",
         login: "连接钱包",
         starBlock: "StarBlock",
-        documentUrl: "https://starblock.gitbook.io/"
+        documentUrl: "https://docs.starblock.io/main/v/zh/"
 
     },
 
@@ -237,7 +237,15 @@ export default {
         claimAllRewards: "领取所有奖励",
         buyNow: "前往购买",
         rewardCheckMsg: "您还没有可领取的奖励",
-        tradingWNFT: "交易WNFT"
+        tradingWNFT: "交易WNFT",
+
+
+        maxSelectNFTNumberSub1: "单次抵押最多可选",
+        maxSelectNFTNumberSub2: "个NFT",
+        maxSelectWNFTNumberSub1: "单次解抵押最多可选",
+        maxSelectWNFTNumberSub2: "个WNFT",
+
+
     },
 
 

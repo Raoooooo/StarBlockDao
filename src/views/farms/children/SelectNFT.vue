@@ -94,6 +94,24 @@ export default {
         return [];
       }
     },
+    maxCanSelectNum: {
+      type: Number,
+      default() {
+        return 0;
+      }
+    },
+    maxCanSelectNum_WNFT: {
+      type: Number,
+      default() {
+        return 0;
+      }
+    },
+    selectItems: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
     item: {
       type: Object,
       default() {
@@ -106,6 +124,7 @@ export default {
         return false;
       }
     },
+
     itemsHeight: {
       type: Boolean,
       default: true
@@ -195,6 +214,15 @@ export default {
         : require("@/assets/img/farms/nft_select_n.svg");
     },
     selectAction(item) {
+      var maxCanSelectNum = this.isWNFT ? this.maxCanSelectNum_WNFT : this.maxCanSelectNum;
+      if (this.selectItems.length >= maxCanSelectNum && !item.select) {
+        if (this.isWNFT) {
+          this.$message.error(this.$t("common.maxSelectWNFTNumberSub1") + maxCanSelectNum + this.$t("common.maxSelectWNFTNumberSub2"));
+        } else {
+          this.$message.error(this.$t("common.maxSelectNFTNumberSub1") + maxCanSelectNum + this.$t("common.maxSelectNFTNumberSub2"));
+        }
+        return;
+      }
       item.select = !item.select;
       this.$bus.$emit("selectNftAction", "1");
       // this.selectIconUrl = item.select
