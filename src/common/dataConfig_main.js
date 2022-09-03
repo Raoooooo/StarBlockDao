@@ -1936,6 +1936,45 @@ const poolDatas_main = [
         isShow: true,
     },
 
+
+    {
+        poolInfo: {
+            pid: 54,
+            rangeTokenIds: [1, 2345],
+            startBlock: 0,
+            amount: "--",
+            wnft: "",
+            currentRewardEndBlock: 0,
+            currentRewardIndex: 0,
+            lastRewardBlock: 0,
+
+        },
+        nftQuantity: "--",
+        wnftQuantity: "--",
+        rewardForEachBlock: "--",
+        rewardPerNFTForEachBlock: "--",
+        endBlock: 0,
+        dividend: "--",
+        mining: "--",
+        showImgLoading: false,
+        isNFTApproved: false,
+        isWNFTApproved: false,
+        floor_price: 0,
+        nft: "",
+        NFTItems: [],
+        WNFTItems: [],
+        collection: {
+            imagePath: require("@/assets/img/farms/collectionIcon55.png"),
+            name: "quanneirennft",
+            showName: "QuanneirenNFT",
+            contractAddress: "",
+        },
+        selectedAddress: null,
+        isFree: false,
+        sort: 54,
+        isShow: true,
+    },
+
     // {
     //     poolInfo: {
     //         pid: 48,
@@ -2087,8 +2126,6 @@ const poolDatas_main = [
     //     sort: 51,
     //     isShow: true,
     // },
-
-
 
 
 ]
